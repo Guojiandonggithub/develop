@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">riskprojects</string>
+    <string name="home">主页</string>
+    <string name="guapai">挂牌督办</string>
+    <string name="record_tracking">记录跟踪</string>
+    <string name="statistical_analysis">统计分析</string>
+    <string name="hiddenredord">隐患记录管理</string>
+    <string name="moments">朋友圈</string>
+    <string name="me">我的</string>
+</resources>
