@@ -67,7 +67,7 @@ public class MainActivity extends FragmentActivity{
 		imagebuttons[4] = (ImageView) findViewById(R.id.ib_profile);
 
 		imagebuttons[0].setSelected(true);
-		textviews = new TextView[5];
+		textviews = new TextView[5]; 
 		textviews[0] = (TextView) findViewById(R.id.tv_contact_list);
 		textviews[1] = (TextView) findViewById(R.id.tv_find);
 		textviews[2] = (TextView) findViewById(R.id.tv_analysis);
