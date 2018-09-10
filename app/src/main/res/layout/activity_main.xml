@@ -13,8 +13,6 @@
         android:layout_height="0dip"
         android:layout_weight="1" >
 
-
-
     </FrameLayout>
 
     <include layout="@layout/layout_bottom"/>

@@ -47,7 +47,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="3dp"
                     android:text="@string/home"
-                    android:textColor="#9A9A9A"
+                    android:textColor="@color/colorGraylighter"
                     android:textSize="12sp" />
 
                 <TextView
@@ -97,7 +97,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="3dp"
                     android:text="@string/guapai"
-                    android:textColor="#9A9A9A"
+                    android:textColor="@color/colorGraylighter"
                     android:textSize="12sp" />
 
                 <TextView
@@ -141,8 +141,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="3dp"
                 android:text="@string/record_tracking"
-                android:textColor="#9A9A9A"
-                android:textSize="12sp" />
+                android:textColor="@color/colorGraylighter"
+                android:textSize="@dimen/small_ts" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -177,8 +177,8 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="3dp"
                     android:text="@string/statistical_analysis"
-                    android:textColor="#9A9A9A"
-                    android:textSize="12sp" />
+                    android:textColor="@color/colorGraylighter"
+                    android:textSize="@dimen/small_ts" />
 
                 <TextView
                     android:id="@+id/unread_msg_number"
@@ -190,7 +190,7 @@
                     android:gravity="center"
                     android:text="7"
                     android:textColor="@android:color/white"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/small_ts"
                     android:visibility="gone" />
             </RelativeLayout>
         </RelativeLayout>
@@ -221,8 +221,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="3dp"
                 android:text="@string/me"
-                android:textColor="#9A9A9A"
-                android:textSize="12sp" />
+                android:textColor="@color/colorGraylighter"
+                android:textSize="@dimen/small_ts" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

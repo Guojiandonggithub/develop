@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -21,6 +22,7 @@ import com.example.administrator.riskprojects.fragment.Fragment_Dicover;
 import com.example.administrator.riskprojects.fragment.Fragment_Friends;
 import com.example.administrator.riskprojects.fragment.Fragment_Msg;
 import com.example.administrator.riskprojects.fragment.Fragment_Profile;
+import com.example.administrator.riskprojects.fragment.Fragment_mine;
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.Utils;
 
@@ -37,6 +39,7 @@ public class MainActivity extends FragmentActivity {
     private Fragment_Friends contactlistfragment;
     private Fragment_Profile profilefragment;
     private Fragment_Dicover findfragment;
+    private Fragment_mine minefragment;
     private ImageView[] imagebuttons;
     private TextView[] textviews;
     private String connectMsg = "aa";
@@ -57,8 +60,9 @@ public class MainActivity extends FragmentActivity {
         contactlistfragment = new Fragment_Friends();
         findfragment = new Fragment_Dicover();
         profilefragment = new Fragment_Profile();
+        minefragment = new Fragment_mine();
         fragments = new Fragment[]{homefragment, contactlistfragment,
-                findfragment, profilefragment, homefragment};
+                findfragment, profilefragment, minefragment};
         imagebuttons = new ImageView[5];
         imagebuttons[0] = (ImageView) findViewById(R.id.ib_contact_list);
         imagebuttons[1] = (ImageView) findViewById(R.id.ib_find);
@@ -73,21 +77,22 @@ public class MainActivity extends FragmentActivity {
         textviews[2] = (TextView) findViewById(R.id.tv_analysis);
         textviews[3] = (TextView) findViewById(R.id.tv_weixin);
         textviews[4] = (TextView) findViewById(R.id.tv_profile);
-        textviews[0].setTextColor(0xFF45C01A);
+        textviews[0].setTextColor(getResources().getColor(R.color.blue1));
         // 添加显示第一个fragment
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, homefragment)
                 .add(R.id.fragment_container, contactlistfragment)
                 .add(R.id.fragment_container, profilefragment)
                 .add(R.id.fragment_container, findfragment)
+                .add(R.id.fragment_container, minefragment)
                 .hide(contactlistfragment).hide(profilefragment)
-                .hide(findfragment).show(homefragment).commit();
+                .hide(findfragment).hide(minefragment).show(homefragment).commit();
     }
 
     public void onTabClicked(View view) {
         //img_right.setVisibility(View.GONE);
         switch (view.getId()) {
-            case R.id.re_weixin:
+            case R.id.re_contact_list:
                 //img_right.setVisibility(View.VISIBLE);
                 index = 0;
                 if (homefragment != null) {
@@ -96,18 +101,24 @@ public class MainActivity extends FragmentActivity {
                 txt_title.setText(R.string.home);
                 //img_right.setImageResource(R.drawable.icon_add);
                 break;
-            case R.id.re_contact_list:
+            case R.id.re_find:
                 index = 1;
                 txt_title.setText(R.string.guapai);
                 //img_right.setVisibility(View.VISIBLE);
                 //img_right.setImageResource(R.drawable.icon_titleaddfriend);
                 break;
-            case R.id.re_find:
+            case R.id.analysis:
                 index = 2;
                 txt_title.setText(R.string.record_tracking);
+                //img_right.setVisibility(View.VISIBLE);
+                //img_right.setImageResource(R.drawable.icon_titleaddfriend);
+                break;
+            case R.id.re_weixin:
+                index = 3;
+                txt_title.setText(R.string.statistical_analysis);
                 break;
             case R.id.re_profile:
-                index = 3;
+                index = 4;
                 txt_title.setText(R.string.me);
                 break;
         }
@@ -123,8 +134,8 @@ public class MainActivity extends FragmentActivity {
         imagebuttons[currentTabIndex].setSelected(false);
         // 把当前tab设为选中状态
         imagebuttons[index].setSelected(true);
-        textviews[currentTabIndex].setTextColor(0xFF999999);
-        textviews[index].setTextColor(0xFF45C01A);
+        textviews[currentTabIndex].setTextColor(getResources().getColor(R.color.colorGraylighter));
+        textviews[index].setTextColor(getResources().getColor(R.color.blue1));
         currentTabIndex = index;
     }
 

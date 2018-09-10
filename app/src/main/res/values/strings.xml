@@ -7,4 +7,7 @@
     <string name="hiddenredord">隐患记录管理</string>
     <string name="moments">朋友圈</string>
     <string name="me">我的</string>
+    <string name="change_password">修改密码</string>
+    <string name="version">版本</string>
+    <string name="log_out">退出登录</string>
 </resources>

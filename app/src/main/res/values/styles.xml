@@ -12,7 +12,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/blue1</item>
     </style>
 
     <style name="TxtTitle" parent="@style/TextAppearance.AppCompat.Notification.Info.Media">
