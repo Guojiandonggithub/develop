@@ -1,41 +1,27 @@
 package com.example.administrator.riskprojects.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.dialog.WarnTipDialog;
 import com.example.administrator.riskprojects.fragment.Fragment_Dicover;
 import com.example.administrator.riskprojects.fragment.Fragment_Friends;
-import com.example.administrator.riskprojects.fragment.Fragment_Msg;
+import com.example.administrator.riskprojects.fragment.Fragment_Home;
 import com.example.administrator.riskprojects.fragment.Fragment_Profile;
 import com.example.administrator.riskprojects.fragment.Fragment_mine;
-import com.example.administrator.riskprojects.tools.Constants;
-import com.example.administrator.riskprojects.tools.Utils;
-
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends FragmentActivity {
     private TextView txt_title;
     private WarnTipDialog Tipdialog;
     protected static final String TAG = "MainActivity";
     private Fragment[] fragments;
-    public Fragment_Msg homefragment;
+    public Fragment_Home homefragment;
     private Fragment_Friends contactlistfragment;
     private Fragment_Profile profilefragment;
     private Fragment_Dicover findfragment;
@@ -56,7 +42,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void initTabView() {
-        homefragment = new Fragment_Msg();
+        homefragment = new Fragment_Home();
         contactlistfragment = new Fragment_Friends();
         findfragment = new Fragment_Dicover();
         profilefragment = new Fragment_Profile();

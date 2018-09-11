@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="elevation_basic" >0.5dp</dimen>
     <dimen name="large_ts" >18sp</dimen>
     <dimen name="middle_ts" >16sp</dimen>
     <dimen name="normal_ts" >14sp</dimen>

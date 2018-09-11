@@ -10,4 +10,13 @@
     <string name="change_password">修改密码</string>
     <string name="version">版本</string>
     <string name="log_out">退出登录</string>
+    <string name="monthly_hidden_statistics">当月隐患统计</string>
+    <string name="the_hidden_danger_that_already_eliminated_recently">• 近期已消号的隐患 •</string>
+    <string name="anticipated_pitfalls">• 愈期的隐患 •</string>
+    <string name="unchange">• 未整改 •</string>
+    <string name="for_acceptance">• 待验收 •</string>
+    <string name="hidden_danger_statistics_of_each_unit">各单位隐患统计</string>
+    <string name="hidden_units">隐患单位</string>
+    <string name="processed">已处理</string>
+    <string name="untreated">未处理</string>
 </resources>
