@@ -19,4 +19,9 @@
     <string name="hidden_units">隐患单位</string>
     <string name="processed">已处理</string>
     <string name="untreated">未处理</string>
+    <string name="more">更多</string>
+    <string name="detail">详情</string>
+    <string name="time_or_order">时间/班次</string>
+    <string name="hidden_content">隐患内容</string>
+    <string name="hidden_danger_belongs">隐患归属</string>
 </resources>

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.dialog.WarnTipDialog;
 import com.example.administrator.riskprojects.fragment.Fragment_Dicover;
-import com.example.administrator.riskprojects.fragment.Fragment_Friends;
+import com.example.administrator.riskprojects.fragment.Fragment_Supervision;
 import com.example.administrator.riskprojects.fragment.Fragment_Home;
 import com.example.administrator.riskprojects.fragment.Fragment_Profile;
 import com.example.administrator.riskprojects.fragment.Fragment_mine;
@@ -22,7 +22,7 @@ public class MainActivity extends FragmentActivity {
     protected static final String TAG = "MainActivity";
     private Fragment[] fragments;
     public Fragment_Home homefragment;
-    private Fragment_Friends contactlistfragment;
+    private Fragment_Supervision supervisionfragment;
     private Fragment_Profile profilefragment;
     private Fragment_Dicover findfragment;
     private Fragment_mine minefragment;
@@ -43,11 +43,11 @@ public class MainActivity extends FragmentActivity {
 
     private void initTabView() {
         homefragment = new Fragment_Home();
-        contactlistfragment = new Fragment_Friends();
+        supervisionfragment = new Fragment_Supervision();
         findfragment = new Fragment_Dicover();
         profilefragment = new Fragment_Profile();
         minefragment = new Fragment_mine();
-        fragments = new Fragment[]{homefragment, contactlistfragment,
+        fragments = new Fragment[]{homefragment, supervisionfragment,
                 findfragment, profilefragment, minefragment};
         imagebuttons = new ImageView[5];
         imagebuttons[0] = (ImageView) findViewById(R.id.ib_contact_list);
@@ -67,11 +67,11 @@ public class MainActivity extends FragmentActivity {
         // 添加显示第一个fragment
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, homefragment)
-                .add(R.id.fragment_container, contactlistfragment)
+                .add(R.id.fragment_container, supervisionfragment)
                 .add(R.id.fragment_container, profilefragment)
                 .add(R.id.fragment_container, findfragment)
                 .add(R.id.fragment_container, minefragment)
-                .hide(contactlistfragment).hide(profilefragment)
+                .hide(supervisionfragment).hide(profilefragment)
                 .hide(findfragment).hide(minefragment).show(homefragment).commit();
     }
 
