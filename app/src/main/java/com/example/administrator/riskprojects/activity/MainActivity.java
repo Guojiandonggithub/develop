@@ -13,17 +13,19 @@ import com.example.administrator.riskprojects.dialog.WarnTipDialog;
 import com.example.administrator.riskprojects.fragment.Fragment_Dicover;
 import com.example.administrator.riskprojects.fragment.Fragment_Supervision;
 import com.example.administrator.riskprojects.fragment.Fragment_Home;
-import com.example.administrator.riskprojects.fragment.Fragment_Profile;
+import com.example.administrator.riskprojects.fragment.Fragment_Record_Manage;
 import com.example.administrator.riskprojects.fragment.Fragment_mine;
 
 public class MainActivity extends FragmentActivity {
     private TextView txt_title;
+    private ImageView img_left;
+    private ImageView img_right;
     private WarnTipDialog Tipdialog;
     protected static final String TAG = "MainActivity";
     private Fragment[] fragments;
     public Fragment_Home homefragment;
     private Fragment_Supervision supervisionfragment;
-    private Fragment_Profile profilefragment;
+    private Fragment_Record_Manage manageFragment;
     private Fragment_Dicover findfragment;
     private Fragment_mine minefragment;
     private ImageView[] imagebuttons;
@@ -45,10 +47,10 @@ public class MainActivity extends FragmentActivity {
         homefragment = new Fragment_Home();
         supervisionfragment = new Fragment_Supervision();
         findfragment = new Fragment_Dicover();
-        profilefragment = new Fragment_Profile();
+        manageFragment = new Fragment_Record_Manage();
         minefragment = new Fragment_mine();
         fragments = new Fragment[]{homefragment, supervisionfragment,
-                findfragment, profilefragment, minefragment};
+                manageFragment, findfragment,  minefragment};
         imagebuttons = new ImageView[5];
         imagebuttons[0] = (ImageView) findViewById(R.id.ib_contact_list);
         imagebuttons[1] = (ImageView) findViewById(R.id.ib_find);
@@ -68,10 +70,10 @@ public class MainActivity extends FragmentActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, homefragment)
                 .add(R.id.fragment_container, supervisionfragment)
-                .add(R.id.fragment_container, profilefragment)
+                .add(R.id.fragment_container, manageFragment)
                 .add(R.id.fragment_container, findfragment)
                 .add(R.id.fragment_container, minefragment)
-                .hide(supervisionfragment).hide(profilefragment)
+                .hide(supervisionfragment).hide(manageFragment)
                 .hide(findfragment).hide(minefragment).show(homefragment).commit();
     }
 
@@ -85,27 +87,32 @@ public class MainActivity extends FragmentActivity {
                     homefragment.refresh();
                 }
                 txt_title.setText(R.string.home);
-                //img_right.setImageResource(R.drawable.icon_add);
+                img_left.setVisibility(View.GONE);
+                img_right.setVisibility(View.GONE);
                 break;
             case R.id.re_find:
                 index = 1;
                 txt_title.setText(R.string.guapai);
-                //img_right.setVisibility(View.VISIBLE);
-                //img_right.setImageResource(R.drawable.icon_titleaddfriend);
+                img_left.setVisibility(View.GONE);
+                img_right.setVisibility(View.GONE);
                 break;
             case R.id.analysis:
                 index = 2;
                 txt_title.setText(R.string.record_tracking);
-                //img_right.setVisibility(View.VISIBLE);
-                //img_right.setImageResource(R.drawable.icon_titleaddfriend);
+                img_left.setVisibility(View.VISIBLE);
+                img_right.setVisibility(View.VISIBLE);
                 break;
             case R.id.re_weixin:
                 index = 3;
                 txt_title.setText(R.string.statistical_analysis);
+                img_left.setVisibility(View.VISIBLE);
+                img_right.setVisibility(View.VISIBLE);
                 break;
             case R.id.re_profile:
                 index = 4;
                 txt_title.setText(R.string.me);
+                img_left.setVisibility(View.GONE);
+                img_right.setVisibility(View.GONE);
                 break;
         }
         if (currentTabIndex != index) {
@@ -115,6 +122,8 @@ public class MainActivity extends FragmentActivity {
             if (!fragments[index].isAdded()) {
                 trx.add(R.id.fragment_container, fragments[index]);
             }
+            System.out.println("index:"+Integer.toString(index));
+            System.out.println("getSimpleName:"+fragments[index].getClass().getSimpleName());
             trx.show(fragments[index]).commit();
         }
         imagebuttons[currentTabIndex].setSelected(false);
@@ -124,6 +133,7 @@ public class MainActivity extends FragmentActivity {
         textviews[index].setTextColor(getResources().getColor(R.color.blue1));
         currentTabIndex = index;
     }
+
 
     private void initPopWindow() {
 
@@ -140,7 +150,30 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void findViewById() {
-        txt_title = (TextView) findViewById(R.id.txt_title);
+        txt_title = findViewById(R.id.txt_title);
+        txt_title.setText(R.string.home);
+        img_left = findViewById(R.id.img_left);
+        img_right = findViewById(R.id.img_right);
+        img_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (index == 2) {
+
+                } else if (index == 3) {
+
+                }
+            }
+        });
+        img_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (index == 2) {
+                    manageFragment.ShowMenuDialog();
+                } else if (index == 3) {
+
+                }
+            }
+        });
         //img_right = (ImageView) findViewById(R.id.img_right);
     }
 

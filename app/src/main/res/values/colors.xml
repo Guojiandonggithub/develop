@@ -6,6 +6,7 @@
     <color name="blue">#ff3300ff</color>
     <color name="text_color">#ffffff00</color>
     <color name="black">#ff000000</color>
+    <color name="halfBlack">#80000000</color>
     <!-- 白色 -->
     <color name="white">#ffffff</color>
     <color name="black1">#7A7E83</color>

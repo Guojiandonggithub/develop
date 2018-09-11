@@ -24,4 +24,15 @@
     <string name="time_or_order">时间/班次</string>
     <string name="hidden_content">隐患内容</string>
     <string name="hidden_danger_belongs">隐患归属</string>
+    <string name="hidden_danger_details_management">隐患详情管理</string>
+    <string name="hidden_danger_management">隐患下达管理</string>
+    <string name="hidden_danger_rectification_management">隐患整改管理</string>
+    <string name="hidden_danger_tracking_management">隐患跟踪管理</string>
+    <string name="risk_overdue_management">隐患逾期管理</string>
+    <string name="hidden_danger_review_management">隐患复查管理</string>
+    <string name="area">区域</string>
+    <string name="specialty">专业</string>
+    <string name="category">类别</string>
+    <string name="supervise">督办</string>
+    <string name="check">验收</string>
 </resources>

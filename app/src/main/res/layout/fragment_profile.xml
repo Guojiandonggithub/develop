@@ -1,209 +1,216 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	android:gravity="center_horizontal"
-	android:orientation="vertical"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	xmlns:android="http://schemas.android.com/apk/res/android">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
-	<TextView
-		android:id="@+id/txt_setting"
-		style="@style/TxtTitle"
-		android:textSize="16sp"
-		android:gravity="center_vertical"
-		android:background="@drawable/setting_item_selector"
-		android:layout_width="fill_parent"
-		android:layout_height="50dp"
-		android:paddingLeft="16dp"
-		android:paddingRight="10dp"
-		android:layout_marginTop="20dp"
-		android:drawablePadding="10dp"
-		android:drawableLeft="@drawable/v2"
-		android:drawableRight="@drawable/right"
-		android:text="@string/me" />
-	<!--<ScrollView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:scrollbars="none">
-	<LinearLayout
-		android:orientation="vertical"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content">
- <View
-				android:background="@color/black1"
-				android:layout_width="fill_parent"
-				android:layout_height="1.0dip" />
-	    <RelativeLayout
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:paddingTop="5dp"
-				android:paddingBottom="5dp"
-				android:id="@+id/view_user"
-				android:layout_marginTop="10dp"
-			android:background="@drawable/setting_item_selector">
-				<ImageView
-					android:id="@+id/head"
-					android:layout_marginRight="10dp"
-					android:layout_marginLeft="10dp"
-					android:layout_width="80.0dip"
-					android:layout_height="80.0dip"
-					android:src="@drawable/v2" />
-				<TextView
-					android:textSize="18.0dip"
-					android:id="@+id/tvname"
-					android:layout_marginTop="20dp"
-					android:layout_toRightOf="@+id/head"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="菲儿" />
-					<TextView
-					android:id="@+id/tvmsg"
-					android:textSize="14.0dip"
-					android:layout_marginTop="10dp"
-					android:layout_below="@+id/tvname"
-					android:layout_toRightOf="@+id/head" 
-					android:text="微信号：dada20150625" />
-					
-					<ImageView
-					android:layout_marginRight="15dp"
-					android:layout_alignParentRight="true"
-					android:layout_centerVertical="true"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:src="@drawable/right" />
-					
-					  <ImageView
-                    android:id="@+id/iv_sex"
-                    android:layout_toRightOf="@+id/tvname"
-                    android:layout_width="20dp"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/bar_color">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:clipToPadding="false"
+            android:paddingTop="32dp"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_listing_supervision" />
+
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/ll_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/halfBlack"
+        android:gravity="right"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="6dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="19dp"
+            android:src="@drawable/ic_arrow_drop_up_whiute_12dp" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="164dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="6.67dp"
+            android:background="@drawable/shape_rectangle_rounded"
+            android:orientation="vertical"
+            android:paddingTop="19dp"
+            android:paddingBottom="19dp">
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/ll_manage_detail"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="22dp">
+
+                <ImageView
+                    android:layout_width="19.33dp"
                     android:layout_height="20dp"
-					android:layout_marginTop="22dp"
-                    android:layout_marginLeft="5dp"
-                    android:src="@drawable/v2" />
-			</RelativeLayout>
-			<View
-				android:background="@color/black1"
-				android:layout_width="fill_parent"
-				android:layout_height="1.0dip" />
-	    
-		 
-		 
-		
-		<TextView
-					android:id="@+id/txt_album"
-					style="@style/TxtTitle"
-					android:textSize="16sp"
-					android:gravity="center_vertical"
-					android:background="@drawable/setting_item_selector"
-					android:layout_width="fill_parent"
-					android:layout_height="50dp"
-					android:paddingLeft="16dp"
-					android:paddingRight="16dp"
-					android:layout_marginTop="20dp"
-					android:drawablePadding="10dp"
-					android:drawableLeft="@drawable/v2"
-					android:drawableRight="@drawable/right"
-					android:text="@string/me" />
-		<View
-			android:background="@color/black1"
-			android:layout_width="fill_parent"
-			android:layout_height="1.0dip" />
-		<TextView
-					android:id="@+id/txt_collect"
-					style="@style/TxtTitle"
-					android:textSize="16sp"
-					android:gravity="center_vertical"
-					android:background="@drawable/setting_item_selector"
-					android:layout_width="fill_parent"
-					android:layout_height="50dp"
-					android:paddingLeft="16dp"
-					android:paddingRight="16dp"
-					android:drawablePadding="10dp"
-					android:drawableLeft="@drawable/v2"
-					android:drawableRight="@drawable/right"
-					android:text="@string/me" />
-		<View
-			android:background="@color/black1"
-			android:layout_width="fill_parent"
-			android:layout_height="1.0dip" />
-		
-		<TextView
-					android:id="@+id/txt_money"
-					style="@style/TxtTitle"
-					android:textSize="16sp"
-					android:gravity="center_vertical"
-					android:background="@drawable/setting_item_selector"
-					android:layout_width="fill_parent"
-					android:layout_height="50dp"
-					android:paddingLeft="16dp"
-					android:paddingRight="16dp"
-					android:drawablePadding="10dp"
-					android:drawableLeft="@drawable/v2"
-					android:drawableRight="@drawable/right"
-					android:text="@string/me" />
-		<View
-			android:background="@color/black1"
-			android:layout_width="fill_parent"
-			android:layout_height="1.0dip" />
-		<TextView
-					android:id="@+id/txt_card"
-					style="@style/TxtTitle"
-					android:textSize="16sp"
-					android:gravity="center_vertical"
-					android:background="@drawable/setting_item_selector"
-					android:layout_width="fill_parent"
-					android:layout_height="50dp"
-					android:paddingLeft="16dp"
-					android:paddingRight="16dp"
-					android:drawablePadding="10dp"
-					android:drawableLeft="@drawable/v2"
-					android:drawableRight="@drawable/right"
-					android:text="@string/me" />
-		<View
-			android:background="@color/black1"
-			android:layout_width="fill_parent"
-			android:layout_height="1.0dip" />
-		
-		
-		<TextView
-					android:id="@+id/txt_smail"
-					style="@style/TxtTitle"
-					android:textSize="16sp"
-					android:gravity="center_vertical"
-					android:background="@drawable/setting_item_selector"
-					android:layout_width="fill_parent"
-					android:layout_height="50dp"
-					android:paddingLeft="16dp"
-					android:paddingRight="16dp"
-					android:layout_marginTop="20dp"
-					android:drawablePadding="10dp"
-					android:drawableLeft="@drawable/v2"
-					android:drawableRight="@drawable/right"
-					android:text="@string/me" />
-		<View
-			android:background="@color/black1"
-			android:layout_width="fill_parent"
-			android:layout_height="1.0dip" />
-		 
-		<TextView
-					android:id="@+id/txt_setting"
-					style="@style/TxtTitle"
-					android:textSize="16sp"
-					android:gravity="center_vertical"
-					android:background="@drawable/setting_item_selector"
-					android:layout_width="fill_parent"
-					android:layout_height="50dp"
-					android:paddingLeft="16dp"
-					android:paddingRight="10dp"
-					android:layout_marginTop="20dp"
-					android:drawablePadding="10dp"
-					android:drawableLeft="@drawable/v2"
-					android:drawableRight="@drawable/right"
-					android:text="@string/me" />
-		<View
-				android:background="@color/black1"
-				android:layout_width="fill_parent"
-				android:layout_height="1.0dip" />
-	</LinearLayout>
-	</ScrollView>-->
-</LinearLayout>
+                    android:adjustViewBounds="true"
+                    android:src="@mipmap/ic_manage_detail" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:text="@string/hidden_danger_details_management"
+                    android:textColor="@color/blue1"
+                    android:textSize="@dimen/normal_ts" />
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/ll_manage_release"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="22dp">
+
+                <ImageView
+                    android:layout_width="19.33dp"
+                    android:layout_height="20dp"
+                    android:adjustViewBounds="true"
+                    android:src="@mipmap/ic_manage_release" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:text="@string/hidden_danger_management"
+                    android:textColor="@color/blue1"
+                    android:textSize="@dimen/normal_ts" />
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/ll_manage_rectification"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="22dp">
+
+                <ImageView
+                    android:layout_width="19.33dp"
+                    android:layout_height="20dp"
+                    android:adjustViewBounds="true"
+                    android:src="@mipmap/ic_manage_rectification" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:text="@string/hidden_danger_rectification_management"
+                    android:textColor="@color/blue1"
+                    android:textSize="@dimen/normal_ts" />
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/ll_manage_tracking"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="22dp">
+
+                <ImageView
+                    android:layout_width="19.33dp"
+                    android:layout_height="20dp"
+                    android:adjustViewBounds="true"
+                    android:src="@mipmap/ic_manage_tracking" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:text="@string/hidden_danger_tracking_management"
+                    android:textColor="@color/blue1"
+                    android:textSize="@dimen/normal_ts" />
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/ll_manage_overdue"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="22dp">
+
+                <ImageView
+                    android:layout_width="19.33dp"
+                    android:layout_height="20dp"
+                    android:adjustViewBounds="true"
+                    android:src="@mipmap/ic_manage_overdue" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:text="@string/risk_overdue_management"
+                    android:textColor="@color/blue1"
+                    android:textSize="@dimen/normal_ts" />
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/ll_manage_review"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="22dp">
+
+                <ImageView
+                    android:layout_width="19.33dp"
+                    android:layout_height="20dp"
+                    android:adjustViewBounds="true"
+                    android:src="@mipmap/ic_manage_review" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:text="@string/hidden_danger_review_management"
+                    android:textColor="@color/blue1"
+                    android:textSize="@dimen/normal_ts" />
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+</FrameLayout>

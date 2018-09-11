@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <include  android:id="@+id/layout_bar" layout="@layout/layout_title"/>
+    <include  android:id="@+id/layout_bar" layout="@layout/layout_main_title"/>
 
     <FrameLayout
         android:id="@+id/fragment_container"
