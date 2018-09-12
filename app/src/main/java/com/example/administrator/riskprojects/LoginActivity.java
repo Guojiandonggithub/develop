@@ -18,7 +18,7 @@ import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+public class LoginActivity extends BaseActivity implements View.OnClickListener{
     protected NetClient netClient;
     protected FlippingLoadingDialog mLoadingDialog;
     private EditText et_username, et_password;

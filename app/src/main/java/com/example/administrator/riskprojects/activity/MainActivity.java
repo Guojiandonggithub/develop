@@ -4,16 +4,17 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.dialog.WarnTipDialog;
-import com.example.administrator.riskprojects.fragment.Fragment_Dicover;
-import com.example.administrator.riskprojects.fragment.Fragment_Supervision;
 import com.example.administrator.riskprojects.fragment.Fragment_Home;
 import com.example.administrator.riskprojects.fragment.Fragment_Record_Manage;
+import com.example.administrator.riskprojects.fragment.Fragment_Statistics;
+import com.example.administrator.riskprojects.fragment.Fragment_Supervision;
 import com.example.administrator.riskprojects.fragment.Fragment_mine;
 
 public class MainActivity extends FragmentActivity {
@@ -26,13 +27,30 @@ public class MainActivity extends FragmentActivity {
     public Fragment_Home homefragment;
     private Fragment_Supervision supervisionfragment;
     private Fragment_Record_Manage manageFragment;
-    private Fragment_Dicover findfragment;
+    private Fragment_Statistics statisticsfragment;
     private Fragment_mine minefragment;
     private ImageView[] imagebuttons;
     private TextView[] textviews;
     private String connectMsg = "aa";
     private int index;
     private int currentTabIndex;// 当前fragment的index
+
+    private LinearLayoutCompat mLlDialog;
+    private LinearLayoutCompat mLlManageDetail;
+    private LinearLayoutCompat mLlManageRelease;
+    private LinearLayoutCompat mLlManageRectification;
+    private LinearLayoutCompat mLlManageTracking;
+    private LinearLayoutCompat mLlManageOverdue;
+    private LinearLayoutCompat mLlManageReview;
+    private View.OnClickListener menuListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            onMenuClicked(v);
+        }
+    };
+    private LinearLayoutCompat mLlManage;
+    private LinearLayoutCompat mLlChart;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,11 +64,11 @@ public class MainActivity extends FragmentActivity {
     private void initTabView() {
         homefragment = new Fragment_Home();
         supervisionfragment = new Fragment_Supervision();
-        findfragment = new Fragment_Dicover();
+        statisticsfragment = new Fragment_Statistics();
         manageFragment = new Fragment_Record_Manage();
         minefragment = new Fragment_mine();
         fragments = new Fragment[]{homefragment, supervisionfragment,
-                manageFragment, findfragment,  minefragment};
+                manageFragment, statisticsfragment, minefragment};
         imagebuttons = new ImageView[5];
         imagebuttons[0] = (ImageView) findViewById(R.id.ib_contact_list);
         imagebuttons[1] = (ImageView) findViewById(R.id.ib_find);
@@ -71,10 +89,10 @@ public class MainActivity extends FragmentActivity {
                 .add(R.id.fragment_container, homefragment)
                 .add(R.id.fragment_container, supervisionfragment)
                 .add(R.id.fragment_container, manageFragment)
-                .add(R.id.fragment_container, findfragment)
+                .add(R.id.fragment_container, statisticsfragment)
                 .add(R.id.fragment_container, minefragment)
                 .hide(supervisionfragment).hide(manageFragment)
-                .hide(findfragment).hide(minefragment).show(homefragment).commit();
+                .hide(statisticsfragment).hide(minefragment).show(homefragment).commit();
     }
 
     public void onTabClicked(View view) {
@@ -122,8 +140,8 @@ public class MainActivity extends FragmentActivity {
             if (!fragments[index].isAdded()) {
                 trx.add(R.id.fragment_container, fragments[index]);
             }
-            System.out.println("index:"+Integer.toString(index));
-            System.out.println("getSimpleName:"+fragments[index].getClass().getSimpleName());
+            System.out.println("index:" + Integer.toString(index));
+            System.out.println("getSimpleName:" + fragments[index].getClass().getSimpleName());
             trx.show(fragments[index]).commit();
         }
         imagebuttons[currentTabIndex].setSelected(false);
@@ -167,14 +185,26 @@ public class MainActivity extends FragmentActivity {
         img_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (index == 2) {
-                    manageFragment.ShowMenuDialog();
-                } else if (index == 3) {
-
+                if (mLlDialog.getVisibility() == View.VISIBLE) {
+                    mLlDialog.setVisibility(View.GONE);
+                } else {
+                    if (index == 2) {
+                        mLlManage.setVisibility(View.VISIBLE);
+                        mLlChart.setVisibility(View.GONE);
+                    } else if (index == 3) {
+                        mLlManage.setVisibility(View.GONE);
+                        mLlChart.setVisibility(View.VISIBLE);
+                    }
+                    mLlDialog.setVisibility(View.VISIBLE);
                 }
+
             }
         });
-        //img_right = (ImageView) findViewById(R.id.img_right);
+
+        mLlDialog = findViewById(R.id.ll_dialog);
+        mLlDialog.setOnClickListener(menuListener);
+        mLlManage = findViewById(R.id.ll_manage);
+        mLlChart = findViewById(R.id.ll_chart);   //img_right = (ImageView) findViewById(R.id.img_right);
     }
 
 	/*private void initVersion() {
@@ -188,4 +218,41 @@ public class MainActivity extends FragmentActivity {
 		}
 	}*/
 
+
+    public void onMenuClicked(View view) {
+        //img_right.setVisibility(View.GONE);
+        switch (view.getId()) {
+            case R.id.ll_manage_detail:
+            case R.id.ll_manage_release:
+            case R.id.ll_manage_rectification:
+            case R.id.ll_manage_tracking:
+            case R.id.ll_manage_overdue:
+            case R.id.ll_manage_review:
+                manageFragment.onRightMenuClicked(view);
+                break;
+            case R.id.ll_chart_01:
+            case R.id.ll_chart_02:
+            case R.id.ll_chart_03:
+            case R.id.ll_chart_04:
+            case R.id.ll_chart_05:
+            case R.id.ll_chart_06:
+            case R.id.ll_chart_07:
+            case R.id.ll_chart_08:
+                statisticsfragment.onRightMenuClicked(view);
+                break;
+            default:
+                break;
+        }
+        mLlDialog.setVisibility(View.GONE);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (mLlDialog.getVisibility() == View.VISIBLE) {
+            mLlDialog.setVisibility(View.GONE);
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

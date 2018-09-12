@@ -23,19 +23,6 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
     private TextView tvname, tv_accout;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
-    private LinearLayoutCompat mLlDialog;
-    private LinearLayoutCompat mLlManageDetail;
-    private LinearLayoutCompat mLlManageRelease;
-    private LinearLayoutCompat mLlManageRectification;
-    private LinearLayoutCompat mLlManageTracking;
-    private LinearLayoutCompat mLlManageOverdue;
-    private LinearLayoutCompat mLlManageReview;
-    private View.OnClickListener menuListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            onMenuClicked(v);
-        }
-    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,19 +44,6 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
     private void initView(View layout) {
         mSwipeRefreshLayout = layout.findViewById(R.id.swipeRefreshLayout);
         mRecyclerView = layout.findViewById(R.id.recyclerView);
-        mLlDialog = layout.findViewById(R.id.ll_dialog);
-        mLlManageDetail = layout.findViewById(R.id.ll_manage_detail);
-        mLlManageRelease = layout.findViewById(R.id.ll_manage_release);
-        mLlManageRectification = layout.findViewById(R.id.ll_manage_rectification);
-        mLlManageTracking = layout.findViewById(R.id.ll_manage_tracking);
-        mLlManageOverdue = layout.findViewById(R.id.ll_manage_overdue);
-        mLlManageReview = layout.findViewById(R.id.ll_manage_review);
-        mLlManageDetail.setOnClickListener(menuListener);
-        mLlManageRelease.setOnClickListener(menuListener);
-        mLlManageRectification.setOnClickListener(menuListener);
-        mLlManageTracking.setOnClickListener(menuListener);
-        mLlManageOverdue.setOnClickListener(menuListener);
-        mLlManageReview.setOnClickListener(menuListener);
 
 
         mSwipeRefreshLayout = layout.findViewById(R.id.swipeRefreshLayout);
@@ -79,45 +53,30 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
-    public void onMenuClicked(View view) {
-        //img_right.setVisibility(View.GONE);
-        switch (view.getId()) {
-            case R.id.ll_manage_detail:
-                //img_right.setVisibility(View.VISIBLE);
-
-                break;
-            case R.id.ll_manage_release:
-
-                break;
-            case R.id.ll_manage_rectification:
-
-                break;
-            case R.id.ll_manage_tracking:
-
-                break;
-            case R.id.ll_manage_overdue:
-
-                break;
-            case R.id.ll_manage_review:
-
-                break;
-        }
-        mLlDialog.setVisibility(View.GONE);
-    }
-
-    public void ShowMenuDialog() {
-        if (mLlDialog.getVisibility() == View.VISIBLE) {
-            mLlDialog.setVisibility(View.GONE);
-        } else {
-            mLlDialog.setVisibility(View.VISIBLE);
-        }
-
-    }
 
 
     @Override
     public void onRefresh() {
         mRecyclerView.getAdapter().notifyDataSetChanged();
         mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    public void onRightMenuClicked(View view) {
+        switch (view.getId()) {
+            case R.id.ll_manage_detail:
+                break;
+            case R.id.ll_manage_release:
+                break;
+            case R.id.ll_manage_rectification:
+                break;
+            case R.id.ll_manage_tracking:
+                break;
+            case R.id.ll_manage_overdue:
+                break;
+            case R.id.ll_manage_review:
+                break;
+            default:
+                break;
+        }
     }
 }

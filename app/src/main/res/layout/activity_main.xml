@@ -1,20 +1,451 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <include  android:id="@+id/layout_bar" layout="@layout/layout_main_title"/>
+    <include
+        android:id="@+id/layout_bar"
+        layout="@layout/layout_main_title" />
 
     <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1" >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/fragment_container"
+                android:layout_width="fill_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1">
+
+            </FrameLayout>
+
+            <include layout="@layout/layout_bottom" />
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/ll_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/halfBlack"
+            android:gravity="right"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="6dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="19dp"
+                android:src="@drawable/ic_arrow_drop_up_whiute_12dp" />
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/ll_manage"
+                android:layout_width="164dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="6.67dp"
+                android:background="@drawable/shape_rectangle_rounded"
+                android:orientation="vertical"
+                android:paddingTop="19dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:paddingBottom="19dp">
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_manage_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="onMenuClicked"
+                    android:orientation="horizontal"
+                    android:paddingLeft="22dp">
+
+                    <ImageView
+                        android:layout_width="19.33dp"
+                        android:layout_height="20dp"
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/ic_manage_detail" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:text="@string/hidden_danger_details_management"
+                        android:textColor="@color/blue1"
+                        android:textSize="@dimen/normal_ts" />
+
+                </android.support.v7.widget.LinearLayoutCompat>
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_manage_release"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:onClick="onMenuClicked"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="22dp">
+
+                    <ImageView
+                        android:layout_width="19.33dp"
+                        android:layout_height="20dp"
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/ic_manage_release" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:text="@string/hidden_danger_management"
+                        android:textColor="@color/blue1"
+                        android:textSize="@dimen/normal_ts" />
+
+                </android.support.v7.widget.LinearLayoutCompat>
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_manage_rectification"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:onClick="onMenuClicked"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="22dp">
+
+                    <ImageView
+                        android:layout_width="19.33dp"
+                        android:layout_height="20dp"
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/ic_manage_rectification" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:text="@string/hidden_danger_rectification_management"
+                        android:textColor="@color/blue1"
+                        android:textSize="@dimen/normal_ts" />
+
+                </android.support.v7.widget.LinearLayoutCompat>
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_manage_tracking"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:onClick="onMenuClicked"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="22dp">
+
+                    <ImageView
+                        android:layout_width="19.33dp"
+                        android:layout_height="20dp"
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/ic_manage_tracking" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:text="@string/hidden_danger_tracking_management"
+                        android:textColor="@color/blue1"
+                        android:textSize="@dimen/normal_ts" />
+
+                </android.support.v7.widget.LinearLayoutCompat>
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_manage_overdue"
+                    android:layout_width="match_parent"
+                    android:onClick="onMenuClicked"
+                    android:layout_height="32dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="22dp">
+
+                    <ImageView
+                        android:layout_width="19.33dp"
+                        android:layout_height="20dp"
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/ic_manage_overdue" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:text="@string/risk_overdue_management"
+                        android:textColor="@color/blue1"
+                        android:textSize="@dimen/normal_ts" />
+
+                </android.support.v7.widget.LinearLayoutCompat>
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_manage_review"
+                    android:layout_width="match_parent"
+                    android:onClick="onMenuClicked"
+                    android:layout_height="32dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="22dp">
+
+                    <ImageView
+                        android:layout_width="19.33dp"
+                        android:layout_height="20dp"
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/ic_manage_review" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:text="@string/hidden_danger_review_management"
+                        android:textColor="@color/blue1"
+                        android:textSize="@dimen/normal_ts" />
+
+                </android.support.v7.widget.LinearLayoutCompat>
+
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/ll_chart"
+                android:layout_width="223dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="6.67dp"
+                android:background="@drawable/shape_rectangle_rounded"
+                android:visibility="gone"
+                tools:visibility="visible"  android:orientation="vertical"
+                android:paddingTop="19dp"
+                android:paddingBottom="19dp">
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_chart_01"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="onMenuClicked"
+                    android:orientation="horizontal"
+                    android:paddingLeft="22dp">
+
+                    <ImageView
+                        android:layout_width="19.33dp"
+                        android:layout_height="20dp"
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/ic_chart_menu_01" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:text="@string/hidden_danger_statistics_of_each_unit"
+                        android:textColor="@color/blue1"
+                        android:textSize="@dimen/normal_ts" />
+
+                </android.support.v7.widget.LinearLayoutCompat>
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_chart_02"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="onMenuClicked"
+                    android:orientation="horizontal"
+                    android:paddingLeft="22dp">
+
+                    <ImageView
+                        android:layout_width="19.33dp"
+                        android:layout_height="20dp"
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/ic_chart_menu_02" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:text="@string/summary_of_hazards"
+                        android:textColor="@color/blue1"
+                        android:textSize="@dimen/normal_ts" />
+
+                </android.support.v7.widget.LinearLayoutCompat>
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_chart_03"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="onMenuClicked"
+                    android:orientation="horizontal"
+                    android:paddingLeft="22dp">
+
+                    <ImageView
+                        android:layout_width="19.33dp"
+                        android:layout_height="20dp"
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/ic_chart_menu_03" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:text="@string/hazard_query_statistics"
+                        android:textColor="@color/blue1"
+                        android:textSize="@dimen/normal_ts" />
+
+                </android.support.v7.widget.LinearLayoutCompat>
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_chart_04"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="onMenuClicked"
+                    android:orientation="horizontal"
+                    android:paddingLeft="22dp">
+
+                    <ImageView
+                        android:layout_width="19.33dp"
+                        android:layout_height="20dp"
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/ic_chart_menu_04" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:text="@string/the_hidden_danger_record_has_been_deleted"
+                        android:textColor="@color/blue1"
+                        android:textSize="@dimen/normal_ts" />
+
+                </android.support.v7.widget.LinearLayoutCompat>
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_chart_05"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="onMenuClicked"
+                    android:orientation="horizontal"
+                    android:paddingLeft="22dp">
+
+                    <ImageView
+                        android:layout_width="19.33dp"
+                        android:layout_height="20dp"
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/ic_chart_menu_05" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:text="@string/duplicate_hazard_record"
+                        android:textColor="@color/blue1"
+                        android:textSize="@dimen/normal_ts" />
+
+                </android.support.v7.widget.LinearLayoutCompat>
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_chart_06"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="onMenuClicked"
+                    android:orientation="horizontal"
+                    android:paddingLeft="22dp">
+
+                    <ImageView
+                        android:layout_width="19.33dp"
+                        android:layout_height="20dp"
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/ic_chart_menu_06" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:text="@string/chart_analysis_of_hazard_handling_unit"
+                        android:textColor="@color/blue1"
+                        android:textSize="@dimen/normal_ts" />
+
+                </android.support.v7.widget.LinearLayoutCompat>
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_chart_07"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="onMenuClicked"
+                    android:orientation="horizontal"
+                    android:paddingLeft="22dp">
+
+                    <ImageView
+                        android:layout_width="19.33dp"
+                        android:layout_height="20dp"
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/ic_chart_menu_07" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:text="@string/chart_analysis_of_hazard_handling"
+                        android:textColor="@color/blue1"
+                        android:textSize="@dimen/normal_ts" />
+
+                </android.support.v7.widget.LinearLayoutCompat>
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_chart_08"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="onMenuClicked"
+                    android:orientation="horizontal"
+                    android:paddingLeft="22dp">
+
+                    <ImageView
+                        android:layout_width="19.33dp"
+                        android:layout_height="20dp"
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/ic_chart_menu_08" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:text="@string/chart_analysis_of_hazard_year"
+                        android:textColor="@color/blue1"
+                        android:textSize="@dimen/normal_ts" />
+
+                </android.support.v7.widget.LinearLayoutCompat>
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+        </android.support.v7.widget.LinearLayoutCompat>
 
     </FrameLayout>
-
-    <include layout="@layout/layout_bottom"/>
-
 </LinearLayout>

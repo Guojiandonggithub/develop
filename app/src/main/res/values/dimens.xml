@@ -5,4 +5,5 @@
     <dimen name="middle_ts" >16sp</dimen>
     <dimen name="normal_ts" >14sp</dimen>
     <dimen name="small_ts" >12sp</dimen>
+    <dimen name="tiny_ts" >10sp</dimen>
 </resources>

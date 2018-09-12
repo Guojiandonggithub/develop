@@ -15,7 +15,6 @@
     <string name="anticipated_pitfalls">• 愈期的隐患 •</string>
     <string name="unchange">• 未整改 •</string>
     <string name="for_acceptance">• 待验收 •</string>
-    <string name="hidden_danger_statistics_of_each_unit">各单位隐患统计</string>
     <string name="hidden_units">隐患单位</string>
     <string name="processed">已处理</string>
     <string name="untreated">未处理</string>
@@ -35,4 +34,17 @@
     <string name="category">类别</string>
     <string name="supervise">督办</string>
     <string name="check">验收</string>
+    <string name="table_of_hidden_danger_processing_statistics">隐患处理情况图表统计图</string>
+    <string name="hidden_danger_handling_icon_statistics">隐患处理图标统计</string>
+
+    <string name="hidden_danger_statistics_of_each_unit">各单位隐患统计</string>
+    <string name="summary_of_hazards">隐患汇总表</string>
+    <string name="hazard_query_statistics">隐患查询统计</string>
+    <string name="the_hidden_danger_record_has_been_deleted">已删除隐患记录</string>
+    <string name="duplicate_hazard_record">重复隐患记录</string>
+    <string name="chart_analysis_of_hazard_handling_unit">隐患处理单位图表分析</string>
+    <string name="chart_analysis_of_hazard_handling">隐患处理图表分析</string>
+    <string name="chart_analysis_of_hazard_year">隐患年度图表分析</string>
+
+
 </resources>
