@@ -45,6 +45,23 @@
     <string name="chart_analysis_of_hazard_handling_unit">隐患处理单位图表分析</string>
     <string name="chart_analysis_of_hazard_handling">隐患处理图表分析</string>
     <string name="chart_analysis_of_hazard_year">隐患年度图表分析</string>
+    <string name="finish_time">完成时间</string>
+    <string name="department">部门</string>
+    <string name="headquarters">队组</string>
+    <string name="principal">负责人</string>
+    <string name="measure">措施</string>
+    <string name="capital">资金</string>
+    <string name="the_rectification_plan">整\n改\n计\n划</string>
+    <string name="acceptance_of_the_situation">验\n收\n情\n况</string>
+    <string name="to_carry_out_the_people">落实人</string>
+    <string name="acceptance_of_the_people">验收人</string>
+    <string name="acceptance_of_the_results">验收结果</string>
+    <string name="check_space">验\t\t收</string>
+    <string name="five_set">五\t\t定</string>
+    <string name="re_release">重新下达</string>
+    <string name="rectification">整\t\t改</string>
+    <string name="the_number_of_processing">处理人数</string>
+    <string name="the_rectification_results">整改结果</string>
 
 
 </resources>

@@ -116,7 +116,7 @@ public class MainActivity extends FragmentActivity {
                 break;
             case R.id.analysis:
                 index = 2;
-                txt_title.setText(R.string.record_tracking);
+                txt_title.setText(manageFragment.getTitle());
                 img_left.setVisibility(View.VISIBLE);
                 img_right.setVisibility(View.VISIBLE);
                 break;
@@ -229,6 +229,7 @@ public class MainActivity extends FragmentActivity {
             case R.id.ll_manage_overdue:
             case R.id.ll_manage_review:
                 manageFragment.onRightMenuClicked(view);
+                txt_title.setText(manageFragment.getTitle());
                 break;
             case R.id.ll_chart_01:
             case R.id.ll_chart_02:

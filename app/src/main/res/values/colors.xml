@@ -20,5 +20,7 @@
 
     <color name="windows_color">#F5F5F5</color>
     <color name="popbg_color">#49484A</color>
+    <color name="color_e1">#E1E1E1</color>
+    <color name="color_fa">#FAFAFA</color>
 
 </resources>

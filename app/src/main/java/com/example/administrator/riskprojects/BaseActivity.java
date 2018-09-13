@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-abstract class BaseActivity extends FragmentActivity {
+public abstract class BaseActivity extends FragmentActivity {
     // 空白处隐藏软键盘--开始--------------------------------
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -64,5 +64,10 @@ abstract class BaseActivity extends FragmentActivity {
             im.hideSoftInputFromWindow(token,
                     InputMethodManager.HIDE_NOT_ALWAYS);
         }
+    }
+
+
+    public void onBack(View view) {
+        onBackPressed();
     }
 }
