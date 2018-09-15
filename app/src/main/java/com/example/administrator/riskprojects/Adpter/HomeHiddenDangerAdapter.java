@@ -17,6 +17,7 @@ public class HomeHiddenDangerAdapter extends RecyclerView.Adapter {
     private static final String TAG = "HomeHiddenDangerAdapter";
     List<HomeHiddenRecord> recordList;
     private boolean isShowMoreButton = true;
+    private int needShowMoreButtonNum = 3;
 
 
     public HomeHiddenDangerAdapter() {
@@ -55,7 +56,7 @@ public class HomeHiddenDangerAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     isShowMoreButton = false;
-                    notifyItemRangeChanged(4, recordList.size() - 3);
+                    notifyItemRangeChanged(needShowMoreButtonNum+1, recordList.size() - needShowMoreButtonNum);
                 }
             });
         }
@@ -63,7 +64,7 @@ public class HomeHiddenDangerAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return recordList.size() > 3 && isShowMoreButton ? 4 : recordList.size();
+        return recordList.size() > needShowMoreButtonNum && isShowMoreButton ? needShowMoreButtonNum+1 : recordList.size();
     }
 
 
@@ -94,7 +95,7 @@ public class HomeHiddenDangerAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (position != 0 && (isShowMoreButton && recordList.size() > 3 && position > 2)) {
+        if (position != 0 && (isShowMoreButton && recordList.size() > needShowMoreButtonNum && position > needShowMoreButtonNum-1)) {
             return Constants.TYPE_FOOTER;
         } else {
             return Constants.TYPE_ITEM;
