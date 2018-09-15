@@ -13,8 +13,6 @@ import com.example.administrator.riskprojects.R;
 public class ListingSupervisionAdapter extends RecyclerView.Adapter {
 
 
-
-
     public ListingSupervisionAdapter() {
     }
 

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.ChangePasswordActivity;
+import com.example.administrator.riskprojects.activity.PersonInfoEditActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -51,6 +52,12 @@ public class Fragment_mine extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ctx, ChangePasswordActivity.class));
+            }
+        });
+        mIvHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ctx, PersonInfoEditActivity.class));
             }
         });
     }

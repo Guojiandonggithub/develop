@@ -21,9 +21,9 @@
         android:layout_height="42dp"
         android:layout_centerVertical="true"
         android:contentDescription="@string/app_name"
+        android:onClick="onBack"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:onClick="onBack"
         android:src="@mipmap/ic_back"
         android:visibility="visible" />
 
@@ -36,12 +36,13 @@
     <ImageView
         android:id="@+id/img_right"
         android:layout_width="40dp"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="8dp"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/icon_phone"
+        android:padding="6.5dp"
+        android:src="@mipmap/person_edit"
         android:visibility="gone" />
 
     <TextView

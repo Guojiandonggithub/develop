@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">riskprojects</string>
     <string name="home">主页</string>
     <string name="guapai">挂牌督办</string>
@@ -46,7 +46,7 @@
     <string name="chart_analysis_of_hazard_handling">隐患处理图表分析</string>
     <string name="chart_analysis_of_hazard_year">隐患年度图表分析</string>
     <string name="finish_time">完成时间</string>
-    <string name="department">部门</string>
+    <string name="department" tools:ignore="ExtraTranslation">部门</string>
     <string name="headquarters">队组</string>
     <string name="principal">负责人</string>
     <string name="measure">措施</string>
@@ -66,6 +66,23 @@
     <string name="the_new_password">新密码</string>
     <string name="confirm_new_password">确认新密码</string>
     <string name="confirm_the_change">确认修改</string>
+    <string name="nickname">昵称</string>
+    <string name="head_portrait">头像</string>
+    <string name="phone_number">手机号</string>
+    <string name="position">职位</string>
+    <string name="person_info">个人信息</string>
+    <string name="tracking_unit">跟踪人单位</string>
+    <string name="track_people">跟踪人</string>
+    <string name="department_group" tools:ignore="ExtraTranslation">部门/队组</string>
+    <string name="handler">处理人</string>
+    <string name="detail_backspace">详\t\t情</string>
+    <string name="add_backspace">添\t\t加</string>
+    <string name="add">添加</string>
+    <string name="ok_backspace">确\t\t定</string>
+    <string name="modification">修改</string>
+    <string name="delete">删除</string>
+    <string name="cancel">取消</string>
+    <string name="ok">确定</string>
 
 
 </resources>

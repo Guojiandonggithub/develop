@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.administrator.riskprojects.Adpter.ListingSupervisionAdapter;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.activity.HiddenDangeTrackingManagementActivity;
 import com.example.administrator.riskprojects.activity.HiddenDangerOverdueManagementActivity;
 import com.example.administrator.riskprojects.activity.HiddenDangerRectificationManagementActivity;
 import com.example.administrator.riskprojects.activity.HiddenDangerReleaseManagementActivity;
@@ -81,6 +82,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 break;
             case R.id.ll_manage_tracking:
                 flag = 4;
+                startActivity(new Intent(ctx, HiddenDangeTrackingManagementActivity.class));
                 break;
             case R.id.ll_manage_overdue:
                 flag = 5;

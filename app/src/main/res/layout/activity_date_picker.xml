@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bar_color"
+    android:orientation="vertical"
+    tools:context=".activity.DatePickerActivity">
+
+    <include layout="@layout/layout_title" />
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="9.67dp"
+        android:background="@color/white">
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mcv_arrowColor="@color/blue1"
+            app:mcv_calendarMode="month"
+            app:mcv_headerTextAppearance="@style/HeadDatePickerTxtTitle"
+            app:mcv_selectionColor="@color/blue1"
+            app:mcv_showOtherDates="none"
+            app:mcv_weekDayLabels="@array/week" />
+    </android.support.v7.widget.LinearLayoutCompat>
+</android.support.v7.widget.LinearLayoutCompat>

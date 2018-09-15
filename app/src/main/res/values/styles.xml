@@ -23,4 +23,23 @@
         <item name="android:focusable">false</item>
     </style>
 
+
+    <style name="HeadDatePickerTxtTitle" parent="@style/TextAppearance.AppCompat.Notification.Info.Media">
+        <item name="android:textSize">@dimen/normal_ts</item>
+        <item name="android:textColor">@color/blue1</item>
+        <item name="android:focusable">false</item>
+
+    </style>
+
+
+    <!--dialog宽度全屏-->
+    <style name="myDialog" parent="android:Theme.Holo.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+
+    </style>
 </resources>
