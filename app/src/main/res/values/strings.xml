@@ -28,7 +28,7 @@
     <string name="hidden_danger_rectification_management">隐患整改管理</string>
     <string name="hidden_danger_tracking_management">隐患跟踪管理</string>
     <string name="risk_overdue_management">隐患逾期管理</string>
-    <string name="hidden_danger_review_management">隐患复查管理</string>
+    <string name="hidden_danger_review_management">隐患验收管理</string>
     <string name="area">区域</string>
     <string name="specialty">专业</string>
     <string name="category">类别</string>
@@ -62,6 +62,10 @@
     <string name="rectification">整\t\t改</string>
     <string name="the_number_of_processing">处理人数</string>
     <string name="the_rectification_results">整改结果</string>
+    <string name="your_current_password">当前密码</string>
+    <string name="the_new_password">新密码</string>
+    <string name="confirm_new_password">确认新密码</string>
+    <string name="confirm_the_change">确认修改</string>
 
 
 </resources>

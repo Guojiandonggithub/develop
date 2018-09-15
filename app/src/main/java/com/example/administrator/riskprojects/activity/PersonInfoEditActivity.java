@@ -1,18 +1,17 @@
+
 package com.example.administrator.riskprojects.activity;
 
-import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
-/**
- * 隐患记录 添加修改
- */
-public class HiddenRiskRecordAddEditActivity extends BaseActivity {
+
+public class PersonInfoEditActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hidden_risk_record_add_edit);
+        setContentView(R.layout.activity_person_info_edit);
     }
 }

@@ -3,6 +3,7 @@ package com.example.administrator.riskprojects.fragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -26,6 +27,8 @@ import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
+import com.example.administrator.riskprojects.util.DensityUtil;
+import com.example.administrator.riskprojects.view.MyDecoration;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
 import java.util.List;
@@ -105,8 +108,8 @@ public class Fragment_Home extends Fragment {
 
                 @Override
                 public void onMySuccess(String data) {
-                    Log.i(TAG, "主页隐患数据统计返回数据："+data);
-                    if(!TextUtils.isEmpty(data)){
+                    Log.i(TAG, "主页隐患数据统计返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
                         JSONObject jsonObject = JSON.parseObject(data);
                         String notRectify = jsonObject.getString("notRectify");
                         String outTimeNumber = jsonObject.getString("outTimeNumber");
@@ -122,7 +125,7 @@ public class Fragment_Home extends Fragment {
 
                 @Override
                 public void onMyFailure(String content) {
-                    Log.e(TAG, "主页获取隐患数据统计返回错误信息："+content);
+                    Log.e(TAG, "主页获取隐患数据统计返回错误信息：" + content);
                     Utils.showLongToast(getContext(), content);
                 }
             });
@@ -133,26 +136,27 @@ public class Fragment_Home extends Fragment {
 
     private void getHiddenRecord() {
         //if (!TextUtils.isEmpty(employeeId)) {
-            RequestParams params = new RequestParams();
-            params.put("State", "2");
-            netClient.post(Constants.GET_HIDDENRECORD, params, new BaseJsonRes() {
+        RequestParams params = new RequestParams();
+        params.put("State", "2");
+        netClient.post(Constants.GET_HIDDENRECORD, params, new BaseJsonRes() {
 
-                @Override
-                public void onMySuccess(String data) {
-                    Log.i(TAG, "主页隐患数据返回数据："+data);
-                    if(!TextUtils.isEmpty(data)){
-                        List<HomeHiddenRecord> recordList = JSONArray.parseArray(data, HomeHiddenRecord.class);
-                        mRecyclerView.setAdapter(new HomeHiddenDangerAdapter(recordList));
-                    }
-
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "主页隐患数据返回数据：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    List<HomeHiddenRecord> recordList = JSONArray.parseArray(data, HomeHiddenRecord.class);
+                    mRecyclerView.addItemDecoration(new MyDecoration(ctx, MyDecoration.VERTICAL_LIST, R.color.white, DensityUtil.dip2px(ctx, 0.67f)));
+                    mRecyclerView.setAdapter(new HomeHiddenDangerAdapter(recordList));
                 }
 
-                @Override
-                public void onMyFailure(String content) {
-                    Log.e(TAG, "获取隐患数据返回错误信息："+content);
-                    Utils.showLongToast(getContext(), content);
-                }
-            });
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "获取隐患数据返回错误信息：" + content);
+                Utils.showLongToast(getContext(), content);
+            }
+        });
         /*} else {
             Utils.showLongToast(getActivity(), "请退出重新登录！");
         }*/

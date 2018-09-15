@@ -7,7 +7,9 @@ import android.widget.TextView;
 
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
-
+/**
+ * 隐患整改
+ */
 public class HiddenDangerRectificationManagementActivity extends BaseActivity {
 
     private TextView mTxtLeft;

@@ -13,6 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.PersonInfoEditActivity"></activity>
+        <activity android:name=".activity.ChangePasswordActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +29,7 @@
         <activity android:name=".activity.HiddenDangerReviewManagementActivity" />
         <activity android:name=".activity.HiddenDangerReleaseManagementActivity" />
         <activity android:name=".activity.HiddenDangerOverdueManagementActivity" />
-        <activity android:name=".activity.HiddenDangerRectificationManagementActivity"></activity>
+        <activity android:name=".activity.HiddenDangerRectificationManagementActivity" />
     </application>
 
 </manifest>

@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="14dp"
-    android:layout_marginTop="3dp"
-    android:layout_marginRight="14dp"
-    android:layout_marginBottom="3dp"
-    android:background="@drawable/blue_rectangle_white_stroke_4dp_corner"
-    android:elevation="@dimen/elevation_basic"
     android:orientation="vertical"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp">
+    tools:background="@color/blue1">
 
     <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:gravity="center_vertical"
@@ -54,6 +49,7 @@
     </android.support.v7.widget.LinearLayoutCompat>
 
     <View
+        android:id="@+id/ll_top_view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/white" />
@@ -102,35 +98,4 @@
 
     </android.support.v7.widget.LinearLayoutCompat>
 
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.67dp"
-        android:background="@color/white" />
-
-    <android.support.v7.widget.LinearLayoutCompat
-        android:id="@+id/click_more"
-        android:layout_width="match_parent"
-        android:layout_height="26dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-                android:text="@string/more"
-            android:textColor="@color/white"
-            android:textSize="@dimen/small_ts" />
-
-        <ImageView
-            android:layout_width="10dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:adjustViewBounds="true"
-            android:src="@mipmap/ic_drop_arrow" />
-
-
-    </android.support.v7.widget.LinearLayoutCompat>
 </android.support.v7.widget.LinearLayoutCompat>

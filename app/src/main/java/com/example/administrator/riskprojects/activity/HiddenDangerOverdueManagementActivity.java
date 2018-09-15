@@ -7,7 +7,9 @@ import android.widget.TextView;
 
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
-
+/**
+ * 隐患逾期
+ */
 public class HiddenDangerOverdueManagementActivity extends BaseActivity {
 
     private TextView mTxtLeft;
