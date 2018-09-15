@@ -15,6 +15,7 @@ import com.example.administrator.riskprojects.dialog.FlippingLoadingDialog;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
+import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
@@ -81,6 +82,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                     Utils.putValue(LoginActivity.this, Constants.UserInfo, data);
                     Utils.putBooleanValue(LoginActivity.this,
                             Constants.LoginState, true);
+                    UserUtils.getUserModel(LoginActivity.this);
                     Utils.putValue(LoginActivity.this, Constants.NAME, userName);
                     Utils.putValue(LoginActivity.this, Constants.PWD,
                             password);

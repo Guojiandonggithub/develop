@@ -5,17 +5,34 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.administrator.riskprojects.Adpter.HomeHiddenDangerAdapter;
+import com.example.administrator.riskprojects.LoginActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.MainActivity;
+import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
+import com.example.administrator.riskprojects.bean.UserInfo;
+import com.example.administrator.riskprojects.net.BaseJsonRes;
+import com.example.administrator.riskprojects.net.NetClient;
+import com.example.administrator.riskprojects.tools.Constants;
+import com.example.administrator.riskprojects.tools.UserUtils;
+import com.example.administrator.riskprojects.tools.Utils;
+import com.juns.health.net.loopj.android.http.RequestParams;
+
+import java.util.List;
 
 //消息
 public class Fragment_Home extends Fragment {
+    private static final String TAG = "Fragment_Home";
     private Activity ctx;
     private View layout, layout_head;
     private MainActivity parentActivity;
@@ -24,10 +41,12 @@ public class Fragment_Home extends Fragment {
     private TextView mTvUnchangeNum;
     private TextView mTvForAcceptanceNum;
     private RecyclerView mRecyclerView;
+    protected NetClient netClient;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        netClient = new NetClient(getActivity());
         if (layout == null) {
             ctx = this.getActivity();
             parentActivity = (MainActivity) getActivity();
@@ -60,28 +79,8 @@ public class Fragment_Home extends Fragment {
     }
 
     private void initViews() {
-		/*conversationList.addAll(loadConversationsWithRecentChat());
-		if (conversationList != null && conversationList.size() > 0) {
-			layout.findViewById(R.id.txt_nochat).setVisibility(View.GONE);
-			adpter = new NewMsgAdpter(getActivity(), conversationList);
-			// TODO 加载订阅号信息 ，增加一个Item
-			// if (GloableParams.isHasPulicMsg) {
-			EMConversation nee = new EMConversation("100000");
-			conversationList.add(0, nee);
-			String time = Utils.getValue(getActivity(), "Time");
-			String content = Utils.getValue(getActivity(), "Content");
-			time = "下午 02:45";
-			content = "[腾讯娱乐] 赵薇炒股日赚74亿";
-			PublicMsgInfo msgInfo = new PublicMsgInfo();
-			msgInfo.setContent(content);
-			msgInfo.setMsg_ID("12");
-			msgInfo.setTime(time);
-			adpter.setPublicMsg(msgInfo);
-			// }
-			lvContact.setAdapter(adpter);
-		} else {
-			layout.findViewById(R.id.txt_nochat).setVisibility(View.VISIBLE);
-		}*/
+        getHiddenStatisticsNum(UserUtils.getUserID(getActivity()));
+        getHiddenRecord();
     }
 
     private void initView(View layout) {
@@ -95,27 +94,68 @@ public class Fragment_Home extends Fragment {
         mTvForAcceptanceNum = layout.findViewById(R.id.tv_for_acceptance_num);
         mRecyclerView = layout.findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-        mRecyclerView.setAdapter(new HomeHiddenDangerAdapter());
     }
 
-    /**
-     * 获取所有会话
-     *
-     * @param context
-     * @return +
-     */
-	/*private List<EMConversation> loadConversationsWithRecentChat() {
-		// 获取所有会话，包括陌生人
-		Hashtable<String, EMConversation> conversations = EMChatManager
-				.getInstance().getAllConversations();
-		List<EMConversation> list = new ArrayList<EMConversation>();
-		// 过滤掉messages seize为0的conversation
-		for (EMConversation conversation : conversations.values()) {
-			if (conversation.getAllMessages().size() != 0)
-				list.add(conversation);
-		}
-		return null;
-	}*/
 
+    private void getHiddenStatisticsNum(String employeeId) {
+        if (!TextUtils.isEmpty(employeeId)) {
+            RequestParams params = new RequestParams();
+            params.put("employeeId", employeeId);
+            netClient.post(Constants.GET_HIDDENUM, params, new BaseJsonRes() {
+
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "主页隐患数据统计返回数据："+data);
+                    if(!TextUtils.isEmpty(data)){
+                        JSONObject jsonObject = JSON.parseObject(data);
+                        String notRectify = jsonObject.getString("notRectify");
+                        String outTimeNumber = jsonObject.getString("outTimeNumber");
+                        String recheck = jsonObject.getString("recheck");
+                        String saleNumber = jsonObject.getString("saleNumber");
+                        mTvUnchangeNum.setText(notRectify);
+                        mTvWithinTheTimeLimitNum.setText(outTimeNumber);
+                        mTvForAcceptanceNum.setText(recheck);
+                        mTvDeleteNum.setText(saleNumber);
+                    }
+
+                }
+
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "主页获取隐患数据统计返回错误信息："+content);
+                    Utils.showLongToast(getContext(), content);
+                }
+            });
+        } else {
+            Utils.showLongToast(getActivity(), "请退出重新登录！");
+        }
+    }
+
+    private void getHiddenRecord() {
+        //if (!TextUtils.isEmpty(employeeId)) {
+            RequestParams params = new RequestParams();
+            params.put("State", "2");
+            netClient.post(Constants.GET_HIDDENRECORD, params, new BaseJsonRes() {
+
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "主页隐患数据返回数据："+data);
+                    if(!TextUtils.isEmpty(data)){
+                        List<HomeHiddenRecord> recordList = JSONArray.parseArray(data, HomeHiddenRecord.class);
+                        mRecyclerView.setAdapter(new HomeHiddenDangerAdapter(recordList));
+                    }
+
+                }
+
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取隐患数据返回错误信息："+content);
+                    Utils.showLongToast(getContext(), content);
+                }
+            });
+        /*} else {
+            Utils.showLongToast(getActivity(), "请退出重新登录！");
+        }*/
+    }
 
 }
