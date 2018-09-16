@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutCompat;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
@@ -30,6 +33,9 @@ public class DatePickerActivity extends BaseActivity {
     private ImageView mImgRight;
     private TextView mTxtRight;
     private MaterialCalendarView mCalendarView;
+    private LinearLayoutCompat mLlBottom;
+    private TextView mTvOk;
+    CalendarDay selectDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +50,8 @@ public class DatePickerActivity extends BaseActivity {
         mCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                Intent intent = new Intent();
-                intent.putExtra(DATE, new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(date.getDate()));
-                setResult(RESULT_OK, intent);
-                finish();
+                mLlBottom.setVisibility(View.VISIBLE);
+                selectDate = date;
             }
         });
         mCalendarView.addDecorator(new DayViewDecorator() {
@@ -62,6 +66,20 @@ public class DatePickerActivity extends BaseActivity {
                 view.setSelectionDrawable(drawable);
             }
         });
+
+        mTvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectDate != null) {
+                    Intent intent = new Intent();
+                    intent.putExtra(DATE, new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(selectDate.getDate()));
+                    setResult(RESULT_OK, intent);
+                    finish();
+                } else {
+                    Toast.makeText(DatePickerActivity.this, "请选择日期", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void initView() {
@@ -71,9 +89,11 @@ public class DatePickerActivity extends BaseActivity {
         mImgRight = findViewById(R.id.img_right);
         mTxtRight = findViewById(R.id.txt_right);
         mCalendarView = findViewById(R.id.calendarView);
+        mLlBottom = findViewById(R.id.ll_bottom);
+        mTvOk = findViewById(R.id.tv_ok);
     }
 
-    public static void startPickDate(Activity activity,Context context) {
-        activity.startActivityForResult(new Intent(context,DatePickerActivity.class),REQUEST);
+    public static void startPickDate(Activity activity, Context context) {
+        activity.startActivityForResult(new Intent(context, DatePickerActivity.class), REQUEST);
     }
 }

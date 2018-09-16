@@ -24,6 +24,7 @@
     <string name="hidden_content">隐患内容</string>
     <string name="hidden_danger_belongs">隐患归属</string>
     <string name="hidden_danger_details_management">隐患详情管理</string>
+    <string name="hidden_danger_record_management">隐患记录管理</string>
     <string name="hidden_danger_management">隐患下达管理</string>
     <string name="hidden_danger_rectification_management">隐患整改管理</string>
     <string name="hidden_danger_tracking_management">隐患跟踪管理</string>
@@ -80,9 +81,12 @@
     <string name="add">添加</string>
     <string name="ok_backspace">确\t\t定</string>
     <string name="modification">修改</string>
+    <string name="modification_backspace">修\t\t改</string>
     <string name="delete">删除</string>
+    <string name="delete_backspace">删\t\t除</string>
     <string name="cancel">取消</string>
     <string name="ok">确定</string>
+    <string name="hidden_units_colon">隐患单位：</string>
 
 
 </resources>

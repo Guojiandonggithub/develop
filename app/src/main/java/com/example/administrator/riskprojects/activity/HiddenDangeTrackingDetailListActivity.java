@@ -1,6 +1,5 @@
 package com.example.administrator.riskprojects.activity;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,8 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.administrator.riskprojects.Adpter.HomeHiddenDangerAdapterAdapter;
-import com.example.administrator.riskprojects.Adpter.ListingSupervisionAdapter;
+import com.example.administrator.riskprojects.Adpter.HomeHiddenDangerdetailListAdapter;
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.OnItemClickListener;
 import com.example.administrator.riskprojects.R;
@@ -27,7 +25,7 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
     private TextView mTxtRight;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
-    private HomeHiddenDangerAdapterAdapter adapter;
+    private HomeHiddenDangerdetailListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +39,12 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
         mTxtTitle.setText(R.string.detail);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new HomeHiddenDangerAdapterAdapter();
+        adapter = new HomeHiddenDangerdetailListAdapter();
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, final int position, int flag) {
                 switch (flag) {
-                    case HomeHiddenDangerAdapterAdapter.FLAG_CHANGE:
+                    case HomeHiddenDangerdetailListAdapter.FLAG_CHANGE:
                         Intent intent = new Intent(HiddenDangeTrackingDetailListActivity.this,
                                 HiddenRiskTrackingAddEditActivity.class);
                         intent.putExtra(HiddenRiskTrackingAddEditActivity.CHANGE_ID, "" + position);
@@ -54,7 +52,7 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
                         intent.putExtra(HiddenRiskTrackingAddEditActivity.CHANGE_CONTENT, "隐患内容" + position);
                         startActivity(intent);
                         break;
-                    case HomeHiddenDangerAdapterAdapter.FLAG_DELETE:
+                    case HomeHiddenDangerdetailListAdapter.FLAG_DELETE:
                         MyAlertDialog alertDialog = new MyAlertDialog(HiddenDangeTrackingDetailListActivity.this
                                 , new MyAlertDialog.DialogListener() {
                             @Override

@@ -13,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.administrator.riskprojects.Adpter.HiddenDangeMuitipleAdapter;
+import com.example.administrator.riskprojects.Adpter.HiddenDangeRecordAdapter;
+import com.example.administrator.riskprojects.Adpter.HiddenDangeTrackingAdapter;
 import com.example.administrator.riskprojects.Adpter.ListingSupervisionAdapter;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.HiddenDangeTrackingManagementActivity;
@@ -20,6 +23,7 @@ import com.example.administrator.riskprojects.activity.HiddenDangerOverdueManage
 import com.example.administrator.riskprojects.activity.HiddenDangerRectificationManagementActivity;
 import com.example.administrator.riskprojects.activity.HiddenDangerReleaseManagementActivity;
 import com.example.administrator.riskprojects.activity.HiddenDangerReviewManagementActivity;
+import com.example.administrator.riskprojects.activity.HiddenRiskRecordAddEditActivity;
 
 
 //我
@@ -55,7 +59,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         mSwipeRefreshLayout = layout.findViewById(R.id.swipeRefreshLayout);
         mRecyclerView = layout.findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-        mRecyclerView.setAdapter(new ListingSupervisionAdapter());
+        mRecyclerView.setAdapter(new HiddenDangeRecordAdapter());
         mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
@@ -71,26 +75,27 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         switch (view.getId()) {
             case R.id.ll_manage_detail:
                 flag = 1;
+                mRecyclerView.setAdapter(new HiddenDangeRecordAdapter());
                 break;
             case R.id.ll_manage_release:
                 flag = 2;
-                startActivity(new Intent(ctx, HiddenDangerReleaseManagementActivity.class));
+                mRecyclerView.setAdapter(new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_REALEASE));
                 break;
             case R.id.ll_manage_rectification:
                 flag = 3;
-                startActivity(new Intent(ctx, HiddenDangerRectificationManagementActivity.class));
+                mRecyclerView.setAdapter(new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_RECTIFICATION));
                 break;
             case R.id.ll_manage_tracking:
                 flag = 4;
-                startActivity(new Intent(ctx, HiddenDangeTrackingManagementActivity.class));
+                mRecyclerView.setAdapter(new HiddenDangeTrackingAdapter());
                 break;
             case R.id.ll_manage_overdue:
                 flag = 5;
-                startActivity(new Intent(ctx, HiddenDangerOverdueManagementActivity.class));
+                mRecyclerView.setAdapter(new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_OVERDUE));
                 break;
             case R.id.ll_manage_review:
                 flag = 6;
-                startActivity(new Intent(ctx, HiddenDangerReviewManagementActivity.class));
+                mRecyclerView.setAdapter(new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_REVIEW));
                 break;
             default:
                 break;

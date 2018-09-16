@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.example.administrator.riskprojects.OnItemClickListener;
 import com.example.administrator.riskprojects.R;
 
-public class HomeHiddenDangerAdapterAdapter extends RecyclerView.Adapter {
+public class HomeHiddenDangerdetailListAdapter extends RecyclerView.Adapter {
 
     public static final int FLAG_CHANGE = 0;
     public static final int FLAG_DELETE = 1;
@@ -22,7 +22,7 @@ public class HomeHiddenDangerAdapterAdapter extends RecyclerView.Adapter {
         this.onItemClickListener = onItemClickListener;
     }
 
-    public HomeHiddenDangerAdapterAdapter() {
+    public HomeHiddenDangerdetailListAdapter() {
     }
 
 
