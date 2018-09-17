@@ -1,5 +1,6 @@
 package com.example.administrator.riskprojects.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -176,9 +177,13 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 if (index == 2) {
-
+                    Intent intent = new Intent(MainActivity.this, LeftOptionSelectActivity.class);
+                    intent.putExtra(LeftOptionSelectActivity.TITLE, "记录跟踪");
+                    startActivityForResult(intent, LeftOptionSelectActivity.REQUEST_CODE);
                 } else if (index == 3) {
-
+                    Intent intent = new Intent(MainActivity.this, LeftOptionSelectActivity.class);
+                    intent.putExtra(LeftOptionSelectActivity.TITLE, "分析统计");
+                    startActivityForResult(intent, LeftStatisticsOptionSelectActivity.REQUEST_CODE);
                 }
             }
         });
@@ -254,6 +259,33 @@ public class MainActivity extends FragmentActivity {
             mLlDialog.setVisibility(View.GONE);
         } else {
             super.onBackPressed();
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LeftOptionSelectActivity.REQUEST_CODE && resultCode == RESULT_OK) {
+            if (index == 2) {
+                manageFragment.onLeftMenuClicked(
+                        data.getStringExtra(LeftOptionSelectActivity.A_NAME)
+                        , data.getStringExtra(LeftOptionSelectActivity.A_ID)
+                        , data.getStringExtra(LeftOptionSelectActivity.P_NAME)
+                        , data.getStringExtra(LeftOptionSelectActivity.P_ID)
+                        , data.getStringExtra(LeftOptionSelectActivity.H_NAME)
+                        , data.getStringExtra(LeftOptionSelectActivity.H_ID)
+                );
+            } else if (index == 3) {
+                statisticsfragment.onLeftMenuClicked(
+                        data.getStringExtra(LeftOptionSelectActivity.A_NAME)
+                        , data.getStringExtra(LeftOptionSelectActivity.A_ID)
+                        , data.getStringExtra(LeftOptionSelectActivity.P_NAME)
+                        , data.getStringExtra(LeftOptionSelectActivity.P_ID)
+                        , data.getStringExtra(LeftOptionSelectActivity.H_NAME)
+                        , data.getStringExtra(LeftOptionSelectActivity.H_ID)
+                );
+            }
         }
     }
 }

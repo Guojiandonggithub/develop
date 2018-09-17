@@ -16,6 +16,111 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/ll_option"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingLeft="14dp"
+                android:visibility="gone"
+                android:paddingRight="14dp">
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_weight="1"
+                        android:text="分析因素"
+                        android:textColor="@color/colorGrayDarker"
+                        android:textSize="@dimen/normal_ts" />
+
+                    <TextView
+                        android:id="@+id/tv_profession"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="24dp"
+                        android:layout_weight="2"
+                        android:background="@android:color/transparent"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/colorGrayDarker"
+                        android:textSize="@dimen/normal_ts" />
+                </android.support.v7.widget.LinearLayoutCompat>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorDevide" />
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_weight="1"
+                        android:text="发现时间"
+                        android:textColor="@color/colorGrayDarker"
+                        android:textSize="@dimen/normal_ts" />
+
+                    <TextView
+                        android:id="@+id/tv_hidden_units"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="24dp"
+                        android:layout_weight="2"
+                        android:background="@android:color/transparent"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/colorGrayDarker"
+                        android:textSize="@dimen/normal_ts" />
+                </android.support.v7.widget.LinearLayoutCompat>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorDevide" />
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_weight="1"
+                        android:text="图形类别"
+                        android:textColor="@color/colorGrayDarker"
+                        android:textSize="@dimen/normal_ts" />
+
+                    <TextView
+                        android:id="@+id/tv_area"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="24dp"
+                        android:layout_weight="2"
+                        android:background="@android:color/transparent"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/colorGrayDarker"
+                        android:textSize="@dimen/normal_ts" />
+                </android.support.v7.widget.LinearLayoutCompat>
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+
             <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

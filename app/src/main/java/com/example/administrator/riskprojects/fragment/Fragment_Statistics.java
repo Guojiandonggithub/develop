@@ -7,16 +7,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONArray;
-import com.example.administrator.riskprojects.Adpter.ListingSupervisionAdapter;
 import com.example.administrator.riskprojects.R;
-import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
@@ -50,6 +50,10 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     private LineChart mLineChart;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     protected NetClient netClient;
+    private LinearLayoutCompat llOption;
+    private TextView tvProfession;
+    private TextView tvHiddenUnits;
+    private TextView tvArea;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,6 +84,11 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         initBarChart(mBarChart);
         initLineChart(mLineChart);
         getHiddenStatisticsData();
+        llOption = layout.findViewById(R.id.ll_option);
+        tvProfession =layout. findViewById(R.id.tv_profession);
+        tvHiddenUnits = layout.findViewById(R.id.tv_hidden_units);
+        tvArea = layout.findViewById(R.id.tv_area);
+
     }
 
     private void showLineChart(List<HomeHiddenRecord> dtatisticsList) {
@@ -304,5 +313,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     @Override
     public void onRefresh() {
         mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    public void onLeftMenuClicked(String aname, String aid, String pname, String pid, String hname, String hid) {
+        llOption.setVisibility(View.VISIBLE);
+        tvArea.setText(aname);
+        tvProfession.setText(pname);
+        tvHiddenUnits.setText(hname);
     }
 }

@@ -1,16 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/ll_option"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingLeft="14dp"
+            android:visibility="gone"
+            android:paddingRight="14dp">
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:layout_weight="1"
+                    android:text="专&#12288;&#12288;业"
+                    android:textColor="@color/colorGrayDarker"
+                    android:textSize="@dimen/normal_ts" />
+
+                <TextView
+                    android:id="@+id/tv_profession"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="24dp"
+                    android:layout_weight="2"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/colorGrayDarker"
+                    android:textSize="@dimen/normal_ts" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorDevide" />
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:layout_weight="1"
+                    android:text="隐患单位"
+                    android:textColor="@color/colorGrayDarker"
+                    android:textSize="@dimen/normal_ts" />
+
+                <TextView
+                    android:id="@+id/tv_hidden_units"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="24dp"
+                    android:layout_weight="2"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/colorGrayDarker"
+                    android:textSize="@dimen/normal_ts" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorDevide" />
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:layout_weight="1"
+                    android:text="区&#12288;&#12288;域"
+                    android:textColor="@color/colorGrayDarker"
+                    android:textSize="@dimen/normal_ts" />
+
+                <TextView
+                    android:id="@+id/tv_area"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="24dp"
+                    android:layout_weight="2"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/colorGrayDarker"
+                    android:textSize="@dimen/normal_ts" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/ll_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="8dp"
+            android:gravity="right|bottom"
+            android:paddingRight="14dp">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_gravity="right"
+                android:src="@mipmap/ic_add" />
+        </android.support.v7.widget.LinearLayoutCompat>
+    </android.support.v7.widget.LinearLayoutCompat>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/bar_color">
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -19,7 +146,6 @@
             android:layout_marginTop="8dp"
             android:background="@color/white"
             android:clipToPadding="false"
-            android:paddingTop="32dp"
             tools:itemCount="3"
             tools:listitem="@layout/item_listing_supervision" />
 
@@ -27,5 +153,4 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
 
-
-</FrameLayout>
+</android.support.v7.widget.LinearLayoutCompat>

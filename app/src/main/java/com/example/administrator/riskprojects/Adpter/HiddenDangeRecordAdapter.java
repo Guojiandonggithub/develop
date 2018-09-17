@@ -21,13 +21,17 @@ import java.util.List;
 
 public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
 
-    private boolean[] expands = new boolean[]{false, false, false, false, false, false};
+    private boolean[] expands;
 
     List<HiddenDangerRecord> recordList;
 
 
     public HiddenDangeRecordAdapter(List<HiddenDangerRecord> recordList) {
         this.recordList = recordList;
+        expands= new boolean[recordList.size()];
+        for (int i = 0; i < recordList.size(); i++) {
+            expands[i] = false;
+        }
     }
 
     @Override
@@ -86,10 +90,6 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
         return recordList.size();
     }
 
-    private void initView(View view) {
-
-
-    }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tvHiddenUnits;
