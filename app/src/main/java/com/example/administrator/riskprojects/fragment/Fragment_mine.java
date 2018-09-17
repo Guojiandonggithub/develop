@@ -12,11 +12,13 @@ import android.widget.TextView;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.ChangePasswordActivity;
 import com.example.administrator.riskprojects.activity.PersonInfoEditActivity;
+import com.example.administrator.riskprojects.bean.UserInfo;
+import com.example.administrator.riskprojects.tools.UserUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Fragment_mine extends Fragment {
-    // 发现
+    // 我的
     private Activity ctx;
     private View layout;
     private CircleImageView mIvHead;
@@ -44,6 +46,7 @@ public class Fragment_mine extends Fragment {
         }
         initView(layout);
         setView();
+        initdata();
         return layout;
     }
 
@@ -71,5 +74,13 @@ public class Fragment_mine extends Fragment {
         mTvChangePassword = layout.findViewById(R.id.tv_change_password);
         mTvVersion = layout.findViewById(R.id.tv_version);
         mTvLogOut = layout.findViewById(R.id.tv_log_out);
+    }
+
+    private void initdata() {
+        UserInfo userInfo = UserUtils.getUserModel(getActivity());
+        mTvName.setText(userInfo.getUserName());
+        mTvPhone.setText(userInfo.getPhone());
+        mTvDepartment.setText(userInfo.getDepartmentName());
+        mTvOffice.setText(userInfo.getPname());
     }
 }

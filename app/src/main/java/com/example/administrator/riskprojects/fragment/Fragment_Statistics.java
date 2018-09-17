@@ -7,11 +7,20 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.fastjson.JSONArray;
+import com.example.administrator.riskprojects.Adpter.ListingSupervisionAdapter;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
+import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
+import com.example.administrator.riskprojects.net.BaseJsonRes;
+import com.example.administrator.riskprojects.net.NetClient;
+import com.example.administrator.riskprojects.tools.Constants;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -26,22 +35,26 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.Utils;
+import com.juns.health.net.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    // 发现
+    // 数据统计
+    private static final String TAG = "Fragment_Statistics";
     private Activity ctx;
     private View layout;
     private BarChart mBarChart;
     private LineChart mLineChart;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    protected NetClient netClient;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        netClient = new NetClient(getActivity());
         if (layout == null) {
             ctx = this.getActivity();
             layout = ctx.getLayoutInflater().inflate(R.layout.fragment_dicover,
@@ -66,15 +79,15 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         mSwipeRefreshLayout.setOnRefreshListener(this);
         initBarChart(mBarChart);
         initLineChart(mLineChart);
-        showBarChart();
-        showLineChart();
+        getHiddenStatisticsData();
     }
 
-    private void showLineChart() {
+    private void showLineChart(List<HomeHiddenRecord> dtatisticsList) {
         //设置数据
         List<Entry> entries = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            entries.add(new Entry(i, new Random().nextFloat()));
+        for (int i = 0; i < dtatisticsList.size(); i++) {
+            float num = Float.parseFloat(dtatisticsList.get(i).getTotalNum());
+            entries.add(new Entry(i, num));
         }
         //一个LineDataSet就是一条线
         LineDataSet lineDataSet = new LineDataSet(entries, "隐患条数");
@@ -205,20 +218,21 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     }
 
 
-    public void showBarChart() {
+    public void showBarChart(List<HomeHiddenRecord> dtatisticsList) {
         ArrayList<IBarDataSet> dataSets = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < dtatisticsList.size(); i++) {
             /**
              * 此处还可传入Drawable对象 BarEntry(float x, float y, Drawable icon)
              * 即可设置柱状图顶部的 icon展示
              */
             ArrayList<BarEntry> entries = new ArrayList<>();
             //i: 位置  (float) new Random().nextInt(100):值
-            BarEntry barEntry = new BarEntry(i, new Random().nextFloat());
+            float num = Float.parseFloat(dtatisticsList.get(i).getTotalNum());
+            BarEntry barEntry = new BarEntry(i, num);
             entries.add(barEntry);
             // 每一个BarDataSet代表一类柱状图
-            BarDataSet barDataSet = new BarDataSet(entries, "测试部门" + Integer.toString(i));
+            BarDataSet barDataSet = new BarDataSet(entries, dtatisticsList.get(i).getTeamGroupName());
             initBarDataSet(barDataSet, getRandColor());
             dataSets.add(barDataSet);
 
@@ -228,6 +242,31 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         //BarChart控件宽度 / 柱状图数量  * mBarWidth
         data.setBarWidth(0.5f);
         mBarChart.setData(data);
+    }
+
+    private void getHiddenStatisticsData() {
+        RequestParams params = new RequestParams();
+        //params.put("customParamsOne","");//开始时间
+        //params.put("customParamsTwo", "");//结束时间
+        netClient.post(Constants.TEAMHDSTAISTICSDATAGRID, params, new BaseJsonRes() {
+
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "挂牌督办隐患数据返回数据：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    List<HomeHiddenRecord> dtatisticsList = JSONArray.parseArray(data, HomeHiddenRecord.class);
+                    showBarChart(dtatisticsList);
+                    showLineChart(dtatisticsList);
+                }
+
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "挂牌督办隐患数据返回错误信息：" + content);
+                com.example.administrator.riskprojects.tools.Utils.showLongToast(getContext(), content);
+            }
+        });
     }
 
     private int getRandColor() {

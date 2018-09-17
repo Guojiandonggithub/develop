@@ -9,11 +9,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
+
+import java.util.List;
 
 public class ListingSupervisionAdapter extends RecyclerView.Adapter {
+    List<HiddenDangerRecord> recordList;
 
 
-    public ListingSupervisionAdapter() {
+    public ListingSupervisionAdapter(List<HiddenDangerRecord> recordList) {
+        this.recordList = recordList;
     }
 
     @Override
@@ -24,10 +29,11 @@ public class ListingSupervisionAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((ViewHolder) holder).mTvHiddenUnits.setText("综合挖掘队");
-        ((ViewHolder) holder).mTvTimeOrOrder.setText("2016.09.26/0点班");
-        ((ViewHolder) holder).mTvHiddenContent.setText("规划局观后感");
-        ((ViewHolder) holder).mTvHiddenDangerBelongs.setText("机电矿长杨海涛有点厉害哦。就问你怕不怕");
+
+        ((ViewHolder) holder).mTvHiddenUnits.setText(recordList.get(position).getTeamGroupName());
+        ((ViewHolder) holder).mTvTimeOrOrder.setText(recordList.get(position).getFindTime()+"/"+recordList.get(position).getClassName());
+        ((ViewHolder) holder).mTvHiddenContent.setText(recordList.get(position).getContent());
+        ((ViewHolder) holder).mTvHiddenDangerBelongs.setText(recordList.get(position).getHiddenBelong());
         ((ViewHolder) holder).mTvHiddenUnits.setSelected(true);
         ((ViewHolder) holder).mTvTimeOrOrder.setSelected(true);
         ((ViewHolder) holder).mTvHiddenContent.setSelected(true);
@@ -36,7 +42,7 @@ public class ListingSupervisionAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 6;
+        return recordList.size();
     }
 
     private void initView(View view) {

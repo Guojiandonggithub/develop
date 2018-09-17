@@ -3,6 +3,7 @@ package com.example.administrator.riskprojects.Adpter;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.HiddenDangeTrackingManagementActivity;
 import com.example.administrator.riskprojects.activity.HiddenDangerDetailManagementActivity;
+import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
+import com.example.administrator.riskprojects.bean.UserInfo;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,8 +23,11 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
 
     private boolean[] expands = new boolean[]{false, false, false, false, false, false};
 
+    List<HiddenDangerRecord> recordList;
 
-    public HiddenDangeRecordAdapter() {
+
+    public HiddenDangeRecordAdapter(List<HiddenDangerRecord> recordList) {
+        this.recordList = recordList;
     }
 
     @Override
@@ -32,6 +38,20 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        ((ViewHolder) holder).tvHiddenUnits.setText(recordList.get(position).getTeamGroupName());
+        ((ViewHolder) holder).tvTimeOrOrder.setText(recordList.get(position).getFindTime()+"/"+recordList.get(position).getClassName());
+        ((ViewHolder) holder).tvHiddenContent.setText(recordList.get(position).getContent());
+        ((ViewHolder) holder).tvHiddenDangerBelongs.setText(recordList.get(position).getHiddenBelong());
+        ((ViewHolder) holder).tvProfessional.setText(recordList.get(position).getSname());
+        ((ViewHolder) holder).tvArea.setText(recordList.get(position).getAreaName());
+        ((ViewHolder) holder).tvClasses.setText(recordList.get(position).getGname());
+        String isuper = recordList.get(position).getIsupervision();
+        if(TextUtils.isEmpty(isuper)||TextUtils.equals(isuper,"0")){
+            isuper = "未督办";
+        }else{
+            isuper = "已督办";
+        }
+        ((ViewHolder) holder).tvOversee.setText(isuper);
         if (expands[position]) {
             ((ViewHolder) holder).expand.setVisibility(View.VISIBLE);
             ((ViewHolder) holder).clickMore.setVisibility(View.GONE);
@@ -51,8 +71,11 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.itemView.getContext().startActivity(new Intent( holder.itemView.getContext(),
-                        HiddenDangerDetailManagementActivity.class));
+                Intent intent = new Intent(holder.itemView.getContext(),
+                        HiddenDangerDetailManagementActivity.class);
+                String id = recordList.get(position).getId();
+                intent.putExtra("id",id);
+                holder.itemView.getContext().startActivity(intent);
             }
         });
 
@@ -60,7 +83,7 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 6;
+        return recordList.size();
     }
 
     private void initView(View view) {
@@ -89,6 +112,7 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
             tvHiddenContent = view.findViewById(R.id.tv_hidden_content);
             tvHiddenDangerBelongs = view.findViewById(R.id.tv_hidden_danger_belongs);
             expand = view.findViewById(R.id.expand);
+            tvProfessional = view.findViewById(R.id.tv_professional);
             tvArea = view.findViewById(R.id.tv_area);
             tvClasses = view.findViewById(R.id.tv_classes);
             tvOversee = view.findViewById(R.id.tv_oversee);

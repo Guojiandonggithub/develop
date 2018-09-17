@@ -61,6 +61,7 @@ public class ChangePasswordActivity extends BaseActivity {
     //修改密码
     private void chenge() {
 
+
     }
     //检查输入
     private boolean checkInput() {

@@ -15,6 +15,9 @@ import com.example.administrator.riskprojects.activity.HiddenDangerOverdueManage
 import com.example.administrator.riskprojects.activity.HiddenDangerRectificationManagementActivity;
 import com.example.administrator.riskprojects.activity.HiddenDangerReleaseManagementActivity;
 import com.example.administrator.riskprojects.activity.HiddenDangerReviewManagementActivity;
+import com.example.administrator.riskprojects.bean.ThreeFix;
+
+import java.util.List;
 
 public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
 
@@ -23,10 +26,11 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
     public static final int FLAG_REVIEW = 2;
     public static final int FLAG_RECTIFICATION = 3;
     private int flag = FLAG_OVERDUE;
+    List<ThreeFix> threeFixList;
 
-
-    public HiddenDangeMuitipleAdapter(int flag) {
+    public HiddenDangeMuitipleAdapter(int flag, List<ThreeFix> threeFixList) {
         this.flag = flag;
+        this.threeFixList = threeFixList;
     }
 
     @Override
@@ -37,6 +41,12 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        ((ViewHolder) holder).tvHiddenContent.setText(threeFixList.get(position).getContent());
+        ((ViewHolder) holder).tvArea.setText(threeFixList.get(position).getAreaName());
+        ((ViewHolder) holder).tvSpecialty.setText(threeFixList.get(position).getSname());
+        ((ViewHolder) holder).tvTimeOrOrder.setText(threeFixList.get(position).getClassName());
+        ((ViewHolder) holder).tvCategory.setText(threeFixList.get(position).getIshandle());
+        ((ViewHolder) holder).tvSupervise.setText(threeFixList.get(position).getGname());
         switch (flag) {
             case FLAG_OVERDUE:
                 ((ViewHolder) holder).button.setText("重新下达");
@@ -86,11 +96,10 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 6;
+        return threeFixList.size();
     }
 
     private void initView(View view) {
-
 
     }
 

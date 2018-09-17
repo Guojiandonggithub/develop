@@ -67,6 +67,7 @@ public class NetClient {
 	public void post(String url, RequestParams params,
                      final JsonHttpResponseHandler res) {
 		System.out.println("请求URL：" + url);
+		System.out.println("params：" + params);
 		if (!NetUtil.checkNetWork(context)) {
 			Utils.showLongToast(context, Constants.NET_ERROR);
 			return;

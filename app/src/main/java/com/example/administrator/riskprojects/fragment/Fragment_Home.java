@@ -21,7 +21,6 @@ import com.example.administrator.riskprojects.LoginActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.MainActivity;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
-import com.example.administrator.riskprojects.bean.UserInfo;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
@@ -104,7 +103,7 @@ public class Fragment_Home extends Fragment {
         if (!TextUtils.isEmpty(employeeId)) {
             RequestParams params = new RequestParams();
             params.put("employeeId", employeeId);
-            netClient.post(Constants.GET_HIDDENUM, params, new BaseJsonRes() {
+            netClient.post(Constants.HOME_GET_HIDDENUM, params, new BaseJsonRes() {
 
                 @Override
                 public void onMySuccess(String data) {
@@ -135,10 +134,8 @@ public class Fragment_Home extends Fragment {
     }
 
     private void getHiddenRecord() {
-        //if (!TextUtils.isEmpty(employeeId)) {
         RequestParams params = new RequestParams();
-        params.put("State", "2");
-        netClient.post(Constants.GET_HIDDENRECORD, params, new BaseJsonRes() {
+        netClient.post(Constants.HOME_GET_HIDDENRECORD, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -157,9 +154,6 @@ public class Fragment_Home extends Fragment {
                 Utils.showLongToast(getContext(), content);
             }
         });
-        /*} else {
-            Utils.showLongToast(getActivity(), "请退出重新登录！");
-        }*/
     }
 
 }

@@ -11,13 +11,17 @@ import android.widget.TextView;
 
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.HiddenDangeTrackingManagementActivity;
+import com.example.administrator.riskprojects.bean.ThreeFix;
+
+import java.util.List;
 
 public class HiddenDangeTrackingAdapter extends RecyclerView.Adapter {
+    private List<ThreeFix> threeFixList;
 
 
 
-
-    public HiddenDangeTrackingAdapter() {
+    public HiddenDangeTrackingAdapter(List<ThreeFix> threeFixList) {
+        this.threeFixList = threeFixList;
     }
 
     @Override
@@ -28,6 +32,14 @@ public class HiddenDangeTrackingAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        if(threeFixList.size()>0){
+            ((ViewHolder) holder).tvHiddenContent.setText(threeFixList.get(position).getContent());
+            ((ViewHolder) holder).tvArea.setText(threeFixList.get(position).getAreaName());
+            ((ViewHolder) holder).tvSpecialty.setText(threeFixList.get(position).getSname());
+            ((ViewHolder) holder).tvTimeOrOrder.setText(threeFixList.get(position).getClassName());
+            ((ViewHolder) holder).tvCategory.setText(threeFixList.get(position).getIshandle());
+            ((ViewHolder) holder).tvSupervise.setText(threeFixList.get(position).getGname());
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +53,7 @@ public class HiddenDangeTrackingAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 6;
+        return threeFixList.size();
     }
 
     private void initView(View view) {

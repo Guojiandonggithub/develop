@@ -7,6 +7,8 @@ public class HomeHiddenRecord {
 	private String teamGroupCode;// 队组编码
 	private String teamGroupName;// 队组名称
 	private String total;// 未处理数量
+	private String money;//
+	private String totalNum;// 总数量
 
 	public String getMonth() {
 		return month;
@@ -54,5 +56,13 @@ public class HomeHiddenRecord {
 
 	public void setTotal(String total) {
 		this.total = total;
+	}
+
+	public String getTotalNum() {
+		return totalNum;
+	}
+
+	public void setTotalNum(String totalNum) {
+		this.totalNum = totalNum;
 	}
 }
