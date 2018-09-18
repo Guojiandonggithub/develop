@@ -1,12 +1,15 @@
 package com.example.administrator.riskprojects.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
+
 /**
  * 隐患验收
  */
@@ -71,5 +74,11 @@ public class HiddenDangerReviewManagementActivity extends BaseActivity {
 
     private void setView() {
         mTxtTitle.setText(R.string.hidden_danger_review_management);
+        mTvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), HiddenDangerAcceptanceActivity.class));
+            }
+        });
     }
 }

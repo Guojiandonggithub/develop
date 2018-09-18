@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.LeftOptionSelectActivity"></activity>
+        <activity android:name=".activity.HiddenDangerAcceptanceActivity"></activity>
+        <activity android:name=".activity.LeftOptionSelectActivity" />
         <activity android:name=".activity.HiddenDangerDetailManagementActivity" />
         <activity android:name=".activity.HiddenDangeTrackingDetailListActivity" />
         <activity android:name=".activity.DatePickerActivity" />

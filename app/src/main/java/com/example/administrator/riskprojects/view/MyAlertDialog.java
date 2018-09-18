@@ -30,7 +30,7 @@ public class MyAlertDialog extends AppCompatDialog {
     private TextView mTvOk;
 
 
-    private MyAlertDialog(Context context, DialogListener listenerx) {
+    private MyAlertDialog(Context context, DialogListener listener) {
         super(context, R.style.myDialog);
         this.listener = listener;
         this.context = context;
