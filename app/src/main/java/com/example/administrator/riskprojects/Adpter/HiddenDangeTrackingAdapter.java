@@ -59,10 +59,7 @@ public class HiddenDangeTrackingAdapter extends RecyclerView.Adapter {
         return threeFixList.size();
     }
 
-    private void initView(View view) {
 
-
-    }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tvHiddenContent;

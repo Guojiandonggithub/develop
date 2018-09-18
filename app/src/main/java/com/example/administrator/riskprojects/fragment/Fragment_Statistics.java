@@ -54,6 +54,11 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     private TextView tvProfession;
     private TextView tvHiddenUnits;
     private TextView tvArea;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private TextView titleTop;
+    private BarChart barChart;
+    private TextView titleBottom;
+    private LineChart lineChart;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,10 +90,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         initLineChart(mLineChart);
         getHiddenStatisticsData();
         llOption = layout.findViewById(R.id.ll_option);
-        tvProfession =layout. findViewById(R.id.tv_profession);
+        tvProfession = layout.findViewById(R.id.tv_profession);
         tvHiddenUnits = layout.findViewById(R.id.tv_hidden_units);
         tvArea = layout.findViewById(R.id.tv_area);
 
+        titleTop =  layout.findViewById(R.id.title_top);
+        titleBottom =  layout.findViewById(R.id.title_bottom);
     }
 
     private void showLineChart(List<HomeHiddenRecord> dtatisticsList) {
@@ -290,20 +297,36 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     public void onRightMenuClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_chart_01:
+                titleTop.setText(R.string.hidden_danger_statistics_of_each_unit);
+                titleBottom.setText(R.string.hidden_danger_statistics_of_each_unit);
                 break;
             case R.id.ll_chart_02:
+                titleTop.setText(R.string.summary_of_hazards);
+                titleBottom.setText(R.string.summary_of_hazards);
                 break;
             case R.id.ll_chart_03:
+                titleTop.setText(R.string.hazard_query_statistics);
+                titleBottom.setText(R.string.hazard_query_statistics);
                 break;
             case R.id.ll_chart_04:
+                titleTop.setText(R.string.the_hidden_danger_record_has_been_deleted);
+                titleBottom.setText(R.string.the_hidden_danger_record_has_been_deleted);
                 break;
             case R.id.ll_chart_05:
+                titleTop.setText(R.string.duplicate_hazard_record);
+                titleBottom.setText(R.string.duplicate_hazard_record);
                 break;
             case R.id.ll_chart_06:
+                titleTop.setText(R.string.chart_analysis_of_hazard_handling_unit);
+                titleBottom.setText(R.string.chart_analysis_of_hazard_handling_unit);
                 break;
             case R.id.ll_chart_07:
+                titleTop.setText(R.string.chart_analysis_of_hazard_handling);
+                titleBottom.setText(R.string.chart_analysis_of_hazard_handling);
                 break;
             case R.id.ll_chart_08:
+                titleTop.setText(R.string.chart_analysis_of_hazard_year);
+                titleBottom.setText(R.string.chart_analysis_of_hazard_year);
                 break;
             default:
                 break;

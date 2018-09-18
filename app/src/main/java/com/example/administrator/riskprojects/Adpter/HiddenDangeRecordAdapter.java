@@ -28,7 +28,7 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
 
     public HiddenDangeRecordAdapter(List<HiddenDangerRecord> recordList) {
         this.recordList = recordList;
-        expands= new boolean[recordList.size()];
+        expands = new boolean[recordList.size()];
         for (int i = 0; i < recordList.size(); i++) {
             expands[i] = false;
         }
@@ -43,16 +43,18 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         ((ViewHolder) holder).tvHiddenUnits.setText(recordList.get(position).getTeamGroupName());
-        ((ViewHolder) holder).tvTimeOrOrder.setText(recordList.get(position).getFindTime()+"/"+recordList.get(position).getClassName());
+        ((ViewHolder) holder).tvTimeOrOrder.setText(recordList.get(position).getFindTime() + "/" + recordList.get(position).getClassName());
         ((ViewHolder) holder).tvHiddenContent.setText(recordList.get(position).getContent());
         ((ViewHolder) holder).tvHiddenDangerBelongs.setText(recordList.get(position).getHiddenBelong());
         ((ViewHolder) holder).tvProfessional.setText(recordList.get(position).getSname());
         ((ViewHolder) holder).tvArea.setText(recordList.get(position).getAreaName());
         ((ViewHolder) holder).tvClasses.setText(recordList.get(position).getGname());
+        ((ViewHolder) holder).ivStatus.setImageResource(getImageResourceByFlag(recordList.get(position).getFlag()));
+        ((ViewHolder) holder).ivStatusSecond.setImageResource(getImageResourceByFlag(recordList.get(position).getFlag()));
         String isuper = recordList.get(position).getIsupervision();
-        if(TextUtils.isEmpty(isuper)||TextUtils.equals(isuper,"0")){
+        if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
             isuper = "未督办";
-        }else{
+        } else {
             isuper = "已督办";
         }
         ((ViewHolder) holder).tvOversee.setText(isuper);
@@ -78,11 +80,28 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
                 Intent intent = new Intent(holder.itemView.getContext(),
                         HiddenDangerDetailManagementActivity.class);
                 String id = recordList.get(position).getId();
-                intent.putExtra("id",id);
+                intent.putExtra("id", id);
                 holder.itemView.getContext().startActivity(intent);
             }
         });
 
+    }
+
+    private int getImageResourceByFlag(String flag) {
+        switch (flag) {
+            case "1":
+                return R.mipmap.ic_status_release;
+            case "2":
+                return R.mipmap.ic_status_rectificationg;
+            case "3":
+                return R.mipmap.ic_recheck;
+            case "4":
+                return R.mipmap.ic_status_dispelling;
+            case "5":
+                return R.mipmap.ic_status_release;
+            default:
+                return R.mipmap.ic_status_overdue;
+        }
     }
 
     @Override
@@ -91,34 +110,34 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
     }
 
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvHiddenUnits;
-        private TextView tvTimeOrOrder;
-        private TextView tvHiddenContent;
-        private TextView tvHiddenDangerBelongs;
-        private LinearLayoutCompat expand;
-        private TextView tvProfessional;
-        private TextView tvArea;
-        private TextView tvClasses;
-        private TextView tvOversee;
-        private ImageView ivStatusSecond;
-        private LinearLayoutCompat clickMore;
-        private ImageView ivStatus;
+static class ViewHolder extends RecyclerView.ViewHolder {
+    private TextView tvHiddenUnits;
+    private TextView tvTimeOrOrder;
+    private TextView tvHiddenContent;
+    private TextView tvHiddenDangerBelongs;
+    private LinearLayoutCompat expand;
+    private TextView tvProfessional;
+    private TextView tvArea;
+    private TextView tvClasses;
+    private TextView tvOversee;
+    private ImageView ivStatusSecond;
+    private LinearLayoutCompat clickMore;
+    private ImageView ivStatus;
 
-        ViewHolder(View view) {
-            super(view);
-            tvHiddenUnits = view.findViewById(R.id.tv_hidden_units);
-            tvTimeOrOrder = view.findViewById(R.id.tv_time_or_order);
-            tvHiddenContent = view.findViewById(R.id.tv_hidden_content);
-            tvHiddenDangerBelongs = view.findViewById(R.id.tv_hidden_danger_belongs);
-            expand = view.findViewById(R.id.expand);
-            tvProfessional = view.findViewById(R.id.tv_professional);
-            tvArea = view.findViewById(R.id.tv_area);
-            tvClasses = view.findViewById(R.id.tv_classes);
-            tvOversee = view.findViewById(R.id.tv_oversee);
-            ivStatusSecond = view.findViewById(R.id.iv_status_second);
-            clickMore = view.findViewById(R.id.click_more);
-            ivStatus = view.findViewById(R.id.iv_status);
-        }
+    ViewHolder(View view) {
+        super(view);
+        tvHiddenUnits = view.findViewById(R.id.tv_hidden_units);
+        tvTimeOrOrder = view.findViewById(R.id.tv_time_or_order);
+        tvHiddenContent = view.findViewById(R.id.tv_hidden_content);
+        tvHiddenDangerBelongs = view.findViewById(R.id.tv_hidden_danger_belongs);
+        expand = view.findViewById(R.id.expand);
+        tvProfessional = view.findViewById(R.id.tv_professional);
+        tvArea = view.findViewById(R.id.tv_area);
+        tvClasses = view.findViewById(R.id.tv_classes);
+        tvOversee = view.findViewById(R.id.tv_oversee);
+        ivStatusSecond = view.findViewById(R.id.iv_status_second);
+        clickMore = view.findViewById(R.id.click_more);
+        ivStatus = view.findViewById(R.id.iv_status);
     }
+}
 }

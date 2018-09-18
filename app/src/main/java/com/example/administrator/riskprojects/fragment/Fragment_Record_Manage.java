@@ -306,7 +306,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
             case R.id.ll_manage_detail:
                 llAdd.setVisibility(View.VISIBLE);
                 flag = 1;
-                mRecyclerView.setAdapter(new HiddenDangeRecordAdapter(recordList));
+                getHiddenRecord(Constants.PAGE);
                 break;
             case R.id.ll_manage_release:
                 llAdd.setVisibility(View.GONE);
@@ -338,11 +338,11 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         }
     }
 
-    public void onLeftMenuClicked(String aname, String aid,String pname, String pid,String hname, String hid) {
-            llOption.setVisibility(View.VISIBLE);
-            tvArea.setText(aname);
-            tvProfession.setText(pname);
-            tvHiddenUnits.setText(hname);
+    public void onLeftMenuClicked(String aname, String aid, String pname, String pid, String hname, String hid) {
+        llOption.setVisibility(View.VISIBLE);
+        tvArea.setText(aname);
+        tvProfession.setText(pname);
+        tvHiddenUnits.setText(hname);
     }
 
     public String getTitle() {
@@ -364,5 +364,34 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
 
         }
         return "";
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        switch (flag) {
+            case 0:
+                getHiddenRecord(Constants.PAGE);
+                break;
+            case 1:
+                getReleaseList("1");
+                break;
+            case 2:
+                getReleaseList("1");
+                break;
+            case 3:
+                getRectificationList("1");
+                break;
+            case 4:
+                getTrackingList("1");
+                break;
+            case 5:
+                getHiddenRecord(Constants.PAGE);
+                break;
+            case 6:
+                getHiddenRecord(Constants.PAGE);
+                break;
+
+        }
     }
 }

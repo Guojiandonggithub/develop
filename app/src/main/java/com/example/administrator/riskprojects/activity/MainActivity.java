@@ -181,7 +181,7 @@ public class MainActivity extends FragmentActivity {
                     intent.putExtra(LeftOptionSelectActivity.TITLE, "记录跟踪");
                     startActivityForResult(intent, LeftOptionSelectActivity.REQUEST_CODE);
                 } else if (index == 3) {
-                    Intent intent = new Intent(MainActivity.this, LeftOptionSelectActivity.class);
+                    Intent intent = new Intent(MainActivity.this, LeftStatisticsOptionSelectActivity.class);
                     intent.putExtra(LeftOptionSelectActivity.TITLE, "分析统计");
                     startActivityForResult(intent, LeftStatisticsOptionSelectActivity.REQUEST_CODE);
                 }

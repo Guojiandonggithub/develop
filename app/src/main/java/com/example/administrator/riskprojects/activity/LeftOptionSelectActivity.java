@@ -64,6 +64,9 @@ public class LeftOptionSelectActivity extends BaseActivity {
     protected NetClient netClient;
     private LinearLayoutCompat llBottom;
     private TextView tvOk;
+    private TextView tvProfessionResult;
+    private TextView tvHiddenUnitsResult;
+    private TextView tvAreaResult;
 
 
     @Override
@@ -146,7 +149,7 @@ public class LeftOptionSelectActivity extends BaseActivity {
                     Intent intent = new Intent();
                     intent.putExtra(A_ID, ((SelectItem) spHiddenAreaAdapter.getItem(spinnerArea.getSelectedItemPosition())).id);
                     intent.putExtra(A_NAME, ((SelectItem) spHiddenAreaAdapter.getItem(spinnerArea.getSelectedItemPosition())).name);
-                    intent.putExtra(H_NAME, ((SelectItem) mSpHiddenUnitsAdapter.getItem(spinnerHiddenUnits.getSelectedItemPosition())).id);
+                    intent.putExtra(H_ID, ((SelectItem) mSpHiddenUnitsAdapter.getItem(spinnerHiddenUnits.getSelectedItemPosition())).id);
                     intent.putExtra(H_NAME, ((SelectItem) mSpHiddenUnitsAdapter.getItem(spinnerHiddenUnits.getSelectedItemPosition())).name);
                     intent.putExtra(P_ID, ((SelectItem) spProfessionalAdapter.getItem(spinnerProfession.getSelectedItemPosition())).id);
                     intent.putExtra(P_NAME, ((SelectItem) spProfessionalAdapter.getItem(spinnerProfession.getSelectedItemPosition())).name);
@@ -155,10 +158,13 @@ public class LeftOptionSelectActivity extends BaseActivity {
                 }
             }
         });
+        tvProfessionResult = findViewById(R.id.tv_profession_result);
+        tvHiddenUnitsResult = findViewById(R.id.tv_hidden_units_result);
+        tvAreaResult = findViewById(R.id.tv_area_result);
     }
 
 
-    private void setUpSpinner(Spinner spinner,final SpinnerAdapter adapter, final List<SelectItem> selectItems, final int flag) {
+    private void setUpSpinner(Spinner spinner, final SpinnerAdapter adapter, final List<SelectItem> selectItems, final int flag) {
         spinner.setBackgroundColor(0x0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             spinner.setPopupBackgroundResource(R.drawable.shape_rectangle_rounded);
@@ -169,6 +175,18 @@ public class LeftOptionSelectActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 adapter.setSelectedPostion(position);
+                switch (flag) {
+                    case FLAG_AREA:
+                        tvAreaResult.setText(((SelectItem) spHiddenAreaAdapter.getItem(spinnerArea.getSelectedItemPosition())).name);
+                        break;
+                    case FLAG_HIDDENUNITS:
+                        tvHiddenUnitsResult.setText(((SelectItem) mSpHiddenUnitsAdapter.getItem(spinnerHiddenUnits.getSelectedItemPosition())).name);
+                        break;
+                    case FLAG_PROFESSION:
+                        tvProfessionResult.setText(((SelectItem) spProfessionalAdapter.getItem(spinnerProfession.getSelectedItemPosition())).name);
+                        break;
+
+                }
             }
 
             @Override

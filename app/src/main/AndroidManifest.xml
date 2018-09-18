@@ -16,6 +16,7 @@
         <activity android:name=".activity.FiveDecisionsActivity"></activity>
         <activity android:name=".activity.HiddenDangerAcceptanceActivity" />
         <activity android:name=".activity.LeftOptionSelectActivity" />
+        <activity android:name=".activity.LeftStatisticsOptionSelectActivity" />
         <activity android:name=".activity.HiddenDangerDetailManagementActivity" />
         <activity android:name=".activity.HiddenDangeTrackingDetailListActivity" />
         <activity android:name=".activity.DatePickerActivity" />

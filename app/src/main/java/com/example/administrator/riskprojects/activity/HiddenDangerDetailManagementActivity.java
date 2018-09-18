@@ -67,7 +67,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                     public void affirm() {
                         Intent intent = getIntent();
                         String id = intent.getStringExtra("id");
-                        Utils.showLongToast(HiddenDangerDetailManagementActivity.this, "删除成功:"+id);
+                        Utils.showLongToast(HiddenDangerDetailManagementActivity.this, "删除成功:" + id);
                         deleteHiddenRecord(id);
                         //Intent intents = new Intent(HiddenDangerDetailManagementActivity.this, HiddenRiskRecordAddEditActivity.class);
                         //intents.putExtra("id",id);
@@ -89,7 +89,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                 Intent intent = getIntent();
                 String id = intent.getStringExtra("id");
                 Intent intents = new Intent(HiddenDangerDetailManagementActivity.this, HiddenRiskRecordAddEditActivity.class);
-                intents.putExtra("id",id);
+                intents.putExtra("id", id);
                 startActivity(intents);
             }
         });
@@ -119,7 +119,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
         tvChange = findViewById(R.id.tv_change);
     }
 
-    private void initdata(){
+    private void initdata() {
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
         getHiddenRecord(id);
@@ -128,26 +128,29 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
 
     private void getHiddenRecord(String id) {//隐患id
         RequestParams params = new RequestParams();
-        params.put("hiddenDangerRecordId",id);
+        params.put("hiddenDangerRecordId", id);
         netClient.post(Constants.HIDDENDANGERRECORD, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
                 Log.i(TAG, "隐患数据返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
-                    JSONObject returndata  = JSON.parseObject(data);
+                    JSONObject returndata = JSON.parseObject(data);
                     HiddenDangerRecord record = JSONArray.parseObject(data, HiddenDangerRecord.class);
                     tvHiddenUnits.setText(record.getTeamGroupName());
-                    tvTimeOrOrder.setText(record.getFindTime()+"/"+record.getClassName());
+                    tvTimeOrOrder.setText(record.getFindTime() + "/" + record.getClassName());
                     tvHiddenContent.setText(record.getContent());
                     tvHiddenDangerBelongs.setText(record.getHiddenBelong());
                     tvProfessional.setText(record.getSname());
                     tvArea.setText(record.getAreaName());
                     tvClasses.setText(record.getGname());
+                    ivStatus.setImageResource(getImageResourceByFlag(record.getFlag()));
+                    ivStatusSecond.setImageResource(getImageResourceByFlag(record.getFlag()));
+
                     String isuper = record.getIsupervision();
-                    if(TextUtils.isEmpty(isuper)||TextUtils.equals(isuper,"0")){
+                    if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
                         isuper = "未督办";
-                    }else{
+                    } else {
                         isuper = "已督办";
                     }
                     tvOversee.setText(isuper);
@@ -167,7 +170,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
     //删除隐患
     private void deleteHiddenRecord(String id) {//隐患id
         RequestParams params = new RequestParams();
-        params.put("hiddenDangerRecordId",id);
+        params.put("hiddenDangerRecordId", id);
         netClient.post(Constants.DELETE_HIDDEN, params, new BaseJsonRes() {
 
             @Override
@@ -187,4 +190,22 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
             }
         });
     }
+
+    private int getImageResourceByFlag(String flag) {
+        switch (flag) {
+            case "1":
+                return R.mipmap.ic_status_release;
+            case "2":
+                return R.mipmap.ic_status_rectificationg;
+            case "3":
+                return R.mipmap.ic_recheck;
+            case "4":
+                return R.mipmap.ic_status_dispelling;
+            case "5":
+                return R.mipmap.ic_status_release;
+            default:
+                return R.mipmap.ic_status_overdue;
+        }
+    }
+
 }

@@ -83,7 +83,7 @@ public class HiddenDangerReleaseManagementActivity extends BaseActivity {
         mTvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HiddenDangerReleaseManagementActivity.this,FiveDecisionsActivity.class));
+                startActivity(new Intent(HiddenDangerReleaseManagementActivity.this,FiveDecisionsActivity.class)) ;
             }
         });
     }

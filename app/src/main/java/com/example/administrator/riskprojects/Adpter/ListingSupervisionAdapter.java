@@ -32,6 +32,7 @@ public class ListingSupervisionAdapter extends RecyclerView.Adapter {
 
         ((ViewHolder) holder).mTvHiddenUnits.setText(recordList.get(position).getTeamGroupName());
         ((ViewHolder) holder).mTvTimeOrOrder.setText(recordList.get(position).getFindTime()+"/"+recordList.get(position).getClassName());
+        ((ViewHolder) holder).mIvStatus.setImageResource(getImageResourceByFlag(recordList.get(position).getFlag()));
         ((ViewHolder) holder).mTvHiddenContent.setText(recordList.get(position).getContent());
         ((ViewHolder) holder).mTvHiddenDangerBelongs.setText(recordList.get(position).getHiddenBelong());
         ((ViewHolder) holder).mTvHiddenUnits.setSelected(true);
@@ -67,4 +68,22 @@ public class ListingSupervisionAdapter extends RecyclerView.Adapter {
             mIvStatus = view.findViewById(R.id.iv_status);
         }
     }
+
+    private int getImageResourceByFlag(String flag) {
+        switch (flag) {
+            case "1":
+                return R.mipmap.ic_status_release;
+            case "2":
+                return R.mipmap.ic_status_rectificationg;
+            case "3":
+                return R.mipmap.ic_recheck;
+            case "4":
+                return R.mipmap.ic_status_dispelling;
+            case "5":
+                return R.mipmap.ic_status_release;
+            default:
+                return R.mipmap.ic_status_overdue;
+        }
+    }
+
 }

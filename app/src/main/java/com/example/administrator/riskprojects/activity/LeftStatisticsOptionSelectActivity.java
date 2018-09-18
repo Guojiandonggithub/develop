@@ -27,8 +27,11 @@ import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.util.DensityUtil;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class LeftStatisticsOptionSelectActivity extends BaseActivity {
     public static final String TITLE = "title";
@@ -64,6 +67,10 @@ public class LeftStatisticsOptionSelectActivity extends BaseActivity {
     protected NetClient netClient;
     private LinearLayoutCompat llBottom;
     private TextView tvOk;
+    private String date;
+    private TextView tvProfessionResult;
+    private TextView tvHiddenUnitsResult;
+    private TextView tvAreaResult;
 
 
     @Override
@@ -82,7 +89,6 @@ public class LeftStatisticsOptionSelectActivity extends BaseActivity {
         tvArea.setText("图形类别");
         //需要替换下面的
         getArea();
-        getCollieryTeam();
         getSpecialty();
         tvProfession.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,14 +121,7 @@ public class LeftStatisticsOptionSelectActivity extends BaseActivity {
         tvHiddenUnits.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (tvHiddenUnits.isSelected()) {
-                    tvHiddenUnits.setSelected(false);
-                } else {
-                    tvProfession.setSelected(false);
-                    tvArea.setSelected(false);
-                    tvHiddenUnits.setSelected(true);
-                    spinnerHiddenUnits.performClick();
-                }
+                DatePickerActivity.startPickDate(LeftStatisticsOptionSelectActivity.this, LeftStatisticsOptionSelectActivity.this);
             }
         });
     }
@@ -146,12 +145,12 @@ public class LeftStatisticsOptionSelectActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (spinnerArea.getAdapter() != null
-                        && spinnerHiddenUnits.getAdapter() != null && spinnerProfession.getAdapter() != null) {
+                         && spinnerProfession.getAdapter() != null) {
                     Intent intent = new Intent();
                     intent.putExtra(A_ID, ((SelectItem) spHiddenAreaAdapter.getItem(spinnerArea.getSelectedItemPosition())).id);
                     intent.putExtra(A_NAME, ((SelectItem) spHiddenAreaAdapter.getItem(spinnerArea.getSelectedItemPosition())).name);
-                    intent.putExtra(H_NAME, ((SelectItem) mSpHiddenUnitsAdapter.getItem(spinnerHiddenUnits.getSelectedItemPosition())).id);
-                    intent.putExtra(H_NAME, ((SelectItem) mSpHiddenUnitsAdapter.getItem(spinnerHiddenUnits.getSelectedItemPosition())).name);
+                    intent.putExtra(H_NAME, TextUtils.isEmpty(date) ? new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(new Date()) : date);
+                    intent.putExtra(H_ID, "");
                     intent.putExtra(P_ID, ((SelectItem) spProfessionalAdapter.getItem(spinnerProfession.getSelectedItemPosition())).id);
                     intent.putExtra(P_NAME, ((SelectItem) spProfessionalAdapter.getItem(spinnerProfession.getSelectedItemPosition())).name);
                     setResult(RESULT_OK, intent);
@@ -159,10 +158,13 @@ public class LeftStatisticsOptionSelectActivity extends BaseActivity {
                 }
             }
         });
+        tvProfessionResult = findViewById(R.id.tv_profession_result);
+        tvHiddenUnitsResult = findViewById(R.id.tv_hidden_units_result);
+        tvAreaResult = findViewById(R.id.tv_area_result);
     }
 
 
-    private void setUpSpinner(Spinner spinner,final SpinnerAdapter adapter, final List<SelectItem> selectItems, final int flag) {
+    private void setUpSpinner(Spinner spinner, final SpinnerAdapter adapter, final List<SelectItem> selectItems, final int flag) {
         spinner.setBackgroundColor(0x0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             spinner.setPopupBackgroundResource(R.drawable.shape_rectangle_rounded);
@@ -173,6 +175,15 @@ public class LeftStatisticsOptionSelectActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 adapter.setSelectedPostion(position);
+                switch (flag) {
+                    case FLAG_AREA:
+                        tvAreaResult.setText(((SelectItem) spHiddenAreaAdapter.getItem(spinnerArea.getSelectedItemPosition())).name);
+                        break;
+                    case FLAG_PROFESSION:
+                        tvProfessionResult.setText(((SelectItem) spProfessionalAdapter.getItem(spinnerProfession.getSelectedItemPosition())).name);
+                        break;
+
+                }
             }
 
             @Override
@@ -257,36 +268,14 @@ public class LeftStatisticsOptionSelectActivity extends BaseActivity {
     }
 
 
-    //获取部门/队组成员
-    private void getCollieryTeam() {
-        RequestParams params = new RequestParams();
-        netClient.post(Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取部门/队组成员返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
-                    List<SelectItem> selectItems = new ArrayList<>();
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getTeamName().replaceAll("&nbsp;", "   ");
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
-                    }
-                    mSpHiddenUnitsAdapter = SpinnerAdapter.createFromResource(LeftStatisticsOptionSelectActivity.this, selectItems);
-                    setUpSpinner(spinnerHiddenUnits, mSpHiddenUnitsAdapter, selectItems, FLAG_HIDDENUNITS);
-                }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取部门/队组成员返回错误信息：" + content);
-                Utils.showLongToast(LeftStatisticsOptionSelectActivity.this, content);
-            }
-        });
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == DatePickerActivity.REQUEST && resultCode == RESULT_OK) {
+            date = data.getStringExtra(DatePickerActivity.DATE);
+            tvHiddenUnitsResult.setText(date);
+        }
     }
-
-
 }
