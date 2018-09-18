@@ -2,11 +2,14 @@ package com.example.administrator.riskprojects.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.view.MyAlertDialog;
+
 /**
  * 隐患整改
  */
@@ -62,6 +65,24 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
         mTvToCarryOutThePeople = findViewById(R.id.tv_to_carry_out_the_people);
         mLlBottom = findViewById(R.id.ll_bottom);
         mTvOk = findViewById(R.id.tv_ok);
+        mTvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyAlertDialog myAlertDialog = new MyAlertDialog(HiddenDangerRectificationManagementActivity.this,
+                        new MyAlertDialog.DialogListener() {
+                            @Override
+                            public void affirm() {
+                                //确定入口
+                            }
+
+                            @Override
+                            public void cancel() {
+
+                            }
+                        },"你确定要整改此么？" );
+                myAlertDialog.show();
+            }
+        });
     }
 
     private void setView() {

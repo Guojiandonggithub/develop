@@ -176,7 +176,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data)) {
                     Utils.showLongToast(HiddenDangerDetailManagementActivity.this, "删除成功");
                 }
-
+                finish();
             }
 
             @Override

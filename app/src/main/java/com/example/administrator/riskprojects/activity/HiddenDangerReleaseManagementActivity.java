@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -79,6 +80,12 @@ public class HiddenDangerReleaseManagementActivity extends BaseActivity {
         mTvHeadquarters = findViewById(R.id.tv_headquarters);
         mLlBottom = findViewById(R.id.ll_bottom);
         mTvOk = findViewById(R.id.tv_ok);
+        mTvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HiddenDangerReleaseManagementActivity.this,FiveDecisionsActivity.class));
+            }
+        });
     }
 
     private void setView() {

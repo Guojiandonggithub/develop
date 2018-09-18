@@ -33,6 +33,7 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
         setContentView(R.layout.activity_hidden_dange_tracking_detail_list);
         initView();
         setView();
+
     }
 
     private void setView() {

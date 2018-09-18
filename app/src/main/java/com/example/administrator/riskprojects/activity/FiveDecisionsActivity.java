@@ -1,7 +1,9 @@
 package com.example.administrator.riskprojects.activity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,30 +17,50 @@ import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.util.DensityUtil;
 
-public class HiddenDangerAcceptanceActivity extends BaseActivity {
+public class FiveDecisionsActivity extends BaseActivity {
 
     private TextView txtLeft;
     private ImageView imgLeft;
     private TextView txtTitle;
     private ImageView imgRight;
     private TextView txtRight;
-    private Spinner spAcceptanceResults;
     private EditText etAddLocation;
+    private CardView cvSelectDate;
+    private TextView tvDate;
+    private Spinner spMineArea;
+    private SpinnerAdapter spMineAreaAdapter;
+    private Spinner spDepartment;
+    private SpinnerAdapter spDepartmentAdapter;
+    private Spinner spTeam;
+    private SpinnerAdapter spTeamAdapter;
+    private Spinner spResponsibleThose;
+    private SpinnerAdapter spResponsibleThoseAdapter;
+    private EditText etMoney;
+    private EditText etNum;
+    private Spinner spTrackPeople;
+    private SpinnerAdapter spTrackPeopleAdapter;
+    private Spinner spTrackPeopleUnit;
+    private SpinnerAdapter spTrackPeopleUnitAdapter;
     private EditText etContent;
     private LinearLayoutCompat llBottom;
     private TextView tvOk;
-    private SpinnerAdapter spAcceptanceResultsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hidden_danger_acceptance);
+        setContentView(R.layout.activity_five_decisions);
         initView();
         setView();
     }
 
     private void setView() {
-        txtTitle.setText("隐患验收");
+        txtTitle.setText("五定");
+        cvSelectDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerActivity.startPickDate(FiveDecisionsActivity.this, FiveDecisionsActivity.this);
+            }
+        });
     }
 
     private void initView() {
@@ -47,19 +69,29 @@ public class HiddenDangerAcceptanceActivity extends BaseActivity {
         txtTitle = findViewById(R.id.txt_title);
         imgRight = findViewById(R.id.img_right);
         txtRight = findViewById(R.id.txt_right);
-        spAcceptanceResults = findViewById(R.id.sp_acceptance_results);
         etAddLocation = findViewById(R.id.et_add_location);
+        cvSelectDate = findViewById(R.id.cv_select_date);
+        tvDate = findViewById(R.id.tv_date);
+        spMineArea = findViewById(R.id.sp_mine_area);
+        spDepartment = findViewById(R.id.sp_department);
+        spTeam = findViewById(R.id.sp_team);
+        spResponsibleThose = findViewById(R.id.sp_responsible_those);
+        etMoney = findViewById(R.id.et_money);
+        etNum = findViewById(R.id.et_num);
+        spTrackPeople = findViewById(R.id.sp_track_people);
+        spTrackPeopleUnit = findViewById(R.id.sp_track_people_unit);
         etContent = findViewById(R.id.et_content);
         llBottom = findViewById(R.id.ll_bottom);
         tvOk = findViewById(R.id.tv_ok);
-        tvOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == DatePickerActivity.REQUEST && resultCode == RESULT_OK) {
+            tvDate.setText(data.getStringExtra(DatePickerActivity.DATE));
+        }
+    }
 
 
     private void setUpSpinner(Spinner spinner, final SpinnerAdapter adapter) {
