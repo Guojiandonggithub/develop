@@ -31,21 +31,24 @@ public class HiddenDangeTrackingAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if(threeFixList.size()>0){
             ((ViewHolder) holder).tvHiddenContent.setText(threeFixList.get(position).getContent());
             ((ViewHolder) holder).tvArea.setText(threeFixList.get(position).getAreaName());
             ((ViewHolder) holder).tvSpecialty.setText(threeFixList.get(position).getSname());
-            ((ViewHolder) holder).tvTimeOrOrder.setText(threeFixList.get(position).getClassName());
-            ((ViewHolder) holder).tvCategory.setText(threeFixList.get(position).getIshandle());
-            ((ViewHolder) holder).tvSupervise.setText(threeFixList.get(position).getGname());
+            ((ViewHolder) holder).tvTimeOrOrder.setText(threeFixList.get(position).getFindTime()+"/"+threeFixList.get(position).getClassName());
+            ((ViewHolder) holder).tvCategory.setText(threeFixList.get(position).getGname());
+            ((ViewHolder) holder).tvSupervise.setText(threeFixList.get(position).getIshandle());
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.itemView.getContext().startActivity(new Intent( holder.itemView.getContext(),
-                        HiddenDangeTrackingManagementActivity.class));
+                Intent intent=  new Intent( holder.itemView.getContext(),
+                        HiddenDangeTrackingManagementActivity.class);
+                intent.putExtra("id",threeFixList.get(position).getId());
+                intent.putExtra("hiddenDangerId",threeFixList.get(position).getHiddenDangerId());
+                holder.itemView.getContext().startActivity(intent);
             }
         });
 

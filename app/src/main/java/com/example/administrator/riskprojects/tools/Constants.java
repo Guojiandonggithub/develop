@@ -13,7 +13,7 @@ public interface Constants {
 	String Result = "type";
 	String DB_NAME = "WeChat.db";
 	String NET_ERROR = "网络错误，请稍后再试！";
-	String PAGE = "0";
+	String PAGE = "1";
 	String ROWS = "10";
 	// 主机地址
 	String MAIN_ENGINE = "http://59.49.107.27:8187/yhpc/mobile/";
@@ -53,5 +53,9 @@ public interface Constants {
 	String GET_OVERDUELIST = MAIN_ENGINE + "hiddenDangerOutOfTimeMobileAction!findhiddenDangerOutTime.action";
 	// 隐患验收查询
 	String GET_REVIEWLIST = MAIN_ENGINE + "hiddenDangerRecheckMobileAction!findhiddenDangerRecheck.action";
+	// 隐患跟踪确认接口
+	String GET_THREEFIX = MAIN_ENGINE + "hiddenDangerCarryOutMobileAction!carryOutDetail.action";
+	// 隐患下达确认接口
+	//giString GET_THREEFIX = MAIN_ENGINE + "hiddenDangerThreeFixMobileAction!addThreeFixAndConfirm.action";
 
 }

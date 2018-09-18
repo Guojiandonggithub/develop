@@ -77,7 +77,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
                 @Override
                 public void onMySuccess(String data) {
-                    Utils.showLongToast(LoginActivity.this, "登录返回数据"+ data);
+                    //Utils.showLongToast(LoginActivity.this, "登录返回数据"+ data);
 
                     Utils.putValue(LoginActivity.this, Constants.UserInfo, data);
                     Utils.putBooleanValue(LoginActivity.this,

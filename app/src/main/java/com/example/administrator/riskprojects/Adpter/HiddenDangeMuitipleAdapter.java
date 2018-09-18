@@ -45,16 +45,19 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).tvArea.setText(threeFixList.get(position).getAreaName());
         ((ViewHolder) holder).tvSpecialty.setText(threeFixList.get(position).getSname());
         ((ViewHolder) holder).tvTimeOrOrder.setText(threeFixList.get(position).getClassName());
-        ((ViewHolder) holder).tvCategory.setText(threeFixList.get(position).getIshandle());
-        ((ViewHolder) holder).tvSupervise.setText(threeFixList.get(position).getGname());
+        ((ViewHolder) holder).tvCategory.setText(threeFixList.get(position).getGname());
+        ((ViewHolder) holder).tvSupervise.setText(threeFixList.get(position).getIshandle());
         switch (flag) {
             case FLAG_OVERDUE:
                 ((ViewHolder) holder).button.setText("重新下达");
                 ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        holder.itemView.getContext().startActivity(new Intent(holder.itemView.getContext(),
-                                HiddenDangerOverdueManagementActivity.class));
+                        Intent intent = new Intent(holder.itemView.getContext(),
+                                HiddenDangerOverdueManagementActivity.class);
+                        intent.putExtra("id",threeFixList.get(position).getId());
+                        intent.putExtra("hiddenDangerId",threeFixList.get(position).getHiddenDangerId());
+                        holder.itemView.getContext().startActivity(intent);
                     }
                 });
                 break;
@@ -63,8 +66,11 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
                 ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        holder.itemView.getContext().startActivity(new Intent(holder.itemView.getContext(),
-                                HiddenDangerReleaseManagementActivity.class));
+                        Intent intent = new Intent(holder.itemView.getContext(),
+                                HiddenDangerReleaseManagementActivity.class);
+                        intent.putExtra("id",threeFixList.get(position).getId());
+                        intent.putExtra("hiddenDangerId",threeFixList.get(position).getHiddenDangerId());
+                        holder.itemView.getContext().startActivity(intent);
                     }
                 });
                 break;
@@ -74,8 +80,11 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
                 ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        holder.itemView.getContext().startActivity(new Intent(holder.itemView.getContext(),
-                                HiddenDangerReviewManagementActivity.class));
+                        Intent intent = new Intent(holder.itemView.getContext(),
+                                HiddenDangerReviewManagementActivity.class);
+                        intent.putExtra("id",threeFixList.get(position).getId());
+                        intent.putExtra("hiddenDangerId",threeFixList.get(position).getHiddenDangerId());
+                        holder.itemView.getContext().startActivity(intent);
                     }
                 });
                 break;
@@ -85,8 +94,11 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
                 ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        holder.itemView.getContext().startActivity(new Intent(holder.itemView.getContext(),
-                                HiddenDangerRectificationManagementActivity.class));
+                        Intent intent = new Intent(holder.itemView.getContext(),
+                                HiddenDangerRectificationManagementActivity.class);
+                        intent.putExtra("id",threeFixList.get(position).getId());
+                        intent.putExtra("hiddenDangerId",threeFixList.get(position).getHiddenDangerId());
+                        holder.itemView.getContext().startActivity(intent);
                     }
                 });
                 break;

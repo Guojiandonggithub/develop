@@ -206,7 +206,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("threeFixJsonData", jsonString);
-        netClient.post(Constants.GET_TRACKINGLIST, params, new BaseJsonRes() {
+        netClient.post(Constants.GET_RECTIFICATIONLIST, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -306,8 +306,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
             case R.id.ll_manage_detail:
                 llAdd.setVisibility(View.VISIBLE);
                 flag = 1;
-                initViews();
-//                mRecyclerView.setAdapter(new HiddenDangeRecordAdapter(recordList));
+                mRecyclerView.setAdapter(new HiddenDangeRecordAdapter(recordList));
                 break;
             case R.id.ll_manage_release:
                 llAdd.setVisibility(View.GONE);

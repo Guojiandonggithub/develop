@@ -33,7 +33,7 @@ public class ThreeFix {
 	private String areaName;// 区域
 	private String tname;// 隐患类型名称
 	private String content;// 隐患内容
-	private String findTime;// 隐患发现人
+	private String findTime;// 隐患发现时间
 	private String className;// 隐患发现的班次
 	private String ishandle;// 是否处理：0：未处理， 1：已处理
 	private String jbName;// 级别名字
@@ -64,6 +64,7 @@ public class ThreeFix {
 	private String follingPersonName; // 跟踪人姓名
 	private String follingTeamId; // 跟踪人单位id
 	private String follingTeamName; // 跟踪人单位名称
+	private String isupervision; // 督办
 
 	public String getId() {
 		return id;
@@ -551,5 +552,13 @@ public class ThreeFix {
 
 	public void setFollingTeamName(String follingTeamName) {
 		this.follingTeamName = follingTeamName;
+	}
+
+	public String getIsupervision() {
+		return isupervision;
+	}
+
+	public void setIsupervision(String isupervision) {
+		this.isupervision = isupervision;
 	}
 }
