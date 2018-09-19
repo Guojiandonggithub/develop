@@ -67,7 +67,7 @@ public class UserUtils {
 	public static String getUserName(Context context) {
 		UserInfo user = getUserModel(context);
 		if (user != null)
-			return user.getUserName();
+			return user.getRealName();
 		else
 			return "";
 	}

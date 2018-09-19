@@ -21,6 +21,8 @@ import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
+import java.io.Serializable;
+
 /**
  * 隐患下达
  */
@@ -90,59 +92,29 @@ public class HiddenDangerReleaseManagementActivity extends BaseActivity {
 
     private void setView() {
         mTxtTitle.setText(R.string.hidden_danger_management);
-        //getThreeFix();
+        Bundle  bundle = getIntent().getBundleExtra("threeBund");
+        ThreeFix threeFix = (ThreeFix) bundle.getSerializable("threeFix");
+        mTvHiddenContent.setText(threeFix.getContent());
+        mTvArea.setText(threeFix.getAreaName());
+        mTvSpecialty.setText(threeFix.getSname());
+        mTvTimeOrOrder.setText(threeFix.getFindTime()+"/"+threeFix.getClassName());
+        mTvCategory.setText(threeFix.getGname());
+        String isuper = threeFix.getIsupervision();
+        if(TextUtils.isEmpty(isuper)||TextUtils.equals(isuper,"0")){
+            isuper = "未督办";
+        }else{
+            isuper = "已督办";
+        }
+        mTvSupervise.setText(isuper);
+        mTvFinishTime.setText(threeFix.getCompleteTime());
+        mTvDepartment.setText(threeFix.getLsdeptName()+"/"+threeFix.getLsteamName());
+        mTvMeasure.setText(threeFix.getMeasure());
+        mTvCapital.setText(threeFix.getMoney());
+        mTvPrincipal.setText(threeFix.getRealName());
+        mTvTheNumberOfProcessing.setText(threeFix.getPersonNum());
+        mTvToCarryOutThePeople.setText(threeFix.getPracticablePerson());
+        mTvDepartment.setText(threeFix.getFollingTeamName());
+        mTvHeadquarters.setText(threeFix.getFollingPersonName());
     }
 
-    //查询跟踪实体
-    private void getThreeFix() {
-        Intent intent = getIntent();
-        String id = intent.getStringExtra("id");
-        String hiddenDangerId = intent.getStringExtra("hiddenDangerId");
-        RequestParams params = new RequestParams();
-        params.put("id",id);
-        params.put("hiddenDangerId",hiddenDangerId);
-        netClient.post(Constants.GET_THREEFIX, params, new BaseJsonRes() {
-
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "查询跟踪实体数据返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    JSONObject returndata  = JSON.parseObject(data);
-                    String hiddenDanger = returndata.getString("hiddenDanger");
-                    JSONObject threeFixData = JSON.parseObject(hiddenDanger);
-                    String threeFixDataStr = threeFixData.getString("obj");
-                    ThreeFix threeFix = JSONArray.parseObject(threeFixDataStr, ThreeFix.class);
-                    mTvHiddenContent.setText(threeFix.getContent());
-                    mTvArea.setText(threeFix.getAreaName());
-                    mTvSpecialty.setText(threeFix.getSname());
-                    mTvTimeOrOrder.setText(threeFix.getFindTime()+"/"+threeFix.getClassName());
-                    mTvCategory.setText(threeFix.getGname());
-                    String isuper = threeFix.getIsupervision();
-                    if(TextUtils.isEmpty(isuper)||TextUtils.equals(isuper,"0")){
-                        isuper = "未督办";
-                    }else{
-                        isuper = "已督办";
-                    }
-                    mTvSupervise.setText(isuper);
-                    mTvFinishTime.setText(threeFix.getCompleteTime());
-                    mTvDepartment.setText(threeFix.getLsdeptName()+"/"+threeFix.getLsteamName());
-                    mTvMeasure.setText(threeFix.getMeasure());
-                    mTvCapital.setText(threeFix.getMoney());
-                    mTvPrincipal.setText(threeFix.getRealName());
-                    mTvTheNumberOfProcessing.setText(threeFix.getPersonNum());
-                    mTvToCarryOutThePeople.setText(threeFix.getPracticablePerson());
-                    mTvDepartment.setText(threeFix.getFollingTeamName());
-                    mTvHeadquarters.setText(threeFix.getFollingPersonName());
-                }
-
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "查询跟踪实体数据返回错误信息：" + content);
-                Utils.showLongToast(HiddenDangerReleaseManagementActivity.this, content);
-                return;
-            }
-        });
-    }
 }

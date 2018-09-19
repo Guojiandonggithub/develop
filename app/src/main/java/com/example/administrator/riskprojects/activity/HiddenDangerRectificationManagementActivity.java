@@ -3,12 +3,14 @@ package com.example.administrator.riskprojects.activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.view.MyAlertDialog;
+import com.example.administrator.riskprojects.bean.ThreeFix;
 
 /**
  * 隐患整改
@@ -87,5 +89,26 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
 
     private void setView() {
         mTxtTitle.setText(R.string.hidden_danger_rectification_management);
+        Bundle  bundle = getIntent().getBundleExtra("threeBund");
+        ThreeFix threeFix = (ThreeFix) bundle.getSerializable("threeFix");
+        mTvHiddenContent.setText(threeFix.getContent());
+        mTvArea.setText(threeFix.getAreaName());
+        mTvSpecialty.setText(threeFix.getSname());
+        mTvTimeOrOrder.setText(threeFix.getFindTime()+"/"+threeFix.getClassName());
+        mTvCategory.setText(threeFix.getGname());
+        String isuper = threeFix.getIsupervision();
+        if(TextUtils.isEmpty(isuper)||TextUtils.equals(isuper,"0")){
+            isuper = "未督办";
+        }else{
+            isuper = "已督办";
+        }
+        mTvSupervise.setText(isuper);
+        mTvFinishTime.setText(threeFix.getCompleteTime());
+        mTvDepartment.setText(threeFix.getLuoshidanwei());
+        mTvMeasure.setText(threeFix.getMeasure());
+        mTvCapital.setText(threeFix.getMoney());
+        mTvPrincipal.setText(threeFix.getRealName());
+        mTvTheRectificationResults.setText(threeFix.getRectifyResult());
+        mTvToCarryOutThePeople.setText(threeFix.getPracticablePerson());
     }
 }

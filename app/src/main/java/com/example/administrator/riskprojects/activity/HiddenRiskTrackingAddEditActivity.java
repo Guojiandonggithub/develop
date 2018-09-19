@@ -1,24 +1,36 @@
 package com.example.administrator.riskprojects.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.bean.HiddenFollingRecord;
+import com.example.administrator.riskprojects.net.BaseJsonRes;
+import com.example.administrator.riskprojects.net.NetClient;
+import com.example.administrator.riskprojects.tools.Constants;
+import com.example.administrator.riskprojects.tools.UserUtils;
+import com.example.administrator.riskprojects.tools.Utils;
+import com.juns.health.net.loopj.android.http.RequestParams;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 public class HiddenRiskTrackingAddEditActivity extends BaseActivity {
-
+    private static final String TAG = "HiddenRiskTrackingAddEd";
+    NetClient netClient;
     public static final String CHANGE_ID = "id";
     public static final String CHANGE_DATE = "date";
     public static final String CHANGE_CONTENT = "content";
@@ -37,6 +49,7 @@ public class HiddenRiskTrackingAddEditActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hidden_risk_tracking_add_edit);
+        netClient = new NetClient(HiddenRiskTrackingAddEditActivity.this);
         initView();
         setView();
     }
@@ -49,6 +62,49 @@ public class HiddenRiskTrackingAddEditActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 DatePickerActivity.startPickDate(HiddenRiskTrackingAddEditActivity.this, HiddenRiskTrackingAddEditActivity.this);
+            }
+        });
+        mTvOk.setClickable(true);
+        mTvOk.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                Intent intent = getIntent();
+                String threeFixId = intent.getStringExtra("threeFixId");
+                String follingRecordTime = mTvDate.getText().toString();
+                String follingRecord = mEtContent.getText().toString();
+                String follingPersonName = UserUtils.getUserName(HiddenRiskTrackingAddEditActivity.this);
+                String follingPersonId = UserUtils.getUserID(HiddenRiskTrackingAddEditActivity.this);
+                HiddenFollingRecord hiddenFollingRecord = new HiddenFollingRecord(threeFixId,follingPersonId,follingPersonName,follingRecord,follingRecordTime);
+                addEditTracking(hiddenFollingRecord);
+            }
+
+        });
+    }
+
+    //添加跟踪记录
+    private void addEditTracking(HiddenFollingRecord hiddenFollingRecord) {
+        RequestParams params = new RequestParams();
+        String hiddenFollingRecordStr = JSON.toJSONString(hiddenFollingRecord);
+
+        params.put("follingRecordJsonData",hiddenFollingRecordStr);
+        netClient.post(Constants.ADD_FOLLINGRECORD, params, new BaseJsonRes() {
+
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "添加跟踪记录返回数据：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    Intent intent = new Intent(HiddenRiskTrackingAddEditActivity.this, HiddenDangeTrackingManagementActivity.class);
+                    startActivity(intent);
+                }
+
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "添加跟踪记录返回错误信息：" + content);
+                Utils.showLongToast(HiddenRiskTrackingAddEditActivity.this, content);
+                return;
             }
         });
     }

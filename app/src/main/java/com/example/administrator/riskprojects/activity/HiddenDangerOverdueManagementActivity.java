@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.view.MyAlertDialog;
+import com.example.administrator.riskprojects.bean.ThreeFix;
 
 /**
  * 隐患逾期
@@ -86,5 +87,25 @@ public class HiddenDangerOverdueManagementActivity extends BaseActivity {
 
     private void setView() {
         mTxtTitle.setText(R.string.risk_overdue_management);
+        initdata();
+    }
+
+    private void initdata(){
+        mTxtTitle.setText(R.string.hidden_danger_management);
+        Bundle  bundle = getIntent().getBundleExtra("threeBund");
+        ThreeFix threeFix = (ThreeFix) bundle.getSerializable("threeFix");
+        mTvHiddenContent.setText(threeFix.getContent());
+        mTvArea.setText(threeFix.getAreaName());
+        mTvSpecialty.setText(threeFix.getSname());
+        mTvTimeOrOrder.setText(threeFix.getFindTime()+"/"+threeFix.getClassName());
+        mTvCategory.setText(threeFix.getAreaName());
+        mTvSupervise.setText(threeFix.getAreaName());
+        //mTvFinishTime.setText(threeFix.get);
+        mTvDepartment.setText(threeFix.getAreaName());
+        mTvMeasure.setText(threeFix.getAreaName());
+        mTvCapital.setText(threeFix.getAreaName());
+        mTvPrincipal.setText(threeFix.getAreaName());
+        mTvTheRectificationResults.setText(threeFix.getAreaName());
+        mTvToCarryOutThePeople.setText(threeFix.getAreaName());
     }
 }

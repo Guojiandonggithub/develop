@@ -1,6 +1,9 @@
 package com.example.administrator.riskprojects.bean;
 
-public class ThreeFix {
+import java.io.Serializable;
+
+public class ThreeFix implements Serializable{
+	private static final long serialVersionUID = -7060210544600464481L;
 	private String id;//主键ID
 	private String hiddenDangerId;// 隐患id
 	private String fixTime;//定时

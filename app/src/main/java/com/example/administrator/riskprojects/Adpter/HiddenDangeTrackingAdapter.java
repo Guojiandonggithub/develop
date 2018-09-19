@@ -1,6 +1,7 @@
 package com.example.administrator.riskprojects.Adpter;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -46,8 +47,10 @@ public class HiddenDangeTrackingAdapter extends RecyclerView.Adapter {
             public void onClick(View v) {
                 Intent intent=  new Intent( holder.itemView.getContext(),
                         HiddenDangeTrackingManagementActivity.class);
-                intent.putExtra("id",threeFixList.get(position).getId());
-                intent.putExtra("hiddenDangerId",threeFixList.get(position).getHiddenDangerId());
+                ThreeFix threeFix = threeFixList.get(position);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("threeFix",threeFix);
+                intent.putExtra("threeBund",bundle);
                 holder.itemView.getContext().startActivity(intent);
             }
         });

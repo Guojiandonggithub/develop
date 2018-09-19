@@ -260,6 +260,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         mBarChart.setData(data);
     }
 
+    //各单位隐患统计查询
     private void getHiddenStatisticsData() {
         RequestParams params = new RequestParams();
         //params.put("customParamsOne","");//开始时间
@@ -268,7 +269,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
 
             @Override
             public void onMySuccess(String data) {
-                Log.i(TAG, "挂牌督办隐患数据返回数据：" + data);
+                Log.i(TAG, "各单位隐患统计查询数据返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<HomeHiddenRecord> dtatisticsList = JSONArray.parseArray(data, HomeHiddenRecord.class);
                     showBarChart(dtatisticsList);
@@ -279,7 +280,137 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
 
             @Override
             public void onMyFailure(String content) {
-                Log.e(TAG, "挂牌督办隐患数据返回错误信息：" + content);
+                Log.e(TAG, "各单位隐患统计查询数据返回错误信息：" + content);
+                com.example.administrator.riskprojects.tools.Utils.showLongToast(getContext(), content);
+            }
+        });
+    }
+
+    //隐患汇总表查询
+    private void getHiddenSumaryMobile() {
+        RequestParams params = new RequestParams();
+        //params.put("customParamsOne","");//开始时间
+        //params.put("customParamsTwo", "");//结束时间
+        netClient.post(Constants.SUMARYMOBILE, params, new BaseJsonRes() {
+
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "各单位隐患统计查询数据返回数据：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    List<HomeHiddenRecord> dtatisticsList = JSONArray.parseArray(data, HomeHiddenRecord.class);
+                    showBarChart(dtatisticsList);
+                    showLineChart(dtatisticsList);
+                }
+
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "各单位隐患统计查询数据返回错误信息：" + content);
+                com.example.administrator.riskprojects.tools.Utils.showLongToast(getContext(), content);
+            }
+        });
+    }
+
+    //已删除隐患记录查询
+    private void getHiddenDeleteMobile() {
+        RequestParams params = new RequestParams();
+        //params.put("customParamsOne","");//开始时间
+        //params.put("customParamsTwo", "");//结束时间
+        netClient.post(Constants.DELETEMOBILE, params, new BaseJsonRes() {
+
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "已删除隐患记录查询数据返回数据：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    List<HomeHiddenRecord> dtatisticsList = JSONArray.parseArray(data, HomeHiddenRecord.class);
+                    showBarChart(dtatisticsList);
+                    showLineChart(dtatisticsList);
+                }
+
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "已删除隐患记录查询数据返回错误信息：" + content);
+                com.example.administrator.riskprojects.tools.Utils.showLongToast(getContext(), content);
+            }
+        });
+    }
+
+    //重复隐患记录查询
+    private void getHiddenRepeatMobile() {
+        RequestParams params = new RequestParams();
+        //params.put("customParamsOne","");//开始时间
+        //params.put("customParamsTwo", "");//结束时间
+        netClient.post(Constants.REPEATMOBILE, params, new BaseJsonRes() {
+
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "重复隐患记录查询数据返回数据：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    List<HomeHiddenRecord> dtatisticsList = JSONArray.parseArray(data, HomeHiddenRecord.class);
+                    showBarChart(dtatisticsList);
+                    showLineChart(dtatisticsList);
+                }
+
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "重复隐患记录查询数据返回错误信息：" + content);
+                com.example.administrator.riskprojects.tools.Utils.showLongToast(getContext(), content);
+            }
+        });
+    }
+
+    //隐患处理单位图表分析
+    private void getHiddenDepartmentStatisticsMobile() {
+        RequestParams params = new RequestParams();
+        //params.put("customParamsOne","");//开始时间
+        //params.put("customParamsTwo", "");//结束时间
+        netClient.post(Constants.DEPARTMENTSTATISTICSMOBILE, params, new BaseJsonRes() {
+
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "隐患处理单位图表分析数据返回数据：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    List<HomeHiddenRecord> dtatisticsList = JSONArray.parseArray(data, HomeHiddenRecord.class);
+                    showBarChart(dtatisticsList);
+                    showLineChart(dtatisticsList);
+                }
+
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "隐患处理单位图表分析数据返回错误信息：" + content);
+                com.example.administrator.riskprojects.tools.Utils.showLongToast(getContext(), content);
+            }
+        });
+    }
+
+    //隐患查询统计
+    private void getHiddenQueryStaticMobile() {
+        RequestParams params = new RequestParams();
+        //params.put("customParamsOne","");//开始时间
+        //params.put("customParamsTwo", "");//结束时间
+        netClient.post(Constants.QUERYSTATICMOBILE, params, new BaseJsonRes() {
+
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "隐患查询统计数据返回数据：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    List<HomeHiddenRecord> dtatisticsList = JSONArray.parseArray(data, HomeHiddenRecord.class);
+                    showBarChart(dtatisticsList);
+                    showLineChart(dtatisticsList);
+                }
+
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "隐患查询统计数据返回错误信息：" + content);
                 com.example.administrator.riskprojects.tools.Utils.showLongToast(getContext(), content);
             }
         });
@@ -299,26 +430,32 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             case R.id.ll_chart_01:
                 titleTop.setText(R.string.hidden_danger_statistics_of_each_unit);
                 titleBottom.setText(R.string.hidden_danger_statistics_of_each_unit);
+                getHiddenStatisticsData();
                 break;
             case R.id.ll_chart_02:
                 titleTop.setText(R.string.summary_of_hazards);
                 titleBottom.setText(R.string.summary_of_hazards);
+                getHiddenSumaryMobile();
                 break;
             case R.id.ll_chart_03:
                 titleTop.setText(R.string.hazard_query_statistics);
                 titleBottom.setText(R.string.hazard_query_statistics);
+                getHiddenQueryStaticMobile();
                 break;
             case R.id.ll_chart_04:
                 titleTop.setText(R.string.the_hidden_danger_record_has_been_deleted);
                 titleBottom.setText(R.string.the_hidden_danger_record_has_been_deleted);
+                getHiddenDeleteMobile();
                 break;
             case R.id.ll_chart_05:
                 titleTop.setText(R.string.duplicate_hazard_record);
                 titleBottom.setText(R.string.duplicate_hazard_record);
+                getHiddenRepeatMobile();
                 break;
             case R.id.ll_chart_06:
                 titleTop.setText(R.string.chart_analysis_of_hazard_handling_unit);
                 titleBottom.setText(R.string.chart_analysis_of_hazard_handling_unit);
+                getHiddenDepartmentStatisticsMobile();
                 break;
             case R.id.ll_chart_07:
                 titleTop.setText(R.string.chart_analysis_of_hazard_handling);

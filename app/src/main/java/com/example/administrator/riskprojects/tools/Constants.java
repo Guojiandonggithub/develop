@@ -27,6 +27,16 @@ public interface Constants {
 	String GET_HIDDENRECORD = MAIN_ENGINE + "hiddenDangerRecordMobileAction!findHiddenDangerRecord.action";
 	// 各单位隐患统计查询接口
 	String TEAMHDSTAISTICSDATAGRID = MAIN_ENGINE + "yesterdayHdStatisticsMobileAction!teamHdStatisticsDataGrid.action";
+	// 隐患汇总表查询接口
+	String SUMARYMOBILE = MAIN_ENGINE + "hiddenDangerSumaryMobileAction!findHiddenDangerSumReport.action";
+	// 已删除隐患记录查询
+	String DELETEMOBILE = MAIN_ENGINE + "hiddenDangerSumaryMobileAction!findHiddenDangerSumReport.action";
+	// 重复隐患记录查询
+	String REPEATMOBILE = MAIN_ENGINE + "hiddenDangerRepeatMobileAction!findHiddenDangerRepeat.action";
+	// 隐患处理单位图表分析
+	String DEPARTMENTSTATISTICSMOBILE = MAIN_ENGINE + "hiddenDangerRepeatMobileAction!findHiddenDangerRepeat.action";
+	// 隐患查询统计
+	String QUERYSTATICMOBILE = MAIN_ENGINE + "hiddenDangerQueryStaticMobileAction!findHiddenDangerQueryStatic.action";
 	// 根据id获取隐患信息
 	String HIDDENDANGERRECORD = MAIN_ENGINE + "hiddenDangerRecordMobileAction!findHiddenDangerRecordById.action";
 	// 获取部门/队组成员接口
@@ -53,9 +63,9 @@ public interface Constants {
 	String GET_OVERDUELIST = MAIN_ENGINE + "hiddenDangerOutOfTimeMobileAction!findhiddenDangerOutTime.action";
 	// 隐患验收查询
 	String GET_REVIEWLIST = MAIN_ENGINE + "hiddenDangerRecheckMobileAction!findhiddenDangerRecheck.action";
-	// 隐患跟踪确认接口
-	String GET_THREEFIX = MAIN_ENGINE + "hiddenDangerCarryOutMobileAction!carryOutDetail.action";
-	// 隐患下达确认接口
-	//giString GET_THREEFIX = MAIN_ENGINE + "hiddenDangerThreeFixMobileAction!addThreeFixAndConfirm.action";
+	// 隐患跟踪记录查询列表
+	String GET_FOLLINGRECORD = MAIN_ENGINE + "hiddenFollingRecordMobileAction!findFollingRecordByThreeFixId.action";
+	// 隐患跟踪记录添加
+	String ADD_FOLLINGRECORD = MAIN_ENGINE + "hiddenFollingRecordMobileAction!addHiddenFollingRecord.action";
 
 }

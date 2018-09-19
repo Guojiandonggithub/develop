@@ -11,9 +11,12 @@ import android.widget.TextView;
 
 import com.example.administrator.riskprojects.OnItemClickListener;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.bean.HiddenFollingRecord;
+
+import java.util.List;
 
 public class HomeHiddenDangerdetailListAdapter extends RecyclerView.Adapter {
-
+    List<HiddenFollingRecord> hiddenFollingRecordList;
     public static final int FLAG_CHANGE = 0;
     public static final int FLAG_DELETE = 1;
     private OnItemClickListener onItemClickListener;
@@ -23,6 +26,7 @@ public class HomeHiddenDangerdetailListAdapter extends RecyclerView.Adapter {
     }
 
     public HomeHiddenDangerdetailListAdapter() {
+        //this.hiddenFollingRecordList = hiddenFollingRecordList;
     }
 
 
@@ -34,8 +38,8 @@ public class HomeHiddenDangerdetailListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        ((ViewHolder) holder).mTvDate.setText("2018.9.1"+position);
-        ((ViewHolder) holder).mTvContent.setText("测试内容:"+position);
+        //((ViewHolder) holder).mTvDate.setText(hiddenFollingRecordList.get(position).getFollingRecordTime());
+        //((ViewHolder) holder).mTvContent.setText(hiddenFollingRecordList.get(position).getFollingRecord());
 
         ((ViewHolder) holder).mAvChange.setOnClickListener(new View.OnClickListener() {
             @Override
