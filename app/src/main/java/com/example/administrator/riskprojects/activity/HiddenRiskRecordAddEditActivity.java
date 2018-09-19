@@ -7,6 +7,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -233,7 +234,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                         selectItem.id = collieryTeams.get(i).getId();
                         selectItems.add(selectItem);
                     }
-                    mSpHiddenUnitsAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
+                    mSpHiddenUnitsAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
                     setUpSpinner(spHiddenUnits, mSpHiddenUnitsAdapter);
                 }
 

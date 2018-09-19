@@ -1,5 +1,6 @@
 package com.example.administrator.riskprojects.Adpter;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.activity.HiddenDangerDetailManagementActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public class ListingSupervisionAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
         ((ViewHolder) holder).mTvHiddenUnits.setText(recordList.get(position).getTeamGroupName());
         ((ViewHolder) holder).mTvTimeOrOrder.setText(recordList.get(position).getFindTime()+"/"+recordList.get(position).getClassName());
@@ -39,6 +41,16 @@ public class ListingSupervisionAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).mTvTimeOrOrder.setSelected(true);
         ((ViewHolder) holder).mTvHiddenContent.setSelected(true);
         ((ViewHolder) holder).mTvHiddenDangerBelongs.setSelected(true);
+        ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(holder.itemView.getContext(),
+                        HiddenDangerDetailManagementActivity.class);
+                String id = recordList.get(position).getId();
+                intent.putExtra("id", id);
+                holder.itemView.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

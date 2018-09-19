@@ -34,7 +34,7 @@
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="专业单位："
+                    android:text="隐患单位："
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/normal_ts"
                     android:textStyle="bold" />
@@ -82,7 +82,7 @@
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="隐患时间："
+                    android:text="完成时间："
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/normal_ts"
                     android:textStyle="bold" />
@@ -175,26 +175,6 @@
                     android:spinnerMode="dropdown" />
             </android.support.v7.widget.LinearLayoutCompat>
 
-            <android.support.v7.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:text="负责单位："
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/normal_ts"
-                    android:textStyle="bold"
-                    android:visibility="invisible" />
-
-                <Spinner
-                    android:id="@+id/sp_team"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown" />
-            </android.support.v7.widget.LinearLayoutCompat>
 
 
             <android.support.v7.widget.LinearLayoutCompat
@@ -398,7 +378,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/shape_rectangle_solid_blue_stroke_gray"
             android:gravity="center"
-            android:text="@string/rectification"
+            android:text="@string/ok_backspace"
             android:textColor="@color/white"
             android:textSize="@dimen/middle_ts" />
     </android.support.v7.widget.LinearLayoutCompat>

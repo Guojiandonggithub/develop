@@ -56,7 +56,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:gravity="center_vertical"
-            android:text="隐患内容:"
+            android:text="记录内容:"
             android:textColor="@color/colorGray"
             android:textSize="@dimen/normal_ts" />
 

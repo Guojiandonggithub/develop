@@ -68,7 +68,7 @@ public class HiddenDangeTrackingManagementActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HiddenDangeTrackingManagementActivity.this, HiddenDangeTrackingDetailListActivity.class);
-                //intent.putExtra("threeFixId",threeFix.getId());
+                intent.putExtra("threeFixId",threeFix.getId());
                 startActivity(intent);
 
             }

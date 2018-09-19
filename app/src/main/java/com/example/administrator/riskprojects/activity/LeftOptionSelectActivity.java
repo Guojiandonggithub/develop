@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -174,8 +175,7 @@ public class LeftOptionSelectActivity extends BaseActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                adapter.setSelectedPostion(position);
-                switch (flag) {
+                adapter.setSelectedPostion(position); switch (flag) {
                     case FLAG_AREA:
                         tvAreaResult.setText(((SelectItem) spHiddenAreaAdapter.getItem(spinnerArea.getSelectedItemPosition())).name);
                         break;
@@ -187,6 +187,7 @@ public class LeftOptionSelectActivity extends BaseActivity {
                         break;
 
                 }
+
             }
 
             @Override
@@ -288,7 +289,7 @@ public class LeftOptionSelectActivity extends BaseActivity {
                         selectItem.id = collieryTeams.get(i).getId();
                         selectItems.add(selectItem);
                     }
-                    mSpHiddenUnitsAdapter = SpinnerAdapter.createFromResource(LeftOptionSelectActivity.this, selectItems);
+                    mSpHiddenUnitsAdapter = SpinnerAdapter.createFromResource(LeftOptionSelectActivity.this, selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
                     setUpSpinner(spinnerHiddenUnits, mSpHiddenUnitsAdapter, selectItems, FLAG_HIDDENUNITS);
                 }
 

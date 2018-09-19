@@ -80,7 +80,7 @@ public class ChangePasswordActivity extends BaseActivity {
             return false;
         }
 
-        if (TextUtils.equals(mEtNewPassword.getText().toString(),mEtNewPasswordAgain.getText().toString())) {
+        if (!TextUtils.equals(mEtNewPassword.getText().toString(),mEtNewPasswordAgain.getText().toString())) {
             Toast.makeText(this,"两次密码输入不一致", Toast.LENGTH_SHORT).show();
             return false;
         }

@@ -86,7 +86,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:gravity="center_vertical"
-                android:text="隐患内容:"
+                android:text="记录内容:"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/normal_ts" />
 
@@ -98,7 +98,7 @@
                 android:layout_marginRight="14dp"
                 android:background="@drawable/shape_rectangle_rounded_solid_color_ef"
                 android:gravity="top"
-                android:hint="请输入隐患内容"
+                android:hint="请输入记录内容"
                 android:minHeight="152dp"
                 android:paddingLeft="32dp"
                 android:paddingTop="12dp"

@@ -54,50 +54,13 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
         netClient = new NetClient(HiddenDangeTrackingDetailListActivity.this);
         initView();
         setView();
-        //initdata();
+        initdata();
     }
 
     private void setView() {
         mTxtTitle.setText(R.string.detail);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new HomeHiddenDangerdetailListAdapter();
-        mRecyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, final int position, int flag) {
-                switch (flag) {
-                    case HomeHiddenDangerdetailListAdapter.FLAG_CHANGE:
-                        Intent intent = new Intent(HiddenDangeTrackingDetailListActivity.this,
-                                HiddenRiskTrackingAddEditActivity.class);
-                        intent.putExtra(HiddenRiskTrackingAddEditActivity.CHANGE_ID, "" + position);
-                        intent.putExtra(HiddenRiskTrackingAddEditActivity.CHANGE_DATE, "2018-09-1" + position);
-                        intent.putExtra(HiddenRiskTrackingAddEditActivity.CHANGE_CONTENT, "隐患内容" + position);
-                        startActivity(intent);
-                        break;
-                    case HomeHiddenDangerdetailListAdapter.FLAG_DELETE:
-                        MyAlertDialog alertDialog = new MyAlertDialog(HiddenDangeTrackingDetailListActivity.this
-                                , new MyAlertDialog.DialogListener() {
-                            @Override
-                            public void affirm() {
-                                adapter.notifyItemRemoved(position);
-                            }
-
-                            @Override
-                            public void cancel() {
-
-                            }
-                        }, "你确定要删除选中的数据么？");
-                        alertDialog.show();
-                        break;
-                }
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, int position) {
-                return false;
-            }
-        });
         mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
@@ -136,8 +99,43 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
                     String page = returndata.getString("page");
                     String pagesize = returndata.getString("pagesize");
                     hiddenFollingRecordList = JSONArray.parseArray(rows, HiddenFollingRecord.class);
-                    //adapter = new HomeHiddenDangerdetailListAdapter(hiddenFollingRecordList);
-                    //mRecyclerView.setAdapter(adapter);
+                    adapter = new HomeHiddenDangerdetailListAdapter(hiddenFollingRecordList);
+                    mRecyclerView.setAdapter(adapter);
+                    adapter.setOnItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, final int position, int flag) {
+                            switch (flag) {
+                                case HomeHiddenDangerdetailListAdapter.FLAG_CHANGE:
+                                    Intent intent = new Intent(HiddenDangeTrackingDetailListActivity.this,
+                                            HiddenRiskTrackingAddEditActivity.class);
+                                    intent.putExtra(HiddenRiskTrackingAddEditActivity.CHANGE_ID, "" + position);
+                                    intent.putExtra(HiddenRiskTrackingAddEditActivity.CHANGE_DATE, "2018-09-1" + position);
+                                    intent.putExtra(HiddenRiskTrackingAddEditActivity.CHANGE_CONTENT, "隐患内容" + position);
+                                    startActivity(intent);
+                                    break;
+                                case HomeHiddenDangerdetailListAdapter.FLAG_DELETE:
+                                    MyAlertDialog alertDialog = new MyAlertDialog(HiddenDangeTrackingDetailListActivity.this
+                                            , new MyAlertDialog.DialogListener() {
+                                        @Override
+                                        public void affirm() {
+                                            adapter.notifyItemRemoved(position);
+                                        }
+
+                                        @Override
+                                        public void cancel() {
+
+                                        }
+                                    }, "你确定要删除选中的数据么？");
+                                    alertDialog.show();
+                                    break;
+                            }
+                        }
+
+                        @Override
+                        public boolean onItemLongClick(View view, int position) {
+                            return false;
+                        }
+                    });
                 }
 
             }

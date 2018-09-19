@@ -31,8 +31,6 @@ public class FiveDecisionsActivity extends BaseActivity {
     private SpinnerAdapter spMineAreaAdapter;
     private Spinner spDepartment;
     private SpinnerAdapter spDepartmentAdapter;
-    private Spinner spTeam;
-    private SpinnerAdapter spTeamAdapter;
     private Spinner spResponsibleThose;
     private SpinnerAdapter spResponsibleThoseAdapter;
     private EditText etMoney;
@@ -74,7 +72,6 @@ public class FiveDecisionsActivity extends BaseActivity {
         tvDate = findViewById(R.id.tv_date);
         spMineArea = findViewById(R.id.sp_mine_area);
         spDepartment = findViewById(R.id.sp_department);
-        spTeam = findViewById(R.id.sp_team);
         spResponsibleThose = findViewById(R.id.sp_responsible_those);
         etMoney = findViewById(R.id.et_money);
         etNum = findViewById(R.id.et_num);

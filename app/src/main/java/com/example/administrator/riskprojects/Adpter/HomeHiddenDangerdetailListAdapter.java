@@ -25,8 +25,8 @@ public class HomeHiddenDangerdetailListAdapter extends RecyclerView.Adapter {
         this.onItemClickListener = onItemClickListener;
     }
 
-    public HomeHiddenDangerdetailListAdapter() {
-        //this.hiddenFollingRecordList = hiddenFollingRecordList;
+    public HomeHiddenDangerdetailListAdapter(List<HiddenFollingRecord> hiddenFollingRecordList) {
+        this.hiddenFollingRecordList = hiddenFollingRecordList;
     }
 
 
@@ -38,8 +38,8 @@ public class HomeHiddenDangerdetailListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        //((ViewHolder) holder).mTvDate.setText(hiddenFollingRecordList.get(position).getFollingRecordTime());
-        //((ViewHolder) holder).mTvContent.setText(hiddenFollingRecordList.get(position).getFollingRecord());
+        ((ViewHolder) holder).mTvDate.setText(hiddenFollingRecordList.get(position).getFollingRecordTime());
+        ((ViewHolder) holder).mTvContent.setText(hiddenFollingRecordList.get(position).getFollingRecord());
 
         ((ViewHolder) holder).mAvChange.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +62,7 @@ public class HomeHiddenDangerdetailListAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 6;
+        return hiddenFollingRecordList.size();
     }
 
 
