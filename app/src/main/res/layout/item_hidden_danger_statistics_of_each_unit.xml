@@ -55,6 +55,7 @@
         android:background="@color/white" />
 
     <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/ll_into_detail"
         android:layout_width="match_parent"
         android:layout_height="33dp"
         android:gravity="center_vertical"

@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bar_color"
+    android:orientation="vertical"
+    tools:context=".activity.HiddenRiskRecordDetailActivity">
+
+    <include layout="@layout/layout_title" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="9.67dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:clipToPadding="false">
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="24dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hidden_units_colon"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/tv_hidden_units"
+                    android:layout_width="176dp"
+                    android:layout_height="32.67dp"
+                    android:background="@drawable/shape_rectangle_rounded_stroke_d5"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="所属专业："
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/tv_professional"
+                    android:layout_width="176dp"
+                    android:layout_height="32.67dp"
+                    android:background="@drawable/shape_rectangle_rounded_stroke_d5"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="隐患类别："
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/tv_hidden_class"
+                    android:layout_width="176dp"
+                    android:layout_height="32.67dp"
+                    android:background="@drawable/shape_rectangle_rounded_stroke_d5"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="录&#8194;入&#8194;人："
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/tv_enter_man"
+                    android:layout_width="176dp"
+                    android:layout_height="32.67dp"
+                    android:background="@drawable/shape_rectangle_rounded_stroke_d5"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="级&#12288;&#12288;别："
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/tv_level"
+                    android:layout_width="176dp"
+                    android:layout_height="32.67dp"
+                    android:background="@drawable/shape_rectangle_rounded_stroke_d5"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="发现时间："
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="176dp"
+                    android:layout_height="32.67dp"
+                    android:background="@drawable/shape_rectangle_rounded_stroke_d5"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="班&#12288;&#12288;次："
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/tv_order"
+                    android:layout_width="176dp"
+                    android:layout_height="32.67dp"
+                    android:background="@drawable/shape_rectangle_rounded_stroke_d5"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="隐患归类："
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/tv_hidden_sort"
+                    android:layout_width="176dp"
+                    android:layout_height="32.67dp"
+                    android:background="@drawable/shape_rectangle_rounded_stroke_d5"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="区&#12288;&#12288;域："
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/tv_hidden_area"
+                    android:layout_width="176dp"
+                    android:layout_height="32.67dp"
+                    android:background="@drawable/shape_rectangle_rounded_stroke_d5"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="发&#8194;现&#8194;人："
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/tv_discoverer"
+                    android:layout_width="176dp"
+                    android:layout_height="32.67dp"
+                    android:background="@drawable/shape_rectangle_rounded_stroke_d5"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="处&#8194;理&#8194;否："
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/tv_is_handle"
+                    android:layout_width="176dp"
+                    android:layout_height="32.67dp"
+                    android:background="@drawable/shape_rectangle_rounded_stroke_d5"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center_vertical"
+                android:text="隐患内容:"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/normal_ts"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/et_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:gravity="top"
+                android:hint="文字描述..."
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/normal_ts" />
+        </android.support.v7.widget.LinearLayoutCompat>
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.v7.widget.LinearLayoutCompat>

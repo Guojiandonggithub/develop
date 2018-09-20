@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.ChangePasswordActivity;
+import com.example.administrator.riskprojects.activity.HiddenRiskRecordDetailActivity;
 import com.example.administrator.riskprojects.activity.PersonInfoEditActivity;
 import com.example.administrator.riskprojects.bean.UserInfo;
 import com.example.administrator.riskprojects.tools.UserUtils;

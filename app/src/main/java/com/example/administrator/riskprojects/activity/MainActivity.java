@@ -288,4 +288,11 @@ public class MainActivity extends FragmentActivity {
             }
         }
     }
+
+    public void onHomeListItemClicked(String id) {
+        onTabClicked(findViewById(R.id.re_weixin));
+        onMenuClicked(findViewById(R.id.ll_chart_01));
+    }
+
+
 }

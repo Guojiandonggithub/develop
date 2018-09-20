@@ -18,6 +18,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.administrator.riskprojects.Adpter.HomeHiddenDangerAdapter;
 import com.example.administrator.riskprojects.LoginActivity;
+import com.example.administrator.riskprojects.OnItemClickListener;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.MainActivity;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
@@ -44,6 +45,7 @@ public class Fragment_Home extends Fragment {
     private TextView mTvForAcceptanceNum;
     private RecyclerView mRecyclerView;
     protected NetClient netClient;
+    private HomeHiddenDangerAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -141,9 +143,21 @@ public class Fragment_Home extends Fragment {
             public void onMySuccess(String data) {
                 Log.i(TAG, "主页隐患数据返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
-                    List<HomeHiddenRecord> recordList = JSONArray.parseArray(data, HomeHiddenRecord.class);
+                    final List<HomeHiddenRecord> recordList = JSONArray.parseArray(data, HomeHiddenRecord.class);
                     mRecyclerView.addItemDecoration(new MyDecoration(ctx, MyDecoration.VERTICAL_LIST, R.color.white, DensityUtil.dip2px(ctx, 0.67f)));
-                    mRecyclerView.setAdapter(new HomeHiddenDangerAdapter(recordList));
+                    adapter = new HomeHiddenDangerAdapter(recordList);
+                    adapter.setItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position, int flag) {
+                            ((MainActivity) ctx).onHomeListItemClicked(recordList.get(position).getTeamGroupCode());
+                        }
+
+                        @Override
+                        public boolean onItemLongClick(View view, int position) {
+                            return false;
+                        }
+                    });
+                    mRecyclerView.setAdapter(adapter);
                 }
 
             }

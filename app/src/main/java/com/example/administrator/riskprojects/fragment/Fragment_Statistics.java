@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,6 +60,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     private BarChart barChart;
     private TextView titleBottom;
     private LineChart lineChart;
+    private RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,6 +95,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         tvProfession = layout.findViewById(R.id.tv_profession);
         tvHiddenUnits = layout.findViewById(R.id.tv_hidden_units);
         tvArea = layout.findViewById(R.id.tv_area);
+        recyclerView = layout.findViewById(R.id.recyclerView);
 
         titleTop =  layout.findViewById(R.id.title_top);
         titleBottom =  layout.findViewById(R.id.title_bottom);
