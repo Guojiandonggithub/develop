@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONArray;
+import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsAllAdapter;
 import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsEachUnitAllAdapter;
 import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsEachUnitDetailAdapter;
 import com.example.administrator.riskprojects.R;
@@ -53,7 +54,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     private View layout;
     private BarChart mBarChart;
     private LineChart mLineChart;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
     protected NetClient netClient;
     private LinearLayoutCompat llOption;
     private LinearLayoutCompat llLineChart;
@@ -61,7 +62,6 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     private TextView tvProfession;
     private TextView tvHiddenUnits;
     private TextView tvArea;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private TextView titleTop;
     private BarChart barChart;
     private TextView titleBottom;
@@ -92,8 +92,8 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         mBarChart = layout.findViewById(R.id.barChart);
         //曲线图
         mLineChart = layout.findViewById(R.id.lineChart);
-        mSwipeRefreshLayout = layout.findViewById(R.id.swipeRefreshLayout);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout = layout.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(this);
         initBarChart(mBarChart);
         initLineChart(mLineChart);
         getHiddenStatisticsData();
@@ -102,11 +102,14 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         tvHiddenUnits = layout.findViewById(R.id.tv_hidden_units);
         tvArea = layout.findViewById(R.id.tv_area);
         recyclerView = layout.findViewById(R.id.recyclerView);
-        llBarChart =  layout.findViewById(R.id.ll_barChart);
+        llBarChart = layout.findViewById(R.id.ll_barChart);
 
-        llLineChart = layout. findViewById(R.id.ll_lineChart);
-        titleTop =  layout.findViewById(R.id.title_top);
-        titleBottom =  layout.findViewById(R.id.title_bottom);
+        llLineChart = layout.findViewById(R.id.ll_lineChart);
+        titleTop = layout.findViewById(R.id.title_top);
+        titleBottom = layout.findViewById(R.id.title_bottom);
+
+        llBarChart.setVisibility(View.GONE);
+        llLineChart.setVisibility(View.GONE);
     }
 
     private void showLineChart(List<HomeHiddenRecord> dtatisticsList) {
@@ -140,6 +143,8 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         }
         LineData data = new LineData(lineDataSet);
         mLineChart.setData(data);
+        llLineChart.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
     }
 
     private void initLineChart(LineChart lineChart) {
@@ -269,6 +274,8 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         //BarChart控件宽度 / 柱状图数量  * mBarWidth
         data.setBarWidth(0.5f);
         mBarChart.setData(data);
+        llBarChart.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
     }
 
     //各单位隐患统计查询
@@ -277,6 +284,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         //params.put("customParamsOne","");//开始时间
         //params.put("customParamsTwo", "");//结束时间
         netClient.post(Constants.TEAMHDSTAISTICSDATAGRID, params, new BaseJsonRes() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                swipeRefreshLayout.setRefreshing(true);
+            }
 
             @Override
             public void onMySuccess(String data) {
@@ -295,6 +308,13 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 Log.e(TAG, "各单位隐患统计查询数据返回错误信息：" + content);
                 com.example.administrator.riskprojects.tools.Utils.showLongToast(getContext(), content);
             }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                swipeRefreshLayout.setRefreshing(false);
+            }
         });
     }
 
@@ -304,6 +324,11 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         //params.put("customParamsOne","");//开始时间
         //params.put("customParamsTwo", "");//结束时间
         netClient.post(Constants.SUMARYMOBILE, params, new BaseJsonRes() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                swipeRefreshLayout.setRefreshing(true);
+            }
 
             @Override
             public void onMySuccess(String data) {
@@ -321,6 +346,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 Log.e(TAG, "各单位隐患统计查询数据返回错误信息：" + content);
                 com.example.administrator.riskprojects.tools.Utils.showLongToast(getContext(), content);
             }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                swipeRefreshLayout.setRefreshing(false);
+            }
         });
     }
 
@@ -330,6 +361,11 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         //params.put("customParamsOne","");//开始时间
         //params.put("customParamsTwo", "");//结束时间
         netClient.post(Constants.DELETEMOBILE, params, new BaseJsonRes() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                swipeRefreshLayout.setRefreshing(true);
+            }
 
             @Override
             public void onMySuccess(String data) {
@@ -347,6 +383,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 Log.e(TAG, "已删除隐患记录查询数据返回错误信息：" + content);
                 com.example.administrator.riskprojects.tools.Utils.showLongToast(getContext(), content);
             }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                swipeRefreshLayout.setRefreshing(false);
+            }
         });
     }
 
@@ -356,6 +398,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         //params.put("customParamsOne","");//开始时间
         //params.put("customParamsTwo", "");//结束时间
         netClient.post(Constants.REPEATMOBILE, params, new BaseJsonRes() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                swipeRefreshLayout.setRefreshing(true);
+            }
 
             @Override
             public void onMySuccess(String data) {
@@ -373,6 +421,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 Log.e(TAG, "重复隐患记录查询数据返回错误信息：" + content);
                 com.example.administrator.riskprojects.tools.Utils.showLongToast(getContext(), content);
             }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                swipeRefreshLayout.setRefreshing(false);
+            }
         });
     }
 
@@ -382,6 +436,11 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         //params.put("customParamsOne","");//开始时间
         //params.put("customParamsTwo", "");//结束时间
         netClient.post(Constants.DEPARTMENTSTATISTICSMOBILE, params, new BaseJsonRes() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                swipeRefreshLayout.setRefreshing(true);
+            }
 
             @Override
             public void onMySuccess(String data) {
@@ -398,6 +457,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             public void onMyFailure(String content) {
                 Log.e(TAG, "隐患处理单位图表分析数据返回错误信息：" + content);
                 com.example.administrator.riskprojects.tools.Utils.showLongToast(getContext(), content);
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -448,6 +513,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 titleTop.setText(R.string.summary_of_hazards);
                 titleBottom.setText(R.string.summary_of_hazards);
                 getHiddenSumaryMobile();
+                setAllHiddenTroubleList();
                 break;
             case R.id.ll_chart_03:
                 titleTop.setText(R.string.hazard_query_statistics);
@@ -482,20 +548,41 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         }
     }
 
+    private void setAllHiddenTroubleList() {
+        if (!TextUtils.isEmpty(tvArea.getText().toString()) ||
+                !TextUtils.isEmpty(tvProfession.getText().toString()) ||
+                !TextUtils.isEmpty(tvHiddenUnits.getText().toString())) {
+            llOption.setVisibility(View.VISIBLE);
+        } else {
+            llOption.setVisibility(View.GONE);
+        }
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+        swipeRefreshLayout.setOnRefreshListener(this);
+        HiddenDangerStatisticsAllAdapter adapter = new HiddenDangerStatisticsAllAdapter();
+        recyclerView.setAdapter(adapter);
+    }
+
     private void setList(List<HomeHiddenRecord> dtatisticsList) {
-        llOption.setVisibility(View.GONE);
+        if (!TextUtils.isEmpty(tvArea.getText().toString()) ||
+                !TextUtils.isEmpty(tvProfession.getText().toString()) ||
+                !TextUtils.isEmpty(tvHiddenUnits.getText().toString())) {
+            llOption.setVisibility(View.VISIBLE);
+        } else {
+            llOption.setVisibility(View.GONE);
+        }
         llLineChart.setVisibility(View.GONE);
         llBarChart.setVisibility(View.GONE);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-        mSwipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setOnRefreshListener(this);
         HiddenDangerStatisticsEachUnitAllAdapter adapter = new HiddenDangerStatisticsEachUnitAllAdapter(dtatisticsList);
         recyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onRefresh() {
-        mSwipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     public void onLeftMenuClicked(String aname, String aid, String pname, String pid, String hname, String hid) {

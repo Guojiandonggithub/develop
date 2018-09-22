@@ -2,6 +2,7 @@ package com.example.administrator.riskprojects.net;
 
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.Utils;
+import com.example.administrator.riskprojects.util.FormatUtil;
 import com.juns.health.net.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONException;
@@ -12,7 +13,9 @@ public abstract class BaseJsonRes extends JsonHttpResponseHandler {
 	@Override
 	public void onSuccess(JSONObject response) {
 		try {
-			System.out.println("返回的值" + response);
+			System.out.println("============返回的值===================");
+			FormatUtil.printJson(response.toString());
+			System.out.println("======================================");
 			String result = response.getString(Constants.Result);
 			String content = response.getString(Constants.Info);
 			if("success".equals(result)){

@@ -34,7 +34,7 @@ public class BaseDialog extends Dialog implements
 	private OnClickListener mOnClickListener3;// 按钮3的单击监听事件
 
 	public BaseDialog(Context context) {
-		super(context, R.style.Theme_AppCompat_Light_Dialog);
+		super(context, R.style.myDialog);
 		mContext = context;
 		setContentView(R.layout.common_dialog_generic);
 		initViews();

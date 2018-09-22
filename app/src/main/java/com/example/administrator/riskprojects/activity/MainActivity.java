@@ -34,7 +34,7 @@ public class MainActivity extends FragmentActivity {
     private ImageView[] imagebuttons;
     private TextView[] textviews;
     private String connectMsg = "aa";
-    private int index;
+    public int index;
     private int currentTabIndex;// 当前fragment的index
 
     private LinearLayoutCompat mLlDialog;
@@ -62,7 +62,6 @@ public class MainActivity extends FragmentActivity {
         initTabView();
         initPopWindow();
 //        upDateVersion();
-
     }
 
     private void upDateVersion() {

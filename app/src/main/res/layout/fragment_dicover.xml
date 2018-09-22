@@ -1,227 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swipeRefreshLayout"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bar_color"
     android:orientation="vertical">
 
-    <ScrollView
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/ll_option"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none">
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:visibility="gone">
 
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_weight="1"
+                android:text="分析因素"
+                android:textColor="@color/colorGrayDarker"
+                android:textSize="@dimen/normal_ts" />
+
+            <TextView
+                android:id="@+id/tv_profession"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="24dp"
+                android:layout_weight="2"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorGrayDarker"
+                android:textSize="@dimen/normal_ts" />
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDevide" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_weight="1"
+                android:text="发现时间"
+                android:textColor="@color/colorGrayDarker"
+                android:textSize="@dimen/normal_ts" />
+
+            <TextView
+                android:id="@+id/tv_hidden_units"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="24dp"
+                android:layout_weight="2"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorGrayDarker"
+                android:textSize="@dimen/normal_ts" />
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDevide" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_weight="1"
+                android:text="图形类别"
+                android:textColor="@color/colorGrayDarker"
+                android:textSize="@dimen/normal_ts" />
+
+            <TextView
+                android:id="@+id/tv_area"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="24dp"
+                android:layout_weight="2"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorGrayDarker"
+                android:textSize="@dimen/normal_ts" />
+        </android.support.v7.widget.LinearLayoutCompat>
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
-            <android.support.v7.widget.LinearLayoutCompat
-                android:id="@+id/ll_option"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:paddingLeft="14dp"
-                android:paddingRight="14dp"
-                android:visibility="gone">
-
-                <android.support.v7.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
-                        android:layout_weight="1"
-                        android:text="分析因素"
-                        android:textColor="@color/colorGrayDarker"
-                        android:textSize="@dimen/normal_ts" />
-
-                    <TextView
-                        android:id="@+id/tv_profession"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="24dp"
-                        android:layout_weight="2"
-                        android:background="@android:color/transparent"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/colorGrayDarker"
-                        android:textSize="@dimen/normal_ts" />
-                </android.support.v7.widget.LinearLayoutCompat>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/colorDevide" />
-
-                <android.support.v7.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
-                        android:layout_weight="1"
-                        android:text="发现时间"
-                        android:textColor="@color/colorGrayDarker"
-                        android:textSize="@dimen/normal_ts" />
-
-                    <TextView
-                        android:id="@+id/tv_hidden_units"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="24dp"
-                        android:layout_weight="2"
-                        android:background="@android:color/transparent"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/colorGrayDarker"
-                        android:textSize="@dimen/normal_ts" />
-                </android.support.v7.widget.LinearLayoutCompat>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/colorDevide" />
-
-                <android.support.v7.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
-                        android:layout_weight="1"
-                        android:text="图形类别"
-                        android:textColor="@color/colorGrayDarker"
-                        android:textSize="@dimen/normal_ts" />
-
-                    <TextView
-                        android:id="@+id/tv_area"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="24dp"
-                        android:layout_weight="2"
-                        android:background="@android:color/transparent"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/colorGrayDarker"
-                        android:textSize="@dimen/normal_ts" />
-                </android.support.v7.widget.LinearLayoutCompat>
-
-            </android.support.v7.widget.LinearLayoutCompat>
-
+            android:scrollbars="none">
 
             <android.support.v7.widget.LinearLayoutCompat
-                android:id="@+id/ll_barChart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:paddingLeft="14dp"
-                android:paddingRight="14dp"
-                android:paddingBottom="12dp">
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/title_top"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/table_of_hidden_danger_processing_statistics"
-                    android:textColor="@color/colorGrayDarker"
-                    android:textSize="@dimen/large_ts" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:gravity="center_vertical"
-                    android:text="纵轴：隐患条数"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/tiny_ts" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:gravity="center_vertical"
-                    android:text="横轴：单位名称"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/tiny_ts" />
-
-
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barChart"
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_barChart"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_centerInParent="true" />
-            </android.support.v7.widget.LinearLayoutCompat>
-
-
-            <android.support.v7.widget.LinearLayoutCompat
-                android:id="@+id/ll_lineChart"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:paddingLeft="14dp"
-                android:paddingRight="14dp"
-                android:paddingBottom="12dp">
-
-                <TextView
-                    android:id="@+id/title_bottom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/hidden_danger_handling_icon_statistics"
-                    android:textColor="@color/colorGrayDarker"
-                    android:textSize="@dimen/large_ts" />
-
-                <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:gravity="center_vertical"
-                    android:text="纵轴：隐患条数"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/tiny_ts" />
+                    android:layout_marginTop="8dp"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingBottom="12dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:gravity="center_vertical"
-                    android:text="横轴：单位名称"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/tiny_ts" />
+                    <TextView
+                        android:id="@+id/title_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/table_of_hidden_danger_processing_statistics"
+                        android:textColor="@color/colorGrayDarker"
+                        android:textSize="@dimen/large_ts" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:gravity="center_vertical"
+                        android:text="纵轴：隐患条数"
+                        android:textColor="@color/colorGray"
+                        android:textSize="@dimen/tiny_ts" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:gravity="center_vertical"
+                        android:text="横轴：单位名称"
+                        android:textColor="@color/colorGray"
+                        android:textSize="@dimen/tiny_ts" />
 
 
-                <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/lineChart"
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/barChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:layout_centerInParent="true" />
+                </android.support.v7.widget.LinearLayoutCompat>
+
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_lineChart"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_centerInParent="true" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:id="@+id/title_bottom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/hidden_danger_handling_icon_statistics"
+                        android:textColor="@color/colorGrayDarker"
+                        android:textSize="@dimen/large_ts" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:gravity="center_vertical"
+                        android:text="纵轴：隐患条数"
+                        android:textColor="@color/colorGray"
+                        android:textSize="@dimen/tiny_ts" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:gravity="center_vertical"
+                        android:text="横轴：单位名称"
+                        android:textColor="@color/colorGray"
+                        android:textSize="@dimen/tiny_ts" />
+
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/lineChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:layout_centerInParent="true" />
+                </android.support.v7.widget.LinearLayoutCompat>
+
+
+
+
             </android.support.v7.widget.LinearLayoutCompat>
-
-
+        </ScrollView>
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
-        </android.support.v7.widget.LinearLayoutCompat>
-    </ScrollView>
-</android.support.v4.widget.SwipeRefreshLayout>
+
+
+    </FrameLayout>
+</android.support.v7.widget.LinearLayoutCompat>

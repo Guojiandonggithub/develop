@@ -371,10 +371,8 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         super.onResume();
         switch (flag) {
             case 0:
-                getHiddenRecord(Constants.PAGE);
-                break;
             case 1:
-                getReleaseList("1");
+                getHiddenRecord(Constants.PAGE);
                 break;
             case 2:
                 getReleaseList("1");
@@ -386,10 +384,10 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 getTrackingList("1");
                 break;
             case 5:
-                getHiddenRecord(Constants.PAGE);
+                getOverdueList(Constants.PAGE);
                 break;
             case 6:
-                getHiddenRecord(Constants.PAGE);
+                getReviewList(Constants.PAGE);
                 break;
 
         }
