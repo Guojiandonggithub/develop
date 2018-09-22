@@ -205,8 +205,8 @@ public class FiveDecisionsActivity extends BaseActivity {
             public void onMySuccess(String data) {
                 Log.i(TAG, "获取部门/队组成员返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
-                    List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
-                    List<SelectItem> selectItems = new ArrayList<>();
+                    final List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
+                    final List<SelectItem> selectItems = new ArrayList<>();
                     int collieryTeamsint = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
@@ -220,8 +220,19 @@ public class FiveDecisionsActivity extends BaseActivity {
                     spDepartmentAdapter = SpinnerAdapter.createFromResource(FiveDecisionsActivity.this, selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
                     setUpSpinner(spDepartment, spDepartmentAdapter);
                     spDepartmentAdapter.notifyDataSetChanged();
+                    spDepartment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                            spDepartmentAdapter.setSelectedPostion(position);
+                            getResponsibleThose(selectItems.get(position).getId());
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
                     spDepartment.setSelection(collieryTeamsint);
-                    getResponsibleThose(collieryTeams.get(collieryTeamsint).getId());
                 }
 
             }
@@ -244,7 +255,7 @@ public class FiveDecisionsActivity extends BaseActivity {
                 Log.i(TAG, "获取部门/队组成员返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
-                    List<SelectItem> selectItems = new ArrayList<>();
+                    final List<SelectItem> selectItems = new ArrayList<>();
                     int collieryTeamsint = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
@@ -256,10 +267,22 @@ public class FiveDecisionsActivity extends BaseActivity {
                         selectItems.add(selectItem);
                     }
                     spTrackPeopleUnitAdapter = SpinnerAdapter.createFromResource(FiveDecisionsActivity.this, selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
-                    setUpSpinner(spTrackPeopleUnit, spDepartmentAdapter);
+                    setUpSpinner(spTrackPeopleUnit, spTrackPeopleUnitAdapter);
                     spTrackPeopleUnitAdapter.notifyDataSetChanged();
+                    spTrackPeopleUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                            spTrackPeopleUnitAdapter.setSelectedPostion(position);
+                            getTrackPeople(selectItems.get(position).getId());
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
                     spTrackPeopleUnit.setSelection(collieryTeamsint);
-                    getTrackPeople(collieryTeams.get(collieryTeamsint).getId());
                 }
 
             }
@@ -297,7 +320,7 @@ public class FiveDecisionsActivity extends BaseActivity {
                         selectItems.add(selectItem);
                     }
                     spResponsibleThoseAdapter = SpinnerAdapter.createFromResource(FiveDecisionsActivity.this, selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
-                    setUpSpinnerchild(spResponsibleThose, spDepartmentAdapter);
+                    setUpSpinnerchild(spResponsibleThose, spResponsibleThoseAdapter);
                     spResponsibleThoseAdapter.notifyDataSetChanged();
                     spResponsibleThose.setSelection(collieryTeamsint);
                 }
@@ -338,7 +361,7 @@ public class FiveDecisionsActivity extends BaseActivity {
                         selectItems.add(selectItem);
                     }
                     spTrackPeopleAdapter = SpinnerAdapter.createFromResource(FiveDecisionsActivity.this, selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
-                    setUpSpinnerchild(spTrackPeople, spDepartmentAdapter);
+                    setUpSpinnerchild(spTrackPeople, spTrackPeopleAdapter);
                     spTrackPeopleAdapter.notifyDataSetChanged();
                     spTrackPeople.setSelection(collieryTeamsint);
                 }
