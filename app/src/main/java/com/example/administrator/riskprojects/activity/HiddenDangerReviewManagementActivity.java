@@ -3,12 +3,14 @@ package com.example.administrator.riskprojects.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.bean.ThreeFix;
 
 /**
  * 隐患验收
@@ -37,6 +39,7 @@ public class HiddenDangerReviewManagementActivity extends BaseActivity {
     private TextView mTvAcceptanceOfTheResults;
     private LinearLayoutCompat mLlBottom;
     private TextView mTvOk;
+    private ThreeFix threeFix;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +80,45 @@ public class HiddenDangerReviewManagementActivity extends BaseActivity {
         mTvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), HiddenDangerAcceptanceActivity.class));
+                Intent intent = new Intent(getApplicationContext(), HiddenDangerAcceptanceActivity.class);
+                intent.putExtra("threeFixId",threeFix.getId());
+                intent.putExtra("recheckresult",threeFix.getRecheckResult());
+                intent.putExtra("description",threeFix.getDescription());
+                intent.putExtra("recheckPersonId",threeFix.getRecheckPersonId());
+                intent.putExtra("recheckPersonName",threeFix.getRecheckPersonName());
+                startActivity(intent);
             }
         });
+
+        Bundle  bundle = getIntent().getBundleExtra("threeBund");
+        threeFix = (ThreeFix) bundle.getSerializable("threeFix");
+        mTvHiddenContent.setText(threeFix.getContent());
+        mTvArea.setText(threeFix.getAreaName());
+        mTvSpecialty.setText(threeFix.getSname());
+        mTvTimeOrOrder.setText(threeFix.getFindTime()+"/"+threeFix.getClassName());
+        mTvCategory.setText(threeFix.getGname());
+        String isuper = threeFix.getIsupervision();
+        if(TextUtils.isEmpty(isuper)||TextUtils.equals(isuper,"0")){
+            isuper = "未督办";
+        }else{
+            isuper = "已督办";
+        }
+        mTvSupervise.setText(isuper);
+        mTvFinishTime.setText(threeFix.getCompleteTime());
+        mTvDepartment.setText(threeFix.getLsdeptName()+"/"+threeFix.getLsteamName());
+        mTvMeasure.setText(threeFix.getMeasure());
+        mTvCapital.setText(threeFix.getMoney());
+        mTvPrincipal.setText(threeFix.getRealName());
+        mTvToCarryOutThePeople.setText(threeFix.getPracticablePerson());
+        mTvDepartment.setText(threeFix.getFollingTeamName());
+        mTvHeadquarters.setText(threeFix.getFollingPersonName());
+        mTvAcceptanceOfThePeople.setText(threeFix.getRecheckPersonName());
+        String result = threeFix.getRecheckResult();
+        if(TextUtils.isEmpty(result)||TextUtils.equals(result,"1")){
+            result = "未通过";
+        }else{
+            result = "已通过";
+        }
+        mTvAcceptanceOfTheResults.setText(result);
     }
 }

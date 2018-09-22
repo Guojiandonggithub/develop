@@ -10,6 +10,7 @@ public class CollieryTeam {
 	private String teamGroupCode;//编码
 	private String specialtyid;// 专业id
 	private String sname;// 专业名称
+	private String realName;// 专业名称
 
 	public String getId() {
 		return id;
@@ -81,5 +82,13 @@ public class CollieryTeam {
 
 	public void setSname(String sname) {
 		this.sname = sname;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
 	}
 }

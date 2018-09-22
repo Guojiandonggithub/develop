@@ -283,8 +283,9 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 Log.i(TAG, "各单位隐患统计查询数据返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<HomeHiddenRecord> dtatisticsList = JSONArray.parseArray(data, HomeHiddenRecord.class);
-                    showBarChart(dtatisticsList);
-                    showLineChart(dtatisticsList);
+                    setList(dtatisticsList);
+                    //showBarChart(dtatisticsList);
+                    //showLineChart(dtatisticsList);
                 }
 
             }
@@ -442,7 +443,6 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 titleTop.setText(R.string.hidden_danger_statistics_of_each_unit);
                 titleBottom.setText(R.string.hidden_danger_statistics_of_each_unit);
                 getHiddenStatisticsData();
-                setList();
                 break;
             case R.id.ll_chart_02:
                 titleTop.setText(R.string.summary_of_hazards);
@@ -454,7 +454,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 titleBottom.setText(R.string.hazard_query_statistics);
                 getHiddenQueryStaticMobile();
                 break;
-            case R.id.ll_chart_04:
+            /*case R.id.ll_chart_04:
                 titleTop.setText(R.string.the_hidden_danger_record_has_been_deleted);
                 titleBottom.setText(R.string.the_hidden_danger_record_has_been_deleted);
                 getHiddenDeleteMobile();
@@ -476,20 +476,20 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             case R.id.ll_chart_08:
                 titleTop.setText(R.string.chart_analysis_of_hazard_year);
                 titleBottom.setText(R.string.chart_analysis_of_hazard_year);
-                break;
+                break;*/
             default:
                 break;
         }
     }
 
-    private void setList() {
+    private void setList(List<HomeHiddenRecord> dtatisticsList) {
         llOption.setVisibility(View.GONE);
         llLineChart.setVisibility(View.GONE);
         llBarChart.setVisibility(View.GONE);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        HiddenDangerStatisticsEachUnitAllAdapter adapter = new HiddenDangerStatisticsEachUnitAllAdapter();
+        HiddenDangerStatisticsEachUnitAllAdapter adapter = new HiddenDangerStatisticsEachUnitAllAdapter(dtatisticsList);
         recyclerView.setAdapter(adapter);
     }
 

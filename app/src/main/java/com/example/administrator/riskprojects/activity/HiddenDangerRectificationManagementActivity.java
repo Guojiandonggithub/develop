@@ -2,21 +2,28 @@ package com.example.administrator.riskprojects.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.util.Log;
 import android.view.View;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.net.BaseJsonRes;
+import com.example.administrator.riskprojects.net.NetClient;
+import com.example.administrator.riskprojects.tools.Constants;
+import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.view.MyAlertDialog;
 import com.example.administrator.riskprojects.bean.ThreeFix;
+import com.juns.health.net.loopj.android.http.RequestParams;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 隐患整改
  */
 public class HiddenDangerRectificationManagementActivity extends BaseActivity {
-
+    private static final String TAG = "HiddenDangerRectificati";
     private TextView mTxtLeft;
     private ImageView mImgLeft;
     private TextView mTxtTitle;
@@ -37,11 +44,14 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
     private TextView mTvToCarryOutThePeople;
     private LinearLayoutCompat mLlBottom;
     private TextView mTvOk;
+    private ThreeFix threeFix;
+    protected NetClient netClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hidden_danger_rectification_management);
+        netClient = new NetClient(HiddenDangerRectificationManagementActivity.this);
         initView();
         setView();
     }
@@ -75,6 +85,7 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
                             @Override
                             public void affirm() {
                                 //确定入口
+                                getHiddenRecord();
                             }
 
                             @Override
@@ -90,7 +101,7 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
     private void setView() {
         mTxtTitle.setText(R.string.hidden_danger_rectification_management);
         Bundle  bundle = getIntent().getBundleExtra("threeBund");
-        ThreeFix threeFix = (ThreeFix) bundle.getSerializable("threeFix");
+        threeFix = (ThreeFix) bundle.getSerializable("threeFix");
         mTvHiddenContent.setText(threeFix.getContent());
         mTvArea.setText(threeFix.getAreaName());
         mTvSpecialty.setText(threeFix.getSname());
@@ -110,5 +121,28 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
         mTvPrincipal.setText(threeFix.getRealName());
         mTvTheRectificationResults.setText(threeFix.getRectifyResult());
         mTvToCarryOutThePeople.setText(threeFix.getPracticablePerson());
+    }
+
+    //完成整改
+    private void getHiddenRecord() {
+        RequestParams params = new RequestParams();
+        params.put("ids",threeFix.getHiddenDangerId());
+        netClient.post(Constants.COMPLETERECTIFY, params, new BaseJsonRes() {
+
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "完成整改返回数据：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    Utils.showLongToast(HiddenDangerRectificationManagementActivity.this, "隐患整改成功！");
+                    finish();
+                }
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "完成整改返回错误信息：" + content);
+                Utils.showLongToast(HiddenDangerRectificationManagementActivity.this, content);
+            }
+        });
     }
 }

@@ -13,17 +13,19 @@ import android.widget.TextView;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.HiddenDangeTrackingManagementActivity;
 import com.example.administrator.riskprojects.activity.HiddenRiskRecordDetailActivity;
+import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
+import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 import com.example.administrator.riskprojects.bean.ThreeFix;
 
 import java.util.List;
 
 public class HiddenDangerStatisticsEachUnitDetailAdapter extends RecyclerView.Adapter {
-//    private List<ThreeFix> threeFixList;
+    private List<HiddenDangerRecord> recordList;
 
 
 
-    public HiddenDangerStatisticsEachUnitDetailAdapter() {
-//        this.threeFixList = threeFixList;
+    public HiddenDangerStatisticsEachUnitDetailAdapter(List<HiddenDangerRecord> recordList) {
+        this.recordList = recordList;
     }
 
     @Override
@@ -34,24 +36,21 @@ public class HiddenDangerStatisticsEachUnitDetailAdapter extends RecyclerView.Ad
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-//        if(threeFixList.size()>0){
-//            ((ViewHolder) holder).tvHiddenContent.setText(threeFixList.get(position).getContent());
-//            ((ViewHolder) holder).tvArea.setText(threeFixList.get(position).getAreaName());
-//            ((ViewHolder) holder).tvSpecialty.setText(threeFixList.get(position).getSname());
-//            ((ViewHolder) holder).tvTimeOrOrder.setText(threeFixList.get(position).getFindTime()+"/"+threeFixList.get(position).getClassName());
-//            ((ViewHolder) holder).tvCategory.setText(threeFixList.get(position).getGname());
-//            ((ViewHolder) holder).tvSupervise.setText(threeFixList.get(position).getIshandle());
-//        }
+        if(recordList.size()>0){
+            ((ViewHolder) holder).tvHiddenUnits.setText(recordList.get(position).getTeamGroupName());
+            ((ViewHolder) holder).tvTimeOrOrder.setText(recordList.get(position).getFindTime()+"/"+recordList.get(position).getClassName());
+            ((ViewHolder) holder).tvHiddenContent.setText(recordList.get(position).getContent());
+            ((ViewHolder) holder).tvHiddenDangerBelongs.setText(recordList.get(position).getHiddenBelong());
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=  new Intent( holder.itemView.getContext(),
+                Intent intent = new Intent(holder.itemView.getContext(),
                         HiddenRiskRecordDetailActivity.class);
-//                ThreeFix threeFix = threeFixList.get(position);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("threeFix",threeFix);
-//                intent.putExtra("threeBund",bundle);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("hiddenDangerRecord",recordList.get(position));
+                intent.putExtra("hiddenrecordBundle",bundle);
                 holder.itemView.getContext().startActivity(intent);
             }
         });
@@ -60,7 +59,7 @@ public class HiddenDangerStatisticsEachUnitDetailAdapter extends RecyclerView.Ad
 
     @Override
     public int getItemCount() {
-        return 6;
+        return recordList.size();
     }
 
 

@@ -1,8 +1,10 @@
 package com.example.administrator.riskprojects.bean;
 
-public class HiddenFollingRecord {
+import java.io.Serializable;
 
-	private String id;//主键
+public class HiddenFollingRecord implements Serializable{
+
+	private String follingRecordId;//主键
 	private String threeFixId;// threeFix的id
 	private String follingPersonId;// 隐患跟踪人ID
 	private String follingPersonName;//隐患跟踪人姓名
@@ -20,12 +22,12 @@ public class HiddenFollingRecord {
 		this.follingRecordTime = follingRecordTime;
 	}
 
-	public String getId() {
-		return id;
+	public String getFollingRecordId() {
+		return follingRecordId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setFollingRecordId(String follingRecordId) {
+		this.follingRecordId = follingRecordId;
 	}
 
 	public String getThreeFixId() {

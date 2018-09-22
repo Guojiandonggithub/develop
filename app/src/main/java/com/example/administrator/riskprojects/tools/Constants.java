@@ -39,7 +39,7 @@ public interface Constants {
 	String QUERYSTATICMOBILE = MAIN_ENGINE + "hiddenDangerQueryStaticMobileAction!findHiddenDangerQueryStatic.action";
 	// 根据id获取隐患信息
 	String HIDDENDANGERRECORD = MAIN_ENGINE + "hiddenDangerRecordMobileAction!findHiddenDangerRecordById.action";
-	// 获取部门/队组成员接口
+	// 获取部门/队组接口
 	String GET_COLLIERYTEAM = MAIN_ENGINE + "collieryTeamMobileAction!getCollieryTeamList.action";
 	// 获取所属专业
 	String GET_SPECIALTY = MAIN_ENGINE + "specialtyMobileAction!getSpecialtyList.action";
@@ -61,11 +61,31 @@ public interface Constants {
 	String GET_TRACKINGLIST = MAIN_ENGINE + "hiddenDangerCarryOutMobileAction!findhiddenDangerCarryOut.action";
 	// 隐患逾期查询
 	String GET_OVERDUELIST = MAIN_ENGINE + "hiddenDangerOutOfTimeMobileAction!findhiddenDangerOutTime.action";
+	// 隐患逾期重启下达
+	String HANDLEOUT_OVERDUELIST = MAIN_ENGINE + "hiddenDangerOutOfTimeMobileAction!handleOutTime.action";
 	// 隐患验收查询
 	String GET_REVIEWLIST = MAIN_ENGINE + "hiddenDangerRecheckMobileAction!findhiddenDangerRecheck.action";
 	// 隐患跟踪记录查询列表
 	String GET_FOLLINGRECORD = MAIN_ENGINE + "hiddenFollingRecordMobileAction!findFollingRecordByThreeFixId.action";
 	// 隐患跟踪记录添加
 	String ADD_FOLLINGRECORD = MAIN_ENGINE + "hiddenFollingRecordMobileAction!addHiddenFollingRecord.action";
+	// 隐患跟踪记录修改
+	String UPDATE_FOLLINGRECORD = MAIN_ENGINE + "hiddenFollingRecordMobileAction!updateFollingRecord.action";
+	// 隐患跟踪记录删除
+	String DELETE_FOLLINGRECORD = MAIN_ENGINE + "hiddenFollingRecordMobileAction!deleteFollingRecordById.action";
+	// 隐患添加记录
+	String ADD_HIDDENDANGERRECORD = MAIN_ENGINE + "hiddenDangerRecordMobileAction!addHiddenDangerRecord.action";
+	// 隐患修改记录
+	String UPDATE_HIDDENDANGERRECORD = MAIN_ENGINE + "hiddenDangerRecordMobileAction!updateHiddenDangerRecord.action";
+	// 隐患验收
+	String ADD_RECHECK = MAIN_ENGINE + "hiddenDangerRecheckMobileAction!addRecheck.action";
+	// 隐患整改
+	String COMPLETERECTIFY = MAIN_ENGINE + "hiddenDangerRectifyMobileAction!completeRectify.action";
+	// 隐患下达
+	String ADD_THREEFIXANDCONFIRM = MAIN_ENGINE + "hiddenDangerThreeFixMobileAction!addThreeFixAndConfirm.action";
+	// 首页下边统计详情接口
+	String GET_HIDDENDANGERDETAILLIST = MAIN_ENGINE + "yesterdayHdStatisticsMobileAction!getHiddenDangerDetailList.action";
+	// 获取整改人、跟踪人
+	String GET_EMPLOYEELISTBYTEAMID = MAIN_ENGINE + "collieryTeamMobileAction!getEmployeeListByTeamId.action";
 
 }

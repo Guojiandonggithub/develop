@@ -32,10 +32,11 @@ import com.example.administrator.riskprojects.bean.Specialty;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
+import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.util.DensityUtil;
 import com.juns.health.net.loopj.android.http.RequestParams;
-
+import java.util.Calendar;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +84,8 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     private LinearLayoutCompat llBottom;
     private TextView tvOk;
     protected NetClient netClient;
-    private HiddenDangerRecord record;
+    private HiddenDangerRecord record = new HiddenDangerRecord();
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +103,6 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         mTxtTitle.setText("隐患记录新增");
         mImgRight = findViewById(R.id.img_right);
         mTxtRight = findViewById(R.id.txt_right);
-        spHiddenUnits = findViewById(R.id.sp_hidden_units);
 
         txtLeft = findViewById(R.id.txt_left);
         imgLeft = findViewById(R.id.img_left);
@@ -150,9 +151,9 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         SelectItem selectItemw = new SelectItem();
         SelectItem selectItemy = new SelectItem();
         selectItemw.name = "未处理";
-        selectItemw.id = "未处理";
+        selectItemw.id = "0";
         selectItemy.name = "已处理";
-        selectItemy.id = "已处理";
+        selectItemy.id = "1";
         selectItems.add(selectItemw);
         selectItems.add(selectItemy);
         spIsHandleAdapter = SpinnerAdapter.createFromResource(this, selectItems);
@@ -178,6 +179,18 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         etLocation = findViewById(R.id.et_add_location);
         llBottom = findViewById(R.id.ll_bottom);
         tvOk = findViewById(R.id.tv_ok);
+        tvOk.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                HiddenDangerRecord record = getHiddenDangerRecord();
+                String flag = "add";
+                if (!TextUtils.isEmpty(id)) {
+                    flag = "update";
+                    record.setId(id);
+                }
+                addEditHiddenDanger(record,flag);
+            }
+        });
     }
 
     private void setUpSpinner(Spinner spinner, final SpinnerAdapter adapter) {
@@ -186,7 +199,6 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
             spinner.setPopupBackgroundResource(R.drawable.shape_rectangle_rounded);
             spinner.setDropDownVerticalOffset(DensityUtil.dip2px(this, 3));
         }
-        spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -198,10 +210,31 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
 
             }
         });
+        spinner.setAdapter(adapter);
     }
 
 
     private void initdata(){
+        Intent intent = getIntent();
+        id = intent.getStringExtra("id");
+        if (!TextUtils.isEmpty(id)) {
+            String hiddenrecordjson = getIntent().getStringExtra("hiddenrecordjson");
+            Log.e(TAG, "initdata: hiddenrecordjson-------------"+hiddenrecordjson);
+            record = JSONArray.parseObject(hiddenrecordjson, HiddenDangerRecord.class);
+            etContent.setText(record.getContent());
+            etLocation.setText(record.getHiddenPlace());
+            String isuper = record.getIsupervision();
+            if(TextUtils.equals(isuper,"0")){
+                checkYes.setSelected(false);
+                checkNos.setSelected(true);
+            }else{
+                checkYes.setSelected(true);
+                checkNos.setSelected(false);
+            }
+            String ishandle = record.getIshandle();
+            spIsHandleAdapter.notifyDataSetChanged();
+            spIsHandle.setSelection(Integer.parseInt(ishandle));
+        }
         getCollieryTeam();
         getSpecialty();
         getRiskGrade();
@@ -211,10 +244,6 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         getHiddenGrade();
         getHiddenYHGSLX();
         getCheckContent();
-        spProfessional.setSelection(5,true);
-        Intent intent = getIntent();
-        String id = intent.getStringExtra("id");
-        getHiddenRecord(id);
     }
 
     //获取部门/队组成员
@@ -228,14 +257,20 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data)) {
                     List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
                     List<SelectItem> selectItems = new ArrayList<>();
+                    int collieryTeamsint = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
                         selectItem.name = collieryTeams.get(i).getTeamName().replaceAll("&nbsp;","   ");
                         selectItem.id = collieryTeams.get(i).getId();
+                        if(collieryTeams.get(i).getId().equals(record.getTeamGroupCode())){
+                            collieryTeamsint = i;
+                        }
                         selectItems.add(selectItem);
                     }
                     mSpHiddenUnitsAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
                     setUpSpinner(spHiddenUnits, mSpHiddenUnitsAdapter);
+                    mSpHiddenUnitsAdapter.notifyDataSetChanged();
+                    spHiddenUnits.setSelection(collieryTeamsint);
                 }
 
             }
@@ -259,14 +294,20 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data)) {
                     List<Specialty> collieryTeams = JSONArray.parseArray(data, Specialty.class);
                     List<SelectItem> selectItems = new ArrayList<>();
+                    int sint = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
                         selectItem.name = collieryTeams.get(i).getSname();
                         selectItem.id = collieryTeams.get(i).getId();
+                        if(collieryTeams.get(i).getId().equals(record.getSid())){
+                            sint = i;
+                        }
                         selectItems.add(selectItem);
                     }
                     spProfessionalAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
                     setUpSpinner(spProfessional, spProfessionalAdapter);
+                    spProfessionalAdapter.notifyDataSetChanged();
+                    spProfessional.setSelection(sint);
                 }
 
             }
@@ -290,14 +331,20 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data)) {
                     List<RiskGrade> collieryTeams = JSONArray.parseArray(data, RiskGrade.class);
                     List<SelectItem> selectItems = new ArrayList<>();
+                    int riskGrade = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
                         selectItem.name = collieryTeams.get(i).getGname();
                         selectItem.id = collieryTeams.get(i).getId();
                         selectItems.add(selectItem);
+                        if(collieryTeams.get(i).getId().equals(record.getGid())){
+                            riskGrade = i;
+                        }
                     }
                     spHiddenClassAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
                     setUpSpinner(spHiddenClass, spHiddenClassAdapter);
+                    spHiddenClassAdapter.notifyDataSetChanged();
+                    spHiddenClass.setSelection(riskGrade);
                 }
 
             }
@@ -321,14 +368,20 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data)) {
                     List<ClassNumber> collieryTeams = JSONArray.parseArray(data, ClassNumber.class);
                     List<SelectItem> selectItems = new ArrayList<>();
+                    int classNumberint = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
                         selectItem.name = collieryTeams.get(i).getClassName();
                         selectItem.id = collieryTeams.get(i).getId();
                         selectItems.add(selectItem);
+                        if(collieryTeams.get(i).getId().equals(record.getClassId())){
+                            classNumberint = i;
+                        }
                     }
                     spOrderAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
                     setUpSpinner(spOrder, spOrderAdapter);
+                    spOrderAdapter.notifyDataSetChanged();
+                    spOrder.setSelection(classNumberint);
                 }
 
             }
@@ -352,14 +405,20 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data)) {
                     List<Area> collieryTeams = JSONArray.parseArray(data, Area.class);
                     List<SelectItem> selectItems = new ArrayList<>();
+                    int areaint = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
                         selectItem.name = collieryTeams.get(i).getAreaName();
                         selectItem.id = collieryTeams.get(i).getId();
                         selectItems.add(selectItem);
+                        if(collieryTeams.get(i).getId().equals(record.getAreaId())){
+                            areaint = i;
+                        }
                     }
                     spHiddenAreaAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
                     setUpSpinner(spHiddenArea, spHiddenAreaAdapter);
+                    spHiddenAreaAdapter.notifyDataSetChanged();
+                    spHiddenArea.setSelection(areaint);
                 }
 
             }
@@ -384,14 +443,20 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data)) {
                     List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
                     List<SelectItem> selectItems = new ArrayList<>();
+                    int dataDictionary = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
                         selectItem.name = collieryTeams.get(i).getName();
                         selectItem.id = collieryTeams.get(i).getId();
                         selectItems.add(selectItem);
+                        if(collieryTeams.get(i).getId().equals(record.getTid())){
+                            dataDictionary = i;
+                        }
                     }
                     spHiddenTypesAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
                     setUpSpinner(spHiddenTypes, spHiddenTypesAdapter);
+                    spHiddenTypesAdapter.notifyDataSetChanged();
+                    spHiddenTypes.setSelection(dataDictionary);
                 }
 
             }
@@ -416,14 +481,20 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data)) {
                     List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
                     List<SelectItem> selectItems = new ArrayList<>();
+                    int dataDictionary = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
                         selectItem.name = collieryTeams.get(i).getName();
                         selectItem.id = collieryTeams.get(i).getId();
                         selectItems.add(selectItem);
+                        if(collieryTeams.get(i).getName().equals(record.getJbName())){
+                            dataDictionary = i;
+                        }
                     }
                     spLevelAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
                     setUpSpinner(spLevel, spLevelAdapter);
+                    spLevelAdapter.notifyDataSetChanged();
+                    spLevel.setSelection(dataDictionary);
 
                 }
 
@@ -449,14 +520,20 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data)) {
                     List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
                     List<SelectItem> selectItems = new ArrayList<>();
+                    int dataDictionary = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
                         selectItem.name = collieryTeams.get(i).getName();
                         selectItem.id = collieryTeams.get(i).getId();
                         selectItems.add(selectItem);
+                        if(collieryTeams.get(i).getId().equals(record.getHiddenBelongId())){
+                            dataDictionary = i;
+                        }
                     }
                     spHiddenSortAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
                     setUpSpinner(spHiddenSort, spHiddenSortAdapter);
+                    spHiddenSortAdapter.notifyDataSetChanged();
+                    spHiddenSort.setSelection(dataDictionary);
                 }
 
             }
@@ -481,14 +558,21 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data)) {
                     List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
                     List<SelectItem> selectItems = new ArrayList<>();
+                    int dataDictionary = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
                         selectItem.name = collieryTeams.get(i).getName();
                         selectItem.id = collieryTeams.get(i).getId();
                         selectItems.add(selectItem);
+                        if(collieryTeams.get(i).getId().equals(record.getHiddenCheckContentId())){
+                            dataDictionary = i;
+                        }
                     }
                     spCheckContentAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
                     setUpSpinner(spCheckContent, spCheckContentAdapter);
+                    spCheckContentAdapter.notifyDataSetChanged();
+                    Log.e(TAG, "onMySuccess: getHiddenCheckContentId===="+ dataDictionary);
+                    spCheckContent.setSelection(dataDictionary);
                 }
 
             }
@@ -514,6 +598,17 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                     record = JSONArray.parseObject(data, HiddenDangerRecord.class);
                     etContent.setText(record.getContent());
                     etLocation.setText(record.getHiddenPlace());
+                    String isuper = record.getIsupervision();
+                    if(TextUtils.equals(isuper,"0")){
+                        checkYes.setSelected(false);
+                        checkNos.setSelected(true);
+                    }else{
+                        checkYes.setSelected(true);
+                        checkNos.setSelected(false);
+                    }
+                    String ishandle = record.getIshandle();
+                    spIsHandleAdapter.notifyDataSetChanged();
+                    spIsHandle.setSelection(Integer.parseInt(ishandle));
 
                 }
 
@@ -526,6 +621,107 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 return;
             }
         });
+    }
+
+    //添加修改隐患记录
+    private void addEditHiddenDanger(HiddenDangerRecord hiddenDangerRecord,String flag) {
+        RequestParams params = new RequestParams();
+        hiddenDangerRecord.setFlag(record.getFlag());
+        String hiddenDangerRecordStr = JSON.toJSONString(hiddenDangerRecord);
+        Log.i(TAG, "addHiddenDanger: 隐患添加修改="+hiddenDangerRecordStr);
+        params.put("hiddenDangerRecordJsonData",hiddenDangerRecordStr);
+        if(flag.equals("add")){
+            flag = Constants.ADD_HIDDENDANGERRECORD;
+        }else{
+            flag = Constants.UPDATE_HIDDENDANGERRECORD;
+        }
+
+        Log.e(TAG, "addEditHiddenDanger: flag==============="+flag);
+        netClient.post(flag, params, new BaseJsonRes() {
+
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "添加修改记录返回数据：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "隐患添加成功！");
+                    finish();
+                }
+
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "添加修改隐患记录返回错误信息：" + content);
+                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+            }
+        });
+    }
+
+    private HiddenDangerRecord getHiddenDangerRecord(){
+        HiddenDangerRecord record = new HiddenDangerRecord();
+        SelectItem spHiddenUnitItem = (SelectItem)spHiddenUnits.getSelectedItem();
+        record.setTeamGroupCode(String.valueOf(spHiddenUnitItem.id));
+        record.setTeamGroupName(spHiddenUnitItem.toString());
+
+        SelectItem spProfessionalItem = (SelectItem)spProfessional.getSelectedItem();
+        record.setSid(String.valueOf(spProfessionalItem.id));
+        record.setSname(spProfessionalItem.toString());
+
+
+        SelectItem spHiddenClassItem = (SelectItem)spHiddenClass.getSelectedItem();
+        record.setGname(spHiddenClassItem.toString());
+        record.setGid(String.valueOf(spHiddenClassItem.id));
+
+        SelectItem spHiddenTypesItem = (SelectItem) spHiddenTypes.getSelectedItem();
+        record.setTname(spHiddenTypesItem.toString());
+        record.setTid(String.valueOf(spHiddenTypesItem.id));
+
+
+        SelectItem spOrderItem = (SelectItem)spOrder.getSelectedItem();
+        record.setClassName(spOrderItem.toString());
+        record.setClassId(String.valueOf(spOrderItem.id));
+
+        SelectItem spHiddenSortItem = (SelectItem)spHiddenSort.getSelectedItem();
+        record.setHiddenBelong(spHiddenSortItem.toString());
+        record.setHiddenBelongId(String.valueOf(spHiddenSortItem.id));
+
+        SelectItem spHiddenAreaItem = (SelectItem)spHiddenArea.getSelectedItem();
+        String hiddenareaItem = spHiddenAreaItem.toString();
+        hiddenareaItem = hiddenareaItem.replaceAll("#","_");
+        record.setAreaName(hiddenareaItem);
+        record.setAreaId(String.valueOf(spHiddenAreaItem.id));
+
+        SelectItem selectedItem =(SelectItem)spCheckContent.getSelectedItem();
+        record.setHiddenCheckContent(selectedItem.getName());
+        record.setHiddenCheckContentId(selectedItem.getId());
+
+        SelectItem spIsHandleItem = (SelectItem)spIsHandle.getSelectedItem();
+        record.setIshandle(String.valueOf(spIsHandleItem.id));
+
+        if(checkYes.isSelected()){
+            record.setIsupervision("1");
+        }
+        if(checkNos.isSelected()){
+            record.setIsupervision("0");
+        }
+
+        record.setJbName(spLevel.getSelectedItem().toString());
+        String dateStr = tvDate.getText().toString().replaceAll("\\.","-");
+        Calendar cal = Calendar.getInstance();
+        //当前时：HOUR_OF_DAY-24小时制；HOUR-12小时制
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        //当前分
+        int minute = cal.get(Calendar.MINUTE);
+        //当前秒
+        int second = cal.get(Calendar.SECOND);
+        dateStr = dateStr + " " + hour + ":" + + minute+ ":" + second;
+        record.setFindTime(dateStr);
+        record.setHiddenPlace(etLocation.getText().toString());
+        record.setContent(etContent.getText().toString());
+        record.setEmployeeId(UserUtils.getUserID(HiddenRiskRecordAddEditActivity.this));
+        record.setRealName(UserUtils.getUserName(HiddenRiskRecordAddEditActivity.this));
+        record.setFlag(record.getFlag());
+        return record;
     }
 
     @Override

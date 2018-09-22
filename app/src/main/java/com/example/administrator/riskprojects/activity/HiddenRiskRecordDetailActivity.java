@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
+import com.example.administrator.riskprojects.bean.ThreeFix;
 
 public class HiddenRiskRecordDetailActivity extends BaseActivity {
 
@@ -36,7 +38,21 @@ public class HiddenRiskRecordDetailActivity extends BaseActivity {
     }
 
     private void setVeiw() {
-        txtTitle.setText("隐患列表");
+        Bundle  bundle = getIntent().getBundleExtra("hiddenrecordBundle");
+        HiddenDangerRecord hiddenDangerRecord = (HiddenDangerRecord) bundle.getSerializable("hiddenDangerRecord");
+        txtTitle.setText("隐患详情");
+        tvHiddenUnits.setText(hiddenDangerRecord.getTeamGroupName());
+        tvProfessional.setText(hiddenDangerRecord.getSname());
+        tvHiddenClass.setText(hiddenDangerRecord.getGname());
+        tvEnterMan.setText(hiddenDangerRecord.getFindPerson());
+        tvLevel.setText(hiddenDangerRecord.getJbName());
+        tvDate.setText(hiddenDangerRecord.getFindTime());
+        tvOrder.setText(hiddenDangerRecord.getClassName());
+        tvHiddenSort.setText(hiddenDangerRecord.getHiddenBelong());
+        tvHiddenArea.setText(hiddenDangerRecord.getAreaName());
+        tvDiscoverer.setText(hiddenDangerRecord.getFindPerson());
+        tvIsHandle.setText(hiddenDangerRecord.getIshandle().equals("0")?"未处理":"已处理");
+        etContent.setText(hiddenDangerRecord.getContent());
     }
 
     private void initView() {

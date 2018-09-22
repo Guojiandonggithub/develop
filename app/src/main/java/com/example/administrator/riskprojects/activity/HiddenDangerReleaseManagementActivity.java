@@ -50,6 +50,7 @@ public class HiddenDangerReleaseManagementActivity extends BaseActivity {
     private TextView mTvHeadquarters;
     private LinearLayoutCompat mLlBottom;
     private TextView mTvOk;
+    private ThreeFix threeFix;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +86,11 @@ public class HiddenDangerReleaseManagementActivity extends BaseActivity {
         mTvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HiddenDangerReleaseManagementActivity.this,FiveDecisionsActivity.class)) ;
+                Intent intent = new Intent(HiddenDangerReleaseManagementActivity.this,FiveDecisionsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("threeFix",threeFix);
+                intent.putExtra("threeBund",bundle);
+                startActivity(intent);
             }
         });
     }
@@ -93,7 +98,7 @@ public class HiddenDangerReleaseManagementActivity extends BaseActivity {
     private void setView() {
         mTxtTitle.setText(R.string.hidden_danger_management);
         Bundle  bundle = getIntent().getBundleExtra("threeBund");
-        ThreeFix threeFix = (ThreeFix) bundle.getSerializable("threeFix");
+        threeFix = (ThreeFix) bundle.getSerializable("threeFix");
         mTvHiddenContent.setText(threeFix.getContent());
         mTvArea.setText(threeFix.getAreaName());
         mTvSpecialty.setText(threeFix.getSname());

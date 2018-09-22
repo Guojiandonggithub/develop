@@ -65,4 +65,12 @@ public class HomeHiddenRecord {
 	public void setTotalNum(String totalNum) {
 		this.totalNum = totalNum;
 	}
+
+	public String getMoney() {
+		return money;
+	}
+
+	public void setMoney(String money) {
+		this.money = money;
+	}
 }

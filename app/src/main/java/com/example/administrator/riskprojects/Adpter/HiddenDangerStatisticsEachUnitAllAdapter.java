@@ -12,14 +12,18 @@ import android.widget.TextView;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.HiddenDangerStatisticsEachUnitDetailActivity;
 import com.example.administrator.riskprojects.activity.HiddenRiskRecordDetailActivity;
+import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
+import com.example.administrator.riskprojects.bean.ThreeFix;
+
+import java.util.List;
 
 public class HiddenDangerStatisticsEachUnitAllAdapter extends RecyclerView.Adapter {
-//    private List<ThreeFix> threeFixList;
+    private List<HomeHiddenRecord> dtatisticsList;
 
 
 
-    public HiddenDangerStatisticsEachUnitAllAdapter() {
-//        this.threeFixList = threeFixList;
+    public HiddenDangerStatisticsEachUnitAllAdapter(List<HomeHiddenRecord> dtatisticsList) {
+        this.dtatisticsList = dtatisticsList;
     }
 
     @Override
@@ -30,24 +34,21 @@ public class HiddenDangerStatisticsEachUnitAllAdapter extends RecyclerView.Adapt
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-//        if(threeFixList.size()>0){
-//            ((ViewHolder) holder).tvHiddenContent.setText(threeFixList.get(position).getContent());
-//            ((ViewHolder) holder).tvArea.setText(threeFixList.get(position).getAreaName());
-//            ((ViewHolder) holder).tvSpecialty.setText(threeFixList.get(position).getSname());
-//            ((ViewHolder) holder).tvTimeOrOrder.setText(threeFixList.get(position).getFindTime()+"/"+threeFixList.get(position).getClassName());
-//            ((ViewHolder) holder).tvCategory.setText(threeFixList.get(position).getGname());
-//            ((ViewHolder) holder).tvSupervise.setText(threeFixList.get(position).getIshandle());
-//        }
+        if(dtatisticsList.size()>0){
+            ((ViewHolder) holder).tvHiddenUnits.setText(dtatisticsList.get(position).getTeamGroupName());
+            ((ViewHolder) holder).tvNumberOfProcessed.setText(dtatisticsList.get(position).getMonth());
+            ((ViewHolder) holder).tvNumberOfUntreated.setText(dtatisticsList.get(position).getTotal());
+            ((ViewHolder) holder).tvNumberOdAll.setText(dtatisticsList.get(position).getTotalNum());
+            ((ViewHolder) holder).tvMoney.setText(dtatisticsList.get(position).getMoney());
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=  new Intent( holder.itemView.getContext(),
+                Intent intent = new Intent(holder.itemView.getContext(),
                         HiddenDangerStatisticsEachUnitDetailActivity.class);
-//                ThreeFix threeFix = threeFixList.get(position);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("threeFix",threeFix);
-//                intent.putExtra("threeBund",bundle);
+                String teamGroupCode = dtatisticsList.get(position).getTeamGroupCode();
+                intent.putExtra("teamGroupCode",teamGroupCode);
                 holder.itemView.getContext().startActivity(intent);
             }
         });
@@ -56,7 +57,7 @@ public class HiddenDangerStatisticsEachUnitAllAdapter extends RecyclerView.Adapt
 
     @Override
     public int getItemCount() {
-        return 6;
+        return dtatisticsList.size();
     }
 
 

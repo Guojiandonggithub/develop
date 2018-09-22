@@ -17,6 +17,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.HiddenFollingRecord;
+import com.example.administrator.riskprojects.bean.ThreeFix;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
@@ -44,6 +45,8 @@ public class HiddenRiskTrackingAddEditActivity extends BaseActivity {
     private TextView mTvOk;
     private TextView mTvDate;
     private EditText mEtContent;
+    private HiddenFollingRecord hiddenFollingRecord;
+    private String flag = Constants.ADD_FOLLINGRECORD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +58,22 @@ public class HiddenRiskTrackingAddEditActivity extends BaseActivity {
     }
 
     private void setView() {
-        mTvDate.setText(TextUtils.isEmpty(getIntent().getStringExtra(CHANGE_DATE)) ? new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(new Date()) : getIntent().getStringExtra(CHANGE_DATE));
-        mEtContent.setText(TextUtils.isEmpty(getIntent().getStringExtra(CHANGE_CONTENT)) ? "" : getIntent().getStringExtra(CHANGE_CONTENT));
-        mTxtTitle.setText(TextUtils.isEmpty(getIntent().getStringExtra(CHANGE_ID)) ? R.string.add : R.string.modification);
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("id");
+        if(!TextUtils.isEmpty(id)){
+            String follingRecord = intent.getStringExtra("follingRecord");
+            hiddenFollingRecord = JSON.parseObject(follingRecord,HiddenFollingRecord.class);
+            flag = Constants.UPDATE_FOLLINGRECORD;
+        }else{
+            String threeFixId = intent.getStringExtra("threeFixId");
+            String follingPersonName = UserUtils.getUserName(HiddenRiskTrackingAddEditActivity.this);
+            String follingPersonId = UserUtils.getUserID(HiddenRiskTrackingAddEditActivity.this);
+            hiddenFollingRecord = new HiddenFollingRecord(threeFixId,follingPersonId,follingPersonName,"","");
+        }
+
+        mTvDate.setText(TextUtils.isEmpty(hiddenFollingRecord.getFollingRecordTime()) ? new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(new Date()) : hiddenFollingRecord.getFollingRecordTime());
+        mEtContent.setText(TextUtils.isEmpty(hiddenFollingRecord.getFollingRecord()) ? "" : hiddenFollingRecord.getFollingRecord());
+        mTxtTitle.setText(TextUtils.isEmpty(hiddenFollingRecord.getFollingRecordId()) ? R.string.add : R.string.modification);
         mCvSelectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,32 +86,29 @@ public class HiddenRiskTrackingAddEditActivity extends BaseActivity {
             @Override
             public void onClick(View arg0) {
                 Intent intent = getIntent();
-                String threeFixId = intent.getStringExtra("threeFixId");
                 String follingRecordTime = mTvDate.getText().toString();
                 String follingRecord = mEtContent.getText().toString();
-                String follingPersonName = UserUtils.getUserName(HiddenRiskTrackingAddEditActivity.this);
-                String follingPersonId = UserUtils.getUserID(HiddenRiskTrackingAddEditActivity.this);
-                HiddenFollingRecord hiddenFollingRecord = new HiddenFollingRecord(threeFixId,follingPersonId,follingPersonName,follingRecord,follingRecordTime);
-                addEditTracking(hiddenFollingRecord);
+                hiddenFollingRecord.setFollingRecord(follingRecord);
+                hiddenFollingRecord.setFollingRecordTime(follingRecordTime);
+                addEditTracking(hiddenFollingRecord,flag);
             }
 
         });
     }
 
     //添加跟踪记录
-    private void addEditTracking(HiddenFollingRecord hiddenFollingRecord) {
+    private void addEditTracking(final HiddenFollingRecord hiddenFollingRecord,String flag) {
         RequestParams params = new RequestParams();
         String hiddenFollingRecordStr = JSON.toJSONString(hiddenFollingRecord);
-
         params.put("follingRecordJsonData",hiddenFollingRecordStr);
-        netClient.post(Constants.ADD_FOLLINGRECORD, params, new BaseJsonRes() {
+        netClient.post(flag, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
                 Log.i(TAG, "添加跟踪记录返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     Intent intent = new Intent(HiddenRiskTrackingAddEditActivity.this, HiddenDangeTrackingDetailListActivity.class);
-                    intent.putExtra("threeFixId", getIntent().getStringExtra("threeFixId"));
+                    intent.putExtra("threeFixId", hiddenFollingRecord.getThreeFixId());
                     startActivity(intent);
                 }
 

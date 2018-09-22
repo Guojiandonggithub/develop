@@ -45,6 +45,8 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
     private LinearLayoutCompat llBottom;
     private TextView tvDelete;
     private TextView tvChange;
+    private HiddenDangerRecord record;
+    private String hiddenrecordjson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +69,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                     public void affirm() {
                         Intent intent = getIntent();
                         String id = intent.getStringExtra("id");
-                        Utils.showLongToast(HiddenDangerDetailManagementActivity.this, "删除成功:" + id);
                         deleteHiddenRecord(id);
-                        //Intent intents = new Intent(HiddenDangerDetailManagementActivity.this, HiddenRiskRecordAddEditActivity.class);
-                        //intents.putExtra("id",id);
-                        //startActivity(intents);
                     }
 
                     @Override
@@ -86,10 +84,10 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
         tvChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = getIntent();
-                String id = intent.getStringExtra("id");
                 Intent intents = new Intent(HiddenDangerDetailManagementActivity.this, HiddenRiskRecordAddEditActivity.class);
-                intents.putExtra("id", id);
+                Log.e(TAG, "onClick: hiddenrecordjson============="+hiddenrecordjson);
+                intents.putExtra("hiddenrecordjson",hiddenrecordjson);
+                intents.putExtra("id",record.getId());
                 startActivity(intents);
             }
         });
@@ -136,7 +134,8 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                 Log.i(TAG, "隐患数据返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     JSONObject returndata = JSON.parseObject(data);
-                    HiddenDangerRecord record = JSONArray.parseObject(data, HiddenDangerRecord.class);
+                    hiddenrecordjson = data;
+                    record = JSONArray.parseObject(data, HiddenDangerRecord.class);
                     tvHiddenUnits.setText(record.getTeamGroupName());
                     tvTimeOrOrder.setText(record.getFindTime() + "/" + record.getClassName());
                     tvHiddenContent.setText(record.getContent());

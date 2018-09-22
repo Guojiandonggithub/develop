@@ -1,6 +1,8 @@
 package com.example.administrator.riskprojects.bean;
 
-public class HiddenDangerRecord {
+import java.io.Serializable;
+
+public class HiddenDangerRecord implements Serializable{
 	private String id;//主键ID
 	private String teamId;// 队组id
 	private String teamName;//队组名称
@@ -88,6 +90,8 @@ public class HiddenDangerRecord {
 	private String isOrder; // 是否倒序
 	private String ischecked; // 是否审核:(0:未审核;1:已审核)
 	private String isupervision; // 是否挂牌督办（0：未挂牌督办；1：已挂牌督办）
+
+
 
 	public String getId() {
 		return id;

@@ -46,6 +46,7 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
     private RecyclerView mRecyclerView;
     private HomeHiddenDangerdetailListAdapter adapter;
     private List<HiddenFollingRecord> hiddenFollingRecordList;
+    private JSONArray jsonArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +100,7 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
                     String page = returndata.getString("page");
                     String pagesize = returndata.getString("pagesize");
                     hiddenFollingRecordList = JSONArray.parseArray(rows, HiddenFollingRecord.class);
+                    jsonArray = returndata.getJSONArray("rows");
                     adapter = new HomeHiddenDangerdetailListAdapter(hiddenFollingRecordList);
                     mRecyclerView.setAdapter(adapter);
                     adapter.setOnItemClickListener(new OnItemClickListener() {
@@ -108,9 +110,11 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
                                 case HomeHiddenDangerdetailListAdapter.FLAG_CHANGE:
                                     Intent intent = new Intent(HiddenDangeTrackingDetailListActivity.this,
                                             HiddenRiskTrackingAddEditActivity.class);
-                                    intent.putExtra(HiddenRiskTrackingAddEditActivity.CHANGE_ID, "" + position);
-                                    intent.putExtra(HiddenRiskTrackingAddEditActivity.CHANGE_DATE, "2018-09-1" + position);
-                                    intent.putExtra(HiddenRiskTrackingAddEditActivity.CHANGE_CONTENT, "隐患内容" + position);
+                                    JSONObject jsonObject = jsonArray.getJSONObject(position);
+                                    intent.putExtra("follingRecord",jsonObject.toString());
+                                    String id = jsonObject.getString("follingRecordId");
+                                    Log.e(TAG, "onItemClick: 跟踪id======"+id);
+                                    intent.putExtra("id",id);
                                     startActivity(intent);
                                     break;
                                 case HomeHiddenDangerdetailListAdapter.FLAG_DELETE:
@@ -118,7 +122,11 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
                                             , new MyAlertDialog.DialogListener() {
                                         @Override
                                         public void affirm() {
-                                            adapter.notifyItemRemoved(position);
+                                            JSONObject jsonObject = jsonArray.getJSONObject(position);
+                                            String id = jsonObject.getString("follingRecordId");
+                                            Log.e(TAG, "onItemClick: 跟踪id======"+id);
+                                            deleteHiddenTrackingRecord(id);
+                                            //adapter.notifyItemRemoved(position);
                                         }
 
                                         @Override
@@ -144,6 +152,30 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
             public void onMyFailure(String content) {
                 Log.e(TAG, "隐患跟踪记录查询返回错误信息：" + content);
                 Utils.showLongToast(HiddenDangeTrackingDetailListActivity.this, content);
+            }
+        });
+    }
+
+    //删除跟踪记录
+    private void deleteHiddenTrackingRecord(String id) {//隐患跟踪记录id
+        RequestParams params = new RequestParams();
+        params.put("follingRecordId", id);
+        netClient.post(Constants.DELETE_FOLLINGRECORD, params, new BaseJsonRes() {
+
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "删除隐患记录返回数据：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    Utils.showLongToast(HiddenDangeTrackingDetailListActivity.this, "删除成功");
+                }
+                finish();
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "删除隐患记录返回错误信息：" + content);
+                Utils.showLongToast(HiddenDangeTrackingDetailListActivity.this, content);
+                return;
             }
         });
     }
