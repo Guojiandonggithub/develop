@@ -149,7 +149,17 @@ public class Fragment_Home extends Fragment {
                     adapter.setItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, int position, int flag) {
-                            ((MainActivity) ctx).onHomeListItemClicked(recordList.get(position).getTeamGroupCode());
+                            switch (flag) {
+                                case -1:
+                                    ((MainActivity) ctx).onHomeListItemClicked(recordList.get(position).getTeamGroupCode(),flag);
+                                    break;
+                                case 1:
+                                    ((MainActivity) ctx).onHomeListItemClicked(recordList.get(position).getTeamGroupCode(),flag);
+                                    break;
+                                case 2:
+                                    ((MainActivity) ctx).onHomeListItemClicked(recordList.get(position).getTeamGroupCode(),flag);
+                                    break;
+                            }
                         }
 
                         @Override

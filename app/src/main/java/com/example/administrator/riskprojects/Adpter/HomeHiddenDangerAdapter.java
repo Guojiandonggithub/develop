@@ -64,6 +64,24 @@ public class HomeHiddenDangerAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
+
+            ((ViewHolder) holder).mTvProcessedNum01.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (itemClickListener != null) {
+                        itemClickListener.onItemClick(v, position, 1);
+                    }
+                }
+            });
+
+            ((ViewHolder) holder).mTvUntreatedNum01.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (itemClickListener != null) {
+                        itemClickListener.onItemClick(v, position, 2);
+                    }
+                }
+            });
         } else if (holder instanceof FootViewHolder) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

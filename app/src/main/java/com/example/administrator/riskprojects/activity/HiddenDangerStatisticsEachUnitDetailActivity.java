@@ -70,7 +70,7 @@ public class HiddenDangerStatisticsEachUnitDetailActivity extends BaseActivity i
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(false);
     }
-
+    //没有页数信息
     private void getHiddenRecord(String teamGroupCode,String State) {
         RequestParams params = new RequestParams();
         Map<String,String> paramsMap = new HashMap<String,String>();

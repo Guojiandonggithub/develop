@@ -21,17 +21,12 @@ import java.util.List;
 
 public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
 
-    private boolean[] expands;
 
     List<HiddenDangerRecord> recordList;
 
 
     public HiddenDangeRecordAdapter(List<HiddenDangerRecord> recordList) {
         this.recordList = recordList;
-        expands = new boolean[recordList.size()];
-        for (int i = 0; i < recordList.size(); i++) {
-            expands[i] = false;
-        }
     }
 
     @Override
@@ -58,7 +53,7 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
             isuper = "已督办";
         }
         ((ViewHolder) holder).tvOversee.setText(isuper);
-        if (expands[position]) {
+        if (recordList.get(position).isExpands()) {
             ((ViewHolder) holder).expand.setVisibility(View.VISIBLE);
             ((ViewHolder) holder).clickMore.setVisibility(View.GONE);
         } else {
@@ -68,7 +63,7 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).clickMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                expands[position] = true;
+                recordList.get(position).setExpands(true);
                 notifyItemChanged(position);
             }
         });

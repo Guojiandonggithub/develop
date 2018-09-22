@@ -91,6 +91,17 @@ public class HiddenDangerRecord implements Serializable{
 	private String ischecked; // 是否审核:(0:未审核;1:已审核)
 	private String isupervision; // 是否挂牌督办（0：未挂牌督办；1：已挂牌督办）
 
+	public boolean isExpands() {
+		return expands;
+	}
+
+	public void setExpands(boolean expands) {
+		this.expands = expands;
+	}
+
+	private boolean expands; // 是否挂牌督办（0：未挂牌督办；1：已挂牌督办）
+
+
 
 
 	public String getId() {

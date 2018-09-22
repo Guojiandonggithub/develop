@@ -22,6 +22,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsAllAdapter;
 import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsEachUnitAllAdapter;
 import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsEachUnitDetailAdapter;
+import com.example.administrator.riskprojects.Adpter.HiddenRiskQueryStatisticsAdapter;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
@@ -67,6 +68,10 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     private TextView titleBottom;
     private LineChart lineChart;
     private RecyclerView recyclerView;
+
+    private boolean onLoading = false;
+    private int page = 1;
+    private int pagesize = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -519,6 +524,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 titleTop.setText(R.string.hazard_query_statistics);
                 titleBottom.setText(R.string.hazard_query_statistics);
                 getHiddenQueryStaticMobile();
+                setHiddenRiskQueryStatisticsList();
                 break;
             /*case R.id.ll_chart_04:
                 titleTop.setText(R.string.the_hidden_danger_record_has_been_deleted);
@@ -546,6 +552,21 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             default:
                 break;
         }
+    }
+
+    private void setHiddenRiskQueryStatisticsList() {
+        if (!TextUtils.isEmpty(tvArea.getText().toString()) ||
+                !TextUtils.isEmpty(tvProfession.getText().toString()) ||
+                !TextUtils.isEmpty(tvHiddenUnits.getText().toString())) {
+            llOption.setVisibility(View.VISIBLE);
+        } else {
+            llOption.setVisibility(View.GONE);
+        }
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+        swipeRefreshLayout.setOnRefreshListener(this);
+        HiddenRiskQueryStatisticsAdapter adapter = new HiddenRiskQueryStatisticsAdapter();
+        recyclerView.setAdapter(adapter);
     }
 
     private void setAllHiddenTroubleList() {
@@ -590,5 +611,10 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         tvArea.setText(aname);
         tvProfession.setText(pname);
         tvHiddenUnits.setText(hname);
+    }
+
+
+    public void setIdFlag(String id,int flag) {
+        //设置变量值，进行请求时使用
     }
 }

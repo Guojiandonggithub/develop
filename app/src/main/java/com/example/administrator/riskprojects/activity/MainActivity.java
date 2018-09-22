@@ -296,8 +296,10 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    public void onHomeListItemClicked(String id) {
+    public void onHomeListItemClicked(String id, int flag) {
         onTabClicked(findViewById(R.id.re_weixin));
+        //设置属性，请求时使用
+        statisticsfragment.setIdFlag(id, flag);
         onMenuClicked(findViewById(R.id.ll_chart_01));
     }
 
