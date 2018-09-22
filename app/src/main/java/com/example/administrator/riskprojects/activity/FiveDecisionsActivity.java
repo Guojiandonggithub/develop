@@ -142,6 +142,10 @@ public class FiveDecisionsActivity extends BaseActivity {
                 //addThreeFixAndConfirm(threeFix);
                 Utils.showLongToast(FiveDecisionsActivity.this, "下达参数负责人接口未提供:");
 
+
+                //返回finish 测试
+                setResult(RESULT_OK);
+                finish();
             }
         });
 

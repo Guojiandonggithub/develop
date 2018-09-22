@@ -27,6 +27,7 @@ import java.io.Serializable;
  * 隐患下达
  */
 public class HiddenDangerReleaseManagementActivity extends BaseActivity {
+    public static final int REQUEST_CODE = 1024;
     private static final String TAG = "HiddenDangerReleaseMana";
     protected NetClient netClient;
     private TextView mTxtLeft;
@@ -86,33 +87,35 @@ public class HiddenDangerReleaseManagementActivity extends BaseActivity {
         mTvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HiddenDangerReleaseManagementActivity.this,FiveDecisionsActivity.class);
+                Intent intent = new Intent(
+                        HiddenDangerReleaseManagementActivity.this,
+                        FiveDecisionsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("threeFix",threeFix);
-                intent.putExtra("threeBund",bundle);
-                startActivity(intent);
+                bundle.putSerializable("threeFix", threeFix);
+                intent.putExtra("threeBund", bundle);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
     }
 
     private void setView() {
         mTxtTitle.setText(R.string.hidden_danger_management);
-        Bundle  bundle = getIntent().getBundleExtra("threeBund");
+        Bundle bundle = getIntent().getBundleExtra("threeBund");
         threeFix = (ThreeFix) bundle.getSerializable("threeFix");
         mTvHiddenContent.setText(threeFix.getContent());
         mTvArea.setText(threeFix.getAreaName());
         mTvSpecialty.setText(threeFix.getSname());
-        mTvTimeOrOrder.setText(threeFix.getFindTime()+"/"+threeFix.getClassName());
+        mTvTimeOrOrder.setText(threeFix.getFindTime() + "/" + threeFix.getClassName());
         mTvCategory.setText(threeFix.getGname());
         String isuper = threeFix.getIsupervision();
-        if(TextUtils.isEmpty(isuper)||TextUtils.equals(isuper,"0")){
+        if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
             isuper = "未督办";
-        }else{
+        } else {
             isuper = "已督办";
         }
         mTvSupervise.setText(isuper);
         mTvFinishTime.setText(threeFix.getCompleteTime());
-        mTvDepartment.setText(threeFix.getLsdeptName()+"/"+threeFix.getLsteamName());
+        mTvDepartment.setText(threeFix.getLsdeptName() + "/" + threeFix.getLsteamName());
         mTvMeasure.setText(threeFix.getMeasure());
         mTvCapital.setText(threeFix.getMoney());
         mTvPrincipal.setText(threeFix.getRealName());
@@ -122,4 +125,11 @@ public class HiddenDangerReleaseManagementActivity extends BaseActivity {
         mTvHeadquarters.setText(threeFix.getFollingPersonName());
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            finish();
+        }
+    }
 }
