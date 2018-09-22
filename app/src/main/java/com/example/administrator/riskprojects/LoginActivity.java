@@ -1,6 +1,8 @@
 package com.example.administrator.riskprojects;
 
+import android.Manifest;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.administrator.riskprojects.activity.MainActivity;
 import com.example.administrator.riskprojects.dialog.FlippingLoadingDialog;
@@ -17,15 +20,27 @@ import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
+import com.example.administrator.riskprojects.util.UpdateVersionUtil;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener{
+import java.util.List;
+
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
+
+public class LoginActivity extends BaseActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks{
     protected NetClient netClient;
     protected FlippingLoadingDialog mLoadingDialog;
     private EditText et_username, et_password;
     private Button btn_login;
     private RadioButton outer_net,intra_net;
     private RadioGroup radio_net;
+    private String[] perms = new String[]{
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    };
+    private static final int num = 123;//用于验证获取的权
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +49,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         netClient = new NetClient(this);
         initControl();
         setListener();
+        requireSomePermission();
+    }
+
+    @AfterPermissionGranted(num)
+    private void requireSomePermission() {
+        if (!EasyPermissions.hasPermissions(this, perms)) {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(this, "请求程序运行必要的权限",
+                    num, perms);
+        }
     }
 
 
@@ -109,5 +134,43 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         if (mLoadingDialog == null)
             mLoadingDialog = new FlippingLoadingDialog(this, msg);
         return mLoadingDialog;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // EasyPermissions handles the request result.
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        finish();
+        //如果曾经有勾选《拒绝后不再询问》，则会进入下面这个条件
+        //建议做一个判断，判断用户是不是刚刚勾选的《拒绝后不再询问》，如果是，就不做下面这个判断，而只进行相应提示，这样就可以避免再一次弹框，影响用户体验
+        //否则就是用户可能在之前曾经勾选过《拒绝后不再询问》，那就可以用下面这个判断，强制弹出一个对话框
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            //但是这个api有个问题，他会显示一个对话框，但是这个对话框，点空白区域是可以取消的，如果用户点了空白区域，你就没办法进行后续操作了
+            new AppSettingsDialog.Builder(this).build().show();
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //EasyPermissions会有一个默认的请求码，根据这个请求码，就可以判断是不是从APP的设置界面过来的
+        if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
+            // Do something after user returned from app settings screen, like showing a Toast.
+            //在这儿，你可以再对权限进行检查，从而给出提示，或进行下一步操作
+            Toast.makeText(this, "从设置中返回", Toast.LENGTH_SHORT).show();
+            requireSomePermission();
+        }
     }
 }

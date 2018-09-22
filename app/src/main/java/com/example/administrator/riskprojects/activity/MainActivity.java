@@ -17,6 +17,7 @@ import com.example.administrator.riskprojects.fragment.Fragment_Record_Manage;
 import com.example.administrator.riskprojects.fragment.Fragment_Statistics;
 import com.example.administrator.riskprojects.fragment.Fragment_Supervision;
 import com.example.administrator.riskprojects.fragment.Fragment_mine;
+import com.example.administrator.riskprojects.util.UpdateVersionUtil;
 
 public class MainActivity extends FragmentActivity {
     private TextView txt_title;
@@ -60,7 +61,14 @@ public class MainActivity extends FragmentActivity {
         findViewById();
         initTabView();
         initPopWindow();
+//        upDateVersion();
+
     }
+
+    private void upDateVersion() {
+        new UpdateVersionUtil().versionUpdata(this, true);
+    }
+
 
     private void initTabView() {
         homefragment = new Fragment_Home();

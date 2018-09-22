@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONArray;
+import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsEachUnitAllAdapter;
+import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsEachUnitDetailAdapter;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
@@ -52,6 +56,8 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     private SwipeRefreshLayout mSwipeRefreshLayout;
     protected NetClient netClient;
     private LinearLayoutCompat llOption;
+    private LinearLayoutCompat llLineChart;
+    private LinearLayoutCompat llBarChart;
     private TextView tvProfession;
     private TextView tvHiddenUnits;
     private TextView tvArea;
@@ -96,7 +102,9 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         tvHiddenUnits = layout.findViewById(R.id.tv_hidden_units);
         tvArea = layout.findViewById(R.id.tv_area);
         recyclerView = layout.findViewById(R.id.recyclerView);
+        llBarChart =  layout.findViewById(R.id.ll_barChart);
 
+        llLineChart = layout. findViewById(R.id.ll_lineChart);
         titleTop =  layout.findViewById(R.id.title_top);
         titleBottom =  layout.findViewById(R.id.title_bottom);
     }
@@ -434,6 +442,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 titleTop.setText(R.string.hidden_danger_statistics_of_each_unit);
                 titleBottom.setText(R.string.hidden_danger_statistics_of_each_unit);
                 getHiddenStatisticsData();
+                setList();
                 break;
             case R.id.ll_chart_02:
                 titleTop.setText(R.string.summary_of_hazards);
@@ -471,6 +480,17 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             default:
                 break;
         }
+    }
+
+    private void setList() {
+        llOption.setVisibility(View.GONE);
+        llLineChart.setVisibility(View.GONE);
+        llBarChart.setVisibility(View.GONE);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        HiddenDangerStatisticsEachUnitAllAdapter adapter = new HiddenDangerStatisticsEachUnitAllAdapter();
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
