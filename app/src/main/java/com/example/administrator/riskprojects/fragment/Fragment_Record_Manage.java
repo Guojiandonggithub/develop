@@ -262,7 +262,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     curpage = Integer.parseInt(returndata.getString("page"));
                     pagesize = Integer.parseInt(returndata.getString("pagesize"));
                     if (curpage == 1) {
-                        recordList.clear();
+                        threeFixesList.clear();
                     }
                     List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
                     threeFixesList.addAll(tempList);
@@ -323,7 +323,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     curpage = Integer.parseInt(returndata.getString("page"));
                     pagesize = Integer.parseInt(returndata.getString("pagesize"));
                     if (curpage == 1) {
-                        recordList.clear();
+                        threeFixesList.clear();
                     }
                     List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
                     threeFixesList.addAll(tempList);
@@ -387,7 +387,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     curpage = Integer.parseInt(returndata.getString("page"));
                     pagesize = Integer.parseInt(returndata.getString("pagesize"));
                     if (curpage == 1) {
-                        recordList.clear();
+                        threeFixesList.clear();
                     }
                     List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
                     threeFixesList.addAll(tempList);
@@ -449,7 +449,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     curpage = Integer.parseInt(returndata.getString("page"));
                     pagesize = Integer.parseInt(returndata.getString("pagesize"));
                     if (curpage == 1) {
-                        recordList.clear();
+                        threeFixesList.clear();
                     }
                     List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
                     threeFixesList.addAll(tempList);
@@ -512,7 +512,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     curpage = Integer.parseInt(returndata.getString("page"));
                     pagesize = Integer.parseInt(returndata.getString("pagesize"));
                     if (curpage == 1) {
-                        recordList.clear();
+                        threeFixesList.clear();
                     }
                     List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
                     threeFixesList.addAll(tempList);
@@ -589,6 +589,12 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
             default:
                 break;
         }
+        llOption.setVisibility(View.GONE);
+        tvArea.setText("");
+        tvProfession.setText("");
+        sid = "";
+        areaid = "";
+        tvHiddenUnits.setText("");
         getDataByPage(1);
     }
 
