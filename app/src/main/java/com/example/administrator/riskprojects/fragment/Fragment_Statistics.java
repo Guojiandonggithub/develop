@@ -24,6 +24,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsAllAdapter;
 import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsEachUnitAllAdapter;
 import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsEachUnitDetailAdapter;
+import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsRepeatAdapter;
 import com.example.administrator.riskprojects.Adpter.HiddenRiskQueryStatisticsAdapter;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
@@ -299,12 +300,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int date = cal.get(Calendar.DATE);
-        params.put("customParamsOne",year+"-"+ month +"-01");//开始时间
-        String customParamsTwo = year+"-"+ month + "-"+  date;
-        if(currentdate.equals("false")&&!TextUtils.isEmpty(tvHiddenUnits.getText())){
+        params.put("customParamsOne", year + "-" + month + "-01");//开始时间
+        String customParamsTwo = year + "-" + month + "-" + date;
+        if (currentdate.equals("false") && !TextUtils.isEmpty(tvHiddenUnits.getText())) {
             customParamsTwo = tvHiddenUnits.getText().toString();
         }
-        params.put("customParamsTwo",customParamsTwo);//结束时间
+        params.put("customParamsTwo", customParamsTwo);//结束时间
         netClient.post(Constants.TEAMHDSTAISTICSDATAGRID, params, new BaseJsonRes() {
 
             @Override
@@ -347,12 +348,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int date = cal.get(Calendar.DATE);
-        params.put("customParamsOne",year+"-"+ month +"-01");//开始时间
-        String customParamsTwo = year + "-" + month + "-" +  date;
-        if(!TextUtils.isEmpty(tvHiddenUnits.getText())){
+        params.put("customParamsOne", year + "-" + month + "-01");//开始时间
+        String customParamsTwo = year + "-" + month + "-" + date;
+        if (!TextUtils.isEmpty(tvHiddenUnits.getText())) {
             customParamsTwo = tvHiddenUnits.getText().toString();
         }
-        params.put("customParamsTwo",customParamsTwo);//结束时间
+        params.put("customParamsTwo", customParamsTwo);//结束时间
         netClient.post(Constants.SUMARYMOBILE, params, new BaseJsonRes() {
             @Override
             public void onStart() {
@@ -470,8 +471,8 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
-        params.put("customParamsOne",year+"-"+ month +"-01");//开始时间
-        params.put("customParamsTwo",tvHiddenUnits.getText().toString());//结束时间
+        params.put("customParamsOne", year + "-" + month + "-01");//开始时间
+        params.put("customParamsTwo", tvHiddenUnits.getText().toString());//结束时间
         netClient.post(Constants.DEPARTMENTSTATISTICSMOBILE, params, new BaseJsonRes() {
             @Override
             public void onStart() {
@@ -514,10 +515,10 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
-        params.put("customParamsOne",year+"-"+ month +"-01");//开始时间
-        params.put("customParamsTwo",tvHiddenUnits.getText().toString());//结束时间
-        if(!TextUtils.isEmpty(pid)){
-            params.put("customParamsFour",pid);//分析因素
+        params.put("customParamsOne", year + "-" + month + "-01");//开始时间
+        params.put("customParamsTwo", tvHiddenUnits.getText().toString());//结束时间
+        if (!TextUtils.isEmpty(pid)) {
+            params.put("customParamsFour", pid);//分析因素
         }
         netClient.post(Constants.HIDDENDANGERSPECIALSTATISTICS, params, new BaseJsonRes() {
 
@@ -550,10 +551,10 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         String yearStr = String.valueOf(year);
-        if(!TextUtils.isEmpty(tvHiddenUnits.getText().toString())){
+        if (!TextUtils.isEmpty(tvHiddenUnits.getText().toString())) {
             yearStr = tvHiddenUnits.getText().toString().split("-")[0];
         }
-        params.put("customParamsOne",yearStr);
+        params.put("customParamsOne", yearStr);
         netClient.post(Constants.FINDHIDDENDANGERYEARCHARTSTATISTICS, params, new BaseJsonRes() {
 
             @Override
@@ -583,7 +584,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     private void getHiddenQueryStaticMobile(String page) {
         RequestParams params = new RequestParams();
         Map<String, String> paramsMap = new HashMap<String, String>();
-        paramsMap.put("page",page );
+        paramsMap.put("page", page);
         paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
         String jsonString = JSON.toJSONString(paramsMap);
@@ -594,7 +595,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             public void onMySuccess(String data) {
                 Log.i(TAG, "隐患查询统计数据返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
-                    JSONObject returndata  = JSON.parseObject(data);
+                    JSONObject returndata = JSON.parseObject(data);
                     String rows = returndata.getString("rows");
                     String page = returndata.getString("page");
                     String pagesize = returndata.getString("pagesize");
@@ -643,11 +644,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 titleBottom.setText(R.string.the_hidden_danger_record_has_been_deleted);
                 getHiddenDeleteMobile();
                 break;*/
-            /*case R.id.ll_chart_05:
+            case R.id.ll_chart_05:
                 titleTop.setText(R.string.duplicate_hazard_record);
                 titleBottom.setText(R.string.duplicate_hazard_record);
-                getHiddenRepeatMobile();
-                break;*/
+//                getHiddenRepeatMobile();
+                setUpRepeatList();
+                break;
             case R.id.ll_chart_06:
                 titleTop.setText(R.string.chart_analysis_of_hazard_handling_unit);
                 titleBottom.setText(R.string.chart_analysis_of_hazard_handling_unit);
@@ -666,6 +668,21 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             default:
                 break;
         }
+    }
+
+    private void setUpRepeatList() {
+        if (!TextUtils.isEmpty(tvArea.getText().toString()) ||
+                !TextUtils.isEmpty(tvProfession.getText().toString()) ||
+                !TextUtils.isEmpty(tvHiddenUnits.getText().toString())) {
+            llOption.setVisibility(View.VISIBLE);
+        } else {
+            llOption.setVisibility(View.GONE);
+        }
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+        swipeRefreshLayout.setOnRefreshListener(this);
+        HiddenDangerStatisticsRepeatAdapter adapter = new HiddenDangerStatisticsRepeatAdapter(new ArrayList<HiddenDangerRecord>());
+        recyclerView.setAdapter(adapter);
     }
 
     private void setHiddenRiskQueryStatisticsList(List<HiddenDangerRecord> recordList) {
@@ -723,12 +740,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     public void onLeftMenuClicked(String aname, String aid, String pname, String pidstr, String hname, String hid) {
         llOption.setVisibility(View.VISIBLE);
         //tvArea.setText(aname);
-        if(TextUtils.isEmpty(hname)){
+        if (TextUtils.isEmpty(hname)) {
             Calendar cal = Calendar.getInstance();
             int year = cal.get(Calendar.YEAR);
             int month = cal.get(Calendar.MONTH);
             int date = cal.get(Calendar.DATE);
-            hname = year+"-"+ month +"-" + date;
+            hname = year + "-" + month + "-" + date;
         }
         tvProfession.setText(pname);
         tvHiddenUnits.setText(hname);
@@ -736,7 +753,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     }
 
 
-    public void setIdFlag(String id,int flag) {
+    public void setIdFlag(String id, int flag) {
         //设置变量值，进行请求时使用
         flagint = flag;
         teamGroupCode = id;

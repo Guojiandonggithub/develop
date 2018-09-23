@@ -337,7 +337,7 @@
                         android:textColor="@color/blue1"
                         android:textSize="@dimen/normal_ts" />
 
-                </android.support.v7.widget.LinearLayoutCompat>
+                </android.support.v7.widget.LinearLayoutCompat>-->
                 <android.support.v7.widget.LinearLayoutCompat
                     android:id="@+id/ll_chart_05"
                     android:layout_width="match_parent"
@@ -363,7 +363,7 @@
                         android:textColor="@color/blue1"
                         android:textSize="@dimen/normal_ts" />
 
-                </android.support.v7.widget.LinearLayoutCompat>-->
+                </android.support.v7.widget.LinearLayoutCompat>
                 <android.support.v7.widget.LinearLayoutCompat
                     android:id="@+id/ll_chart_06"
                     android:layout_width="match_parent"
