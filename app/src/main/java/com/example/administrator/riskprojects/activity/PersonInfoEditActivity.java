@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.bean.UserInfo;
+import com.example.administrator.riskprojects.tools.UserUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,11 +41,11 @@ public class PersonInfoEditActivity extends BaseActivity {
         mEtPhone.setEnabled(false);
         mEtDepartment.setEnabled(false);
         mEtPosition.setEnabled(false);
-
-        mEtName.setText("张军");
-        mEtPhone.setText("18888888888");
-        mEtDepartment.setText("生产技术科");
-        mEtPosition.setText("科长");
+        UserInfo userinfo = UserUtils.getUserModel(PersonInfoEditActivity.this);
+        mEtName.setText(userinfo.getRealName());
+        mEtPhone.setText(userinfo.getPhone());
+        mEtDepartment.setText(userinfo.getDepartmentName());
+        mEtPosition.setText(userinfo.getPname());
     }
 
     private void initView() {

@@ -14,12 +14,12 @@ import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 import java.util.List;
 
 public class HiddenDangerStatisticsAllAdapter extends RecyclerView.Adapter {
-//    private List<HomeHiddenRecord> dtatisticsList;
+    private List<HomeHiddenRecord> dtatisticsList;
 
 
 
-    public HiddenDangerStatisticsAllAdapter() {
-//        this.dtatisticsList = dtatisticsList;
+    public HiddenDangerStatisticsAllAdapter(List<HomeHiddenRecord> dtatisticsList) {
+        this.dtatisticsList = dtatisticsList;
     }
 
     @Override
@@ -30,30 +30,32 @@ public class HiddenDangerStatisticsAllAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-//        if(dtatisticsList.size()>0){
-//            ((ViewHolder) holder).tvHiddenUnits.setText(dtatisticsList.get(position).getTeamGroupName());
-//            ((ViewHolder) holder).tvNumberOfProcessed.setText(dtatisticsList.get(position).getMonth());
-//            ((ViewHolder) holder).tvNumberOfUntreated.setText(dtatisticsList.get(position).getTotal());
-//            ((ViewHolder) holder).tvNumberOdAll.setText(dtatisticsList.get(position).getTotalNum());
-//            ((ViewHolder) holder).tvMoney.setText(dtatisticsList.get(position).getMoney());
-//        }
+        if(dtatisticsList.size()>0){
+            ((ViewHolder) holder).tvHazardClassification.setText(dtatisticsList.get(position).getHiddenBelong());
+            ((ViewHolder) holder).tvCheckTheNumber.setText(dtatisticsList.get(position).getCheckNum());
+            ((ViewHolder) holder).tvNumberOfUntreated.setText(dtatisticsList.get(position).getNotHandleNum());
+            ((ViewHolder) holder).tvNumberOfProcessedBars.setText(dtatisticsList.get(position).getHandleNum());
+            ((ViewHolder) holder).tvNumberOfUnconsumedBars.setText(dtatisticsList.get(position).getQuestionNum());
+            ((ViewHolder) holder).tvTotal.setText(dtatisticsList.get(position).getTotalMoney());
+        }
 
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(holder.itemView.getContext(),
-//                        HiddenDangerStatisticsEachUnitDetailActivity.class);
-//                String teamGroupCode = dtatisticsList.get(position).getTeamGroupCode();
-//                intent.putExtra("teamGroupCode",teamGroupCode);
-//                holder.itemView.getContext().startActivity(intent);
-//            }
-//        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(holder.itemView.getContext(),
+                    HiddenDangerStatisticsEachUnitDetailActivity.class);
+            String teamGroupName = dtatisticsList.get(position).getHiddenBelong();
+            intent.putExtra("teamGroupName",teamGroupName);
+            intent.putExtra("statistics","true");
+            holder.itemView.getContext().startActivity(intent);
+        }
+    });
 
     }
 
     @Override
     public int getItemCount() {
-        return 6;
+        return dtatisticsList.size();
     }
 
 

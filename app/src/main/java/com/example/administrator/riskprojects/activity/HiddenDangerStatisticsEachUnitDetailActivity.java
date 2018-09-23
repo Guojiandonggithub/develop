@@ -53,7 +53,15 @@ public class HiddenDangerStatisticsEachUnitDetailActivity extends BaseActivity i
         txtTitle.setText("隐患列表");
         String teamGroupCode = getIntent().getStringExtra("teamGroupCode");
         String State = getIntent().getStringExtra("State");
-        getHiddenRecord(teamGroupCode,State);
+        String statistics = getIntent().getStringExtra("statistics");
+        if(TextUtils.isEmpty(statistics)){
+            Log.e(TAG, "详情参数:getHiddenRecord=========="+statistics);
+            getHiddenRecord(teamGroupCode,State);
+        }else{
+            String teamGroupName = getIntent().getStringExtra("teamGroupName");
+            Log.e(TAG, "详情参数:getNotHandleList=========="+teamGroupName);
+            getNotHandleList(Constants.PAGE,teamGroupName);
+        }
     }
 
     private void initView() {
@@ -70,8 +78,44 @@ public class HiddenDangerStatisticsEachUnitDetailActivity extends BaseActivity i
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(false);
     }
+    //获取未消耗的数据
+    private void getNotHandleList(String page,String teamGroupName) {
+        RequestParams params = new RequestParams();
+        Map<String,String> paramsMap = new HashMap<String,String>();
+        if(!TextUtils.isEmpty(teamGroupName)){
+            paramsMap.put("teamGroupName",teamGroupName);
+        }
+        Log.i(TAG, "详情参数:"+params);
+        paramsMap.put("page",Constants.PAGE);
+        paramsMap.put("rows",Constants.ROWS);
+        netClient.post(Constants.GET_NOTHANDLELIST, params, new BaseJsonRes() {
+
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "获取未消耗的数据返回数据：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    //JSONObject returndata  = JSON.parseObject(data);
+                    //String rows = returndata.getString("rows");
+                    //String page = returndata.getString("page");
+                    //String pagesize = returndata.getString("pagesize");
+                    List<HiddenDangerRecord> recordList = JSONArray.parseArray(data, HiddenDangerRecord.class);
+                    initData(recordList);
+                }
+
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "获取未消耗的数据返回错误信息：" + content);
+                Utils.showLongToast(HiddenDangerStatisticsEachUnitDetailActivity.this, content);
+            }
+        });
+    }
+
+
     //没有页数信息
     private void getHiddenRecord(String teamGroupCode,String State) {
+        String ishandle = getIntent().getStringExtra("ishandle");
         RequestParams params = new RequestParams();
         Map<String,String> paramsMap = new HashMap<String,String>();
         if(!TextUtils.isEmpty(State)){
@@ -79,6 +123,9 @@ public class HiddenDangerStatisticsEachUnitDetailActivity extends BaseActivity i
         }
         if(!TextUtils.isEmpty(teamGroupCode)){
             paramsMap.put("teamGroupCode",teamGroupCode);
+        }
+        if(!TextUtils.isEmpty(ishandle)){
+            paramsMap.put("ishandle",ishandle);
         }
         Log.i(TAG, "详情参数:"+params);
         paramsMap.put("page",Constants.PAGE);

@@ -10,7 +10,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.administrator.riskprojects.Adpter.HomeHiddenDangerAdapter;
 import com.example.administrator.riskprojects.LoginActivity;
 import com.example.administrator.riskprojects.OnItemClickListener;
@@ -20,6 +22,7 @@ import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
+import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.view.MyDecoration;
 import com.juns.health.net.loopj.android.http.RequestParams;
@@ -64,16 +67,23 @@ public class UpdateVersionUtil {
         });
 
         //上传版本号，对比后进行更新
-        String version = Integer.toString(AppUtils.getVersionCode(context));
+
         RequestParams params = new RequestParams();
         NetClient netClient = new NetClient(context);
 
-        netClient.post(Constants.HOME_GET_HIDDENRECORD, params, new BaseJsonRes() {
+        final String version = Integer.toString(AppUtils.getVersionCode(context));
+        netClient.post(Constants.UPDATE_VERSION, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
                 if (!TextUtils.isEmpty(data)) {
-                    showUpdateDialog("https://imgaliyuncdn.miaopai.com/apk/201803/22/miaopai_yx_web.apk", "1");
+                    JSONObject returndata  = JSON.parseObject(data);
+                    String oldversion = returndata.getString("version");
+                    if(version.equals(oldversion)){
+                        Utils.showLongToast(context, "已经是最新帮本，不需要更新！");
+                    }
+                    String newVersionPath = returndata.getString("newVersionPath");
+                    showUpdateDialog(newVersionPath, "1");
                 }
 
             }
@@ -82,7 +92,7 @@ public class UpdateVersionUtil {
             public void onMyFailure(String content) {
             }
         });
-//        new EditionJson(new AsyCallBack<EditionBean>() {
+        //        new EditionJson(new AsyCallBack<EditionBean>() {
 //            @Override
 //            public void onStart(int type) throws Exception {
 //                super.onStart(type);

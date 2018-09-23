@@ -1,6 +1,7 @@
 package com.example.administrator.riskprojects.bean;
 
 public class HomeHiddenRecord {
+	//各单位隐患统计
 	private String month;//已处理数量
 	private String page;// 当前页
 	private String rows;//
@@ -9,6 +10,14 @@ public class HomeHiddenRecord {
 	private String total;// 未处理数量
 	private String money;//
 	private String totalNum;// 总数量
+	//汇总隐患统计
+	private String hiddenBelong;// 隐患归属
+	private String hiddenBelongId;// 隐患归属id
+	private String checkNum;//检查数量
+	private String handleNum;//处理数量
+	private String notHandleNum;//未处理数量
+	private String questionNum;//有问题数量
+	private String totalMoney;//总条数
 
 	public String getMonth() {
 		return month;
@@ -72,5 +81,61 @@ public class HomeHiddenRecord {
 
 	public void setMoney(String money) {
 		this.money = money;
+	}
+
+	public String getHiddenBelong() {
+		return hiddenBelong;
+	}
+
+	public void setHiddenBelong(String hiddenBelong) {
+		this.hiddenBelong = hiddenBelong;
+	}
+
+	public String getCheckNum() {
+		return checkNum;
+	}
+
+	public void setCheckNum(String checkNum) {
+		this.checkNum = checkNum;
+	}
+
+	public String getHandleNum() {
+		return handleNum;
+	}
+
+	public void setHandleNum(String handleNum) {
+		this.handleNum = handleNum;
+	}
+
+	public String getNotHandleNum() {
+		return notHandleNum;
+	}
+
+	public void setNotHandleNum(String notHandleNum) {
+		this.notHandleNum = notHandleNum;
+	}
+
+	public String getQuestionNum() {
+		return questionNum;
+	}
+
+	public void setQuestionNum(String questionNum) {
+		this.questionNum = questionNum;
+	}
+
+	public String getTotalMoney() {
+		return totalMoney;
+	}
+
+	public void setTotalMoney(String totalMoney) {
+		this.totalMoney = totalMoney;
+	}
+
+	public String getHiddenBelongId() {
+		return hiddenBelongId;
+	}
+
+	public void setHiddenBelongId(String hiddenBelongId) {
+		this.hiddenBelongId = hiddenBelongId;
 	}
 }

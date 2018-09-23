@@ -147,7 +147,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
 
         //处理否
         spIsHandle = findViewById(R.id.sp_is_handle);
-        List<SelectItem> selectItems = new ArrayList<>();
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
         SelectItem selectItemw = new SelectItem();
         SelectItem selectItemy = new SelectItem();
         selectItemw.name = "未处理";
@@ -256,7 +256,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 Log.i(TAG, "获取部门/队组成员返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
-                    List<SelectItem> selectItems = new ArrayList<>();
+                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
                     int collieryTeamsint = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
@@ -293,7 +293,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 Log.i(TAG, "获取所属专业返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<Specialty> collieryTeams = JSONArray.parseArray(data, Specialty.class);
-                    List<SelectItem> selectItems = new ArrayList<>();
+                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
                     int sint = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
@@ -330,7 +330,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 Log.i(TAG, "获取隐患类别返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<RiskGrade> collieryTeams = JSONArray.parseArray(data, RiskGrade.class);
-                    List<SelectItem> selectItems = new ArrayList<>();
+                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
                     int riskGrade = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
@@ -367,7 +367,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 Log.i(TAG, "获取班次返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<ClassNumber> collieryTeams = JSONArray.parseArray(data, ClassNumber.class);
-                    List<SelectItem> selectItems = new ArrayList<>();
+                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
                     int classNumberint = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
@@ -404,7 +404,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 Log.i(TAG, "获取区域返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<Area> collieryTeams = JSONArray.parseArray(data, Area.class);
-                    List<SelectItem> selectItems = new ArrayList<>();
+                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
                     int areaint = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
@@ -442,7 +442,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 Log.i(TAG, "获取隐患类型返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
-                    List<SelectItem> selectItems = new ArrayList<>();
+                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
                     int dataDictionary = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
@@ -480,7 +480,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 Log.i(TAG, "获取隐患级别返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
-                    List<SelectItem> selectItems = new ArrayList<>();
+                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
                     int dataDictionary = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
@@ -519,7 +519,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 Log.i(TAG, "获取隐患归类返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
-                    List<SelectItem> selectItems = new ArrayList<>();
+                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
                     int dataDictionary = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
@@ -557,7 +557,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 Log.i(TAG, "获取检查内容返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
-                    List<SelectItem> selectItems = new ArrayList<>();
+                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
                     int dataDictionary = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();

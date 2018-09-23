@@ -34,7 +34,6 @@ import com.example.administrator.riskprojects.util.DensityUtil;
 import com.juns.health.net.loopj.android.http.RequestParams;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class FiveDecisionsActivity extends BaseActivity {
     private static final String TAG = "FiveDecisionsActivity";
@@ -77,9 +76,9 @@ public class FiveDecisionsActivity extends BaseActivity {
         Bundle  bundle = getIntent().getBundleExtra("threeBund");
         threeFix = (ThreeFix) bundle.getSerializable("threeFix");
         etAddLocation.setText(threeFix.getTeamGroupName());
-        tvDate.setText(threeFix.getCompleteTime());
+        tvDate.setText(threeFix.getFixTime());
         SelectItem selectItem = new SelectItem();
-        List<SelectItem> selectItems = new ArrayList<>();
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
         selectItem.name = "矿区";
         selectItem.id = "KG";
         selectItems.add(selectItem);
@@ -118,12 +117,12 @@ public class FiveDecisionsActivity extends BaseActivity {
         tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                threeFix.setCompleteTime(tvDate.getText().toString());
+                threeFix.setFixTime(tvDate.getText().toString());
                 SelectItem deptType = (SelectItem)spMineArea.getSelectedItem();
                 SelectItem spDepartmentItem = (SelectItem)spDepartment.getSelectedItem();
-                threeFix.setLsdeptType(deptType.id);
-                threeFix.setTeamGroupCode(spDepartmentItem.id);
-                threeFix.setTeamGroupName(spDepartmentItem.toString());
+                threeFix.setDeptType(deptType.id);
+                threeFix.setTeamId(spDepartmentItem.id);
+                threeFix.setTeamName(spDepartmentItem.toString());
                 threeFix.setMoney(etMoney.getText().toString());
                 threeFix.setPersonNum(etNum.getText().toString());
                 threeFix.setMeasure(etContent.getText().toString());
@@ -134,18 +133,22 @@ public class FiveDecisionsActivity extends BaseActivity {
 
                 //负责人
                 SelectItem ponsibleThoseItem = (SelectItem)spResponsibleThose.getSelectedItem();
+                threeFix.setEmployeeId(ponsibleThoseItem.id);
+                threeFix.setRealName(ponsibleThoseItem.toString());
+
                 threeFix.setFollingPersonId(spTrackPeopleItem.id);
                 threeFix.setFollingPersonName(spTrackPeopleItem.toString());
 
                 threeFix.setFollingTeamId(spTrackPeopleUnitItem.id);
                 threeFix.setFollingTeamName(spTrackPeopleUnitItem.toString());
-                //addThreeFixAndConfirm(threeFix);
-                Utils.showLongToast(FiveDecisionsActivity.this, "下达参数负责人接口未提供:");
+                String isend = threeFix.getIsEnd();
+                String rectifyResult = threeFix.getRectifyResult();
+                Log.i(TAG, "addHiddenDanger: 隐患isend="+isend +"rectifyResult=="+rectifyResult);
+                threeFix.setIsEnd(TextUtils.isEmpty(isend)?"0":isend);
+                threeFix.setRectifyResult(TextUtils.isEmpty(rectifyResult)?"0":rectifyResult);
+                threeFix.setAreaName(threeFix.getAreaName().replaceAll("#","_"));
+                addThreeFixAndConfirm(threeFix);
 
-
-                //返回finish 测试
-                setResult(RESULT_OK);
-                finish();
             }
         });
 
@@ -210,7 +213,7 @@ public class FiveDecisionsActivity extends BaseActivity {
                 Log.i(TAG, "获取部门/队组成员返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     final List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
-                    final List<SelectItem> selectItems = new ArrayList<>();
+                    final List<SelectItem> selectItems = new ArrayList<SelectItem>();
                     int collieryTeamsint = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
@@ -259,7 +262,7 @@ public class FiveDecisionsActivity extends BaseActivity {
                 Log.i(TAG, "获取部门/队组成员返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
-                    final List<SelectItem> selectItems = new ArrayList<>();
+                    final List<SelectItem> selectItems = new ArrayList<SelectItem>();
                     int collieryTeamsint = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
@@ -312,7 +315,7 @@ public class FiveDecisionsActivity extends BaseActivity {
                     Log.i(TAG, "collieryTeams查询返回数据：" + data);
                     List<UserInfo> userInfoList = JSONArray.parseArray(data, UserInfo.class);
                     Log.i(TAG, "collieryTeams查询返回数据：" + userInfoList);
-                    List<SelectItem> selectItems = new ArrayList<>();
+                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
                     int collieryTeamsint = 0;
                     for (int i = 0; i < userInfoList.size(); i++) {
                         SelectItem selectItem = new SelectItem();
@@ -351,7 +354,7 @@ public class FiveDecisionsActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data)) {
                     Log.i(TAG, "onMySuccess: ");
                     List<UserInfo> collieryTeams = JSONArray.parseArray(data, UserInfo.class);
-                    List<SelectItem> selectItems = new ArrayList<>();
+                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
                     int collieryTeamsint = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         Log.i(TAG, "realname：" + collieryTeams.get(i).getRealName());
@@ -386,7 +389,7 @@ public class FiveDecisionsActivity extends BaseActivity {
         RequestParams params = new RequestParams();
         String threeFixStr = JSON.toJSONString(threeFix);
         Log.i(TAG, "addHiddenDanger: 隐患下达修改="+threeFixStr);
-        params.put("threeFixRecord",threeFixStr);
+        params.put("threeFixJsonData",threeFixStr);
         netClient.post(Constants.ADD_THREEFIXANDCONFIRM, params, new BaseJsonRes() {
 
             @Override
@@ -394,6 +397,8 @@ public class FiveDecisionsActivity extends BaseActivity {
                 Log.i(TAG, "隐患下达返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     Utils.showLongToast(FiveDecisionsActivity.this, "隐患下达成功！");
+                    //返回finish 测试
+                    setResult(RESULT_OK);
                     finish();
                 }
 

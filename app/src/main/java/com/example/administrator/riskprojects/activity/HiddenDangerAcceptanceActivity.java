@@ -57,7 +57,7 @@ public class HiddenDangerAcceptanceActivity extends BaseActivity {
 
     private void setView() {
         txtTitle.setText("隐患验收");
-        List<SelectItem> selectItems = new ArrayList<>();
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
         SelectItem selectItemw = new SelectItem();
         SelectItem selectItemy = new SelectItem();
         selectItemy.name = "未验收";
@@ -144,9 +144,11 @@ public class HiddenDangerAcceptanceActivity extends BaseActivity {
             public void onMySuccess(String data) {
                 Log.i(TAG, "隐患验收返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
-                    Utils.showLongToast(HiddenDangerAcceptanceActivity.this, "隐患验收成功");
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.showLongToast(HiddenDangerAcceptanceActivity.this, "删除成功");
+                    }
+                    finish();
                 }
-                finish();
             }
 
             @Override

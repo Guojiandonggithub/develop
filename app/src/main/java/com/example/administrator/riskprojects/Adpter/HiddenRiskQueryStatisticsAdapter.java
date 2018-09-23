@@ -1,6 +1,7 @@
 package com.example.administrator.riskprojects.Adpter;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -23,11 +24,10 @@ public class HiddenRiskQueryStatisticsAdapter extends RecyclerView.Adapter {
     List<HiddenDangerRecord> recordList;
 
 
-    //    public HiddenRiskQueryStatisticsAdapter(List<HiddenDangerRecord> recordList) {
-//        this.recordList = recordList;
-//    }
-    public HiddenRiskQueryStatisticsAdapter() {
+    public HiddenRiskQueryStatisticsAdapter(List<HiddenDangerRecord> recordList) {
+        this.recordList = recordList;
     }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -37,33 +37,34 @@ public class HiddenRiskQueryStatisticsAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-//        ((ViewHolder) holder).tvHiddenUnits.setText(recordList.get(position).getTeamGroupName());
-//        ((ViewHolder) holder).tvTimeOrOrder.setText(recordList.get(position).getFindTime() + "/" + recordList.get(position).getClassName());
-//        ((ViewHolder) holder).tvHiddenContent.setText(recordList.get(position).getContent());
-//        ((ViewHolder) holder).tvHiddenDangerBelongs.setText(recordList.get(position).getHiddenBelong());
-//        ((ViewHolder) holder).tvProfessional.setText(recordList.get(position).getSname());
-//        ((ViewHolder) holder).tvArea.setText(recordList.get(position).getAreaName());
-//        ((ViewHolder) holder).tvClasses.setText(recordList.get(position).getGname());
+        ((ViewHolder) holder).tvHiddenUnits.setText(recordList.get(position).getTeamGroupName());
+        ((ViewHolder) holder).tvTimeOrOrder.setText(recordList.get(position).getFindTime() + "/" + recordList.get(position).getClassName());
+        ((ViewHolder) holder).tvHiddenContent.setText(recordList.get(position).getContent());
+        ((ViewHolder) holder).tvHiddenDangerBelongs.setText(recordList.get(position).getHiddenBelong());
+        ((ViewHolder) holder).tvProfessional.setText(recordList.get(position).getSname());
+        ((ViewHolder) holder).tvArea.setText(recordList.get(position).getAreaName());
+        ((ViewHolder) holder).tvClasses.setText(recordList.get(position).getGname());
         ((ViewHolder) holder).ivStatus.setVisibility(View.GONE);
         ((ViewHolder) holder).ivStatusSecond.setVisibility(View.GONE);
-//        String isuper = recordList.get(position).getIsupervision();
-//        if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
-//            isuper = "未督办";
-//        } else {
-//            isuper = "已督办";
-//        }
-//        ((ViewHolder) holder).tvOversee.setText(isuper);
-//        ((ViewHolder) holder).expand.setVisibility(View.VISIBLE);
-//        ((ViewHolder) holder).clickMore.setVisibility(View.GONE);
+        String isuper = recordList.get(position).getIsupervision();
+        if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
+            isuper = "未督办";
+        } else {
+            isuper = "已督办";
+        }
+        ((ViewHolder) holder).tvOversee.setText(isuper);
+        ((ViewHolder) holder).expand.setVisibility(View.VISIBLE);
+        ((ViewHolder) holder).clickMore.setVisibility(View.GONE);
 
         ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(),
                         HiddenRiskRecordDetailActivity.class);
-//                String id = recordList.get(position).getId();
-//                intent.putExtra("id", id);
-//                holder.itemView.getContext().startActivity(intent);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("hiddenDangerRecord",recordList.get(position));
+                intent.putExtra("hiddenrecordBundle",bundle);
+                holder.itemView.getContext().startActivity(intent);
             }
         });
 
@@ -88,7 +89,7 @@ public class HiddenRiskQueryStatisticsAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 6;
+        return recordList.size();
     }
 
 

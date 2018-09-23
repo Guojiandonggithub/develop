@@ -54,7 +54,7 @@ public class Fragment_Supervision extends Fragment implements SwipeRefreshLayout
     private int page = 1;
     private int pagesize = 1;
     private ListingSupervisionAdapter adapter;
-    private List<HiddenDangerRecord> list = new ArrayList<>();
+    private List<HiddenDangerRecord> list = new ArrayList<HiddenDangerRecord>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

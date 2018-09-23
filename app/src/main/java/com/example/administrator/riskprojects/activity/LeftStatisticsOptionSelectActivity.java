@@ -25,13 +25,16 @@ import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.util.DensityUtil;
+import com.example.administrator.riskprojects.util.StringUtils;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class LeftStatisticsOptionSelectActivity extends BaseActivity {
     public static final String TITLE = "title";
@@ -215,7 +218,7 @@ public class LeftStatisticsOptionSelectActivity extends BaseActivity {
                 Log.i(TAG, "获取区域返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<Area> collieryTeams = JSONArray.parseArray(data, Area.class);
-                    List<SelectItem> selectItems = new ArrayList<>();
+                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
                         selectItem.name = collieryTeams.get(i).getAreaName();
@@ -238,33 +241,17 @@ public class LeftStatisticsOptionSelectActivity extends BaseActivity {
 
 
     private void getSpecialty() {
-        RequestParams params = new RequestParams();
-        netClient.post(Constants.GET_SPECIALTY, params, new BaseJsonRes() {
-
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取所属专业返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<Specialty> collieryTeams = JSONArray.parseArray(data, Specialty.class);
-                    List<SelectItem> selectItems = new ArrayList<>();
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getSname();
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
-                    }
-                    spProfessionalAdapter = SpinnerAdapter.createFromResource(LeftStatisticsOptionSelectActivity.this, selectItems);
-                    setUpSpinner(spinnerProfession, spProfessionalAdapter, selectItems, FLAG_PROFESSION);
-                }
-
+            String[] str = {"隐患类型","隐患整改情况","专业类型","隐患处理状态","区域"};
+            List<SelectItem> selectItems = new ArrayList<SelectItem>();
+            for (int i = 0; i < str.length; i++) {
+                SelectItem selectItem = new SelectItem();
+                selectItem.name = str[i];
+                selectItem.id = String.valueOf(i);
+                selectItems.add(selectItem);
             }
+            spProfessionalAdapter = SpinnerAdapter.createFromResource(LeftStatisticsOptionSelectActivity.this, selectItems);
+            setUpSpinner(spinnerProfession, spProfessionalAdapter, selectItems, FLAG_PROFESSION);
 
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取所属专业返回错误信息：" + content);
-                Utils.showLongToast(LeftStatisticsOptionSelectActivity.this, content);
-            }
-        });
     }
 
 

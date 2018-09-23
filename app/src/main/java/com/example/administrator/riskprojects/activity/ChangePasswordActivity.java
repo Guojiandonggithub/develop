@@ -1,7 +1,9 @@
 package com.example.administrator.riskprojects.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,11 +11,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONArray;
+import com.example.administrator.riskprojects.Adpter.HomeHiddenDangerAdapter;
 import com.example.administrator.riskprojects.BaseActivity;
+import com.example.administrator.riskprojects.LoginActivity;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
+import com.example.administrator.riskprojects.net.BaseJsonRes;
+import com.example.administrator.riskprojects.net.NetClient;
+import com.example.administrator.riskprojects.tools.Constants;
+import com.example.administrator.riskprojects.tools.UserUtils;
+import com.example.administrator.riskprojects.tools.Utils;
+import com.example.administrator.riskprojects.util.DensityUtil;
+import com.example.administrator.riskprojects.view.MyDecoration;
+import com.juns.health.net.loopj.android.http.RequestParams;
+
+import java.util.List;
 
 public class ChangePasswordActivity extends BaseActivity {
-
+    private static final String TAG = "ChangePasswordActivity";
     private TextView mTxtLeft;
     private ImageView mImgLeft;
     private TextView mTxtTitle;
@@ -23,11 +39,13 @@ public class ChangePasswordActivity extends BaseActivity {
     private EditText mEtNewPassword;
     private EditText mEtNewPasswordAgain;
     private Button mBtOk;
+    protected NetClient netClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
+        netClient = new NetClient(ChangePasswordActivity.this);
         initView();
         setView();
     }
@@ -60,7 +78,29 @@ public class ChangePasswordActivity extends BaseActivity {
     }
     //修改密码
     private void chenge() {
+        RequestParams params = new RequestParams();
+        params.put("userId", UserUtils.getUserID(ChangePasswordActivity.this));
+        params.put("password",mEtOldPassword.getText().toString());
+        params.put("newPwd",mEtNewPassword.getText().toString());
+        netClient.post(Constants.UPDATE_PWD, params, new BaseJsonRes() {
 
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "主页隐患数据返回数据：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    Intent intent = new Intent(ChangePasswordActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "获取隐患数据返回错误信息：" + content);
+                Utils.showLongToast(ChangePasswordActivity.this, content);
+            }
+        });
 
     }
     //检查输入

@@ -1,6 +1,7 @@
 package com.example.administrator.riskprojects.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -20,6 +21,7 @@ import com.example.administrator.riskprojects.Adpter.HomeHiddenDangerAdapter;
 import com.example.administrator.riskprojects.LoginActivity;
 import com.example.administrator.riskprojects.OnItemClickListener;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.activity.HiddenDangerStatisticsEachUnitDetailActivity;
 import com.example.administrator.riskprojects.activity.MainActivity;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
@@ -151,13 +153,24 @@ public class Fragment_Home extends Fragment {
                         public void onItemClick(View view, int position, int flag) {
                             switch (flag) {
                                 case -1:
-                                    ((MainActivity) ctx).onHomeListItemClicked(recordList.get(position).getTeamGroupCode(),flag);
+                                    Intent intent = new Intent(getActivity(), HiddenDangerStatisticsEachUnitDetailActivity.class);
+                                    intent.putExtra("teamGroupCode",recordList.get(position).getTeamGroupCode());
+                                    startActivity(intent);
+                                    //((MainActivity) ctx).onHomeListItemClicked(recordList.get(position).getTeamGroupCode(),flag);
                                     break;
                                 case 1:
-                                    ((MainActivity) ctx).onHomeListItemClicked(recordList.get(position).getTeamGroupCode(),flag);
+                                    Intent nothandle = new Intent(getActivity(), HiddenDangerStatisticsEachUnitDetailActivity.class);
+                                    nothandle.putExtra("teamGroupCode",recordList.get(position).getTeamGroupCode());
+                                    nothandle.putExtra("ishandle","1");
+                                    startActivity(nothandle);
+                                    //((MainActivity) ctx).onHomeListItemClicked(recordList.get(position).getTeamGroupCode(),flag);
                                     break;
                                 case 2:
-                                    ((MainActivity) ctx).onHomeListItemClicked(recordList.get(position).getTeamGroupCode(),flag);
+                                    Intent handle = new Intent(getActivity(), HiddenDangerStatisticsEachUnitDetailActivity.class);
+                                    handle.putExtra("teamGroupCode",recordList.get(position).getTeamGroupCode());
+                                    handle.putExtra("ishandle","0");
+                                    startActivity(handle);
+                                    //((MainActivity) ctx).onHomeListItemClicked(recordList.get(position).getTeamGroupCode(),flag);
                                     break;
                             }
                         }

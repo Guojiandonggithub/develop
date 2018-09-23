@@ -67,12 +67,12 @@ public class SpinnerAdapter<T> extends ArrayAdapter<T> {
     public static @NonNull
     SpinnerAdapter<SelectItem> createFromResource(@NonNull Context context,
                                                   @NonNull List<SelectItem> objects) {
-        return new SpinnerAdapter<>(context, R.layout.spinner_layout, R.id.textView, objects);
+        return new SpinnerAdapter<SelectItem>(context, R.layout.spinner_layout, R.id.textView, objects);
     }
 
     public static @NonNull
     SpinnerAdapter<SelectItem> createFromResource(@NonNull Context context,
                                                   @NonNull List<SelectItem> objects,int gravity) {
-        return new SpinnerAdapter<>(context, R.layout.spinner_layout, R.id.textView, objects,gravity);
+        return new SpinnerAdapter<SelectItem>(context, R.layout.spinner_layout, R.id.textView, objects,gravity);
     }
 }

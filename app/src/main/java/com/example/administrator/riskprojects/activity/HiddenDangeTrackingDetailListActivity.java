@@ -48,7 +48,7 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private HomeHiddenDangerdetailListAdapter adapter;
-    private List<HiddenFollingRecord> hiddenFollingRecordList = new ArrayList<>();
+    private List<HiddenFollingRecord> hiddenFollingRecordList = new ArrayList<HiddenFollingRecord>();
     private JSONArray jsonArray;
     private boolean onLoading = false;
     private int page = 1;

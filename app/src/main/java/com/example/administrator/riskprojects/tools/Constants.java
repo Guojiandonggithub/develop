@@ -34,7 +34,11 @@ public interface Constants {
 	// 重复隐患记录查询
 	String REPEATMOBILE = MAIN_ENGINE + "hiddenDangerRepeatMobileAction!findHiddenDangerRepeat.action";
 	// 隐患处理单位图表分析
-	String DEPARTMENTSTATISTICSMOBILE = MAIN_ENGINE + "hiddenDangerRepeatMobileAction!findHiddenDangerRepeat.action";
+	String DEPARTMENTSTATISTICSMOBILE = MAIN_ENGINE + "hiddenDangerHandleDepartmentStatisticsMobileAction!findHiddenDangerDepartmentStatistics.action";
+	// 隐患处理图表分析接口
+	String HIDDENDANGERSPECIALSTATISTICS = MAIN_ENGINE + "hiddenDangerHandleSpecialStatisticsMobileAction!findHiddenDangerSpecialStatistics.action";
+	// 隐患年度图表分析接口
+	String FINDHIDDENDANGERYEARCHARTSTATISTICS = MAIN_ENGINE + "hiddenDangerYearChartStatisticsMobileAction!findHiddenDangerYearChartStatistics.action";
 	// 隐患查询统计
 	String QUERYSTATICMOBILE = MAIN_ENGINE + "hiddenDangerQueryStaticMobileAction!findHiddenDangerQueryStatic.action";
 	// 根据id获取隐患信息
@@ -85,7 +89,13 @@ public interface Constants {
 	String ADD_THREEFIXANDCONFIRM = MAIN_ENGINE + "hiddenDangerThreeFixMobileAction!addThreeFixAndConfirm.action";
 	// 首页下边统计详情接口
 	String GET_HIDDENDANGERDETAILLIST = MAIN_ENGINE + "yesterdayHdStatisticsMobileAction!getHiddenDangerDetailList.action";
+	// 查询未消耗的数据
+	String GET_NOTHANDLELIST = MAIN_ENGINE + "hiddenDangerSumaryMobileAction!findHiddenDangerNotHandleList.action";
 	// 获取整改人、跟踪人
 	String GET_EMPLOYEELISTBYTEAMID = MAIN_ENGINE + "collieryTeamMobileAction!getEmployeeListByTeamId.action";
+	// 修改密码
+	String UPDATE_PWD = MAIN_ENGINE + "employeeMobileAction!editPwd.action";
+	// 获取版本号和下载地址
+	String UPDATE_VERSION = MAIN_ENGINE + "employeeMobileAction!changeVersion.action";
 
 }

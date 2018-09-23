@@ -169,7 +169,6 @@
                         android:layout_centerInParent="true" />
                 </android.support.v7.widget.LinearLayoutCompat>
 
-
                 <android.support.v7.widget.LinearLayoutCompat
                     android:id="@+id/ll_lineChart"
                     android:layout_width="match_parent"
@@ -196,9 +195,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
                         android:gravity="center_vertical"
+
                         android:text="纵轴：隐患条数"
                         android:textColor="@color/colorGray"
                         android:textSize="@dimen/tiny_ts" />
+
 
                     <TextView
                         android:layout_width="wrap_content"

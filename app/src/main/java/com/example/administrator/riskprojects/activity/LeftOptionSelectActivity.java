@@ -219,7 +219,7 @@ public class LeftOptionSelectActivity extends BaseActivity {
                 Log.i(TAG, "获取区域返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<Area> collieryTeams = JSONArray.parseArray(data, Area.class);
-                    List<SelectItem> selectItems = new ArrayList<>();
+                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
                         selectItem.name = collieryTeams.get(i).getAreaName();
@@ -250,7 +250,7 @@ public class LeftOptionSelectActivity extends BaseActivity {
                 Log.i(TAG, "获取所属专业返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<Specialty> collieryTeams = JSONArray.parseArray(data, Specialty.class);
-                    List<SelectItem> selectItems = new ArrayList<>();
+                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
                         selectItem.name = collieryTeams.get(i).getSname();
@@ -282,7 +282,7 @@ public class LeftOptionSelectActivity extends BaseActivity {
                 Log.i(TAG, "获取部门/队组成员返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
-                    List<SelectItem> selectItems = new ArrayList<>();
+                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
                         selectItem.name = collieryTeams.get(i).getTeamName().replaceAll("&nbsp;", "   ");
