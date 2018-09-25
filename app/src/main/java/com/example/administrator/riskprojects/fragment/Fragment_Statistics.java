@@ -623,6 +623,11 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
 
 
     public void onRightMenuClicked(View view) {
+        llOption.setVisibility(View.GONE);
+        //tvArea.setText(aname);
+        tvProfession.setText("");
+        tvHiddenUnits.setText("");
+        pid = "";
         switch (view.getId()) {
             case R.id.ll_chart_01:
                 titleTop.setText(R.string.hidden_danger_statistics_of_each_unit);
