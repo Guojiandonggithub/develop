@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">riskprojects</string>
+    <string name="app_name">煤矿隐患排查</string>
     <string name="home">主页</string>
     <string name="guapai">挂牌督办</string>
     <string name="record_tracking">记录跟踪</string>

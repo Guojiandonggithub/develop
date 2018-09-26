@@ -10,6 +10,7 @@ public class HomeHiddenRecord {
 	private String total;// 未处理数量
 	private String money;//
 	private String totalNum;// 总数量
+	private String name;//整改类型名称
 	//汇总隐患统计
 	private String hiddenBelong;// 隐患归属
 	private String hiddenBelongId;// 隐患归属id
@@ -18,6 +19,12 @@ public class HomeHiddenRecord {
 	private String notHandleNum;//未处理数量
 	private String questionNum;//有问题数量
 	private String totalMoney;//总条数
+
+	//重复隐患记录统计
+	private String repeatNum;//重复次数
+	private String sname;//对组名称
+	private String content;//隐患内容
+	private String gname;//级别
 
 	public String getMonth() {
 		return month;
@@ -137,5 +144,45 @@ public class HomeHiddenRecord {
 
 	public void setHiddenBelongId(String hiddenBelongId) {
 		this.hiddenBelongId = hiddenBelongId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getRepeatNum() {
+		return repeatNum;
+	}
+
+	public void setRepeatNum(String repeatNum) {
+		this.repeatNum = repeatNum;
+	}
+
+	public String getSname() {
+		return sname;
+	}
+
+	public void setSname(String sname) {
+		this.sname = sname;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getGname() {
+		return gname;
+	}
+
+	public void setGname(String gname) {
+		this.gname = gname;
 	}
 }

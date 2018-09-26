@@ -249,7 +249,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     //获取部门/队组成员
     private void getCollieryTeam() {
         RequestParams params = new RequestParams();
-        netClient.post(Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -286,7 +286,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     //获取所属专业
     private void getSpecialty() {
         RequestParams params = new RequestParams();
-        netClient.post(Constants.GET_SPECIALTY, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_SPECIALTY, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -323,7 +323,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     //获取隐患类别
     private void getRiskGrade() {
         RequestParams params = new RequestParams();
-        netClient.post(Constants.GET_RISKGRADE, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_RISKGRADE, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -360,7 +360,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     //获取班次
     private void getClassNumber() {
         RequestParams params = new RequestParams();
-        netClient.post(Constants.GET_CLASSNUMBER, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_CLASSNUMBER, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -397,7 +397,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     //获取区域
     private void getArea() {
         RequestParams params = new RequestParams();
-        netClient.post(Constants.GET_AREA, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_AREA, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -435,7 +435,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     private void getHiddenType() {
         RequestParams params = new RequestParams();
         params.put("dictTypeCode","YHLX");
-        netClient.post(Constants.GET_DATADICT, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_DATADICT, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -473,7 +473,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     private void getHiddenGrade() {
         RequestParams params = new RequestParams();
         params.put("dictTypeCode","YHJB");
-        netClient.post(Constants.GET_DATADICT, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_DATADICT, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -512,7 +512,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     private void getHiddenYHGSLX() {
         RequestParams params = new RequestParams();
         params.put("dictTypeCode","YHGSLX");
-        netClient.post(Constants.GET_DATADICT, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_DATADICT, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -550,7 +550,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     private void getCheckContent() {
         RequestParams params = new RequestParams();
         params.put("dictTypeCode","JCNR");
-        netClient.post(Constants.GET_DATADICT, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_DATADICT, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -588,7 +588,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     private void getHiddenRecord(String id) {//隐患id
         RequestParams params = new RequestParams();
         params.put("hiddenDangerRecordId",id);
-        netClient.post(Constants.HIDDENDANGERRECORD, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.HIDDENDANGERRECORD, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -637,7 +637,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         }
 
         Log.e(TAG, "addEditHiddenDanger: flag==============="+flag);
-        netClient.post(flag, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+flag, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {

@@ -2,10 +2,11 @@ package com.example.administrator.riskprojects;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,14 +14,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.activity.MainActivity;
 import com.example.administrator.riskprojects.dialog.FlippingLoadingDialog;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
+import com.example.administrator.riskprojects.net.NetworkConnectChangedReceiver;
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
-import com.example.administrator.riskprojects.util.UpdateVersionUtil;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
 import java.util.List;
@@ -30,6 +32,7 @@ import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks{
+    private static final String TAG = "LoginActivity";
     protected NetClient netClient;
     protected FlippingLoadingDialog mLoadingDialog;
     private EditText et_username, et_password;
@@ -69,6 +72,23 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         intra_net = (RadioButton) findViewById(R.id.intra_net);
         radio_net = (RadioGroup) findViewById(R.id.radio_net);
         btn_login = (Button) findViewById(R.id.btn_login);
+        radio_net.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                selectRadioButton();
+            }
+        });
+    }
+
+    private void selectRadioButton(){
+        RadioButton rb = (RadioButton)LoginActivity.this.findViewById(radio_net.getCheckedRadioButtonId());
+        Utils.showLongToast(LoginActivity.this, rb.getText().toString());
+        Data app = (Data)getApplication();
+        if(rb.getText().equals("内网")){
+            app.setIp(Constants.INNER_MAIN_ENGINE);
+        }else{
+            app.setIp(Constants.MAIN_ENGINE);
+        }
     }
 
     protected void setListener() {
@@ -79,7 +99,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
-                getLogin();
+                RadioButton rb = (RadioButton)LoginActivity.this.findViewById(radio_net.getCheckedRadioButtonId());
+                if(rb.getText().equals("内网")){
+                    Utils.showLongToast(LoginActivity.this, "内网地址未提供！");
+                }else{
+                    getLogin();
+                }
                 break;
             default:
                 break;
@@ -98,7 +123,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             params.put("name", userName);
             params.put("password", password);
             getLoadingDialog("正在登录...  ").show();
-            netClient.post(Constants.Login_URL, params, new BaseJsonRes() {
+            netClient.post(Data.getInstance().getIp()+Constants.Login_URL, params, new BaseJsonRes() {
 
                 @Override
                 public void onMySuccess(String data) {
@@ -115,6 +140,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     startActivity(intent);
                     overridePendingTransition(R.anim.push_up_in,
                             R.anim.push_up_out);
+
                     finish();
                 }
 

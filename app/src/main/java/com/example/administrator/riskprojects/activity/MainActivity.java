@@ -1,6 +1,7 @@
 package com.example.administrator.riskprojects.activity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -17,6 +18,7 @@ import com.example.administrator.riskprojects.fragment.Fragment_Record_Manage;
 import com.example.administrator.riskprojects.fragment.Fragment_Statistics;
 import com.example.administrator.riskprojects.fragment.Fragment_Supervision;
 import com.example.administrator.riskprojects.fragment.Fragment_mine;
+import com.example.administrator.riskprojects.net.NetworkConnectChangedReceiver;
 import com.example.administrator.riskprojects.util.UpdateVersionUtil;
 
 public class MainActivity extends FragmentActivity {
@@ -61,6 +63,7 @@ public class MainActivity extends FragmentActivity {
         findViewById();
         initTabView();
         initPopWindow();
+        receiver();
 //        upDateVersion();
     }
 
@@ -247,7 +250,7 @@ public class MainActivity extends FragmentActivity {
             case R.id.ll_chart_02:
             case R.id.ll_chart_03:
             //case R.id.ll_chart_04:
-            //case R.id.ll_chart_05:
+            case R.id.ll_chart_05:
             case R.id.ll_chart_06:
             case R.id.ll_chart_07:
             case R.id.ll_chart_08:
@@ -301,6 +304,14 @@ public class MainActivity extends FragmentActivity {
         //设置属性，请求时使用
         statisticsfragment.setIdFlag(id, flag);
         onMenuClicked(findViewById(R.id.ll_chart_01));
+    }
+
+    private void receiver(){
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+        filter.addAction("android.net.wifi.STATE_CHANGE");
+        registerReceiver(new NetworkConnectChangedReceiver(),filter);
     }
 
 

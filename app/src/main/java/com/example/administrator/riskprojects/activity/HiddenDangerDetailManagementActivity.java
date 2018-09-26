@@ -127,7 +127,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
     private void getHiddenRecord(String id) {//隐患id
         RequestParams params = new RequestParams();
         params.put("hiddenDangerRecordId", id);
-        netClient.post(Constants.HIDDENDANGERRECORD, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.HIDDENDANGERRECORD, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -170,7 +170,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
     private void deleteHiddenRecord(String id) {//隐患id
         RequestParams params = new RequestParams();
         params.put("hiddenDangerRecordId", id);
-        netClient.post(Constants.DELETE_HIDDEN, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.DELETE_HIDDEN, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {

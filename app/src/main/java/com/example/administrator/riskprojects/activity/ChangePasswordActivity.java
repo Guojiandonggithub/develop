@@ -82,7 +82,7 @@ public class ChangePasswordActivity extends BaseActivity {
         params.put("userId", UserUtils.getUserID(ChangePasswordActivity.this));
         params.put("password",mEtOldPassword.getText().toString());
         params.put("newPwd",mEtNewPassword.getText().toString());
-        netClient.post(Constants.UPDATE_PWD, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.UPDATE_PWD, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {

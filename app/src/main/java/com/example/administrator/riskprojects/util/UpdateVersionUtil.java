@@ -17,6 +17,7 @@ import com.example.administrator.riskprojects.Adpter.HomeHiddenDangerAdapter;
 import com.example.administrator.riskprojects.LoginActivity;
 import com.example.administrator.riskprojects.OnItemClickListener;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.activity.MainActivity;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
@@ -70,9 +71,8 @@ public class UpdateVersionUtil {
 
         RequestParams params = new RequestParams();
         NetClient netClient = new NetClient(context);
-
         final String version = Integer.toString(AppUtils.getVersionCode(context));
-        netClient.post(Constants.UPDATE_VERSION, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.UPDATE_VERSION, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {

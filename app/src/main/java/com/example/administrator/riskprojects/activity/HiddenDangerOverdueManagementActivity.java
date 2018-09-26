@@ -13,6 +13,7 @@ import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
+import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.view.MyAlertDialog;
 import com.example.administrator.riskprojects.bean.ThreeFix;
@@ -75,6 +76,10 @@ public class HiddenDangerOverdueManagementActivity extends BaseActivity {
         mTvToCarryOutThePeople = findViewById(R.id.tv_to_carry_out_the_people);
         mLlBottom = findViewById(R.id.ll_bottom);
         mTvOk = findViewById(R.id.tv_ok);
+        String userRoles = UserUtils.getUserRoleids(HiddenDangerOverdueManagementActivity.this);
+        if("8".equals(userRoles)||"62".equals(userRoles)){
+            mTvOk.setVisibility(View.GONE);
+        }
         mTvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +135,7 @@ public class HiddenDangerOverdueManagementActivity extends BaseActivity {
     private void handleOutTime(String id) {//隐患id
         RequestParams params = new RequestParams();
         params.put("ids", id);
-        netClient.post(Constants.HANDLEOUT_OVERDUELIST, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.HANDLEOUT_OVERDUELIST, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {

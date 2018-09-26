@@ -138,7 +138,7 @@ public class HiddenDangerAcceptanceActivity extends BaseActivity {
         params.put("recheckPersonId",recheckPersonId);
         params.put("recheckPersonName",etAddLocation.getText().toString());
         Log.e(TAG, "addRecheck: 隐患验收参数==="+params);
-        netClient.post(Constants.ADD_RECHECK, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.ADD_RECHECK, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
