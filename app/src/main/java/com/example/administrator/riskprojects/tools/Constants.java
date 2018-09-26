@@ -20,9 +20,9 @@ public interface Constants {
 	String SAVE_DATA = "网络错误，数据已保存，有网时自动上报！";
 	String PAGE = "1";
 	String ROWS = "10";
-	String ISUPERVISION = "1";
 	// 外网地址
 	String MAIN_ENGINE = "http://59.49.107.27:8187/yhpc/mobile/";
+	String ISUPERVISION = "1";
 	// 内网地址
 	String INNER_MAIN_ENGINE = "123123";
 	// 用户登录

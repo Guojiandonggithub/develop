@@ -250,7 +250,7 @@ public class MainActivity extends FragmentActivity {
             case R.id.ll_chart_02:
             case R.id.ll_chart_03:
             //case R.id.ll_chart_04:
-            //case R.id.ll_chart_05:
+            case R.id.ll_chart_05:
             case R.id.ll_chart_06:
             case R.id.ll_chart_07:
             case R.id.ll_chart_08:

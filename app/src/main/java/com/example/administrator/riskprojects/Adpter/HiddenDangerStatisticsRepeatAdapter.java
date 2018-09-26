@@ -35,11 +35,11 @@ public class HiddenDangerStatisticsRepeatAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if(recordList.size()>0){
-            //((ViewHolder) holder).tvHiddenContent.setText(recordList.get(position).getTeamGroupName());
-            //((ViewHolder) holder).tvNameOfTheProfessional.setText(recordList.get(position).getFindTime()+"/"+recordList.get(position).getClassName());
-            //((ViewHolder) holder).tvHazardLevel.setText(recordList.get(position).getContent());
+            ((ViewHolder) holder).tvHiddenContent.setText(recordList.get(position).getContent());
+            ((ViewHolder) holder).tvNameOfTheProfessional.setText(recordList.get(position).getSname());
+            ((ViewHolder) holder).tvHazardLevel.setText(recordList.get(position).getGname());
             //((ViewHolder) holder).tvHiddenTroubleDescription.setText(recordList.get(position).getHiddenBelong());
-            //((ViewHolder) holder).tvRepeatTheNumber.setText(recordList.get(position).getHiddenBelong());
+            ((ViewHolder) holder).tvRepeatTheNumber.setText(recordList.get(position).getRepeatNum());
         }
 
         /*holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +77,7 @@ public class HiddenDangerStatisticsRepeatAdapter extends RecyclerView.Adapter {
             tvHiddenContent = view.findViewById(R.id.tv_hidden_content);
             tvNameOfTheProfessional = view.findViewById(R.id.tv_name_of_the_professional);
             tvHazardLevel = view.findViewById(R.id.tv_hazard_level);
-            tvHiddenTroubleDescription = view.findViewById(R.id.tv_hidden_trouble_description);
+            //tvHiddenTroubleDescription = view.findViewById(R.id.tv_hidden_trouble_description);
             tvRepeatTheNumber = view.findViewById(R.id.tv_repeat_the_number);
         }
     }

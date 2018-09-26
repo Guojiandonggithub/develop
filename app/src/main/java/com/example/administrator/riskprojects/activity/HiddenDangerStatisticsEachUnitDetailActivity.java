@@ -132,6 +132,7 @@ public class HiddenDangerStatisticsEachUnitDetailActivity extends BaseActivity i
         Log.i(TAG, "详情参数:"+params);
         paramsMap.put("page",Constants.PAGE);
         paramsMap.put("rows",Constants.ROWS);
+        paramsMap.put("employeeId",UserUtils.getUserID(HiddenDangerStatisticsEachUnitDetailActivity.this));
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("hiddenDangerRecordJsonData",jsonString);
         Utils.showLongToast(HiddenDangerStatisticsEachUnitDetailActivity.this, "详情参数:"+params);

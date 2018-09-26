@@ -32,6 +32,7 @@ import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
+import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.util.DensityUtil;
 import com.juns.health.net.loopj.android.http.RequestParams;
@@ -145,8 +146,10 @@ public class Fragment_Supervision extends Fragment implements SwipeRefreshLayout
         paramsMap.put("page", Integer.toString(curpage));
         paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("isupervision",Constants.ISUPERVISION);
+        paramsMap.put("employeeId", UserUtils.getUserID(getContext()));
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("hiddenDangerRecordJsonData", jsonString);
+        Log.e(TAG, "getHiddenRecord: 督办参数======"+params);
         netClient.post(Data.getInstance().getIp()+Constants.GET_HIDDENRECORD, params, new BaseJsonRes() {
             @Override
             public void onStart() {

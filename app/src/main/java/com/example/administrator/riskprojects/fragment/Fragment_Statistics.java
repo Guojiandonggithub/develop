@@ -266,7 +266,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     }
 
 
-    public void showBarChart(List<HomeHiddenRecord> dtatisticsList) {
+    public void showBarChart(List<HomeHiddenRecord> dtatisticsList,String name) {
         ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
 
         for (int i = 0; i < dtatisticsList.size(); i++) {
@@ -280,9 +280,15 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             BarEntry barEntry = new BarEntry(i, num);
             entries.add(barEntry);
             // 每一个BarDataSet代表一类柱状图
-            BarDataSet barDataSet = new BarDataSet(entries, dtatisticsList.get(i).getTeamGroupName());
-            initBarDataSet(barDataSet, getRandColor());
-            dataSets.add(barDataSet);
+            if(name.equals("name")){
+                BarDataSet barDataSet = new BarDataSet(entries, dtatisticsList.get(i).getName());
+                initBarDataSet(barDataSet, getRandColor());
+                dataSets.add(barDataSet);
+            }else{
+                BarDataSet barDataSet = new BarDataSet(entries, dtatisticsList.get(i).getTeamGroupName());
+                initBarDataSet(barDataSet, getRandColor());
+                dataSets.add(barDataSet);
+            }
 
         }
         // 添加多个BarDataSet时
@@ -389,7 +395,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         });
     }
 
-    //已删除隐患记录查询
+    /*//已删除隐患记录查询
     private void getHiddenDeleteMobile() {
         RequestParams params = new RequestParams();
         //params.put("customParamsOne","");//开始时间
@@ -424,7 +430,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-    }
+    }*/
 
     //重复隐患记录查询
     private void getHiddenRepeatMobile() {
@@ -447,10 +453,14 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             public void onMySuccess(String data) {
                 Log.i(TAG, "重复隐患记录查询数据返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
-                    List<HomeHiddenRecord> dtatisticsList = JSONArray.parseArray(data, HomeHiddenRecord.class);
+                    JSONObject returndata = JSON.parseObject(data);
+                    String rows = returndata.getString("rows");
+                    page = Integer.parseInt(returndata.getString("page"));
+                    pagesize = Integer.parseInt(returndata.getString("pagesize"));
+                    List<HomeHiddenRecord> dtatisticsList = JSONArray.parseArray(rows, HomeHiddenRecord.class);
                     setUpRepeatList(dtatisticsList);
-                    showBarChart(dtatisticsList);
-                    showLineChart(dtatisticsList);
+                    //showBarChart(dtatisticsList);
+                    //showLineChart(dtatisticsList);
                 }
 
             }
@@ -494,7 +504,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                     llLineChart.setVisibility(View.VISIBLE);
                     llBarChart.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
-                    showBarChart(dtatisticsList);
+                    showBarChart(dtatisticsList,"teamGroupName");
                     showLineChart(dtatisticsList);
                 }
 
@@ -536,7 +546,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                     llLineChart.setVisibility(View.VISIBLE);
                     llBarChart.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
-                    showBarChart(dtatisticsList);
+                    showBarChart(dtatisticsList,"name");
                     showLineChart(dtatisticsList);
                 }
 
@@ -572,8 +582,8 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                     llLineChart.setVisibility(View.VISIBLE);
                     llBarChart.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
-                    showBarChart(dtatisticsList);
-                    showLineChart(dtatisticsList);
+                    //showBarChart(dtatisticsList);
+                    //showLineChart(dtatisticsList);
                 }
 
             }
