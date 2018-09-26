@@ -118,6 +118,24 @@
                     android:text="@string/version"
                     android:textColor="@color/colorGrayDarker"
                     android:textSize="@dimen/middle_ts" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@color/colorDevide" />
+
+                <TextView
+                    android:id="@+id/tv_ble_sdk"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:clickable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="24dp"
+                    android:text="@string/log_ble_sdk"
+                    android:textColor="@color/colorGrayDarker"
+                    android:textSize="@dimen/middle_ts" />
 
                 <View
                     android:layout_width="match_parent"

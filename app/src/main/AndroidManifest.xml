@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".activity.Data"
@@ -30,6 +33,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".activity.HiddenDangeTrackingManagementActivity" />
         <activity android:name=".activity.PersonInfoEditActivity" />
+        <activity android:name=".activity.BleSdkActivity" />
         <activity android:name=".activity.ChangePasswordActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>

@@ -41,10 +41,11 @@ import java.util.List;
  * Create by guo on 2016/12/14 0014 11:20
  */
 public class UpdateVersionUtil {
+    private static final String TAG = "UpdateVersionUtil";
     private ProgressDialog progressDialog;
     private HttpHandler<File> handler;
     private Context context;
-    private String is_qiangzhi = "";//1:强制
+    private String is_qiangzhi = "1";//1:强制
     private String uid;
     private int flag;
 
@@ -58,7 +59,7 @@ public class UpdateVersionUtil {
         progressDialog.setButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (is_qiangzhi.equals("2")) {
+                if (is_qiangzhi.equals("1")) {
                     System.exit(0);
                 } else {
                     handler.cancel();
@@ -71,7 +72,7 @@ public class UpdateVersionUtil {
 
         RequestParams params = new RequestParams();
         NetClient netClient = new NetClient(context);
-        final String version = Integer.toString(AppUtils.getVersionCode(context));
+        final String version = AppUtils.getVersionName(context);
         netClient.post(Data.getInstance().getIp()+Constants.UPDATE_VERSION, params, new BaseJsonRes() {
 
             @Override
@@ -79,11 +80,14 @@ public class UpdateVersionUtil {
                 if (!TextUtils.isEmpty(data)) {
                     JSONObject returndata  = JSON.parseObject(data);
                     String oldversion = returndata.getString("version");
+                    Log.e(TAG, "oldversion旧版本================= "+oldversion);
+                    Log.e(TAG, "oldversion新版本================= "+version);
                     if(version.equals(oldversion)){
                         Utils.showLongToast(context, "已经是最新帮本，不需要更新！");
+                    }else{
+                        String newVersionPath = returndata.getString("newVersionPath");
+                        showUpdateDialog(newVersionPath, "1");
                     }
-                    String newVersionPath = returndata.getString("newVersionPath");
-                    showUpdateDialog(newVersionPath, "1");
                 }
 
             }
