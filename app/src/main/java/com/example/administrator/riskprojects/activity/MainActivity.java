@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.administrator.riskprojects.LoginActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.dialog.WarnTipDialog;
 import com.example.administrator.riskprojects.fragment.Fragment_Home;
@@ -64,6 +65,7 @@ public class MainActivity extends FragmentActivity {
         initTabView();
         initPopWindow();
         receiver();
+        new UpdateVersionUtil().versionUpdata(MainActivity.this,true);
 //        upDateVersion();
     }
 

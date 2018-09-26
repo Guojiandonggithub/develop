@@ -23,6 +23,7 @@ import com.example.administrator.riskprojects.net.NetworkConnectChangedReceiver;
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
+import com.example.administrator.riskprojects.util.UpdateVersionUtil;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
 import java.util.List;

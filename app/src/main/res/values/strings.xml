@@ -9,6 +9,7 @@
     <string name="me">我的</string>
     <string name="change_password">修改密码</string>
     <string name="version">版本</string>
+    <string name="log_ble_sdk">蓝牙扫描</string>
     <string name="log_out">退出登录</string>
     <string name="monthly_hidden_statistics">当月隐患统计</string>
     <string name="the_hidden_danger_that_already_eliminated_recently">• 近期已消号的隐患 •</string>

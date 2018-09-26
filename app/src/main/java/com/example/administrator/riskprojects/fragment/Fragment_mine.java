@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.administrator.riskprojects.LoginActivity;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.activity.BleSdkActivity;
 import com.example.administrator.riskprojects.activity.ChangePasswordActivity;
 import com.example.administrator.riskprojects.activity.HiddenDangeTrackingDetailListActivity;
 import com.example.administrator.riskprojects.activity.HiddenRiskRecordDetailActivity;
@@ -36,6 +37,7 @@ public class Fragment_mine extends Fragment {
     private TextView mTvChangePassword;
     private TextView mTvVersion;
     private TextView mTvLogOut;
+    private TextView mTvBleSdk;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +70,12 @@ public class Fragment_mine extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ctx, PersonInfoEditActivity.class));
+            }
+        });
+        mTvBleSdk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ctx, BleSdkActivity.class));
             }
         });
         mTvVersion.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +114,7 @@ public class Fragment_mine extends Fragment {
         mTvChangePassword = layout.findViewById(R.id.tv_change_password);
         mTvVersion = layout.findViewById(R.id.tv_version);
         mTvLogOut = layout.findViewById(R.id.tv_log_out);
+        mTvBleSdk = layout.findViewById(R.id.tv_ble_sdk);
     }
 
     private void initdata() {
