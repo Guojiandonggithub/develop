@@ -2,7 +2,9 @@ package com.example.administrator.riskprojects.fragment;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -13,29 +15,37 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsAllAdapter;
 import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsEachUnitAllAdapter;
-import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsEachUnitDetailAdapter;
 import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsRepeatAdapter;
 import com.example.administrator.riskprojects.Adpter.HiddenRiskQueryStatisticsAdapter;
+import com.example.administrator.riskprojects.Adpter.SpinnerAdapter;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.Data;
+import com.example.administrator.riskprojects.activity.HiddenRiskRecordAddEditActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
+import com.example.administrator.riskprojects.bean.SelectItem;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.UserUtils;
+import com.example.administrator.riskprojects.util.DensityUtil;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -83,6 +93,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     private boolean onLoading = false;
     private int page = 1;
     private int pagesize = 1;
+    int flag = 0;
+    List<HomeHiddenRecord> dtatisticsList = new ArrayList<>();
+    RecyclerView.Adapter adapter;
+    private LinearLayoutCompat llMonth;
+    private Spinner spMonth;
+    private SpinnerAdapter monthAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,7 +128,6 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         swipeRefreshLayout.setOnRefreshListener(this);
         initBarChart(mBarChart);
         initLineChart(mLineChart);
-        getHiddenStatisticsData("true");
         llOption = layout.findViewById(R.id.ll_option);
         tvProfession = layout.findViewById(R.id.tv_profession);
         tvHiddenUnits = layout.findViewById(R.id.tv_hidden_units);
@@ -123,9 +138,15 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         llLineChart = layout.findViewById(R.id.ll_lineChart);
         titleTop = layout.findViewById(R.id.title_top);
         titleBottom = layout.findViewById(R.id.title_bottom);
-
         llBarChart.setVisibility(View.GONE);
         llLineChart.setVisibility(View.GONE);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+        setUpFirstView();
+        getHiddenStatisticsData("true");
+        llMonth = layout.findViewById(R.id.ll_month);
+        spMonth = layout.findViewById(R.id.sp_month);
     }
 
     private void showLineChart(List<HomeHiddenRecord> dtatisticsList) {
@@ -160,7 +181,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         LineData data = new LineData(lineDataSet);
         mLineChart.setData(data);
         llLineChart.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.GONE);
+        swipeRefreshLayout.setVisibility(View.GONE);
     }
 
     private void initLineChart(LineChart lineChart) {
@@ -174,6 +195,10 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         lineChart.setPinchZoom(false);
         //是否显示右下角的描述
         lineChart.getDescription().setEnabled(false);
+
+        lineChart.setScaleMinima(1.0f, 1.0f);
+
+        lineChart.getViewPortHandler().refresh(new Matrix(), lineChart, true);
 
         //设置动画效果
         lineChart.animateY(1000, Easing.EasingOption.Linear);
@@ -214,6 +239,10 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         barChart.setPinchZoom(false);
         //是否显示右下角的描述
         barChart.getDescription().setEnabled(false);
+
+        barChart.setScaleMinima(1.0f, 1.0f);
+
+        barChart.getViewPortHandler().refresh(new Matrix(), barChart, true);
 
         //设置动画效果
         barChart.animateY(1000, Easing.EasingOption.Linear);
@@ -266,7 +295,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     }
 
 
-    public void showBarChart(List<HomeHiddenRecord> dtatisticsList,String name) {
+    public void showBarChart(List<HomeHiddenRecord> dtatisticsList, String name) {
         ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
 
         for (int i = 0; i < dtatisticsList.size(); i++) {
@@ -280,11 +309,11 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             BarEntry barEntry = new BarEntry(i, num);
             entries.add(barEntry);
             // 每一个BarDataSet代表一类柱状图
-            if(name.equals("name")){
+            if (name.equals("name")) {
                 BarDataSet barDataSet = new BarDataSet(entries, dtatisticsList.get(i).getName());
                 initBarDataSet(barDataSet, getRandColor());
                 dataSets.add(barDataSet);
-            }else{
+            } else {
                 BarDataSet barDataSet = new BarDataSet(entries, dtatisticsList.get(i).getTeamGroupName());
                 initBarDataSet(barDataSet, getRandColor());
                 dataSets.add(barDataSet);
@@ -297,7 +326,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         data.setBarWidth(0.5f);
         mBarChart.setData(data);
         llBarChart.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.GONE);
+        swipeRefreshLayout.setVisibility(View.GONE);
     }
 
     //各单位隐患统计查询
@@ -307,26 +336,34 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int date = cal.get(Calendar.DATE);
-        params.put("employeeId",UserUtils.getUserID(getActivity()));
+        params.put("page", Constants.PAGE);
+        params.put("rows", Constants.ROWS);
+        params.put("employeeId", UserUtils.getUserID(getActivity()));
         params.put("customParamsOne", year + "-" + month + "-01");//开始时间
         String customParamsTwo = year + "-" + month + "-" + date;
         if (currentdate.equals("false") && !TextUtils.isEmpty(tvHiddenUnits.getText())) {
             customParamsTwo = tvHiddenUnits.getText().toString();
         }
         params.put("customParamsTwo", customParamsTwo);//结束时间
-        netClient.post(Data.getInstance().getIp()+Constants.TEAMHDSTAISTICSDATAGRID, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.TEAMHDSTAISTICSDATAGRID, params, new BaseJsonRes() {
 
             @Override
             public void onStart() {
                 super.onStart();
-                swipeRefreshLayout.setRefreshing(true);
+                if (true) {
+                    swipeRefreshLayout.setRefreshing(true);
+                    dtatisticsList.clear();
+                    adapter.notifyDataSetChanged();
+                }
             }
 
             @Override
             public void onMySuccess(String data) {
                 Log.i(TAG, "各单位隐患统计查询数据返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
-                    List<HomeHiddenRecord> dtatisticsList = JSONArray.parseArray(data, HomeHiddenRecord.class);
+                    List<HomeHiddenRecord> tempList = JSONArray.parseArray(data, HomeHiddenRecord.class);
+                    dtatisticsList.addAll(tempList);
+                    adapter.notifyDataSetChanged();
                     setList(dtatisticsList);
                     //showBarChart(dtatisticsList);
                     //showLineChart(dtatisticsList);
@@ -362,11 +399,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             customParamsTwo = tvHiddenUnits.getText().toString();
         }
         params.put("customParamsTwo", customParamsTwo);//结束时间
-        netClient.post(Data.getInstance().getIp()+Constants.SUMARYMOBILE, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.SUMARYMOBILE, params, new BaseJsonRes() {
             @Override
             public void onStart() {
                 super.onStart();
                 swipeRefreshLayout.setRefreshing(true);
+                setAllHiddenTroubleList(new ArrayList<HomeHiddenRecord>());
             }
 
             @Override
@@ -438,15 +476,17 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", Constants.PAGE);
         paramsMap.put("rows", Constants.ROWS);
-        paramsMap.put("employeeId",UserUtils.getUserID(getActivity()));
+        paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("hiddenDangerRecordJsonData", jsonString);
-        netClient.post(Data.getInstance().getIp()+Constants.REPEATMOBILE, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.REPEATMOBILE, params, new BaseJsonRes() {
 
             @Override
             public void onStart() {
                 super.onStart();
                 swipeRefreshLayout.setRefreshing(true);
+                setUpRepeatList(new ArrayList<HomeHiddenRecord>());
+
             }
 
             @Override
@@ -485,14 +525,16 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
-        params.put("employeeId",UserUtils.getUserID(getActivity()));
+        params.put("employeeId", UserUtils.getUserID(getActivity()));
         params.put("customParamsOne", year + "-" + month + "-01");//开始时间
         params.put("customParamsTwo", tvHiddenUnits.getText().toString());//结束时间
-        netClient.post(Data.getInstance().getIp()+Constants.DEPARTMENTSTATISTICSMOBILE, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.DEPARTMENTSTATISTICSMOBILE, params, new BaseJsonRes() {
+
             @Override
             public void onStart() {
                 super.onStart();
-                swipeRefreshLayout.setRefreshing(true);
+                llLineChart.setVisibility(View.GONE);
+                llBarChart.setVisibility(View.GONE);
             }
 
             @Override
@@ -500,11 +542,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 Log.i(TAG, "隐患处理单位图表分析数据返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<HomeHiddenRecord> dtatisticsList = JSONArray.parseArray(data, HomeHiddenRecord.class);
-                    llOption.setVisibility(View.VISIBLE);
                     llLineChart.setVisibility(View.VISIBLE);
                     llBarChart.setVisibility(View.VISIBLE);
-                    recyclerView.setVisibility(View.GONE);
-                    showBarChart(dtatisticsList,"teamGroupName");
+                    swipeRefreshLayout.setVisibility(View.GONE);
+                    initBarChart(mBarChart);
+                    initLineChart(mLineChart);
+                    showBarChart(dtatisticsList, "teamGroupName");
                     showLineChart(dtatisticsList);
                 }
 
@@ -535,18 +578,25 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         if (!TextUtils.isEmpty(pid)) {
             params.put("customParamsFour", pid);//分析因素
         }
-        netClient.post(Data.getInstance().getIp()+Constants.HIDDENDANGERSPECIALSTATISTICS, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.HIDDENDANGERSPECIALSTATISTICS, params, new BaseJsonRes() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                llLineChart.setVisibility(View.GONE);
+                llBarChart.setVisibility(View.GONE);
+            }
 
             @Override
             public void onMySuccess(String data) {
                 Log.i(TAG, "隐患处理图表分析接口数据返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<HomeHiddenRecord> dtatisticsList = JSONArray.parseArray(data, HomeHiddenRecord.class);
-                    llOption.setVisibility(View.VISIBLE);
                     llLineChart.setVisibility(View.VISIBLE);
                     llBarChart.setVisibility(View.VISIBLE);
-                    recyclerView.setVisibility(View.GONE);
-                    showBarChart(dtatisticsList,"name");
+                    swipeRefreshLayout.setVisibility(View.GONE);
+                    initBarChart(mBarChart);
+                    initLineChart(mLineChart);
+                    showBarChart(dtatisticsList, "name");
                     showLineChart(dtatisticsList);
                 }
 
@@ -561,7 +611,13 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     }
 
     //隐患年度图表分析接口
-    private void getFindHiddenDangerYearChartStatistics() {
+    private void getFindHiddenDangerYearChartStatistics(int poi) {
+        final String num;
+        if (poi < 10) {
+            num = "0" + poi;
+        } else {
+            num = Integer.toString(poi);
+        }
         RequestParams params = new RequestParams();
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
@@ -570,20 +626,30 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             yearStr = tvHiddenUnits.getText().toString().split("-")[0];
         }
         params.put("customParamsOne", yearStr);
-        params.put("employeeId",UserUtils.getUserID(getActivity()));
-        netClient.post(Data.getInstance().getIp()+Constants.FINDHIDDENDANGERYEARCHARTSTATISTICS, params, new BaseJsonRes() {
+        params.put("employeeId", UserUtils.getUserID(getActivity()));
+        netClient.post(Data.getInstance().getIp() + Constants.FINDHIDDENDANGERYEARCHARTSTATISTICS, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
                 Log.i(TAG, "隐患年度图表分析接口数据返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
-                    List<HomeHiddenRecord> dtatisticsList = JSONArray.parseArray(data, HomeHiddenRecord.class);
-                    llOption.setVisibility(View.VISIBLE);
-                    llLineChart.setVisibility(View.VISIBLE);
-                    llBarChart.setVisibility(View.VISIBLE);
-                    recyclerView.setVisibility(View.GONE);
-                    //showBarChart(dtatisticsList);
-                    //showLineChart(dtatisticsList);
+                    JSONObject jsonObject = JSONObject.parseObject(data);
+                    String monthData = jsonObject.getJSONArray(num).toString();
+                    List<HomeHiddenRecord> dtatisticsList = JSONArray.parseArray(monthData, HomeHiddenRecord.class);
+                    if (!dtatisticsList.isEmpty()) {
+                        llLineChart.setVisibility(View.VISIBLE);
+                        llBarChart.setVisibility(View.VISIBLE);
+                        swipeRefreshLayout.setVisibility(View.GONE);
+                        initBarChart(mBarChart);
+                        initLineChart(mLineChart);
+                        showBarChart(dtatisticsList, "");
+                        showLineChart(dtatisticsList);
+                    } else {
+                        llLineChart.setVisibility(View.GONE);
+                        llBarChart.setVisibility(View.GONE);
+                        Toast.makeText(ctx, "该月份数据为空", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
 
             }
@@ -605,7 +671,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("hiddenDangerRecordJsonData", jsonString);
-        netClient.post(Data.getInstance().getIp()+Constants.QUERYSTATICMOBILE, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.QUERYSTATICMOBILE, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -639,25 +705,29 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
 
 
     public void onRightMenuClicked(View view) {
-        llOption.setVisibility(View.GONE);
-        //tvArea.setText(aname);
-        tvProfession.setText("");
-        tvHiddenUnits.setText("");
-        pid = "";
+        if (!TextUtils.isEmpty(tvArea.getText().toString()) ||
+                !TextUtils.isEmpty(tvProfession.getText().toString()) ||
+                !TextUtils.isEmpty(tvHiddenUnits.getText().toString())) {
+            llOption.setVisibility(View.VISIBLE);
+        } else {
+            llOption.setVisibility(View.GONE);
+        }
         switch (view.getId()) {
             case R.id.ll_chart_01:
-                titleTop.setText(R.string.hidden_danger_statistics_of_each_unit);
-                titleBottom.setText(R.string.hidden_danger_statistics_of_each_unit);
-                getHiddenStatisticsData("false");
+                setUpFirstView();
+                llMonth.setVisibility(View.GONE);
+                getHiddenStatisticsData("true");
                 break;
             case R.id.ll_chart_02:
                 titleTop.setText(R.string.summary_of_hazards);
                 titleBottom.setText(R.string.summary_of_hazards);
+                llMonth.setVisibility(View.GONE);
                 getHiddenSumaryMobile();
                 break;
             case R.id.ll_chart_03:
                 titleTop.setText(R.string.hazard_query_statistics);
                 titleBottom.setText(R.string.hazard_query_statistics);
+                llMonth.setVisibility(View.GONE);
                 getHiddenQueryStaticMobile(Constants.PAGE);
                 break;
            /* case R.id.ll_chart_04:
@@ -668,26 +738,73 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             case R.id.ll_chart_05:
                 titleTop.setText(R.string.duplicate_hazard_record);
                 titleBottom.setText(R.string.duplicate_hazard_record);
+                llMonth.setVisibility(View.GONE);
                 getHiddenRepeatMobile();
                 break;
             case R.id.ll_chart_06:
                 titleTop.setText(R.string.chart_analysis_of_hazard_handling_unit);
                 titleBottom.setText(R.string.chart_analysis_of_hazard_handling_unit);
+                llMonth.setVisibility(View.GONE);
                 getHiddenDepartmentStatisticsMobile();
                 break;
             case R.id.ll_chart_07:
                 titleTop.setText(R.string.chart_analysis_of_hazard_handling);
                 titleBottom.setText(R.string.chart_analysis_of_hazard_handling);
+                llMonth.setVisibility(View.GONE);
                 getHiddenDangerSpecialStatistics();
                 break;
             case R.id.ll_chart_08:
                 titleTop.setText(R.string.chart_analysis_of_hazard_year);
                 titleBottom.setText(R.string.chart_analysis_of_hazard_year);
-                getFindHiddenDangerYearChartStatistics();
+                llMonth.setVisibility(View.VISIBLE);
+                setUpSpinner(spMonth);
                 break;
             default:
                 break;
         }
+    }
+
+    private void setUpSpinner(Spinner spinner) {
+        String[] month = new String[]{"一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月",};
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        int collieryTeamsint = 0;
+        for (int i = 0; i < 12; i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = month[i];
+            selectItem.id = Integer.toString(i + 1);
+            selectItems.add(selectItem);
+        }
+        monthAdapter = SpinnerAdapter.createFromResource(ctx, selectItems, Gravity.CENTER_VERTICAL | Gravity.LEFT);
+        spinner.setBackgroundColor(0x0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            spinner.setPopupBackgroundResource(R.drawable.shape_rectangle_rounded);
+            spinner.setDropDownVerticalOffset(DensityUtil.dip2px(ctx, 3));
+        }
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                monthAdapter.setSelectedPostion(position);
+                getFindHiddenDangerYearChartStatistics(position + 1);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spinner.setAdapter(monthAdapter);
+    }
+
+
+    private void setUpFirstView() {
+        titleTop.setText(R.string.hidden_danger_statistics_of_each_unit);
+        titleBottom.setText(R.string.hidden_danger_statistics_of_each_unit);
+        getHiddenStatisticsData("false");
+        adapter = new HiddenDangerStatisticsEachUnitAllAdapter(dtatisticsList);
+        recyclerView.setAdapter(adapter);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
+        llLineChart.setVisibility(View.GONE);
+        llBarChart.setVisibility(View.GONE);
     }
 
     private void setUpRepeatList(List<HomeHiddenRecord> dtatisticsList) {
@@ -701,6 +818,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
         swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
         HiddenDangerStatisticsRepeatAdapter adapter = new HiddenDangerStatisticsRepeatAdapter(dtatisticsList);
         recyclerView.setAdapter(adapter);
     }
@@ -716,6 +834,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
         swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
         HiddenRiskQueryStatisticsAdapter adapter = new HiddenRiskQueryStatisticsAdapter(recordList);
         recyclerView.setAdapter(adapter);
     }
@@ -731,23 +850,13 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
         swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
         HiddenDangerStatisticsAllAdapter adapter = new HiddenDangerStatisticsAllAdapter(dtatisticsList);
         recyclerView.setAdapter(adapter);
     }
 
     private void setList(List<HomeHiddenRecord> dtatisticsList) {
-        if (!TextUtils.isEmpty(tvArea.getText().toString()) ||
-                !TextUtils.isEmpty(tvProfession.getText().toString()) ||
-                !TextUtils.isEmpty(tvHiddenUnits.getText().toString())) {
-            llOption.setVisibility(View.VISIBLE);
-        } else {
-            llOption.setVisibility(View.GONE);
-        }
-        llLineChart.setVisibility(View.GONE);
-        llBarChart.setVisibility(View.GONE);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
         HiddenDangerStatisticsEachUnitAllAdapter adapter = new HiddenDangerStatisticsEachUnitAllAdapter(dtatisticsList);
         recyclerView.setAdapter(adapter);
     }

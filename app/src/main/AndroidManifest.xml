@@ -19,7 +19,9 @@
         android:roundIcon="@mipmap/hiddendanger"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.HiddenDangerStatisticsEachUnitDetailActivity"></activity>
+        <activity android:name=".activity.SuperviseRecordManagementActivity"></activity>
+        <activity android:name=".activity.AddSupervisorRecordActivity" />
+        <activity android:name=".activity.HiddenDangerStatisticsEachUnitDetailActivity" />
         <activity android:name=".activity.HiddenRiskRecordDetailActivity" />
         <activity android:name=".activity.FiveDecisionsActivity" />
         <activity android:name=".activity.HiddenDangerAcceptanceActivity" />
@@ -50,8 +52,11 @@
         <activity android:name=".activity.HiddenDangerReleaseManagementActivity" />
         <activity android:name=".activity.HiddenDangerOverdueManagementActivity" />
         <activity android:name=".activity.HiddenDangerRectificationManagementActivity" />
-        <receiver android:name=".net.NetworkConnectChangedReceiver">
-        </receiver>
+        <activity
+            android:name=".activity.HiddenDangerDetailManagementAddOrDetailActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <receiver android:name=".net.NetworkConnectChangedReceiver" />
     </application>
 
 </manifest>

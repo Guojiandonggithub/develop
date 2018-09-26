@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.HiddenDangerDetailManagementActivity;
+import com.example.administrator.riskprojects.activity.HiddenDangerDetailManagementAddOrDetailActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class ListingSupervisionAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(),
-                        HiddenDangerDetailManagementActivity.class);
+                        HiddenDangerDetailManagementAddOrDetailActivity.class);
                 String id = recordList.get(position).getId();
                 intent.putExtra("id", id);
                 holder.itemView.getContext().startActivity(intent);
