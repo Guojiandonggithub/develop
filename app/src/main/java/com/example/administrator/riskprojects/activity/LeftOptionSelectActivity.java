@@ -212,7 +212,7 @@ public class LeftOptionSelectActivity extends BaseActivity {
     //获取区域
     private void getArea() {
         RequestParams params = new RequestParams();
-        netClient.post(Constants.GET_AREA, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_AREA, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -243,7 +243,7 @@ public class LeftOptionSelectActivity extends BaseActivity {
 
     private void getSpecialty() {
         RequestParams params = new RequestParams();
-        netClient.post(Constants.GET_SPECIALTY, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_SPECIALTY, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -275,7 +275,7 @@ public class LeftOptionSelectActivity extends BaseActivity {
     //获取部门/队组成员
     private void getCollieryTeam() {
         RequestParams params = new RequestParams();
-        netClient.post(Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {

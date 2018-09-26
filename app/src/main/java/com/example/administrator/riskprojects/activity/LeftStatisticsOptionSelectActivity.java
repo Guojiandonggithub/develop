@@ -211,7 +211,7 @@ public class LeftStatisticsOptionSelectActivity extends BaseActivity {
     //获取区域
     private void getArea() {
         RequestParams params = new RequestParams();
-        netClient.post(Constants.GET_AREA, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_AREA, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {

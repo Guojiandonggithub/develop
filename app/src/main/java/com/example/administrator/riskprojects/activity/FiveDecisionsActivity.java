@@ -206,7 +206,7 @@ public class FiveDecisionsActivity extends BaseActivity {
     //获取部门/队组成员
     private void getCollieryTeam() {
         RequestParams params = new RequestParams();
-        netClient.post(Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -255,7 +255,7 @@ public class FiveDecisionsActivity extends BaseActivity {
     //跟踪人单位查询
     private void getspTrackPeopleUnit() {
         RequestParams params = new RequestParams();
-        netClient.post(Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -306,7 +306,7 @@ public class FiveDecisionsActivity extends BaseActivity {
     private void getResponsibleThose(String teamId) {
         RequestParams params = new RequestParams();
         params.put("teamId",teamId);
-        netClient.post(Constants.GET_EMPLOYEELISTBYTEAMID, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_EMPLOYEELISTBYTEAMID, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -346,7 +346,7 @@ public class FiveDecisionsActivity extends BaseActivity {
     private void getTrackPeople(String teamId) {
         RequestParams params = new RequestParams();
         params.put("teamId",teamId);
-        netClient.post(Constants.GET_EMPLOYEELISTBYTEAMID, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_EMPLOYEELISTBYTEAMID, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -390,7 +390,7 @@ public class FiveDecisionsActivity extends BaseActivity {
         String threeFixStr = JSON.toJSONString(threeFix);
         Log.i(TAG, "addHiddenDanger: 隐患下达修改="+threeFixStr);
         params.put("threeFixJsonData",threeFixStr);
-        netClient.post(Constants.ADD_THREEFIXANDCONFIRM, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.ADD_THREEFIXANDCONFIRM, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {

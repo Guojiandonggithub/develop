@@ -23,6 +23,7 @@ import com.example.administrator.riskprojects.Adpter.HiddenDangeMuitipleAdapter;
 import com.example.administrator.riskprojects.Adpter.HiddenDangeRecordAdapter;
 import com.example.administrator.riskprojects.Adpter.HiddenDangeTrackingAdapter;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.activity.HiddenRiskRecordAddEditActivity;
 import com.example.administrator.riskprojects.activity.MainActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
@@ -178,7 +179,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         }
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("hiddenDangerRecordJsonData", jsonString);
-        netClient.post(Constants.GET_HIDDENRECORD, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_HIDDENRECORD, params, new BaseJsonRes() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -239,7 +240,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         }
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("threeFixJsonData", jsonString);
-        netClient.post(Constants.GET_HIDDENRELEASELIST, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_HIDDENRELEASELIST, params, new BaseJsonRes() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -300,7 +301,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         }
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("threeFixJsonData", jsonString);
-        netClient.post(Constants.GET_RECTIFICATIONLIST, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_RECTIFICATIONLIST, params, new BaseJsonRes() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -363,7 +364,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         }
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("threeFixJsonData", jsonString);
-        netClient.post(Constants.GET_RECTIFICATIONLIST, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_RECTIFICATIONLIST, params, new BaseJsonRes() {
 
             @Override
             public void onStart() {
@@ -425,7 +426,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         }
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("threeFixJsonData", jsonString);
-        netClient.post(Constants.GET_OVERDUELIST, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_OVERDUELIST, params, new BaseJsonRes() {
 
             @Override
             public void onStart() {
@@ -488,7 +489,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         }
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("threeFixJsonData", jsonString);
-        netClient.post(Constants.GET_REVIEWLIST, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_REVIEWLIST, params, new BaseJsonRes() {
 
             @Override
             public void onStart() {
@@ -554,16 +555,26 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
             case R.id.ll_manage_release:
                 llAdd.setVisibility(View.GONE);
                 flag = 2;
-                threeFixesList.clear();
-                adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_REALEASE, threeFixesList);
-                recyclerView.setAdapter(adapter);
+                String userRole = UserUtils.getUserRoleids(getActivity());
+                if(!"8".equals(userRole)&&!"62".equals(userRole)){
+                    threeFixesList.clear();
+                    adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_REALEASE, threeFixesList);
+                    recyclerView.setAdapter(adapter);
+                }else{
+                    Utils.showLongToast(getContext(), "没有权限进行该操作!");
+                }
                 break;
             case R.id.ll_manage_rectification:
                 llAdd.setVisibility(View.GONE);
                 flag = 3;
-                threeFixesList.clear();
-                adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_RECTIFICATION, threeFixesList);
-                recyclerView.setAdapter(adapter);
+                String userRoles = UserUtils.getUserRoleids(getActivity());
+                if(!"8".equals(userRoles)&&!"62".equals(userRoles)){
+                    threeFixesList.clear();
+                    adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_RECTIFICATION, threeFixesList);
+                    recyclerView.setAdapter(adapter);
+                }else{
+                    Utils.showLongToast(getContext(), "没有权限进行该操作!");
+                }
                 break;
             case R.id.ll_manage_tracking:
                 llAdd.setVisibility(View.GONE);
@@ -576,7 +587,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 llAdd.setVisibility(View.GONE);
                 flag = 5;
                 threeFixesList.clear();
-                adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_OVERDUE, threeFixesList);
+                adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_OVERDUE,threeFixesList);
                 recyclerView.setAdapter(adapter);
                 break;
             case R.id.ll_manage_review:

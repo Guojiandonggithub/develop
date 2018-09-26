@@ -189,7 +189,7 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
         paramsMap.put("threeFixId", threeFixId);
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("follingRecordJsonData", jsonString);
-        netClient.post(Constants.GET_FOLLINGRECORD, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_FOLLINGRECORD, params, new BaseJsonRes() {
 
             @Override
             public void onStart() {
@@ -239,7 +239,7 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
     private void deleteHiddenTrackingRecord(String id) {//隐患跟踪记录id
         RequestParams params = new RequestParams();
         params.put("follingRecordId", id);
-        netClient.post(Constants.DELETE_FOLLINGRECORD, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.DELETE_FOLLINGRECORD, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {

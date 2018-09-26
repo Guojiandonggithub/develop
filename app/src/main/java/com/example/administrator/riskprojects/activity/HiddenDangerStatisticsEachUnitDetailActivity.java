@@ -21,6 +21,7 @@ import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
+import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
@@ -88,7 +89,8 @@ public class HiddenDangerStatisticsEachUnitDetailActivity extends BaseActivity i
         Log.i(TAG, "详情参数:"+params);
         paramsMap.put("page",Constants.PAGE);
         paramsMap.put("rows",Constants.ROWS);
-        netClient.post(Constants.GET_NOTHANDLELIST, params, new BaseJsonRes() {
+        paramsMap.put("employeeId", UserUtils.getUserID(HiddenDangerStatisticsEachUnitDetailActivity.this));
+        netClient.post(Data.getInstance().getIp()+Constants.GET_NOTHANDLELIST, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -133,7 +135,7 @@ public class HiddenDangerStatisticsEachUnitDetailActivity extends BaseActivity i
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("hiddenDangerRecordJsonData",jsonString);
         Utils.showLongToast(HiddenDangerStatisticsEachUnitDetailActivity.this, "详情参数:"+params);
-        netClient.post(Constants.GET_HIDDENDANGERDETAILLIST, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_HIDDENDANGERDETAILLIST, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {

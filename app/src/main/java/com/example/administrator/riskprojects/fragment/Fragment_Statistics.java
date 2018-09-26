@@ -27,6 +27,7 @@ import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsEachU
 import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsRepeatAdapter;
 import com.example.administrator.riskprojects.Adpter.HiddenRiskQueryStatisticsAdapter;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
@@ -300,13 +301,14 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int date = cal.get(Calendar.DATE);
+        params.put("employeeId",UserUtils.getUserID(getActivity()));
         params.put("customParamsOne", year + "-" + month + "-01");//开始时间
         String customParamsTwo = year + "-" + month + "-" + date;
         if (currentdate.equals("false") && !TextUtils.isEmpty(tvHiddenUnits.getText())) {
             customParamsTwo = tvHiddenUnits.getText().toString();
         }
         params.put("customParamsTwo", customParamsTwo);//结束时间
-        netClient.post(Constants.TEAMHDSTAISTICSDATAGRID, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.TEAMHDSTAISTICSDATAGRID, params, new BaseJsonRes() {
 
             @Override
             public void onStart() {
@@ -354,7 +356,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             customParamsTwo = tvHiddenUnits.getText().toString();
         }
         params.put("customParamsTwo", customParamsTwo);//结束时间
-        netClient.post(Constants.SUMARYMOBILE, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.SUMARYMOBILE, params, new BaseJsonRes() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -392,7 +394,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         RequestParams params = new RequestParams();
         //params.put("customParamsOne","");//开始时间
         //params.put("customParamsTwo", "");//结束时间
-        netClient.post(Constants.DELETEMOBILE, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.DELETEMOBILE, params, new BaseJsonRes() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -430,9 +432,10 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", Constants.PAGE);
         paramsMap.put("rows", Constants.ROWS);
+        paramsMap.put("employeeId",UserUtils.getUserID(getActivity()));
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("hiddenDangerRecordJsonData", jsonString);
-        netClient.post(Constants.REPEATMOBILE, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.REPEATMOBILE, params, new BaseJsonRes() {
 
             @Override
             public void onStart() {
@@ -445,6 +448,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 Log.i(TAG, "重复隐患记录查询数据返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<HomeHiddenRecord> dtatisticsList = JSONArray.parseArray(data, HomeHiddenRecord.class);
+                    setUpRepeatList(dtatisticsList);
                     showBarChart(dtatisticsList);
                     showLineChart(dtatisticsList);
                 }
@@ -471,9 +475,10 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
+        params.put("employeeId",UserUtils.getUserID(getActivity()));
         params.put("customParamsOne", year + "-" + month + "-01");//开始时间
         params.put("customParamsTwo", tvHiddenUnits.getText().toString());//结束时间
-        netClient.post(Constants.DEPARTMENTSTATISTICSMOBILE, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.DEPARTMENTSTATISTICSMOBILE, params, new BaseJsonRes() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -520,7 +525,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         if (!TextUtils.isEmpty(pid)) {
             params.put("customParamsFour", pid);//分析因素
         }
-        netClient.post(Constants.HIDDENDANGERSPECIALSTATISTICS, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.HIDDENDANGERSPECIALSTATISTICS, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -555,7 +560,8 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             yearStr = tvHiddenUnits.getText().toString().split("-")[0];
         }
         params.put("customParamsOne", yearStr);
-        netClient.post(Constants.FINDHIDDENDANGERYEARCHARTSTATISTICS, params, new BaseJsonRes() {
+        params.put("employeeId",UserUtils.getUserID(getActivity()));
+        netClient.post(Data.getInstance().getIp()+Constants.FINDHIDDENDANGERYEARCHARTSTATISTICS, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -589,7 +595,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("hiddenDangerRecordJsonData", jsonString);
-        netClient.post(Constants.QUERYSTATICMOBILE, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.QUERYSTATICMOBILE, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -647,8 +653,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             case R.id.ll_chart_05:
                 titleTop.setText(R.string.duplicate_hazard_record);
                 titleBottom.setText(R.string.duplicate_hazard_record);
-//                getHiddenRepeatMobile();
-                setUpRepeatList();
+                getHiddenRepeatMobile();
                 break;
             case R.id.ll_chart_06:
                 titleTop.setText(R.string.chart_analysis_of_hazard_handling_unit);
@@ -670,7 +675,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         }
     }
 
-    private void setUpRepeatList() {
+    private void setUpRepeatList(List<HomeHiddenRecord> dtatisticsList) {
         if (!TextUtils.isEmpty(tvArea.getText().toString()) ||
                 !TextUtils.isEmpty(tvProfession.getText().toString()) ||
                 !TextUtils.isEmpty(tvHiddenUnits.getText().toString())) {
@@ -681,7 +686,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
         swipeRefreshLayout.setOnRefreshListener(this);
-        HiddenDangerStatisticsRepeatAdapter adapter = new HiddenDangerStatisticsRepeatAdapter(new ArrayList<HiddenDangerRecord>());
+        HiddenDangerStatisticsRepeatAdapter adapter = new HiddenDangerStatisticsRepeatAdapter(dtatisticsList);
         recyclerView.setAdapter(adapter);
     }
 

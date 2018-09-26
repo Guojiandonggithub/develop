@@ -127,7 +127,7 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
     private void getHiddenRecord() {
         RequestParams params = new RequestParams();
         params.put("ids",threeFix.getHiddenDangerId());
-        netClient.post(Constants.COMPLETERECTIFY, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.COMPLETERECTIFY, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {

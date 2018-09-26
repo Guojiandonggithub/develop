@@ -9,10 +9,11 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".activity.Data"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/hiddendanger"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/hiddendanger"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.HiddenDangerStatisticsEachUnitDetailActivity"></activity>
@@ -45,6 +46,8 @@
         <activity android:name=".activity.HiddenDangerReleaseManagementActivity" />
         <activity android:name=".activity.HiddenDangerOverdueManagementActivity" />
         <activity android:name=".activity.HiddenDangerRectificationManagementActivity" />
+        <receiver android:name=".net.NetworkConnectChangedReceiver">
+        </receiver>
     </application>
 
 </manifest>

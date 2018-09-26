@@ -1,5 +1,6 @@
 package com.example.administrator.riskprojects.Adpter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -18,6 +19,8 @@ import com.example.administrator.riskprojects.activity.HiddenDangerRectification
 import com.example.administrator.riskprojects.activity.HiddenDangerReleaseManagementActivity;
 import com.example.administrator.riskprojects.activity.HiddenDangerReviewManagementActivity;
 import com.example.administrator.riskprojects.bean.ThreeFix;
+import com.example.administrator.riskprojects.tools.UserUtils;
+import com.example.administrator.riskprojects.tools.Utils;
 
 import java.util.List;
 

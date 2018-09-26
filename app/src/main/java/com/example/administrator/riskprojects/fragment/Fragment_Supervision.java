@@ -25,6 +25,7 @@ import com.example.administrator.riskprojects.Adpter.HomeHiddenDangerAdapter;
 import com.example.administrator.riskprojects.Adpter.ListingSupervisionAdapter;
 import com.example.administrator.riskprojects.Adpter.SideBar;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.activity.MainActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
@@ -143,9 +144,10 @@ public class Fragment_Supervision extends Fragment implements SwipeRefreshLayout
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", Integer.toString(curpage));
         paramsMap.put("rows", Constants.ROWS);
+        paramsMap.put("isupervision",Constants.ISUPERVISION);
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("hiddenDangerRecordJsonData", jsonString);
-        netClient.post(Constants.GET_HIDDENRECORD, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp()+Constants.GET_HIDDENRECORD, params, new BaseJsonRes() {
             @Override
             public void onStart() {
                 super.onStart();

@@ -13,15 +13,16 @@ import android.widget.TextView;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.HiddenRiskRecordDetailActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
+import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 
 import java.util.List;
 
 public class HiddenDangerStatisticsRepeatAdapter extends RecyclerView.Adapter {
-    private List<HiddenDangerRecord> recordList;
+    private List<HomeHiddenRecord> recordList;
 
 
 
-    public HiddenDangerStatisticsRepeatAdapter(List<HiddenDangerRecord> recordList) {
+    public HiddenDangerStatisticsRepeatAdapter(List<HomeHiddenRecord> recordList) {
         this.recordList = recordList;
     }
 
@@ -33,24 +34,25 @@ public class HiddenDangerStatisticsRepeatAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-//        if(recordList.size()>0){
-//            ((ViewHolder) holder).tvHiddenUnits.setText(recordList.get(position).getTeamGroupName());
-//            ((ViewHolder) holder).tvTimeOrOrder.setText(recordList.get(position).getFindTime()+"/"+recordList.get(position).getClassName());
-//            ((ViewHolder) holder).tvHiddenContent.setText(recordList.get(position).getContent());
-//            ((ViewHolder) holder).tvHiddenDangerBelongs.setText(recordList.get(position).getHiddenBelong());
-//        }
-//
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(holder.itemView.getContext(),
-//                        HiddenRiskRecordDetailActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("hiddenDangerRecord",recordList.get(position));
-//                intent.putExtra("hiddenrecordBundle",bundle);
-//                holder.itemView.getContext().startActivity(intent);
-//            }
-//        });
+        if(recordList.size()>0){
+            //((ViewHolder) holder).tvHiddenContent.setText(recordList.get(position).getTeamGroupName());
+            //((ViewHolder) holder).tvNameOfTheProfessional.setText(recordList.get(position).getFindTime()+"/"+recordList.get(position).getClassName());
+            //((ViewHolder) holder).tvHazardLevel.setText(recordList.get(position).getContent());
+            //((ViewHolder) holder).tvHiddenTroubleDescription.setText(recordList.get(position).getHiddenBelong());
+            //((ViewHolder) holder).tvRepeatTheNumber.setText(recordList.get(position).getHiddenBelong());
+        }
+
+        /*holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(holder.itemView.getContext(),
+                        HiddenRiskRecordDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("hiddenDangerRecord",recordList.get(position));
+                intent.putExtra("hiddenrecordBundle",bundle);
+                holder.itemView.getContext().startActivity(intent);
+            }
+        });*/
 
     }
 

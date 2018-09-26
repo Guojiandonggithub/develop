@@ -21,6 +21,7 @@ import com.example.administrator.riskprojects.Adpter.HomeHiddenDangerAdapter;
 import com.example.administrator.riskprojects.LoginActivity;
 import com.example.administrator.riskprojects.OnItemClickListener;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.activity.HiddenDangerStatisticsEachUnitDetailActivity;
 import com.example.administrator.riskprojects.activity.MainActivity;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
@@ -107,7 +108,7 @@ public class Fragment_Home extends Fragment {
         if (!TextUtils.isEmpty(employeeId)) {
             RequestParams params = new RequestParams();
             params.put("employeeId", employeeId);
-            netClient.post(Constants.HOME_GET_HIDDENUM, params, new BaseJsonRes() {
+            netClient.post(Data.getInstance().getIp()+Constants.HOME_GET_HIDDENUM, params, new BaseJsonRes() {
 
                 @Override
                 public void onMySuccess(String data) {
@@ -139,7 +140,8 @@ public class Fragment_Home extends Fragment {
 
     private void getHiddenRecord() {
         RequestParams params = new RequestParams();
-        netClient.post(Constants.HOME_GET_HIDDENRECORD, params, new BaseJsonRes() {
+        params.put("employeeId",UserUtils.getUserID(getActivity()));
+        netClient.post(Data.getInstance().getIp()+Constants.HOME_GET_HIDDENRECORD, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
