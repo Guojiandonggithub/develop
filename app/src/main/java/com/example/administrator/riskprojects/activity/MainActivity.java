@@ -136,7 +136,7 @@ public class MainActivity extends FragmentActivity {
             case R.id.re_weixin:
                 index = 3;
                 txt_title.setText(R.string.statistical_analysis);
-                img_left.setVisibility(View.VISIBLE);
+                img_left.setVisibility(View.GONE);
                 img_right.setVisibility(View.VISIBLE);
                 break;
             case R.id.re_profile:

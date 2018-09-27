@@ -104,6 +104,7 @@ public class FiveDecisionsActivity extends BaseActivity {
         etAddLocation = findViewById(R.id.et_add_location);
         cvSelectDate = findViewById(R.id.cv_select_date);
         tvDate = findViewById(R.id.tv_date);
+        tvDate.setSelected(true);
         spMineArea = findViewById(R.id.sp_mine_area);
         spDepartment = findViewById(R.id.sp_department);
         spResponsibleThose = findViewById(R.id.sp_responsible_those);
