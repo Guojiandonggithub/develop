@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +53,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
     private TextView tvname, tv_accout;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView recyclerView;
-    private int flag = 0;//选择模块  默认记录管理
+    private int flag = 1;//选择模块  默认记录管理
     protected NetClient netClient;
     List<HiddenDangerRecord> recordList = new ArrayList<HiddenDangerRecord>();
     List<ThreeFix> threeFixesList = new ArrayList<ThreeFix>();
@@ -64,7 +67,36 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
     private int curpage = 1;
     private int pagesize = 1;
     private RecyclerView.Adapter adapter;
-    private String sid,areaid;
+    private String sid, areaid;
+    private LinearLayoutCompat llOptionNew;
+    private LinearLayoutCompat llContent;
+    private CardView cvSelectStartDate;
+    private TextView tvStartDate;
+    private View llSelectTop;
+    private LinearLayoutCompat llSelectProfession;
+    private TextView tvSpProfession;
+    private Spinner spProfession;
+    private LinearLayoutCompat llSelectArea;
+    private TextView tvSpArea;
+    private Spinner spArea;
+    private LinearLayoutCompat llSelectCheckUnits;
+    private TextView tvSpCheckUnits;
+    private Spinner spCheckUnits;
+    private LinearLayoutCompat llSelectIsHandle;
+    private TextView tvSpIsHandle;
+    private Spinner spIsHandle;
+    private LinearLayoutCompat llSelectStatus;
+    private TextView tvSpStatus;
+    private Spinner spStatus;
+    private LinearLayoutCompat llSelectRectificationResults;
+    private TextView tvRectificationResults;
+    private Spinner spRectificationResults;
+    private LinearLayoutCompat llSelectCheckResults;
+    private TextView tvCheckResults;
+    private Spinner spCheckResults;
+    private LinearLayoutCompat llExpand;
+    private TextView tvExpand;
+    private ImageView ivExpand;
 
 
     @Override
@@ -153,6 +185,87 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+        llOptionNew = layout.findViewById(R.id.ll_option_new);
+        llContent = layout.findViewById(R.id.ll_content);
+        cvSelectStartDate = layout.findViewById(R.id.cv_select_start_date);
+        tvStartDate = layout.findViewById(R.id.tv_start_date);
+        llSelectTop = layout.findViewById(R.id.ll_select_top);
+        llSelectProfession = layout.findViewById(R.id.ll_select_profession);
+        tvSpProfession = layout.findViewById(R.id.tv_sp_profession);
+        spProfession = layout.findViewById(R.id.sp_profession);
+        llSelectArea = layout.findViewById(R.id.ll_select_area);
+        tvSpArea = layout.findViewById(R.id.tv_sp_area);
+        spArea = layout.findViewById(R.id.sp_area);
+        llSelectCheckUnits = layout.findViewById(R.id.ll_select_check_units);
+        tvSpCheckUnits = layout.findViewById(R.id.tv_sp_check_units);
+        spCheckUnits = layout.findViewById(R.id.sp_check_units);
+        llSelectIsHandle = layout.findViewById(R.id.ll_select_is_handle);
+        tvSpIsHandle = layout.findViewById(R.id.tv_sp_is_handle);
+        spIsHandle = layout.findViewById(R.id.sp_is_handle);
+        llSelectStatus = layout.findViewById(R.id.ll_select_status);
+        tvSpStatus = layout.findViewById(R.id.tv_sp_status);
+        spStatus = layout.findViewById(R.id.sp_status);
+        llSelectRectificationResults = layout.findViewById(R.id.ll_select_rectification_results);
+        tvRectificationResults = layout.findViewById(R.id.tv_rectification_results);
+        spRectificationResults = layout.findViewById(R.id.sp_rectification_results);
+        llSelectCheckResults = layout.findViewById(R.id.ll_select_check_results);
+        tvCheckResults = layout.findViewById(R.id.tv_check_results);
+        spCheckResults = layout.findViewById(R.id.sp_check_results);
+        llExpand = layout.findViewById(R.id.ll_expand);
+        tvExpand = layout.findViewById(R.id.tv_expand);
+        ivExpand = layout.findViewById(R.id.iv_expand);
+        llExpand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                llContent.setVisibility(llContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                tvExpand.setText(llContent.getVisibility() == View.VISIBLE ? "收起选项" : "展开选项");
+                ivExpand.setSelected(llContent.getVisibility() == View.VISIBLE);
+            }
+        });
+        setUpTopView();
+    }
+
+    private void setUpTopView() {
+        llSelectArea.setVisibility(View.GONE);
+        llSelectCheckUnits.setVisibility(View.GONE);
+        llSelectIsHandle.setVisibility(View.GONE);
+        llSelectStatus.setVisibility(View.GONE);
+        llSelectCheckResults.setVisibility(View.GONE);
+        llSelectProfession.setVisibility(View.GONE);
+        llSelectRectificationResults.setVisibility(View.GONE);
+        switch (flag) {
+            case 1:
+                llSelectProfession.setVisibility(View.VISIBLE);
+                llSelectArea.setVisibility(View.VISIBLE);
+                llSelectIsHandle.setVisibility(View.VISIBLE);
+                llSelectCheckUnits.setVisibility(View.VISIBLE);
+                llSelectStatus.setVisibility(View.VISIBLE);
+                break;
+            case 2:
+                llSelectProfession.setVisibility(View.VISIBLE);
+                llSelectArea.setVisibility(View.VISIBLE);
+                break;
+            case 3:
+                llSelectProfession.setVisibility(View.VISIBLE);
+                llSelectArea.setVisibility(View.VISIBLE);
+                llSelectRectificationResults.setVisibility(View.GONE);
+                break;
+            case 4:
+                llSelectProfession.setVisibility(View.VISIBLE);
+                llSelectArea.setVisibility(View.VISIBLE);
+                llSelectRectificationResults.setVisibility(View.GONE);
+                break;
+            case 5:
+                llSelectProfession.setVisibility(View.VISIBLE);
+                llSelectArea.setVisibility(View.VISIBLE);
+                break;
+            case 6:
+                llSelectProfession.setVisibility(View.VISIBLE);
+                llSelectArea.setVisibility(View.VISIBLE);
+                llSelectCheckUnits.setVisibility(View.VISIBLE);
+                break;
+
+        }
     }
 
     private void initViews() {
@@ -168,18 +281,18 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         paramsMap.put("page", page);
         paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        if(!TextUtils.isEmpty(tvArea.getText())){
+        if (!TextUtils.isEmpty(tvArea.getText())) {
             paramsMap.put("customParamsThree", areaid);
         }
-        if(!TextUtils.isEmpty(tvProfession.getText())){
-            paramsMap.put("customParamsTwo",sid);
+        if (!TextUtils.isEmpty(tvProfession.getText())) {
+            paramsMap.put("customParamsTwo", sid);
         }
-        if(!TextUtils.isEmpty(tvHiddenUnits.getText())){
+        if (!TextUtils.isEmpty(tvHiddenUnits.getText())) {
             //paramsMap.put("customParamsThree", tvHiddenUnits.getText().toString());
         }
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("hiddenDangerRecordJsonData", jsonString);
-        netClient.post(Data.getInstance().getIp()+Constants.GET_HIDDENRECORD, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.GET_HIDDENRECORD, params, new BaseJsonRes() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -232,15 +345,15 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         paramsMap.put("page", page);
         paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        if(!TextUtils.isEmpty(tvArea.getText())){
+        if (!TextUtils.isEmpty(tvArea.getText())) {
             paramsMap.put("customParamsTwo", areaid);
         }
-        if(!TextUtils.isEmpty(tvProfession.getText())){
-            paramsMap.put("customParamsOne",sid);
+        if (!TextUtils.isEmpty(tvProfession.getText())) {
+            paramsMap.put("customParamsOne", sid);
         }
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("threeFixJsonData", jsonString);
-        netClient.post(Data.getInstance().getIp()+Constants.GET_HIDDENRELEASELIST, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.GET_HIDDENRELEASELIST, params, new BaseJsonRes() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -293,15 +406,15 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         paramsMap.put("page", page);
         paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        if(!TextUtils.isEmpty(tvArea.getText())){
+        if (!TextUtils.isEmpty(tvArea.getText())) {
             paramsMap.put("customParamsThree", areaid);
         }
-        if(!TextUtils.isEmpty(tvProfession.getText())){
-            paramsMap.put("customParamsTwo",sid);
+        if (!TextUtils.isEmpty(tvProfession.getText())) {
+            paramsMap.put("customParamsTwo", sid);
         }
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("threeFixJsonData", jsonString);
-        netClient.post(Data.getInstance().getIp()+Constants.GET_RECTIFICATIONLIST, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.GET_RECTIFICATIONLIST, params, new BaseJsonRes() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -356,15 +469,15 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         paramsMap.put("page", page);
         paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        if(!TextUtils.isEmpty(tvArea.getText())){
+        if (!TextUtils.isEmpty(tvArea.getText())) {
             paramsMap.put("customParamsTwo", areaid);
         }
-        if(!TextUtils.isEmpty(tvProfession.getText())){
-            paramsMap.put("customParamsOne",sid);
+        if (!TextUtils.isEmpty(tvProfession.getText())) {
+            paramsMap.put("customParamsOne", sid);
         }
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("threeFixJsonData", jsonString);
-        netClient.post(Data.getInstance().getIp()+Constants.GET_RECTIFICATIONLIST, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.GET_RECTIFICATIONLIST, params, new BaseJsonRes() {
 
             @Override
             public void onStart() {
@@ -418,15 +531,15 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         paramsMap.put("page", page);
         paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        if(!TextUtils.isEmpty(tvArea.getText())){
+        if (!TextUtils.isEmpty(tvArea.getText())) {
             paramsMap.put("customParamsThree", areaid);
         }
-        if(!TextUtils.isEmpty(tvProfession.getText())){
-            paramsMap.put("customParamsTwo",sid);
+        if (!TextUtils.isEmpty(tvProfession.getText())) {
+            paramsMap.put("customParamsTwo", sid);
         }
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("threeFixJsonData", jsonString);
-        netClient.post(Data.getInstance().getIp()+Constants.GET_OVERDUELIST, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.GET_OVERDUELIST, params, new BaseJsonRes() {
 
             @Override
             public void onStart() {
@@ -481,15 +594,15 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         paramsMap.put("page", page);
         paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        if(!TextUtils.isEmpty(tvArea.getText())){
+        if (!TextUtils.isEmpty(tvArea.getText())) {
             paramsMap.put("customParamsThree", areaid);
         }
-        if(!TextUtils.isEmpty(tvProfession.getText())){
-            paramsMap.put("customParamsTwo",sid);
+        if (!TextUtils.isEmpty(tvProfession.getText())) {
+            paramsMap.put("customParamsTwo", sid);
         }
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("threeFixJsonData", jsonString);
-        netClient.post(Data.getInstance().getIp()+Constants.GET_REVIEWLIST, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.GET_REVIEWLIST, params, new BaseJsonRes() {
 
             @Override
             public void onStart() {
@@ -556,11 +669,11 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 llAdd.setVisibility(View.VISIBLE);
                 flag = 2;
                 String userRole = UserUtils.getUserRoleids(getActivity());
-                if(!"8".equals(userRole)&&!"62".equals(userRole)){
+                if (!"8".equals(userRole) && !"62".equals(userRole)) {
                     threeFixesList.clear();
                     adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_REALEASE, threeFixesList);
                     recyclerView.setAdapter(adapter);
-                }else{
+                } else {
                     Utils.showLongToast(getContext(), "没有权限进行该操作!");
                 }
                 break;
@@ -568,11 +681,11 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 llAdd.setVisibility(View.VISIBLE);
                 flag = 3;
                 String userRoles = UserUtils.getUserRoleids(getActivity());
-                if(!"8".equals(userRoles)&&!"62".equals(userRoles)){
+                if (!"8".equals(userRoles) && !"62".equals(userRoles)) {
                     threeFixesList.clear();
                     adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_RECTIFICATION, threeFixesList);
                     recyclerView.setAdapter(adapter);
-                }else{
+                } else {
                     Utils.showLongToast(getContext(), "没有权限进行该操作!");
                 }
                 break;
@@ -587,7 +700,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 llAdd.setVisibility(View.VISIBLE);
                 flag = 5;
                 threeFixesList.clear();
-                adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_OVERDUE,threeFixesList);
+                adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_OVERDUE, threeFixesList);
                 recyclerView.setAdapter(adapter);
                 break;
             case R.id.ll_manage_review:
@@ -601,6 +714,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 break;
         }
         llOption.setVisibility(View.GONE);
+        setUpTopView();
         tvArea.setText("");
         tvProfession.setText("");
         sid = "";

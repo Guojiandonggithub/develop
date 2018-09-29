@@ -130,7 +130,7 @@ public class MainActivity extends FragmentActivity {
             case R.id.analysis:
                 index = 2;
                 txt_title.setText(manageFragment.getTitle());
-                img_left.setVisibility(View.VISIBLE);
+                img_left.setVisibility(View.GONE);
                 img_right.setVisibility(View.VISIBLE);
                 break;
             case R.id.re_weixin:

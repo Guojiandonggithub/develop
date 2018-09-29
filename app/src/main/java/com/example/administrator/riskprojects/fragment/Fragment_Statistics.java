@@ -983,6 +983,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         } else {
             llstime.setVisibility(View.GONE);
             lletime.setVisibility(View.GONE);
+            llSelect.setVisibility(View.GONE);
             llMonth.setVisibility(View.VISIBLE);
             llYear.setVisibility(View.VISIBLE);
         }

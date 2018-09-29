@@ -25,7 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
 
             <android.support.v7.widget.LinearLayoutCompat
@@ -85,10 +86,7 @@
             </android.support.v7.widget.LinearLayoutCompat>
 
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorDevide" />
+
 
             <android.support.v7.widget.LinearLayoutCompat
                 android:id="@+id/ll_end_time"
@@ -150,6 +148,7 @@
                 android:id="@+id/ll_select_top"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:visibility="gone"
                 android:background="@color/colorDevide" />
 
             <android.support.v7.widget.LinearLayoutCompat
@@ -165,7 +164,7 @@
                     android:id="@+id/tv_sp_name"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="月份"
+                    android:text="月&#12288;&#12288;份:"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/normal_ts"
                     android:textStyle="bold" />
@@ -182,14 +181,15 @@
                 android:id="@+id/ll_year"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:layout_marginLeft="38dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:gravity="center_vertical"
                 android:visibility="gone">
 
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="年份"
+                    android:text="年&#12288;&#12288;份:"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/normal_ts"
                     android:textStyle="bold" />
@@ -205,14 +205,15 @@
                 android:id="@+id/ll_month"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:layout_marginLeft="38dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:gravity="center_vertical"
                 android:visibility="gone">
 
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="月份"
+                    android:text="月&#12288;&#12288;份:"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/normal_ts"
                     android:textStyle="bold" />
@@ -237,7 +238,7 @@
                     android:id="@+id/tv_sp_profession"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="专业名称"
+                    android:text="专业名称:"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/normal_ts"
                     android:textStyle="bold" />
@@ -263,7 +264,7 @@
                     android:id="@+id/tv_sp_hidden_danger_belongs"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="隐患归属"
+                    android:text="隐患归属:"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/normal_ts"
                     android:textStyle="bold" />
@@ -339,7 +340,7 @@
                     android:id="@+id/tv_sp_hidden_units"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="隐患单位"
+                    android:text="隐患单位:"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/normal_ts"
                     android:textStyle="bold" />
