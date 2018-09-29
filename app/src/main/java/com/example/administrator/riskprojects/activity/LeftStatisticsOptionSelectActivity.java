@@ -23,6 +23,7 @@ import com.example.administrator.riskprojects.bean.Specialty;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
+import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.util.DensityUtil;
 import com.example.administrator.riskprojects.util.StringUtils;
@@ -211,6 +212,7 @@ public class LeftStatisticsOptionSelectActivity extends BaseActivity {
     //获取区域
     private void getArea() {
         RequestParams params = new RequestParams();
+        params.put("employeeId", UserUtils.getUserID(LeftStatisticsOptionSelectActivity.this));
         netClient.post(Data.getInstance().getIp()+Constants.GET_AREA, params, new BaseJsonRes() {
 
             @Override

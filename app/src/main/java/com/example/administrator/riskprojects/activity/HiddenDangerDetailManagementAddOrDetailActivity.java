@@ -59,7 +59,7 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
     }
 
     private void setView() {
-        txtTitle.setText(R.string.hidden_danger_details_management);
+        txtTitle.setText(R.string.guapai_details_management);
         tvDelete.setText(R.string.add_backspace);
         tvChange.setText(R.string.detail_backspace);
         tvDelete.setOnClickListener(new View.OnClickListener() {
@@ -136,8 +136,8 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
                     tvProfessional.setText(record.getSname());
                     tvArea.setText(record.getAreaName());
                     tvClasses.setText(record.getJbName());
-                    ivStatus.setImageResource(getImageResourceByFlag(record.getFlag()));
-                    ivStatusSecond.setImageResource(getImageResourceByFlag(record.getFlag()));
+                    ivStatus.setImageResource(getImageResourceByFlag(record.getFlag(),record.getOutTimeFlag()));
+                    ivStatusSecond.setImageResource(getImageResourceByFlag(record.getFlag(),record.getOutTimeFlag()));
 
                     String isuper = record.getIsupervision();
                     if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
@@ -183,8 +183,13 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
         });
     }
 
-    private int getImageResourceByFlag(String flag) {
+    private int getImageResourceByFlag(String flag,String outTimeFlag) {
+        if("1".equals(outTimeFlag)){
+            return R.mipmap.ic_status_overdue;
+        }
         switch (flag) {
+            case "0":
+                return R.mipmap.ic_status_shaixuan;
             case "1":
                 return R.mipmap.ic_status_release;
             case "2":

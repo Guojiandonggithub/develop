@@ -76,7 +76,7 @@
                     android:textSize="@dimen/normal_ts" />
             </android.support.v7.widget.LinearLayoutCompat>
 
-            <android.support.v7.widget.LinearLayoutCompat
+            <!--<android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:gravity="center_vertical">
@@ -99,7 +99,7 @@
                     android:singleLine="true"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/normal_ts" />
-            </android.support.v7.widget.LinearLayoutCompat>
+            </android.support.v7.widget.LinearLayoutCompat>-->
 
             <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -210,7 +210,7 @@
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="隐患归类："
+                    android:text="检查单位："
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/normal_ts"
                     android:textStyle="normal" />
@@ -261,7 +261,7 @@
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="发&#8194;现&#8194;人："
+                    android:text="检&#8194;查&#8194;人："
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/normal_ts"
                     android:textStyle="normal" />

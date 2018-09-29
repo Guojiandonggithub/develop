@@ -60,7 +60,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
     }
 
     private void setView() {
-        txtTitle.setText(R.string.hidden_danger_details_management);
+        txtTitle.setText(R.string.hidden_danger_record_management);
         tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,6 +99,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
 
     private boolean checkparam(Intent intent){
         String flag = intent.getStringExtra("flag");
+        Log.e(TAG, "flag================: "+flag);
         String employeeId = intent.getStringExtra("employeeId");
         String role = UserUtils.getUserRoleids(HiddenDangerDetailManagementActivity.this);
         String userid = UserUtils.getUserID(HiddenDangerDetailManagementActivity.this);
@@ -163,8 +164,8 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                     tvProfessional.setText(record.getSname());
                     tvArea.setText(record.getAreaName());
                     tvClasses.setText(record.getJbName());
-                    ivStatus.setImageResource(getImageResourceByFlag(record.getFlag()));
-                    ivStatusSecond.setImageResource(getImageResourceByFlag(record.getFlag()));
+                    ivStatus.setImageResource(getImageResourceByFlag(record.getFlag(),record.getOutTimeFlag()));
+                    ivStatusSecond.setImageResource(getImageResourceByFlag(record.getFlag(),record.getOutTimeFlag()));
 
                     String isuper = record.getIsupervision();
                     if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
@@ -210,8 +211,13 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
         });
     }
 
-    private int getImageResourceByFlag(String flag) {
+    private int getImageResourceByFlag(String flag,String outTimeFlag) {
+        if("1".equals(outTimeFlag)){
+            return R.mipmap.ic_status_overdue;
+        }
         switch (flag) {
+            case "0":
+                return R.mipmap.ic_status_shaixuan;
             case "1":
                 return R.mipmap.ic_status_release;
             case "2":

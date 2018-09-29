@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -60,7 +61,7 @@ public class UpdateVersionUtil {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (is_qiangzhi.equals("1")) {
-                    System.exit(0);
+                    System.exit(1);
                 } else {
                     handler.cancel();
                     into(context);
@@ -83,7 +84,7 @@ public class UpdateVersionUtil {
                     Log.e(TAG, "oldversion旧版本================= "+oldversion);
                     Log.e(TAG, "oldversion新版本================= "+version);
                     if(version.equals(oldversion)){
-                        Utils.showLongToast(context, "已经是最新帮本，不需要更新！");
+                        Utils.showLongToast(context, "已经是最新版本，不需要更新！");
                     }else{
                         String newVersionPath = returndata.getString("newVersionPath");
                         showUpdateDialog(newVersionPath, "1");
@@ -199,7 +200,7 @@ public class UpdateVersionUtil {
             public void onClick(DialogInterface dialog, int which) {
                 // 使用apkurl下载apk文件,然后自动安装
                 if (is_qiangzhi.equals("1")) {
-                    System.exit(0);
+                    System.exit(1);
                 } else {
                     into(context);
                 }

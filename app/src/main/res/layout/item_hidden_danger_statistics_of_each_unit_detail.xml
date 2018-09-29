@@ -145,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="隐患归类"
+                android:text="检查单位"
                 android:ellipsize="marquee"
                 android:textColor="@color/white"
                 android:singleLine="true"

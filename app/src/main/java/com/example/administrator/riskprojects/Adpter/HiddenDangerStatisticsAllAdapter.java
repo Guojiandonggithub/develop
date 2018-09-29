@@ -33,9 +33,9 @@ public class HiddenDangerStatisticsAllAdapter extends RecyclerView.Adapter {
         if(dtatisticsList.size()>0){
             ((ViewHolder) holder).tvHazardClassification.setText(dtatisticsList.get(position).getHiddenBelong());
             ((ViewHolder) holder).tvCheckTheNumber.setText(dtatisticsList.get(position).getCheckNum());
-            ((ViewHolder) holder).tvNumberOfUntreated.setText(dtatisticsList.get(position).getNotHandleNum());
+            ((ViewHolder) holder).tvNumberOfUntreated.setText(dtatisticsList.get(position).getQuestionNum());
             ((ViewHolder) holder).tvNumberOfProcessedBars.setText(dtatisticsList.get(position).getHandleNum());
-            ((ViewHolder) holder).tvNumberOfUnconsumedBars.setText(dtatisticsList.get(position).getQuestionNum());
+            ((ViewHolder) holder).tvNumberOfUnconsumedBars.setText(dtatisticsList.get(position).getNotHandleNum());
             ((ViewHolder) holder).tvTotal.setText(dtatisticsList.get(position).getTotalMoney());
         }
 

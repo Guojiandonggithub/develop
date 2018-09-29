@@ -51,7 +51,7 @@ public class HiddenDangerStatisticsEachUnitDetailActivity extends BaseActivity i
     }
 
     private void setView() {
-        txtTitle.setText("隐患列表");
+        txtTitle.setText(getResources().getString(R.string.hidden_danger_every_unit));
         String teamGroupCode = getIntent().getStringExtra("teamGroupCode");
         String State = getIntent().getStringExtra("State");
         String statistics = getIntent().getStringExtra("statistics");

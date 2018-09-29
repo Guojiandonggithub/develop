@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
-
+    private static final String TAG = "HiddenDangeRecordAdapte";
 
     List<HiddenDangerRecord> recordList;
 
@@ -44,8 +45,8 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).tvProfessional.setText(recordList.get(position).getSname());
         ((ViewHolder) holder).tvArea.setText(recordList.get(position).getAreaName());
         ((ViewHolder) holder).tvClasses.setText(recordList.get(position).getJbName());
-        ((ViewHolder) holder).ivStatus.setImageResource(getImageResourceByFlag(recordList.get(position).getFlag()));
-        ((ViewHolder) holder).ivStatusSecond.setImageResource(getImageResourceByFlag(recordList.get(position).getFlag()));
+        ((ViewHolder) holder).ivStatus.setImageResource(getImageResourceByFlag(recordList.get(position).getFlag(),recordList.get(position).getOutTimeFlag()));
+        ((ViewHolder) holder).ivStatusSecond.setImageResource(getImageResourceByFlag(recordList.get(position).getFlag(),recordList.get(position).getOutTimeFlag()));
         String isuper = recordList.get(position).getIsupervision();
         if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
             isuper = "未督办";
@@ -80,14 +81,20 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
                 intent.putExtra("id", id);
                 intent.putExtra("employeeId", employeeId);
                 intent.putExtra("flag", flag);
+                Log.e(TAG, "隐患状态flag:============ "+flag);
                 holder.itemView.getContext().startActivity(intent);
             }
         });
 
     }
 
-    private int getImageResourceByFlag(String flag) {
+    private int getImageResourceByFlag(String flag,String outTimeFlag) {
+        if("1".equals(outTimeFlag)){
+            return R.mipmap.ic_status_overdue;
+        }
         switch (flag) {
+            case "0":
+                return R.mipmap.ic_status_shaixuan;
             case "1":
                 return R.mipmap.ic_status_release;
             case "2":
@@ -96,11 +103,14 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
                 return R.mipmap.ic_recheck;
             case "4":
                 return R.mipmap.ic_status_dispelling;
-            case "5":
-                return R.mipmap.ic_status_release;
+            /*case "5":
+                return R.mipmap.ic_status_overdue;*/
             default:
                 return R.mipmap.ic_status_overdue;
         }
+
+
+
     }
 
     @Override

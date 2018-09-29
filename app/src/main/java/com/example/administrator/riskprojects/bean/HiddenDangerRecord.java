@@ -30,6 +30,7 @@ public class HiddenDangerRecord implements Serializable{
 	private String findPerson;// 隐患发现人
 	private String teamGroupName;// 隐患单位
 	private String teamGroupCode;// 隐患单位编码
+	private String teamGroupId;// 隐患单位编码
 	private String tipState;// 是否有建议
 	private String hiddenCheckContent;// 检查内容
 	private String hiddenCheckContentId;// 检查内容Id
@@ -90,6 +91,7 @@ public class HiddenDangerRecord implements Serializable{
 	private String isOrder; // 是否倒序
 	private String ischecked; // 是否审核:(0:未审核;1:已审核)
 	private String isupervision; // 是否挂牌督办（0：未挂牌督办；1：已挂牌督办）
+	private String outTimeFlag; // 是否逾期（0：未逾期，1 : 逾期）
 
 	public boolean isExpands() {
 		return expands;
@@ -784,4 +786,19 @@ public class HiddenDangerRecord implements Serializable{
 		this.dangerSourceId = dangerSourceId;
 	}
 
+	public String getOutTimeFlag() {
+		return outTimeFlag;
+	}
+
+	public void setOutTimeFlag(String outTimeFlag) {
+		this.outTimeFlag = outTimeFlag;
+	}
+
+	public String getTeamGroupId() {
+		return teamGroupId;
+	}
+
+	public void setTeamGroupId(String teamGroupId) {
+		this.teamGroupId = teamGroupId;
+	}
 }

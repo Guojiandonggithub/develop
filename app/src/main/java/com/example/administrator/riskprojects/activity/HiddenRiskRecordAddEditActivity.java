@@ -136,7 +136,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         //隐患班次
         spOrder = findViewById(R.id.sp_order);
 
-        //隐患归类
+        //检查单位
         spHiddenSort = findViewById(R.id.sp_hidden_sort);
 
         //隐患区域
@@ -257,6 +257,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     //获取部门/队组成员
     private void getCollieryTeam() {
         RequestParams params = new RequestParams();
+        params.put("employeeId", UserUtils.getUserID(HiddenRiskRecordAddEditActivity.this));
         netClient.post(Data.getInstance().getIp()+Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
 
             @Override
@@ -405,6 +406,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     //获取区域
     private void getArea() {
         RequestParams params = new RequestParams();
+        params.put("employeeId", UserUtils.getUserID(HiddenRiskRecordAddEditActivity.this));
         netClient.post(Data.getInstance().getIp()+Constants.GET_AREA, params, new BaseJsonRes() {
 
             @Override
@@ -516,7 +518,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         });
     }
 
-    //获取隐患归类
+    //获取检查单位
     private void getHiddenYHGSLX() {
         RequestParams params = new RequestParams();
         params.put("dictTypeCode","YHGSLX");
@@ -524,7 +526,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
 
             @Override
             public void onMySuccess(String data) {
-                Log.i(TAG, "获取隐患归类返回数据：" + data);
+                Log.i(TAG, "获取检查单位返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
                     List<SelectItem> selectItems = new ArrayList<SelectItem>();
@@ -548,7 +550,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
 
             @Override
             public void onMyFailure(String content) {
-                Log.e(TAG, "获取隐患归类返回错误信息：" + content);
+                Log.e(TAG, "获取检查单位返回错误信息：" + content);
                 Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
             }
         });
@@ -672,7 +674,8 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     private HiddenDangerRecord getHiddenDangerRecord(){
         HiddenDangerRecord record = new HiddenDangerRecord();
         SelectItem spHiddenUnitItem = (SelectItem)spHiddenUnits.getSelectedItem();
-        record.setTeamGroupCode(String.valueOf(spHiddenUnitItem.id));
+        //record.setTeamGroupCode(String.valueOf(spHiddenUnitItem.id));
+        record.setTeamGroupId(String.valueOf(spHiddenUnitItem.id));
         record.setTeamGroupName(spHiddenUnitItem.toString());
 
         SelectItem spProfessionalItem = (SelectItem)spProfessional.getSelectedItem();
@@ -732,6 +735,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         record.setEmployeeId(UserUtils.getUserID(HiddenRiskRecordAddEditActivity.this));
         record.setRealName(UserUtils.getUserName(HiddenRiskRecordAddEditActivity.this));
         record.setFlag(record.getFlag());
+        record.setContent(etContent.getText().toString());
         return record;
     }
 

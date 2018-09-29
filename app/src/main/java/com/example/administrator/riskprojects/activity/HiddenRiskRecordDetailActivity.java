@@ -18,7 +18,7 @@ public class HiddenRiskRecordDetailActivity extends BaseActivity {
     private TextView txtRight;
     private TextView tvHiddenUnits;
     private TextView tvProfessional;
-    private TextView tvHiddenClass;
+    //private TextView tvHiddenClass;
     private TextView tvEnterMan;
     private TextView tvLevel;
     private TextView tvDate;
@@ -43,14 +43,14 @@ public class HiddenRiskRecordDetailActivity extends BaseActivity {
         txtTitle.setText("隐患详情");
         tvHiddenUnits.setText(hiddenDangerRecord.getTeamGroupName());
         tvProfessional.setText(hiddenDangerRecord.getSname());
-        tvHiddenClass.setText(hiddenDangerRecord.getGname());
-        tvEnterMan.setText(hiddenDangerRecord.getFindPerson());
+        //tvHiddenClass.setText(hiddenDangerRecord.getGname());
+        tvEnterMan.setText(hiddenDangerRecord.getRealName());
         tvLevel.setText(hiddenDangerRecord.getJbName());
         tvDate.setText(hiddenDangerRecord.getFindTime());
         tvOrder.setText(hiddenDangerRecord.getClassName());
         tvHiddenSort.setText(hiddenDangerRecord.getHiddenBelong());
         tvHiddenArea.setText(hiddenDangerRecord.getAreaName());
-        tvDiscoverer.setText(hiddenDangerRecord.getFindPerson());
+        tvDiscoverer.setText(hiddenDangerRecord.getRecheckPersonName());
         tvIsHandle.setText(hiddenDangerRecord.getIshandle().equals("0")?"未处理":"已处理");
         etContent.setText(hiddenDangerRecord.getContent());
     }
@@ -63,7 +63,7 @@ public class HiddenRiskRecordDetailActivity extends BaseActivity {
         txtRight = findViewById(R.id.txt_right);
         tvHiddenUnits = findViewById(R.id.tv_hidden_units);
         tvProfessional = findViewById(R.id.tv_professional);
-        tvHiddenClass = findViewById(R.id.tv_hidden_class);
+        //tvHiddenClass = findViewById(R.id.tv_hidden_class);
         tvEnterMan = findViewById(R.id.tv_enter_man);
         tvLevel = findViewById(R.id.tv_level);
         tvDate = findViewById(R.id.tv_date);

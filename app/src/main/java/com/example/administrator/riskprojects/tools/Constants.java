@@ -4,7 +4,6 @@ import android.content.Context;
 
 public interface Constants {
 
-	// 聊天
 	String LoginState = "LoginState";
 	String UserInfo = "UserInfo";
 	String NAME = "NAME";
@@ -21,7 +20,7 @@ public interface Constants {
 	String PAGE = "1";
 	String ROWS = "10";
 	// 外网地址
-	String MAIN_ENGINE = "http://59.49.107.27:8187/yhpc/mobile/";
+	String MAIN_ENGINE = "http://59.49.107.27:8191/yhpc/mobile/";
 	String ISUPERVISION = "1";
 	// 内网地址
 	String INNER_MAIN_ENGINE = "123123";

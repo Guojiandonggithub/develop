@@ -70,8 +70,13 @@ public class HiddenRiskQueryStatisticsAdapter extends RecyclerView.Adapter {
 
     }
 
-    private int getImageResourceByFlag(String flag) {
+    private int getImageResourceByFlag(String flag,String outTimeFlag) {
+        if("1".equals(outTimeFlag)){
+            return R.mipmap.ic_status_overdue;
+        }
         switch (flag) {
+            case "0":
+                return R.mipmap.ic_status_shaixuan;
             case "1":
                 return R.mipmap.ic_status_release;
             case "2":

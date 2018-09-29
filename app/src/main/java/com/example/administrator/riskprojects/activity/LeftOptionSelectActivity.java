@@ -24,6 +24,7 @@ import com.example.administrator.riskprojects.bean.Specialty;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
+import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.util.DensityUtil;
 import com.juns.health.net.loopj.android.http.RequestParams;
@@ -212,6 +213,7 @@ public class LeftOptionSelectActivity extends BaseActivity {
     //获取区域
     private void getArea() {
         RequestParams params = new RequestParams();
+        params.put("employeeId", UserUtils.getUserID(LeftOptionSelectActivity.this));
         netClient.post(Data.getInstance().getIp()+Constants.GET_AREA, params, new BaseJsonRes() {
 
             @Override
@@ -275,6 +277,7 @@ public class LeftOptionSelectActivity extends BaseActivity {
     //获取部门/队组成员
     private void getCollieryTeam() {
         RequestParams params = new RequestParams();
+        params.put("employeeId", UserUtils.getUserID(LeftOptionSelectActivity.this));
         netClient.post(Data.getInstance().getIp()+Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
 
             @Override
