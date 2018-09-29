@@ -27,6 +27,7 @@ import com.example.administrator.riskprojects.Adpter.HiddenDangeRecordAdapter;
 import com.example.administrator.riskprojects.Adpter.HiddenDangeTrackingAdapter;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.Data;
+import com.example.administrator.riskprojects.activity.DatePickerActivity;
 import com.example.administrator.riskprojects.activity.HiddenRiskRecordAddEditActivity;
 import com.example.administrator.riskprojects.activity.MainActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
@@ -43,6 +44,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.app.Activity.RESULT_OK;
 
 
 //隐患跟踪
@@ -220,6 +223,13 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 llContent.setVisibility(llContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
                 tvExpand.setText(llContent.getVisibility() == View.VISIBLE ? "收起选项" : "展开选项");
                 ivExpand.setSelected(llContent.getVisibility() == View.VISIBLE);
+            }
+        });
+        cvSelectStartDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                DatePickerActivity.startPickDate(ctx, ctx);
+                Fragment_Record_Manage.this.startActivityForResult(new Intent(ctx, DatePickerActivity.class), DatePickerActivity.REQUEST);
             }
         });
         setUpTopView();
@@ -785,6 +795,16 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 getReviewList(Integer.toString(page));
                 break;
 
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == DatePickerActivity.REQUEST && resultCode == RESULT_OK) {
+            String date = data.getStringExtra(DatePickerActivity.DATE);
+            tvStartDate.setText(date);
+            //刷新
         }
     }
 }
