@@ -874,12 +874,14 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 flag = 5;
                 titleTop.setText(R.string.chart_analysis_of_hazard_handling_unit);
                 titleBottom.setText(R.string.chart_analysis_of_hazard_handling_unit);
+                swipeRefreshLayout.setVisibility(View.GONE);
                 getHiddenDepartmentStatisticsMobile("");
                 break;
             case R.id.ll_chart_07:
                 flag = 6;
                 titleTop.setText(R.string.chart_analysis_of_hazard_handling);
                 titleBottom.setText(R.string.chart_analysis_of_hazard_handling);
+                swipeRefreshLayout.setVisibility(View.GONE);
                 getHiddenDangerSpecialStatistics("0");
                 break;
             case R.id.ll_chart_08:
@@ -889,8 +891,8 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 llYear.setVisibility(View.VISIBLE);
                 setUpYearSpinner(spYear);
                 llMonth.setVisibility(View.VISIBLE);
+                swipeRefreshLayout.setVisibility(View.GONE);
                 setUpSpinner(spMonth);
-
                 break;
             default:
                 break;
@@ -1085,7 +1087,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             selectItem.id = Integer.toString(i);
             selectItems.add(selectItem);
         }
-        analyticalAdapter = SpinnerAdapter.createFromResource(ctx, selectItems, Gravity.CENTER_VERTICAL | Gravity.LEFT);
+        analyticalAdapter = SpinnerAdapter.createFromResource(ctx, selectItems, Gravity.CENTER);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -1111,7 +1113,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             selectItem.id = Integer.toString(i + 1);
             selectItems.add(selectItem);
         }
-        monthAdapter = SpinnerAdapter.createFromResource(ctx, selectItems, Gravity.CENTER_VERTICAL | Gravity.LEFT);
+        monthAdapter = SpinnerAdapter.createFromResource(ctx, selectItems, Gravity.CENTER);
         spinner.setBackgroundColor(0x0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             spinner.setPopupBackgroundResource(R.drawable.shape_rectangle_rounded);
@@ -1143,7 +1145,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             selectItem.id = Integer.toString(i + 1);
             selectItems.add(selectItem);
         }
-        yearAdapter = SpinnerAdapter.createFromResource(ctx, selectItems, Gravity.CENTER_VERTICAL | Gravity.LEFT);
+        yearAdapter = SpinnerAdapter.createFromResource(ctx, selectItems, Gravity.CENTER);
         spinner.setBackgroundColor(0x0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             spinner.setPopupBackgroundResource(R.drawable.shape_rectangle_rounded);

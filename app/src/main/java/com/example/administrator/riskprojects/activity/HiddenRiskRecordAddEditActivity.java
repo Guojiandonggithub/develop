@@ -84,6 +84,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     private EditText etLocation;
     private LinearLayoutCompat llBottom;
     private TextView tvOk;
+    private TextView tvHang;
     protected NetClient netClient;
     private HiddenDangerRecord record = new HiddenDangerRecord();
     private String id;
@@ -179,6 +180,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         etLocation = findViewById(R.id.et_add_location);
         llBottom = findViewById(R.id.ll_bottom);
         tvOk = findViewById(R.id.tv_ok);
+        tvHang = findViewById(R.id.tv_hang);
         mTxtTitle.setText("隐患记录新增");
         tvOk.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -193,6 +195,13 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 if(checkInput(record)){
                     addEditHiddenDanger(record,flag);
                 }
+            }
+        });
+        tvHang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HiddenRiskRecordAddEditActivity.this,
+                        AddHangRecordActivity.class));
             }
         });
     }

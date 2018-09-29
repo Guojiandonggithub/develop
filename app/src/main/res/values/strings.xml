@@ -83,6 +83,7 @@
     <string name="add_backspace">添\t\t加</string>
     <string name="add">添加</string>
     <string name="ok_backspace">确\t\t定</string>
+    <string name="hang_backspace">挂\t\t牌</string>
     <string name="modification">修改</string>
     <string name="modification_backspace">修\t\t改</string>
     <string name="delete">删除</string>

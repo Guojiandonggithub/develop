@@ -1,6 +1,7 @@
 package com.example.administrator.riskprojects.activity;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,6 +26,8 @@ public class PersonInfoEditActivity extends BaseActivity {
     private EditText mEtPhone;
     private EditText mEtDepartment;
     private EditText mEtPosition;
+    private LinearLayoutCompat mLlBottom;
+    private TextView mTvOk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,26 @@ public class PersonInfoEditActivity extends BaseActivity {
         mEtPhone.setText(userinfo.getPhone());
         mEtDepartment.setText(userinfo.getDepartmentName());
         mEtPosition.setText(userinfo.getPname());
+        mImgRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mEtPhone.setEnabled(true);
+                mEtName.setEnabled(true);
+                mLlBottom.setVisibility(View.VISIBLE);
+            }
+        });
+        mTvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+             //提交
+                //成功后
+                /**
+                 *   mEtPhone.setEnabled(true);
+                 *   mEtName.setEnabled(true);
+                 *    mLlBottom.setVisibility(View.GONE);
+                 */
+            }
+        });
     }
 
     private void initView() {
@@ -59,5 +82,7 @@ public class PersonInfoEditActivity extends BaseActivity {
         mEtPhone = findViewById(R.id.et_phone);
         mEtDepartment = findViewById(R.id.et_department);
         mEtPosition = findViewById(R.id.et_position);
+        mLlBottom = findViewById(R.id.ll_bottom);
+        mTvOk = findViewById(R.id.tv_ok);
     }
 }

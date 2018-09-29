@@ -125,8 +125,8 @@
             android:paddingRight="14dp">
 
             <ImageView
-                android:layout_width="17dp"
-                android:layout_height="17dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="right"
                 android:src="@mipmap/ic_add" />
         </android.support.v7.widget.LinearLayoutCompat>

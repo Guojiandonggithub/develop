@@ -553,7 +553,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 recyclerView.setAdapter(adapter);
                 break;
             case R.id.ll_manage_release:
-                llAdd.setVisibility(View.GONE);
+                llAdd.setVisibility(View.VISIBLE);
                 flag = 2;
                 String userRole = UserUtils.getUserRoleids(getActivity());
                 if(!"8".equals(userRole)&&!"62".equals(userRole)){
@@ -565,7 +565,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 }
                 break;
             case R.id.ll_manage_rectification:
-                llAdd.setVisibility(View.GONE);
+                llAdd.setVisibility(View.VISIBLE);
                 flag = 3;
                 String userRoles = UserUtils.getUserRoleids(getActivity());
                 if(!"8".equals(userRoles)&&!"62".equals(userRoles)){
@@ -577,21 +577,21 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 }
                 break;
             case R.id.ll_manage_tracking:
-                llAdd.setVisibility(View.GONE);
+                llAdd.setVisibility(View.VISIBLE);
                 flag = 4;
                 threeFixesList.clear();
                 adapter = new HiddenDangeTrackingAdapter(threeFixesList);
                 recyclerView.setAdapter(adapter);
                 break;
             case R.id.ll_manage_overdue:
-                llAdd.setVisibility(View.GONE);
+                llAdd.setVisibility(View.VISIBLE);
                 flag = 5;
                 threeFixesList.clear();
                 adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_OVERDUE,threeFixesList);
                 recyclerView.setAdapter(adapter);
                 break;
             case R.id.ll_manage_review:
-                llAdd.setVisibility(View.GONE);
+                llAdd.setVisibility(View.VISIBLE);
                 flag = 6;
                 threeFixesList.clear();
                 adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_REVIEW, threeFixesList);
