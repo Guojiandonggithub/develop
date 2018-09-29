@@ -90,7 +90,11 @@ public class HiddenRiskTrackingAddEditActivity extends BaseActivity {
                 String follingRecord = mEtContent.getText().toString();
                 hiddenFollingRecord.setFollingRecord(follingRecord);
                 hiddenFollingRecord.setFollingRecordTime(follingRecordTime);
-                addEditTracking(hiddenFollingRecord,flag);
+                if(!TextUtils.isEmpty(follingRecord)){
+                    addEditTracking(hiddenFollingRecord,flag);
+                }else{
+                    Utils.showLongToast(HiddenRiskTrackingAddEditActivity.this, "记录内容不能为空!");
+                }
             }
 
         });

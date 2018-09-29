@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -100,7 +101,6 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         mTxtLeft = findViewById(R.id.txt_left);
         mImgLeft = findViewById(R.id.img_left);
         mTxtTitle = findViewById(R.id.txt_title);
-        mTxtTitle.setText("隐患记录新增");
         mImgRight = findViewById(R.id.img_right);
         mTxtRight = findViewById(R.id.txt_right);
 
@@ -179,16 +179,20 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         etLocation = findViewById(R.id.et_add_location);
         llBottom = findViewById(R.id.ll_bottom);
         tvOk = findViewById(R.id.tv_ok);
+        mTxtTitle.setText("隐患记录新增");
         tvOk.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 HiddenDangerRecord record = getHiddenDangerRecord();
+
                 String flag = "add";
                 if (!TextUtils.isEmpty(id)) {
                     flag = "update";
                     record.setId(id);
                 }
-                addEditHiddenDanger(record,flag);
+                if(checkInput(record)){
+                    addEditHiddenDanger(record,flag);
+                }
             }
         });
     }
@@ -222,6 +226,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
             Log.e(TAG, "initdata: hiddenrecordjson-------------"+hiddenrecordjson);
             record = JSONArray.parseObject(hiddenrecordjson, HiddenDangerRecord.class);
             etContent.setText(record.getContent());
+            tvDate.setText(record.getFindTime());
             etLocation.setText(record.getHiddenPlace());
             String isuper = record.getIsupervision();
             if(TextUtils.equals(isuper,"0")){
@@ -230,6 +235,9 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
             }else{
                 checkYes.setSelected(true);
                 checkNos.setSelected(false);
+            }
+            if (!TextUtils.isEmpty(record.getId())) {
+                mTxtTitle.setText("隐患记录修改");
             }
             String ishandle = record.getIshandle();
             spIsHandleAdapter.notifyDataSetChanged();
@@ -643,7 +651,11 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
             public void onMySuccess(String data) {
                 Log.i(TAG, "添加修改记录返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
-                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "隐患添加成功！");
+                    if (TextUtils.isEmpty(record.getId())) {
+                        Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "隐患添加成功！");
+                    }else{
+                        Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "隐患修改成功！");
+                    }
                     finish();
                 }
 
@@ -717,7 +729,6 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         dateStr = dateStr + " " + hour + ":" + + minute+ ":" + second;
         record.setFindTime(dateStr);
         record.setHiddenPlace(etLocation.getText().toString());
-        record.setContent(etContent.getText().toString());
         record.setEmployeeId(UserUtils.getUserID(HiddenRiskRecordAddEditActivity.this));
         record.setRealName(UserUtils.getUserName(HiddenRiskRecordAddEditActivity.this));
         record.setFlag(record.getFlag());
@@ -730,5 +741,34 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         if (requestCode == DatePickerActivity.REQUEST && resultCode == RESULT_OK) {
             tvDate.setText(data.getStringExtra(DatePickerActivity.DATE));
         }
+    }
+
+    //检查输入
+    private boolean checkInput(HiddenDangerRecord hiddenDangerRecord) {
+        if (TextUtils.isEmpty(etContent.getText().toString())) {
+            Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "隐患内容不能为空!");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(tvDate.getText().toString())) {
+            Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "隐患时间不能为空!");
+            return false;
+        }
+
+        String role = UserUtils.getUserRoleids(HiddenRiskRecordAddEditActivity.this);
+        String userid = UserUtils.getUserID(HiddenRiskRecordAddEditActivity.this);
+        Log.e(TAG, "flag:=== " + hiddenDangerRecord.getFlag() +"userid=========="+userid);
+        Log.e(TAG, "getEmployeeId:=== " + hiddenDangerRecord.getEmployeeId() +"userid=========="+userid);
+        if(!"1".equals(role)&&!userid.equals(hiddenDangerRecord.getEmployeeId())){
+            Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "您不是管理员或该隐患不是您上报的,不能进行修改!");
+            return false;
+        }
+        if(null!=hiddenDangerRecord.getFlag()){
+            if(Integer.parseInt(hiddenDangerRecord.getFlag())>=2){
+                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "该隐患已经下达不能修改!");
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -106,7 +106,7 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
         mTvArea.setText(threeFix.getAreaName());
         mTvSpecialty.setText(threeFix.getSname());
         mTvTimeOrOrder.setText(threeFix.getFindTime()+"/"+threeFix.getClassName());
-        mTvCategory.setText(threeFix.getGname());
+        mTvCategory.setText(threeFix.getJbName());
         String isuper = threeFix.getIsupervision();
         if(TextUtils.isEmpty(isuper)||TextUtils.equals(isuper,"0")){
             isuper = "未督办";

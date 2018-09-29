@@ -43,7 +43,7 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).tvHiddenDangerBelongs.setText(recordList.get(position).getHiddenBelong());
         ((ViewHolder) holder).tvProfessional.setText(recordList.get(position).getSname());
         ((ViewHolder) holder).tvArea.setText(recordList.get(position).getAreaName());
-        ((ViewHolder) holder).tvClasses.setText(recordList.get(position).getGname());
+        ((ViewHolder) holder).tvClasses.setText(recordList.get(position).getJbName());
         ((ViewHolder) holder).ivStatus.setImageResource(getImageResourceByFlag(recordList.get(position).getFlag()));
         ((ViewHolder) holder).ivStatusSecond.setImageResource(getImageResourceByFlag(recordList.get(position).getFlag()));
         String isuper = recordList.get(position).getIsupervision();
@@ -75,7 +75,11 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
                 Intent intent = new Intent(holder.itemView.getContext(),
                         HiddenDangerDetailManagementActivity.class);
                 String id = recordList.get(position).getId();
+                String employeeId = recordList.get(position).getEmployeeId();
+                String flag = recordList.get(position).getFlag();
                 intent.putExtra("id", id);
+                intent.putExtra("employeeId", employeeId);
+                intent.putExtra("flag", flag);
                 holder.itemView.getContext().startActivity(intent);
             }
         });

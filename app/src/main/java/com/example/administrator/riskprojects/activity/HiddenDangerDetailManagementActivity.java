@@ -18,6 +18,7 @@ import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
+import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.view.MyAlertDialog;
 import com.juns.health.net.loopj.android.http.RequestParams;
@@ -69,7 +70,9 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                     public void affirm() {
                         Intent intent = getIntent();
                         String id = intent.getStringExtra("id");
-                        deleteHiddenRecord(id);
+                        if(checkparam(intent)){
+                            deleteHiddenRecord(id);
+                        }
                     }
 
                     @Override
@@ -92,6 +95,23 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
             }
         });
 
+    }
+
+    private boolean checkparam(Intent intent){
+        String flag = intent.getStringExtra("flag");
+        String employeeId = intent.getStringExtra("employeeId");
+        String role = UserUtils.getUserRoleids(HiddenDangerDetailManagementActivity.this);
+        String userid = UserUtils.getUserID(HiddenDangerDetailManagementActivity.this);
+        if(!"1".equals(role)&&!userid.equals(employeeId)){
+            Utils.showLongToast(HiddenDangerDetailManagementActivity.this, "您不是管理员或该隐患不是您上报的,不能进行删除!");
+            return false;
+        }
+        if(null!=flag){
+            if(Integer.parseInt(flag)>=2){
+                Utils.showLongToast(HiddenDangerDetailManagementActivity.this, "该隐患已经下达不能修改!");
+            }
+        }
+        return true;
     }
 
     private void initView() {
@@ -142,7 +162,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                     tvHiddenDangerBelongs.setText(record.getHiddenBelong());
                     tvProfessional.setText(record.getSname());
                     tvArea.setText(record.getAreaName());
-                    tvClasses.setText(record.getGname());
+                    tvClasses.setText(record.getJbName());
                     ivStatus.setImageResource(getImageResourceByFlag(record.getFlag()));
                     ivStatusSecond.setImageResource(getImageResourceByFlag(record.getFlag()));
 

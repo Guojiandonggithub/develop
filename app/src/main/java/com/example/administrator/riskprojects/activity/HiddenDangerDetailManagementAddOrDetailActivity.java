@@ -67,7 +67,7 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
             public void onClick(View v) {
                 Intent intents = new Intent(HiddenDangerDetailManagementAddOrDetailActivity.this, AddSupervisorRecordActivity.class);
                 Log.e(TAG, "onClick: hiddenrecordjson============="+hiddenrecordjson);
-                intents.putExtra("hiddenrecordjson",hiddenrecordjson);
+                //intents.putExtra("hiddenrecordjson",hiddenrecordjson);
                 intents.putExtra("id",record.getId());
                 startActivity(intents);
             }
@@ -78,8 +78,8 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
             public void onClick(View v) {
                 Intent intents = new Intent(HiddenDangerDetailManagementAddOrDetailActivity.this, SuperviseRecordManagementActivity.class);
                 Log.e(TAG, "onClick: hiddenrecordjson============="+hiddenrecordjson);
-                intents.putExtra("hiddenrecordjson",hiddenrecordjson);
-                intents.putExtra("id",record.getId());
+                //intents.putExtra("hiddenrecordjson",hiddenrecordjson);
+                intents.putExtra("hiddenDangerId",record.getId());
                 startActivity(intents);
             }
         });
@@ -93,6 +93,7 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
         imgRight = findViewById(R.id.img_right);
         txtRight = findViewById(R.id.txt_right);
         tvHiddenUnits = findViewById(R.id.tv_hidden_units);
+        tvHiddenUnits.setSelected(true);
         tvTimeOrOrder = findViewById(R.id.tv_time_or_order);
         tvHiddenContent = findViewById(R.id.tv_hidden_content);
         tvHiddenDangerBelongs = findViewById(R.id.tv_hidden_danger_belongs);
@@ -134,7 +135,7 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
                     tvHiddenDangerBelongs.setText(record.getHiddenBelong());
                     tvProfessional.setText(record.getSname());
                     tvArea.setText(record.getAreaName());
-                    tvClasses.setText(record.getGname());
+                    tvClasses.setText(record.getJbName());
                     ivStatus.setImageResource(getImageResourceByFlag(record.getFlag()));
                     ivStatusSecond.setImageResource(getImageResourceByFlag(record.getFlag()));
 

@@ -135,7 +135,6 @@ public class HiddenDangerStatisticsEachUnitDetailActivity extends BaseActivity i
         paramsMap.put("employeeId",UserUtils.getUserID(HiddenDangerStatisticsEachUnitDetailActivity.this));
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("hiddenDangerRecordJsonData",jsonString);
-        Utils.showLongToast(HiddenDangerStatisticsEachUnitDetailActivity.this, "详情参数:"+params);
         netClient.post(Data.getInstance().getIp()+Constants.GET_HIDDENDANGERDETAILLIST, params, new BaseJsonRes() {
 
             @Override

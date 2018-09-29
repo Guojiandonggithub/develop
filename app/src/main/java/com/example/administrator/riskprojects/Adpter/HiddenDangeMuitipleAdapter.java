@@ -50,7 +50,7 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).tvArea.setText(threeFixList.get(position).getAreaName());
         ((ViewHolder) holder).tvSpecialty.setText(threeFixList.get(position).getSname());
         ((ViewHolder) holder).tvTimeOrOrder.setText(threeFixList.get(position).getClassName());
-        ((ViewHolder) holder).tvCategory.setText(threeFixList.get(position).getGname());
+        ((ViewHolder) holder).tvCategory.setText(threeFixList.get(position).getJbName());
         String isuper = threeFixList.get(position).getIsupervision();
         if(TextUtils.isEmpty(isuper)||TextUtils.equals(isuper,"0")){
             isuper = "未督办";

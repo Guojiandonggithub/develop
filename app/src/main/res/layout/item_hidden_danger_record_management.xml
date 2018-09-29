@@ -260,7 +260,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="类别"
+                    android:text="级别"
                     android:textColor="@color/white"
                     android:textSize="@dimen/normal_ts" />
 

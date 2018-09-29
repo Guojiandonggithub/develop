@@ -623,7 +623,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
             case 0:
                 return "隐患记录管理";
             case 1:
-                return getResources().getString(R.string.hidden_danger_details_management);
+                return getResources().getString(R.string.hidden_danger_record_management);
             case 2:
                 return getResources().getString(R.string.hidden_danger_management);
             case 3:

@@ -105,6 +105,10 @@ public interface Constants {
 	String UPDATE_PWD = "employeeMobileAction!editPwd.action";
 	// 获取版本号和下载地址
 	String UPDATE_VERSION = "employeeMobileAction!changeVersion.action";
+	// 添加督办
+	String ADD_SUPERVISIONRECORD = "hiddenSupervisionRecordMobileAction!addHiddenSupervisionRecord.action";
+	// 督办列表查询
+	String GET_SUPERVISIONRECORDLIST = "hiddenSupervisionRecordMobileAction!findSupervisionRecordByHiddenDangerId.action";
 
 
 	public void addRecheck(Context context);

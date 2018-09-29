@@ -121,9 +121,14 @@ public class FiveDecisionsActivity extends BaseActivity {
                 threeFix.setFixTime(tvDate.getText().toString());
                 SelectItem deptType = (SelectItem)spMineArea.getSelectedItem();
                 SelectItem spDepartmentItem = (SelectItem)spDepartment.getSelectedItem();
+                if(null!=spDepartmentItem){
+                    threeFix.setTeamId(spDepartmentItem.id);
+                    threeFix.setTeamName(spDepartmentItem.toString());
+                }else{
+                    threeFix.setTeamId("");
+                    threeFix.setTeamName("");
+                }
                 threeFix.setDeptType(deptType.id);
-                threeFix.setTeamId(spDepartmentItem.id);
-                threeFix.setTeamName(spDepartmentItem.toString());
                 threeFix.setMoney(etMoney.getText().toString());
                 threeFix.setPersonNum(etNum.getText().toString());
                 threeFix.setMeasure(etContent.getText().toString());
@@ -134,25 +139,85 @@ public class FiveDecisionsActivity extends BaseActivity {
 
                 //负责人
                 SelectItem ponsibleThoseItem = (SelectItem)spResponsibleThose.getSelectedItem();
-                threeFix.setEmployeeId(ponsibleThoseItem.id);
-                threeFix.setRealName(ponsibleThoseItem.toString());
+                if(null!=ponsibleThoseItem){
+                    threeFix.setEmployeeId(ponsibleThoseItem.id);
+                    threeFix.setRealName(ponsibleThoseItem.toString());
+                }else{
+                    threeFix.setEmployeeId("");
+                    threeFix.setRealName("");
+                }
 
-                threeFix.setFollingPersonId(spTrackPeopleItem.id);
-                threeFix.setFollingPersonName(spTrackPeopleItem.toString());
+                if(null!=spTrackPeopleItem){
+                    threeFix.setFollingPersonId(spTrackPeopleItem.id);
+                    threeFix.setFollingPersonName(spTrackPeopleItem.toString());
+                }else{
+                    threeFix.setFollingPersonId("");
+                    threeFix.setFollingPersonName("");
+                }
 
-                threeFix.setFollingTeamId(spTrackPeopleUnitItem.id);
-                threeFix.setFollingTeamName(spTrackPeopleUnitItem.toString());
+                if(null!=spTrackPeopleUnitItem){
+                    threeFix.setFollingTeamId(spTrackPeopleUnitItem.id);
+                    threeFix.setFollingTeamName(spTrackPeopleUnitItem.toString());
+                }else{
+                    threeFix.setFollingTeamId("");
+                    threeFix.setFollingTeamName("");
+                }
+
                 String isend = threeFix.getIsEnd();
                 String rectifyResult = threeFix.getRectifyResult();
                 Log.i(TAG, "addHiddenDanger: 隐患isend="+isend +"rectifyResult=="+rectifyResult);
                 threeFix.setIsEnd(TextUtils.isEmpty(isend)?"0":isend);
                 threeFix.setRectifyResult(TextUtils.isEmpty(rectifyResult)?"0":rectifyResult);
                 threeFix.setAreaName(threeFix.getAreaName().replaceAll("#","_"));
-                addThreeFixAndConfirm(threeFix);
+                if(checkInput(threeFix)){
+                    addThreeFixAndConfirm(threeFix);
+                }
 
             }
         });
 
+    }
+
+    //检查输入
+    private boolean checkInput(ThreeFix threeFix) {
+        if (TextUtils.isEmpty(threeFix.getMeasure())) {
+            Utils.showLongToast(FiveDecisionsActivity.this, "措施不能为空!");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(threeFix.getMoney())) {
+            Utils.showLongToast(FiveDecisionsActivity.this, "资金不能为空!");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(threeFix.getPersonNum())) {
+            Utils.showLongToast(FiveDecisionsActivity.this, "处理人数不能为空!");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(threeFix.getFixTime())) {
+            Utils.showLongToast(FiveDecisionsActivity.this, "完成时间不能为空!");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(threeFix.getEmployeeId())) {
+            Utils.showLongToast(FiveDecisionsActivity.this, "负责人不能为空!");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(threeFix.getFollingPersonId())) {
+            Utils.showLongToast(FiveDecisionsActivity.this, "跟踪人不能为空!");
+            return false;
+        }
+        if (TextUtils.isEmpty(threeFix.getFollingTeamId())) {
+            Utils.showLongToast(FiveDecisionsActivity.this, "跟踪单位不能为空!");
+            return false;
+        }
+        if (TextUtils.isEmpty(threeFix.getTeamId())) {
+            Utils.showLongToast(FiveDecisionsActivity.this, "责任单位不能为空!");
+            return false;
+        }
+        return true;
     }
 
     @Override

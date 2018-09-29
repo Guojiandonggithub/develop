@@ -13,16 +13,17 @@ import android.widget.TextView;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.HiddenDangerDetailManagementActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
+import com.example.administrator.riskprojects.bean.SupervisionRecord;
 
 import java.util.List;
 
 public class SupervisorRecordManageAdapter extends RecyclerView.Adapter {
 
 
-    List<HiddenDangerRecord> recordList;
+    List<SupervisionRecord> recordList;
 
 
-    public SupervisorRecordManageAdapter(List<HiddenDangerRecord> recordList) {
+    public SupervisorRecordManageAdapter(List<SupervisionRecord> recordList) {
         this.recordList = recordList;
     }
 
@@ -34,7 +35,10 @@ public class SupervisorRecordManageAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-
+        ((ViewHolder) holder).tvSuperviseDepartment.setText(recordList.get(position).getSupervisionRecordDeptName());
+        ((ViewHolder) holder).tvSuperviseMan.setText(recordList.get(position).getSupervisionRecordPersonName());
+        ((ViewHolder) holder).tvRecordContents.setText(recordList.get(position).getSupervisionRecord());
+        ((ViewHolder) holder).tvRecordingTime.setText(recordList.get(position).getSupervisionTime());
 
     }
 
@@ -42,7 +46,7 @@ public class SupervisorRecordManageAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 6;
+        return recordList.size();
     }
 
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +39,15 @@ public class HiddenDangeTrackingAdapter extends RecyclerView.Adapter {
             ((ViewHolder) holder).tvArea.setText(threeFixList.get(position).getAreaName());
             ((ViewHolder) holder).tvSpecialty.setText(threeFixList.get(position).getSname());
             ((ViewHolder) holder).tvTimeOrOrder.setText(threeFixList.get(position).getFindTime()+"/"+threeFixList.get(position).getClassName());
-            ((ViewHolder) holder).tvCategory.setText(threeFixList.get(position).getGname());
-            ((ViewHolder) holder).tvSupervise.setText(threeFixList.get(position).getIshandle());
+            ((ViewHolder) holder).tvCategory.setText(threeFixList.get(position).getJbName());
+            String isuper = threeFixList.get(position).getIsupervision();
+            if(TextUtils.isEmpty(isuper)||TextUtils.equals(isuper,"0")){
+                isuper = "未督办";
+            }else{
+                isuper = "已督办";
+            }
+
+            ((ViewHolder) holder).tvSupervise.setText(isuper);
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

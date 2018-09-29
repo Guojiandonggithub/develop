@@ -79,6 +79,7 @@ public class HiddenDangerStatisticsEachUnitAllAdapter extends RecyclerView.Adapt
             tvNumberOfUntreated = view.findViewById(R.id.tv_number_of_untreated);
             tvNumberOdAll = view.findViewById(R.id.tv_number_od_all);
             tvMoney = view.findViewById(R.id.tv_money);
+            tvMoney.setVisibility(View.GONE);
         }
     }
 }

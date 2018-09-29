@@ -33,7 +33,7 @@
     <string name="hidden_danger_review_management">隐患验收管理</string>
     <string name="area">区域</string>
     <string name="specialty">专业</string>
-    <string name="category">类别</string>
+    <string name="category"></string>
     <string name="supervise">督办</string>
     <string name="check">验收</string>
     <string name="table_of_hidden_danger_processing_statistics">隐患处理情况图表统计图</string>

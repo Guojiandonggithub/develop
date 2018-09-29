@@ -77,6 +77,7 @@ public class HiddenDangerStatisticsAllAdapter extends RecyclerView.Adapter {
             tvNumberOfProcessedBars = view.findViewById(R.id.tv_number_of_processed_bars);
             tvNumberOfUnconsumedBars = view.findViewById(R.id.tv_number_of_unconsumed_bars);
             tvTotal = view.findViewById(R.id.tv_total);
+            tvTotal.setVisibility(View.GONE);
         }
     }
 }

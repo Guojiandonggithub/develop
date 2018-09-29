@@ -38,10 +38,12 @@ import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.AddSupervisorRecordActivity;
 import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.activity.DatePickerActivity;
+import com.example.administrator.riskprojects.activity.HiddenRiskRecordAddEditActivity;
 import com.example.administrator.riskprojects.activity.MainActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 import com.example.administrator.riskprojects.bean.SelectItem;
+import com.example.administrator.riskprojects.bean.Specialty;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
@@ -62,7 +64,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.Utils;
 import com.juns.health.net.loopj.android.http.RequestParams;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -104,6 +105,10 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     private Spinner spYear;
     private SpinnerAdapter monthAdapter;
     private SpinnerAdapter yearAdapter;
+    private SpinnerAdapter isHandleAdapter;
+    private SpinnerAdapter professionalAdapter;
+    private SpinnerAdapter hiddenStatusAdapter;
+    private SpinnerAdapter analyticalAdapter;
     private CardView cvSelectStartDate;
     private TextView tvStartDate;
     private CardView cvSelectEndDate;
@@ -219,6 +224,10 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
+        if(month<10){
+            String monthstr = "0"+month;
+            month = Integer.parseInt(monthstr);
+        }
         int date = cal.get(Calendar.DATE);
         final String sname = year + "-" + (month + 1) + "-01";
         final String fname = year + "-" + (month + 1) + "-" + date;
@@ -428,10 +437,6 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     //各单位隐患统计查询
     private void getHiddenStatisticsData(String currentdate) {
         RequestParams params = new RequestParams();
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int date = cal.get(Calendar.DATE);
         params.put("employeeId", UserUtils.getUserID(getActivity()));
         params.put("customParamsOne",  tvStartDate.getText().toString());//开始时间
         params.put("customParamsTwo", tvEndDate.getText().toString());//结束时间
@@ -563,12 +568,17 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     }*/
 
     //重复隐患记录查询
-    private void getHiddenRepeatMobile(final int curPage) {
+    private void getHiddenRepeatMobile(final int curPage,String sid) {
         RequestParams params = new RequestParams();
-        Map<String, String> paramsMap = new HashMap<String, String>();
+        Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("page", Integer.toString(curPage));
         paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
+        paramsMap.put("customParamsFour",  tvStartDate.getText().toString());//开始时间
+        paramsMap.put("customParamsFive", tvEndDate.getText().toString());//结束时间
+        if(!TextUtils.isEmpty(sid)){
+            paramsMap.put("customParamsTwo", sid);//专业id
+        }
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("hiddenDangerRecordJsonData", jsonString);
         netClient.post(Data.getInstance().getIp() + Constants.REPEATMOBILE, params, new BaseJsonRes() {
@@ -619,11 +629,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     }
 
     //隐患处理单位图表分析
-    private void getHiddenDepartmentStatisticsMobile() {
+    private void getHiddenDepartmentStatisticsMobile(String ishandle) {
+        Log.e(TAG, "隐患处理单位图表分析参数ishandle:==== "+ishandle);
         RequestParams params = new RequestParams();
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
+        if(!TextUtils.isEmpty(ishandle)){
+            params.put("customParamsThree",ishandle);//开始时间
+        }
         params.put("employeeId", UserUtils.getUserID(getActivity()));
         params.put("customParamsOne",  tvStartDate.getText().toString());//开始时间
         params.put("customParamsTwo", tvEndDate.getText().toString());//结束时间
@@ -667,7 +678,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     }
 
     //隐患处理图表分析接口
-    private void getHiddenDangerSpecialStatistics() {
+    private void getHiddenDangerSpecialStatistics(String pid) {
         RequestParams params = new RequestParams();
         params.put("customParamsOne",  tvStartDate.getText().toString());//开始时间
         params.put("customParamsTwo", tvEndDate.getText().toString());//结束时间
@@ -742,7 +753,6 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                         llBarChart.setVisibility(View.GONE);
                         Toast.makeText(ctx, "该月份数据为空", Toast.LENGTH_SHORT).show();
                     }
-
                 }
 
             }
@@ -756,12 +766,17 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     }
 
     //隐患查询统计
-    private void getHiddenQueryStaticMobile(final int curPage) {
+    private void getHiddenQueryStaticMobile(final int curPage,int status) {
         RequestParams params = new RequestParams();
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", Integer.toString(curPage));
         paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
+        paramsMap.put("customParamsNine", tvStartDate.getText().toString());//开始时间
+        paramsMap.put("customParamsTen", tvEndDate.getText().toString());//结束时间
+        if(status>0){
+            paramsMap.put("customParamsSix", String.valueOf(status));//状态
+        }
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("hiddenDangerRecordJsonData", jsonString);
         netClient.post(Data.getInstance().getIp() + Constants.QUERYSTATICMOBILE, params, new BaseJsonRes() {
@@ -859,13 +874,13 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 flag = 5;
                 titleTop.setText(R.string.chart_analysis_of_hazard_handling_unit);
                 titleBottom.setText(R.string.chart_analysis_of_hazard_handling_unit);
-                getHiddenDepartmentStatisticsMobile();
+                getHiddenDepartmentStatisticsMobile("");
                 break;
             case R.id.ll_chart_07:
                 flag = 6;
                 titleTop.setText(R.string.chart_analysis_of_hazard_handling);
                 titleBottom.setText(R.string.chart_analysis_of_hazard_handling);
-                getHiddenDangerSpecialStatistics();
+                getHiddenDangerSpecialStatistics("0");
                 break;
             case R.id.ll_chart_08:
                 flag = 7;
@@ -897,16 +912,16 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 llSelectTop.setVisibility(View.VISIBLE);
                 if (flag == 2) {
                     tvSpName.setText("隐患状态:");
-                    //设置对应的spinner adapter
+                    setHiddenStatusSpinner(spOther);
                 } else if (flag == 4) {
                     tvSpName.setText("专业:");
-                    //设置对应的spinner adapter
+                    getSpecialty();
                 } else if (flag == 5) {
                     tvSpName.setText("处理否:");
-                    //设置对应的spinner adapter
+                    setIshandleSpinner(spOther);
                 } else if (flag == 6) {
                     tvSpName.setText("分析因素:");
-                    //设置对应的spinner adapter
+                    setAnalyticalSpinner(spOther);
                 }
 
             } else {
@@ -928,14 +943,162 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 getHiddenSumaryMobile();
                 break;
             case 2:
-                getHiddenQueryStaticMobile(curpage);
+                SelectItem selectItem = (SelectItem)spOther.getSelectedItem();
+                int status = -1;
+                if(null!=selectItem){
+                    status = Integer.parseInt(selectItem.id);
+                }
+                getHiddenQueryStaticMobile(curpage,status);
                 break;
             case 4:
-                getHiddenRepeatMobile(curpage);
+                SelectItem selectItems = (SelectItem)spOther.getSelectedItem();
+                String sid = "";
+                if(null!=selectItems){
+                    sid = selectItems.id;
+                }
+                getHiddenRepeatMobile(curpage,sid);
                 break;
 
 
         }
+    }
+
+    //隐患状态
+    private void setHiddenStatusSpinner(Spinner spinner){
+        List<SelectItem> selectItems = new ArrayList<>();
+        String[] hiddenStatus = {"请选择","筛选","五定中","整改中","复查中","销项"};
+        for (int i = 0; i < hiddenStatus.length; i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = hiddenStatus[i];
+            selectItem.id = Integer.toString(i-1);
+            selectItems.add(selectItem);
+        }
+
+        hiddenStatusAdapter = SpinnerAdapter.createFromResource(ctx, selectItems, Gravity.CENTER_VERTICAL | Gravity.LEFT);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                hiddenStatusAdapter.setSelectedPostion(position);
+                getHiddenQueryStaticMobile(Integer.parseInt(Constants.PAGE),Integer.parseInt(((SelectItem)spOther.getSelectedItem()).id));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spOther.setAdapter(hiddenStatusAdapter);
+    }
+
+    //专业列表
+    private void setProfessionalSpinner(Spinner spinner){
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                professionalAdapter.setSelectedPostion(position);
+                getHiddenRepeatMobile(Integer.parseInt(Constants.PAGE),((SelectItem)spOther.getSelectedItem()).id);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spOther.setAdapter(professionalAdapter);
+    }
+
+    //获取所属专业
+    private void getSpecialty() {
+        RequestParams params = new RequestParams();
+        netClient.post(Data.getInstance().getIp()+Constants.GET_SPECIALTY, params, new BaseJsonRes() {
+
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "获取所属专业返回数据：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    List<Specialty> collieryTeams = JSONArray.parseArray(data, Specialty.class);
+                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
+                    for (int i = 0; i < collieryTeams.size(); i++) {
+                        if(i==0){
+                            SelectItem selectItem = new SelectItem();
+                            selectItem.name = "请选择";
+                            selectItem.id = "";
+                            selectItems.add(selectItem);
+                        }
+                        SelectItem selectItem = new SelectItem();
+                        selectItem.name = collieryTeams.get(i).getSname();
+                        selectItem.id = collieryTeams.get(i).getId();
+                        selectItems.add(selectItem);
+                    }
+                    professionalAdapter = SpinnerAdapter.createFromResource(getActivity(), selectItems);
+                    setProfessionalSpinner(spOther);
+                }
+
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "获取所属专业返回错误信息：" + content);
+                com.example.administrator.riskprojects.tools.Utils.showLongToast(getActivity(), content);
+            }
+        });
+    }
+
+    //处理否设置
+    private void setIshandleSpinner(Spinner spinner){
+        List<SelectItem> selectItems = new ArrayList<>();
+        SelectItem selectItem = new SelectItem();
+        selectItem.name = "请选择";
+        selectItem.id = "";
+        SelectItem selectItemw = new SelectItem();
+        selectItemw.name = "未处理";
+        selectItemw.id = "0";
+        SelectItem selectItemy = new SelectItem();
+        selectItemy.name = "已处理";
+        selectItemy.id = "1";
+        selectItems.add(selectItem);
+        selectItems.add(selectItemw);
+        selectItems.add(selectItemy);
+        isHandleAdapter = SpinnerAdapter.createFromResource(ctx, selectItems, Gravity.CENTER_VERTICAL | Gravity.LEFT);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                isHandleAdapter.setSelectedPostion(position);
+                getHiddenDepartmentStatisticsMobile(((SelectItem)spOther.getSelectedItem()).id);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spOther.setAdapter(isHandleAdapter);
+    }
+
+    //分析因素
+    private void setAnalyticalSpinner(Spinner spinner){
+        List<SelectItem> selectItems = new ArrayList<>();
+        String[] analytical = {"隐患类型","隐患整改情况","专业类型","隐患处理状态","区域"};
+        for (int i = 0; i < analytical.length; i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = analytical[i];
+            selectItem.id = Integer.toString(i);
+            selectItems.add(selectItem);
+        }
+        analyticalAdapter = SpinnerAdapter.createFromResource(ctx, selectItems, Gravity.CENTER_VERTICAL | Gravity.LEFT);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                analyticalAdapter.setSelectedPostion(position);
+                getHiddenDangerSpecialStatistics(((SelectItem)spOther.getSelectedItem()).id);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spOther.setAdapter(analyticalAdapter);
     }
 
     private void setUpSpinner(Spinner spinner) {
