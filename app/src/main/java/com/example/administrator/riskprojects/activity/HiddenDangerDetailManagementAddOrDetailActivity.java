@@ -19,7 +19,6 @@ import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.Utils;
-import com.example.administrator.riskprojects.view.MyAlertDialog;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
 public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivity {
@@ -47,6 +46,25 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
     private TextView tvChange;
     private HiddenDangerRecord record;
     private String hiddenrecordjson;
+    private TextView tvHiddenBelong;
+    private TextView tvIsHang;
+    private TextView tvDiscoveryTime;
+    private TextView tvCheckTheContent;
+    private TextView tvStatus;
+    private TextView tvIsHandle;
+    private TextView tvHiddenDangerLogger;
+    private TextView tvFinishTime;
+    private TextView tvPrincipal;
+    private TextView tvMeasure;
+    private TextView tvCapital;
+    private TextView tvTheNumberOfProcessing;
+    private TextView tvToCarryOutThePeople;
+    private TextView tvDepartment;
+    private TextView tvHeadquarters;
+    private TextView tvTrackingUnit;
+    private TextView tvTrackPeople;
+    private TextView tvAcceptanceOfThePeople;
+    private TextView tvAcceptanceOfTheResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +84,9 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
             @Override
             public void onClick(View v) {
                 Intent intents = new Intent(HiddenDangerDetailManagementAddOrDetailActivity.this, AddSupervisorRecordActivity.class);
-                Log.e(TAG, "onClick: hiddenrecordjson============="+hiddenrecordjson);
+                Log.e(TAG, "onClick: hiddenrecordjson=============" + hiddenrecordjson);
                 //intents.putExtra("hiddenrecordjson",hiddenrecordjson);
-                intents.putExtra("id",record.getId());
+                intents.putExtra("id", record.getId());
                 startActivity(intents);
             }
         });
@@ -77,9 +95,9 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
             @Override
             public void onClick(View v) {
                 Intent intents = new Intent(HiddenDangerDetailManagementAddOrDetailActivity.this, SuperviseRecordManagementActivity.class);
-                Log.e(TAG, "onClick: hiddenrecordjson============="+hiddenrecordjson);
+                Log.e(TAG, "onClick: hiddenrecordjson=============" + hiddenrecordjson);
                 //intents.putExtra("hiddenrecordjson",hiddenrecordjson);
-                intents.putExtra("hiddenDangerId",record.getId());
+                intents.putExtra("hiddenDangerId", record.getId());
                 startActivity(intents);
             }
         });
@@ -108,6 +126,25 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
         llBottom = findViewById(R.id.ll_bottom);
         tvDelete = findViewById(R.id.tv_delete);
         tvChange = findViewById(R.id.tv_change);
+        tvHiddenBelong = findViewById(R.id.tv_hidden_belong);
+        tvIsHang = findViewById(R.id.tv_is_hang);
+        tvDiscoveryTime = findViewById(R.id.tv_discovery_time);
+        tvCheckTheContent = findViewById(R.id.tv_check_the_content);
+        tvStatus = findViewById(R.id.tv_status);
+        tvIsHandle = findViewById(R.id.tv_is_handle);
+        tvHiddenDangerLogger = findViewById(R.id.tv_hidden_danger_logger);
+        tvFinishTime = findViewById(R.id.tv_finish_time);
+        tvPrincipal = findViewById(R.id.tv_principal);
+        tvMeasure = findViewById(R.id.tv_measure);
+        tvCapital = findViewById(R.id.tv_capital);
+        tvTheNumberOfProcessing = findViewById(R.id.tv_the_number_of_processing);
+        tvToCarryOutThePeople = findViewById(R.id.tv_to_carry_out_the_people);
+        tvDepartment = findViewById(R.id.tv_department);
+        tvHeadquarters = findViewById(R.id.tv_headquarters);
+        tvTrackingUnit = findViewById(R.id.tv_tracking_unit);
+        tvTrackPeople = findViewById(R.id.tv_track_people);
+        tvAcceptanceOfThePeople = findViewById(R.id.tv_acceptance_of_the_people);
+        tvAcceptanceOfTheResults = findViewById(R.id.tv_acceptance_of_the_results);
     }
 
     private void initdata() {
@@ -120,7 +157,7 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
     private void getHiddenRecord(String id) {//隐患id
         RequestParams params = new RequestParams();
         params.put("hiddenDangerRecordId", id);
-        netClient.post(Data.getInstance().getIp()+Constants.HIDDENDANGERRECORD, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.HIDDENDANGERRECORD, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -136,8 +173,8 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
                     tvProfessional.setText(record.getSname());
                     tvArea.setText(record.getAreaName());
                     tvClasses.setText(record.getJbName());
-                    ivStatus.setImageResource(getImageResourceByFlag(record.getFlag(),record.getOutTimeFlag()));
-                    ivStatusSecond.setImageResource(getImageResourceByFlag(record.getFlag(),record.getOutTimeFlag()));
+                    ivStatus.setImageResource(getImageResourceByFlag(record.getFlag(), record.getOutTimeFlag()));
+//                    ivStatusSecond.setImageResource(getImageResourceByFlag(record.getFlag(),record.getOutTimeFlag()));
 
                     String isuper = record.getIsupervision();
                     if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
@@ -163,7 +200,7 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
     private void deleteHiddenRecord(String id) {//隐患id
         RequestParams params = new RequestParams();
         params.put("hiddenDangerRecordId", id);
-        netClient.post(Data.getInstance().getIp()+Constants.DELETE_HIDDEN, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.DELETE_HIDDEN, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -183,8 +220,8 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
         });
     }
 
-    private int getImageResourceByFlag(String flag,String outTimeFlag) {
-        if("1".equals(outTimeFlag)){
+    private int getImageResourceByFlag(String flag, String outTimeFlag) {
+        if ("1".equals(outTimeFlag)) {
             return R.mipmap.ic_status_overdue;
         }
         switch (flag) {

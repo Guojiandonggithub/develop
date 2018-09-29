@@ -1264,4 +1264,25 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             getDateByPage(1);
         }
     }
+
+    public String getTitle() {
+        switch (flag) {
+            case 0:
+                return getResources().getString(R.string.hidden_danger_statistics_of_each_unit);
+            case 1:
+                return getResources().getString(R.string.summary_of_hazards);
+            case 2:
+                return getResources().getString(R.string.hazard_query_statistics);
+            case 4:
+                return getResources().getString(R.string.duplicate_hazard_record);
+            case 5:
+                return getResources().getString(R.string.chart_analysis_of_hazard_handling_unit);
+            case 6:
+                return getResources().getString(R.string.chart_analysis_of_hazard_handling);
+            case 7:
+                return getResources().getString(R.string.chart_analysis_of_hazard_year);
+
+        }
+        return "";
+    }
 }

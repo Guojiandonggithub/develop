@@ -257,6 +257,7 @@ public class MainActivity extends FragmentActivity {
             case R.id.ll_chart_07:
             case R.id.ll_chart_08:
                 statisticsfragment.onRightMenuClicked(view);
+                txt_title.setText(statisticsfragment.getTitle());
                 break;
             default:
                 break;
