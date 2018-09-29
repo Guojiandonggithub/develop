@@ -135,7 +135,7 @@ public class MainActivity extends FragmentActivity {
                 break;
             case R.id.re_weixin:
                 index = 3;
-                txt_title.setText(R.string.statistical_analysis);
+                txt_title.setText(statisticsfragment.getTitle());
                 img_left.setVisibility(View.GONE);
                 img_right.setVisibility(View.VISIBLE);
                 break;

@@ -55,13 +55,13 @@ public class HiddenDangerStatisticsEachUnitDetailActivity extends BaseActivity i
         String teamGroupCode = getIntent().getStringExtra("teamGroupCode");
         String State = getIntent().getStringExtra("State");
         String statistics = getIntent().getStringExtra("statistics");
-        if(TextUtils.isEmpty(statistics)){
-            Log.e(TAG, "详情参数:getHiddenRecord=========="+statistics);
-            getHiddenRecord(teamGroupCode,State);
-        }else{
+        if (TextUtils.isEmpty(statistics)) {
+            Log.e(TAG, "详情参数:getHiddenRecord==========" + statistics);
+            getHiddenRecord(teamGroupCode, State);
+        } else {
             String teamGroupName = getIntent().getStringExtra("teamGroupName");
-            Log.e(TAG, "详情参数:getNotHandleList=========="+teamGroupName);
-            getNotHandleList(Constants.PAGE,teamGroupName);
+            Log.e(TAG, "详情参数:getNotHandleList==========" + teamGroupName);
+            getNotHandleList(Constants.PAGE, teamGroupName);
         }
     }
 
@@ -77,20 +77,29 @@ public class HiddenDangerStatisticsEachUnitDetailActivity extends BaseActivity i
 
     @Override
     public void onRefresh() {
-        swipeRefreshLayout.setRefreshing(false);
+        setView();
     }
+
     //获取未消耗的数据
-    private void getNotHandleList(String page,String teamGroupName) {
+    private void getNotHandleList(String page, String teamGroupName) {
         RequestParams params = new RequestParams();
-        Map<String,String> paramsMap = new HashMap<String,String>();
-        if(!TextUtils.isEmpty(teamGroupName)){
-            paramsMap.put("teamGroupName",teamGroupName);
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        if (!TextUtils.isEmpty(teamGroupName)) {
+            paramsMap.put("teamGroupName", teamGroupName);
         }
-        Log.i(TAG, "详情参数:"+params);
-        paramsMap.put("page",Constants.PAGE);
-        paramsMap.put("rows",Constants.ROWS);
+        Log.i(TAG, "详情参数:" + params);
+        paramsMap.put("page", Constants.PAGE);
+        paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("employeeId", UserUtils.getUserID(HiddenDangerStatisticsEachUnitDetailActivity.this));
-        netClient.post(Data.getInstance().getIp()+Constants.GET_NOTHANDLELIST, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.GET_NOTHANDLELIST, params, new BaseJsonRes() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                if (!swipeRefreshLayout.isRefreshing()) {
+                    swipeRefreshLayout.setRefreshing(true);
+                }
+            }
 
             @Override
             public void onMySuccess(String data) {
@@ -111,37 +120,52 @@ public class HiddenDangerStatisticsEachUnitDetailActivity extends BaseActivity i
                 Log.e(TAG, "获取未消耗的数据返回错误信息：" + content);
                 Utils.showLongToast(HiddenDangerStatisticsEachUnitDetailActivity.this, content);
             }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (swipeRefreshLayout.isRefreshing()) {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            }
         });
     }
 
 
     //没有页数信息
-    private void getHiddenRecord(String teamGroupCode,String State) {
+    private void getHiddenRecord(String teamGroupCode, String State) {
         String ishandle = getIntent().getStringExtra("ishandle");
         RequestParams params = new RequestParams();
-        Map<String,String> paramsMap = new HashMap<String,String>();
-        if(!TextUtils.isEmpty(State)){
-            paramsMap.put("State",State);
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        if (!TextUtils.isEmpty(State)) {
+            paramsMap.put("State", State);
         }
-        if(!TextUtils.isEmpty(teamGroupCode)){
-            paramsMap.put("teamGroupCode",teamGroupCode);
+        if (!TextUtils.isEmpty(teamGroupCode)) {
+            paramsMap.put("teamGroupCode", teamGroupCode);
         }
-        if(!TextUtils.isEmpty(ishandle)){
-            paramsMap.put("ishandle",ishandle);
+        if (!TextUtils.isEmpty(ishandle)) {
+            paramsMap.put("ishandle", ishandle);
         }
-        Log.i(TAG, "详情参数:"+params);
-        paramsMap.put("page",Constants.PAGE);
-        paramsMap.put("rows",Constants.ROWS);
-        paramsMap.put("employeeId",UserUtils.getUserID(HiddenDangerStatisticsEachUnitDetailActivity.this));
+        Log.i(TAG, "详情参数:" + params);
+        paramsMap.put("page", Constants.PAGE);
+        paramsMap.put("rows", Constants.ROWS);
+        paramsMap.put("employeeId", UserUtils.getUserID(HiddenDangerStatisticsEachUnitDetailActivity.this));
         String jsonString = JSON.toJSONString(paramsMap);
-        params.put("hiddenDangerRecordJsonData",jsonString);
-        netClient.post(Data.getInstance().getIp()+Constants.GET_HIDDENDANGERDETAILLIST, params, new BaseJsonRes() {
+        params.put("hiddenDangerRecordJsonData", jsonString);
+        netClient.post(Data.getInstance().getIp() + Constants.GET_HIDDENDANGERDETAILLIST, params, new BaseJsonRes() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                if (!swipeRefreshLayout.isRefreshing()) {
+                    swipeRefreshLayout.setRefreshing(true);
+                }
+            }
 
             @Override
             public void onMySuccess(String data) {
                 Log.i(TAG, "统计详情返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
-                    JSONObject returndata  = JSON.parseObject(data);
+                    JSONObject returndata = JSON.parseObject(data);
                     String rows = returndata.getString("rows");
                     String page = returndata.getString("page");
                     String pagesize = returndata.getString("pagesize");
@@ -156,14 +180,22 @@ public class HiddenDangerStatisticsEachUnitDetailActivity extends BaseActivity i
                 Log.e(TAG, "统计详情返回错误信息：" + content);
                 Utils.showLongToast(HiddenDangerStatisticsEachUnitDetailActivity.this, content);
             }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (swipeRefreshLayout.isRefreshing()) {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            }
         });
     }
 
-    private void initData(List<HiddenDangerRecord> recordList){
+    private void initData(List<HiddenDangerRecord> recordList) {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         swipeRefreshLayout.setOnRefreshListener(this);
-        HiddenDangerStatisticsEachUnitDetailAdapter  adapter = new HiddenDangerStatisticsEachUnitDetailAdapter(recordList);
+        HiddenDangerStatisticsEachUnitDetailAdapter adapter = new HiddenDangerStatisticsEachUnitDetailAdapter(recordList);
         recyclerView.setAdapter(adapter);
     }
 }

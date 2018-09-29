@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:animateLayoutChanges="true"
     android:background="@color/bar_color"
     android:orientation="vertical">
 
@@ -10,215 +12,381 @@
         android:id="@+id/ll_option"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
         android:background="@color/white"
         android:orientation="vertical"
         android:paddingLeft="14dp"
         android:paddingRight="14dp"
-        android:visibility="visible">
+        android:visibility="visible"
+        tools:visibility="visible">
 
         <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/ll_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <TextView
-                android:layout_width="80dp"
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/ll_start_time"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="开始时间:"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cv_select_start_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="3.33dp"
+                    app:cardElevation="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="false">
+
+                    <android.support.v7.widget.LinearLayoutCompat
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:gravity="center_vertical"
+                        android:minWidth="176dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="16dp">
+
+                        <TextView
+                            android:id="@+id/tv_start_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:text="2018.09.15"
+                            android:textColor="@color/blue1"
+                            android:textSize="@dimen/normal_ts" />
+
+                        <ImageView
+                            android:layout_width="20.67dp"
+                            android:layout_height="19dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:src="@mipmap/select_date" />
+                    </android.support.v7.widget.LinearLayoutCompat>
+                </android.support.v7.widget.CardView>
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorDevide" />
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/ll_end_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="结束时间:"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cv_select_end_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="3.33dp"
+                    app:cardElevation="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="false">
+
+                    <android.support.v7.widget.LinearLayoutCompat
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:gravity="center_vertical"
+                        android:minWidth="176dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="16dp">
+
+                        <TextView
+                            android:id="@+id/tv_end_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:text="2018.09.15"
+                            android:textColor="@color/blue1"
+                            android:textSize="@dimen/normal_ts" />
+
+                        <ImageView
+                            android:layout_width="20.67dp"
+                            android:layout_height="19dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:src="@mipmap/select_date" />
+                    </android.support.v7.widget.LinearLayoutCompat>
+                </android.support.v7.widget.CardView>
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <View
+                android:id="@+id/ll_select_top"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorDevide" />
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/ll_select"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
                 android:layout_marginLeft="16dp"
-                android:text="开始时间:"
-                android:textColor="@color/colorGray"
-                android:textSize="@dimen/normal_ts"
-                android:textStyle="bold" />
+                android:layout_marginRight="16dp"
+                android:gravity="center_vertical"
+                android:visibility="visible">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/cv_select_start_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="3.33dp"
-                app:cardElevation="2dp"
-                app:cardPreventCornerOverlap="false"
-                app:cardUseCompatPadding="false">
+                <TextView
+                    android:id="@+id/tv_sp_name"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="月份"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/sp_other"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:spinnerMode="dropdown" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/ll_year"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="38dp"
+                android:gravity="center_vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="年份"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/sp_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/ll_month"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="38dp"
+                android:gravity="center_vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="月份"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/sp_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/ll_select_profession"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center_vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tv_sp_profession"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="专业名称"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/sp_profession"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:spinnerMode="dropdown" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/ll_select_hidden_danger_belongs"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center_vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tv_sp_hidden_danger_belongs"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="隐患归属"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/sp_hidden_danger_belongs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:spinnerMode="dropdown" />
+            </android.support.v7.widget.LinearLayoutCompat>
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/ll_hidden_content"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="隐患内容："
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="bold" />
 
                 <android.support.v7.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"
-                    android:layout_height="32dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:minWidth="176dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="16dp">
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/tv_start_date"
+                    <android.support.v7.widget.CardView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:text="2018.09.15"
-                        android:textColor="@color/blue1"
-                        android:textSize="@dimen/normal_ts" />
+                        android:layout_margin="3dp"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardCornerRadius="3.33dp"
+                        app:cardElevation="2dp"
+                        app:cardPreventCornerOverlap="false"
+                        app:cardUseCompatPadding="false">
 
-                    <ImageView
-                        android:layout_width="20.67dp"
-                        android:layout_height="19dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:src="@mipmap/select_date" />
+                        <EditText
+                            android:id="@+id/et_hidden_content"
+                            android:layout_width="176dp"
+                            android:layout_height="32dp"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:paddingLeft="4dp"
+                            android:paddingRight="4dp"
+                            android:singleLine="true"
+                            android:src="@drawable/select_checkbox_blue"
+                            android:textColor="@color/blue1"
+                            android:textSize="@dimen/normal_ts" />
+
+                    </android.support.v7.widget.CardView>
+
+
                 </android.support.v7.widget.LinearLayoutCompat>
-            </android.support.v7.widget.CardView>
+            </android.support.v7.widget.LinearLayoutCompat>
 
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/ll_select_hidden_units"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center_vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tv_sp_hidden_units"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="隐患单位"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/normal_ts"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/sp_hidden_units"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:spinnerMode="dropdown" />
+            </android.support.v7.widget.LinearLayoutCompat>
         </android.support.v7.widget.LinearLayoutCompat>
 
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorDevide" />
-
         <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/ll_expand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:text="结束时间:"
-                android:textColor="@color/colorGray"
-                android:textSize="@dimen/normal_ts"
-                android:textStyle="bold" />
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cv_select_end_date"
+                android:id="@+id/tv_expand"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="3.33dp"
-                app:cardElevation="2dp"
-                app:cardPreventCornerOverlap="false"
-                app:cardUseCompatPadding="false">
+                android:layout_height="32dp"
+                android:gravity="center"
+                android:text="展开选项"
+                android:textColor="@color/colorGrayDarker"
+                android:textSize="@dimen/normal_ts" />
 
-                <android.support.v7.widget.LinearLayoutCompat
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:gravity="center_vertical"
-                    android:minWidth="176dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="16dp">
-
-                    <TextView
-                        android:id="@+id/tv_end_date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:text="2018.09.15"
-                        android:textColor="@color/blue1"
-                        android:textSize="@dimen/normal_ts" />
-
-                    <ImageView
-                        android:layout_width="20.67dp"
-                        android:layout_height="19dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:src="@mipmap/select_date" />
-                </android.support.v7.widget.LinearLayoutCompat>
-            </android.support.v7.widget.CardView>
-
+            <ImageView
+                android:id="@+id/iv_expand"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/select_expand_signal" />
         </android.support.v7.widget.LinearLayoutCompat>
-
-        <View
-            android:id="@+id/ll_select_top"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorDevide" />
-
-        <android.support.v7.widget.LinearLayoutCompat
-            android:id="@+id/ll_select"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:gravity="center_vertical"
-            android:visibility="visible">
-
-            <TextView
-                android:id="@+id/tv_sp_name"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:text="月份"
-                android:textColor="@color/colorGray"
-                android:textSize="@dimen/normal_ts"
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/sp_other"
-                android:layout_width="wrap_content"
-
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown" />
-        </android.support.v7.widget.LinearLayoutCompat>
-
     </android.support.v7.widget.LinearLayoutCompat>
 
-    <android.support.v7.widget.LinearLayoutCompat
-        android:id="@+id/ll_year"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginLeft="38dp"
-        android:gravity="center_vertical"
-        android:visibility="gone">
 
-        <TextView
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:text="年份"
-            android:textColor="@color/colorGray"
-            android:textSize="@dimen/normal_ts"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/sp_year"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:spinnerMode="dropdown" />
-    </android.support.v7.widget.LinearLayoutCompat>
-
-    <android.support.v7.widget.LinearLayoutCompat
-        android:id="@+id/ll_month"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginLeft="38dp"
-        android:gravity="center_vertical"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:text="月份"
-            android:textColor="@color/colorGray"
-            android:textSize="@dimen/normal_ts"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/sp_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:spinnerMode="dropdown" />
-    </android.support.v7.widget.LinearLayoutCompat>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v4.widget.NestedScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             android:scrollbars="none">
 
             <android.support.v7.widget.LinearLayoutCompat
@@ -257,6 +425,7 @@
                         android:textSize="@dimen/tiny_ts" />
 
                     <TextView
+                        android:id="@+id/tv_top_horizontal_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
@@ -268,10 +437,10 @@
 
                     <com.github.mikephil.charting.charts.BarChart
                         android:id="@+id/barChart"
-                        android:minHeight="300dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true" />
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:minHeight="500dp" />
                 </android.support.v7.widget.LinearLayoutCompat>
 
                 <android.support.v7.widget.LinearLayoutCompat
@@ -307,6 +476,7 @@
 
 
                     <TextView
+                        android:id="@+id/tv_bottom_horizontal_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
@@ -319,14 +489,13 @@
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/lineChart"
                         android:layout_width="match_parent"
-
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_centerInParent="true"
                         android:minHeight="300dp" />
                 </android.support.v7.widget.LinearLayoutCompat>
 
             </android.support.v7.widget.LinearLayoutCompat>
-        </android.support.v4.widget.NestedScrollView>
+        </ScrollView>
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
