@@ -172,10 +172,13 @@ public class Fragment_Supervision extends Fragment implements SwipeRefreshLayout
                     String rows = returndata.getString("rows");
                     page = Integer.parseInt(returndata.getString("page"));
                     pagesize = Integer.parseInt(returndata.getString("pagesize"));
+                    List<HiddenDangerRecord> recordList = JSONArray.parseArray(rows, HiddenDangerRecord.class);
                     if (page == 1) {
                         list.clear();
+                        if(recordList.size()==0){
+                            Utils.showLongToast(getContext(), "没有查询到数据!");
+                        }
                     }
-                    List<HiddenDangerRecord> recordList = JSONArray.parseArray(rows, HiddenDangerRecord.class);
                     list.addAll(recordList);
                     adapter.notifyDataSetChanged();
                 }

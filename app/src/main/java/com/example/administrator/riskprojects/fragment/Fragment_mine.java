@@ -19,6 +19,7 @@ import com.example.administrator.riskprojects.activity.HiddenDangeTrackingDetail
 import com.example.administrator.riskprojects.activity.HiddenRiskRecordDetailActivity;
 import com.example.administrator.riskprojects.activity.PersonInfoEditActivity;
 import com.example.administrator.riskprojects.bean.UserInfo;
+import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.util.UpdateVersionUtil;
 import com.example.administrator.riskprojects.view.MyAlertDialog;
@@ -69,7 +70,7 @@ public class Fragment_mine extends Fragment {
         mIvHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ctx, PersonInfoEditActivity.class));
+                startActivityForResult(new Intent(ctx, PersonInfoEditActivity.class), Integer.parseInt(Constants.PAGE));
             }
         });
         mTvBleSdk.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +82,7 @@ public class Fragment_mine extends Fragment {
         mTvVersion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new UpdateVersionUtil().versionUpdata(getActivity(),true);
+                new UpdateVersionUtil().versionUpdata(getActivity(), true);
             }
         });
         mTvLogOut.setOnClickListener(new View.OnClickListener() {
@@ -124,4 +125,18 @@ public class Fragment_mine extends Fragment {
         mTvDepartment.setText(userInfo.getDepartmentName());
         mTvOffice.setText(userInfo.getPname());
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 1:
+                if (resultCode == -1) {
+                    String phone = data.getStringExtra("phone");
+                    mTvPhone.setText(phone);
+                }
+                break;
+            default:
+        }
+    }
+
 }

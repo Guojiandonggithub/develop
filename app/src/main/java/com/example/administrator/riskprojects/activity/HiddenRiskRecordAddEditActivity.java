@@ -180,7 +180,6 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         etLocation = findViewById(R.id.et_add_location);
         llBottom = findViewById(R.id.ll_bottom);
         tvOk = findViewById(R.id.tv_ok);
-        tvHang = findViewById(R.id.tv_hang);
         mTxtTitle.setText("隐患记录新增");
         tvOk.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -197,13 +196,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 }
             }
         });
-        tvHang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HiddenRiskRecordAddEditActivity.this,
-                        AddHangRecordActivity.class));
-            }
-        });
+
     }
 
     private void setUpSpinner(Spinner spinner, final SpinnerAdapter adapter) {

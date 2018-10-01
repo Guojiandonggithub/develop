@@ -70,7 +70,7 @@
     <string name="the_new_password">新密码</string>
     <string name="confirm_new_password">确认新密码</string>
     <string name="confirm_the_change">确认修改</string>
-    <string name="nickname">昵称</string>
+    <string name="nickname">姓名</string>
     <string name="head_portrait">头像</string>
     <string name="phone_number">手机号</string>
     <string name="position">职位</string>
@@ -82,6 +82,7 @@
     <string name="detail_backspace">详\t\t情</string>
     <string name="add_backspace">添\t\t加</string>
     <string name="add">添加</string>
+    <string name="addguapai">挂牌</string>
     <string name="ok_backspace">确\t\t定</string>
     <string name="hang_backspace">挂\t\t牌</string>
     <string name="modification">修改</string>

@@ -108,6 +108,10 @@ public interface Constants {
 	String ADD_SUPERVISIONRECORD = "hiddenSupervisionRecordMobileAction!addHiddenSupervisionRecord.action";
 	// 督办列表查询
 	String GET_SUPERVISIONRECORDLIST = "hiddenSupervisionRecordMobileAction!findSupervisionRecordByHiddenDangerId.action";
+	//挂牌添加
+	String ADD_GPHIDDENDANGER = "hiddenDangerRecordMobileAction!gpHiddenDangerRecord.action";
+	//修改用户数据
+	String UPDATE_PERSONINFO = "employeeMobileAction!editUserInfo.action";
 
 
 	public void addRecheck(Context context);

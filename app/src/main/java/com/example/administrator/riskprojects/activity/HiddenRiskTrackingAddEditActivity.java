@@ -113,7 +113,9 @@ public class HiddenRiskTrackingAddEditActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data)) {
                     Intent intent = new Intent(HiddenRiskTrackingAddEditActivity.this, HiddenDangeTrackingDetailListActivity.class);
                     intent.putExtra("threeFixId", hiddenFollingRecord.getThreeFixId());
+                    Utils.showLongToast(HiddenRiskTrackingAddEditActivity.this, "操作成功!");
                     startActivity(intent);
+                    finish();
                 }
 
             }

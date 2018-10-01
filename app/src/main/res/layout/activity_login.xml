@@ -23,14 +23,13 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:src="@mipmap/ic_login_big_logo"/>
-
         </android.support.v7.widget.LinearLayoutCompat>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="72dp"
+            android:layout_marginTop="82dp"
             android:layout_marginRight="25dp"
             android:background="@drawable/shape_rectangle_rounded"
             android:orientation="vertical"

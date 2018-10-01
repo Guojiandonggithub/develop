@@ -1,21 +1,35 @@
 package com.example.administrator.riskprojects.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.bean.GpHiddenDanger;
+import com.example.administrator.riskprojects.bean.SelectItem;
 import com.example.administrator.riskprojects.bean.UserInfo;
+import com.example.administrator.riskprojects.net.BaseJsonRes;
+import com.example.administrator.riskprojects.net.NetClient;
+import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.UserUtils;
+import com.example.administrator.riskprojects.tools.Utils;
+import com.juns.health.net.loopj.android.http.RequestParams;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PersonInfoEditActivity extends BaseActivity {
-
+    private static final String TAG = "PersonInfoEditActivity";
     private TextView mTxtLeft;
     private ImageView mImgLeft;
     private TextView mTxtTitle;
@@ -28,11 +42,13 @@ public class PersonInfoEditActivity extends BaseActivity {
     private EditText mEtPosition;
     private LinearLayoutCompat mLlBottom;
     private TextView mTvOk;
+    protected NetClient netClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person_info_edit);
+        netClient = new NetClient(PersonInfoEditActivity.this);
         initView();
         setView();
     }
@@ -60,15 +76,59 @@ public class PersonInfoEditActivity extends BaseActivity {
         mTvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             //提交
-                //成功后
-                /**
-                 *   mEtPhone.setEnabled(true);
-                 *   mEtName.setEnabled(true);
-                 *    mLlBottom.setVisibility(View.GONE);
-                 */
+                if(checkInput()){
+                    updatePersonInfo();
+                }
             }
         });
+    }
+
+    //修改用户信息
+    private void updatePersonInfo() {
+        RequestParams params = new RequestParams();
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(UserUtils.getUserID(PersonInfoEditActivity.this));
+        userInfo.setRealName(mEtName.getText().toString());
+        userInfo.setPhone(mEtPhone.getText().toString());
+        String employeeJsonDataStr = JSON.toJSONString(userInfo);
+        Log.i(TAG, "gpHiddenDanger: 修改用户信息参数="+employeeJsonDataStr);
+        params.put("employeeJsonData",employeeJsonDataStr);
+
+        netClient.post(Data.getInstance().getIp()+ Constants.UPDATE_PERSONINFO, params, new BaseJsonRes() {
+
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "修改用户信息返回数据：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    Intent intent = new Intent();
+                    intent.putExtra("phone",mEtPhone.getText().toString());
+                    setResult(RESULT_OK, intent);
+                    Utils.showLongToast(PersonInfoEditActivity.this, "用户数据修改成功");
+                    finish();
+                }
+
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "修改用户信息返回错误信息：" + content);
+                Utils.showLongToast(PersonInfoEditActivity.this, content);
+            }
+        });
+    }
+
+    //检查输入
+    private boolean checkInput() {
+        if (TextUtils.isEmpty(mEtName.getText().toString())) {
+            Utils.showLongToast(PersonInfoEditActivity.this, "姓名不能为空!");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(mEtPhone.getText().toString())) {
+            Utils.showLongToast(PersonInfoEditActivity.this, "手机号不能为空!");
+            return false;
+        }
+        return true;
     }
 
     private void initView() {

@@ -45,6 +45,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
     private ImageView ivStatus;
     private LinearLayoutCompat llBottom;
     private TextView tvDelete;
+    private TextView tvAdd;
     private TextView tvChange;
     private HiddenDangerRecord record;
     private String hiddenrecordjson;
@@ -103,6 +104,20 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
             }
         });
 
+        tvAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e(TAG, "是否隐患督办: "+ record.getIsupervision());
+                if("0".equals(record.getIsupervision())){
+                    Intent intents = new Intent(HiddenDangerDetailManagementActivity.this, AddHangRecordActivity.class);
+                    intents.putExtra("id",record.getId());
+                    startActivityForResult(intents, Integer.parseInt(Constants.PAGE));
+                }else{
+                    Utils.showLongToast(HiddenDangerDetailManagementActivity.this, "该隐患已经挂牌!");
+                }
+            }
+        });
+
         tvChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,6 +169,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
         clickMore = findViewById(R.id.click_more);
         ivStatus = findViewById(R.id.iv_status);
         llBottom = findViewById(R.id.ll_bottom);
+        tvAdd = findViewById(R.id.tv_add);
         tvDelete = findViewById(R.id.tv_delete);
         tvChange = findViewById(R.id.tv_change);
         tvHiddenBelong = findViewById(R.id.tv_hidden_belong);
@@ -204,15 +220,42 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                     tvArea.setText(record.getAreaName());
                     tvClasses.setText(record.getJbName());
                     ivStatus.setImageResource(getImageResourceByFlag(record.getFlag(), record.getOutTimeFlag()));
-//                    ivStatusSecond.setImageResource(getImageResourceByFlag(record.getFlag(),record.getOutTimeFlag()));
-
+                    ivStatus.setImageResource(getImageResourceByFlag(record.getFlag(), record.getOutTimeFlag()));
                     String isuper = record.getIsupervision();
+                    String guapai = "未挂牌";
                     if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
                         isuper = "未督办";
                     } else {
                         isuper = "已督办";
+                        guapai = "已挂牌";
                     }
+                    String ishandle = record.getIshandle();
+                    if(TextUtils.isEmpty(ishandle)||"0".equals(ishandle)){
+                        ishandle = "未处理";
+                    }else{
+                        ishandle = "已处理";
+                    }
+                    tvDiscoveryTime.setText(record.getFindTime());
                     tvOversee.setText(isuper);
+                    tvIsHang.setText(guapai);
+                    String status = getStatusByFlag(record.getFlag(),record.getOutTimeFlag());
+                    tvStatus.setText(status);
+                    tvIsHandle.setText(ishandle);
+                    tvHiddenDangerLogger.setText(record.getRealName());
+                    tvFinishTime.setText(record.getCompleteTime());
+                    tvPrincipal.setText(record.getThreeFixRealName());
+                    tvMeasure.setText(record.getMeasure());
+                    tvCapital.setText(record.getMoney());
+                    tvTheNumberOfProcessing.setText(record.getPersonNum());
+                    tvToCarryOutThePeople.setText(record.getPracticablePerson());
+                    tvDepartment.setText(record.getDeptName());
+                    tvHeadquarters.setText(record.getThreeFixTeamName());
+                    tvTrackingUnit.setText(record.getFollingTeamName());
+                    tvTrackPeople.setText(record.getFollingPersonName());
+                    tvAcceptanceOfThePeople.setText(record.getRecheckPersonName());
+                    tvAcceptanceOfTheResults.setText(record.getRecheckResult());
+                    tvOversee.setText(isuper);
+                    tvCheckTheContent.setText(record.getHiddenCheckContent());
                 }
 
             }
@@ -269,6 +312,40 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                 return R.mipmap.ic_status_release;
             default:
                 return R.mipmap.ic_status_overdue;
+        }
+    }
+
+    private String getStatusByFlag(String flag, String outTimeFlag) {
+        if ("1".equals(outTimeFlag)) {
+            return "逾期";
+        }
+        switch (flag) {
+            case "0":
+                return "筛选";
+            case "1":
+                return "五定中";
+            case "2":
+                return "整改中";
+            case "3":
+                return "验收中";
+            case "4":
+                return "销项";
+            case "5":
+                return "跟踪";
+            default:
+                return "未知";
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    finish();
+                }
+                break;
+            default:
         }
     }
 

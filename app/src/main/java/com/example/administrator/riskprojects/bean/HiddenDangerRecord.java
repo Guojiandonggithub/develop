@@ -92,6 +92,10 @@ public class HiddenDangerRecord implements Serializable{
 	private String ischecked; // 是否审核:(0:未审核;1:已审核)
 	private String isupervision; // 是否挂牌督办（0：未挂牌督办；1：已挂牌督办）
 	private String outTimeFlag; // 是否逾期（0：未逾期，1 : 逾期）
+	private String follingPersonId; // 跟踪人id
+	private String follingPersonName; // 跟踪人姓名
+	private String follingTeamId; // 跟踪人单位id
+	private String follingTeamName; // 跟踪人单位名称
 
 	public boolean isExpands() {
 		return expands;
@@ -800,5 +804,37 @@ public class HiddenDangerRecord implements Serializable{
 
 	public void setTeamGroupId(String teamGroupId) {
 		this.teamGroupId = teamGroupId;
+	}
+
+	public String getFollingPersonId() {
+		return follingPersonId;
+	}
+
+	public void setFollingPersonId(String follingPersonId) {
+		this.follingPersonId = follingPersonId;
+	}
+
+	public String getFollingPersonName() {
+		return follingPersonName;
+	}
+
+	public void setFollingPersonName(String follingPersonName) {
+		this.follingPersonName = follingPersonName;
+	}
+
+	public String getFollingTeamId() {
+		return follingTeamId;
+	}
+
+	public void setFollingTeamId(String follingTeamId) {
+		this.follingTeamId = follingTeamId;
+	}
+
+	public String getFollingTeamName() {
+		return follingTeamName;
+	}
+
+	public void setFollingTeamName(String follingTeamName) {
+		this.follingTeamName = follingTeamName;
 	}
 }

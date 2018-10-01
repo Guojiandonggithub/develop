@@ -78,9 +78,11 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
                 String id = recordList.get(position).getId();
                 String employeeId = recordList.get(position).getEmployeeId();
                 String flag = recordList.get(position).getFlag();
+                String isupervision = recordList.get(position).getIsupervision();
                 intent.putExtra("id", id);
                 intent.putExtra("employeeId", employeeId);
                 intent.putExtra("flag", flag);
+                intent.putExtra("isupervision", isupervision);
                 Log.e(TAG, "隐患状态flag:============ "+flag);
                 holder.itemView.getContext().startActivity(intent);
             }

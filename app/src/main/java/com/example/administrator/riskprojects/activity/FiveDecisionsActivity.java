@@ -467,7 +467,7 @@ public class FiveDecisionsActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data)) {
                     Utils.showLongToast(FiveDecisionsActivity.this, "隐患下达成功！");
                     //返回finish 测试
-                    setResult(RESULT_OK);
+                    //setResult(RESULT_OK);
                     finish();
                 }
 

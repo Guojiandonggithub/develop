@@ -44,6 +44,7 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
     private LinearLayoutCompat llBottom;
     private TextView tvDelete;
     private TextView tvChange;
+    private TextView tvAdd;
     private HiddenDangerRecord record;
     private String hiddenrecordjson;
     private TextView tvHiddenBelong;
@@ -80,6 +81,7 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
         txtTitle.setText(R.string.guapai_details_management);
         tvDelete.setText(R.string.add_backspace);
         tvChange.setText(R.string.detail_backspace);
+        tvAdd.setVisibility(View.GONE);
         tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +128,7 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
         llBottom = findViewById(R.id.ll_bottom);
         tvDelete = findViewById(R.id.tv_delete);
         tvChange = findViewById(R.id.tv_change);
+        tvAdd = findViewById(R.id.tv_add);
         tvHiddenBelong = findViewById(R.id.tv_hidden_belong);
         tvIsHang = findViewById(R.id.tv_is_hang);
         tvDiscoveryTime = findViewById(R.id.tv_discovery_time);
@@ -174,15 +177,39 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
                     tvArea.setText(record.getAreaName());
                     tvClasses.setText(record.getJbName());
                     ivStatus.setImageResource(getImageResourceByFlag(record.getFlag(), record.getOutTimeFlag()));
-//                    ivStatusSecond.setImageResource(getImageResourceByFlag(record.getFlag(),record.getOutTimeFlag()));
-
                     String isuper = record.getIsupervision();
+                    String guapai = "未挂牌";
                     if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
                         isuper = "未督办";
                     } else {
                         isuper = "已督办";
+                        guapai = "已挂牌";
                     }
+                    String ishandle = record.getIshandle();
+                    if(TextUtils.isEmpty(ishandle)||"0".equals(ishandle)){
+                        ishandle = "未处理";
+                    }else{
+                        ishandle = "已处理";
+                    }
+                    tvDiscoveryTime.setText(record.getFindTime());
                     tvOversee.setText(isuper);
+                    tvIsHang.setText(guapai);
+                    String status = getStatusByFlag(record.getFlag(),record.getOutTimeFlag());
+                    tvStatus.setText(status);
+                    tvIsHandle.setText(ishandle);
+                    tvHiddenDangerLogger.setText(record.getRealName());
+                    tvFinishTime.setText(record.getCompleteTime());
+                    tvPrincipal.setText(record.getThreeFixRealName());
+                    tvMeasure.setText(record.getMeasure());
+                    tvCapital.setText(record.getMoney());
+                    tvTheNumberOfProcessing.setText(record.getPersonNum());
+                    tvToCarryOutThePeople.setText(record.getPracticablePerson());
+                    tvDepartment.setText(record.getDeptName());
+                    tvHeadquarters.setText(record.getThreeFixTeamName());
+                    tvTrackingUnit.setText(record.getFollingTeamName());
+                    tvTrackPeople.setText(record.getFollingPersonName());
+                    tvAcceptanceOfThePeople.setText(record.getRecheckPersonName());
+                    tvAcceptanceOfTheResults.setText(record.getRecheckResult());
                 }
 
             }
@@ -239,6 +266,28 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
                 return R.mipmap.ic_status_release;
             default:
                 return R.mipmap.ic_status_overdue;
+        }
+    }
+
+    private String getStatusByFlag(String flag, String outTimeFlag) {
+        if ("1".equals(outTimeFlag)) {
+            return "逾期";
+        }
+        switch (flag) {
+            case "0":
+                return "筛选";
+            case "1":
+                return "五定中";
+            case "2":
+                return "整改中";
+            case "3":
+                return "验收中";
+            case "4":
+                return "销项";
+            case "5":
+                return "跟踪";
+            default:
+                return "未知";
         }
     }
 

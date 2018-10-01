@@ -145,7 +145,7 @@ public class HiddenDangerAcceptanceActivity extends BaseActivity {
                 Log.i(TAG, "隐患验收返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
                     if (!TextUtils.isEmpty(data)) {
-                        Utils.showLongToast(HiddenDangerAcceptanceActivity.this, "删除成功");
+                        Utils.showLongToast(HiddenDangerAcceptanceActivity.this, "验收成功");
                     }
                     finish();
                 }
