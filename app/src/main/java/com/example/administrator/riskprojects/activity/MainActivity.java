@@ -239,8 +239,8 @@ public class MainActivity extends FragmentActivity {
             case R.id.ll_manage_tracking:
             case R.id.ll_manage_overdue:
             case R.id.ll_manage_review:
-                img_left.setVisibility(manageFragment.getAddVisible());
                 manageFragment.onRightMenuClicked(view);
+                img_left.setVisibility(manageFragment.getAddVisible());
                 txt_title.setText(manageFragment.getTitle());
                 break;
             case R.id.ll_chart_01:
