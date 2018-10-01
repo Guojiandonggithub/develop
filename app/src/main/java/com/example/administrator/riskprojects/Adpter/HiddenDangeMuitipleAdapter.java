@@ -40,9 +40,10 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
     List<ThreeFix> threeFixList;
     private OnItemClickListener itemClickListener;
 
-    public HiddenDangeMuitipleAdapter(int flag, List<ThreeFix> threeFixList) {
+    public HiddenDangeMuitipleAdapter(int flag, List<ThreeFix> threeFixList,Context context) {
         this.flag = flag;
         this.threeFixList = threeFixList;
+        
     }
 
     @Override
