@@ -130,7 +130,7 @@ public class MainActivity extends FragmentActivity {
             case R.id.analysis:
                 index = 2;
                 txt_title.setText(manageFragment.getTitle());
-                img_left.setVisibility(View.GONE);
+                img_left.setVisibility(manageFragment.getAddVisible());
                 img_right.setVisibility(View.VISIBLE);
                 break;
             case R.id.re_weixin:
@@ -189,13 +189,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 if (index == 2) {
-                    Intent intent = new Intent(MainActivity.this, LeftOptionSelectActivity.class);
-                    intent.putExtra(LeftOptionSelectActivity.TITLE, "记录跟踪");
-                    startActivityForResult(intent, LeftOptionSelectActivity.REQUEST_CODE);
-                } else if (index == 3) {
-                    Intent intent = new Intent(MainActivity.this, LeftStatisticsOptionSelectActivity.class);
-                    intent.putExtra(LeftOptionSelectActivity.TITLE, "分析统计");
-                    startActivityForResult(intent, LeftStatisticsOptionSelectActivity.REQUEST_CODE);
+                    startActivity(new Intent(MainActivity.this, HiddenRiskRecordAddEditActivity.class));
                 }
             }
         });
@@ -245,6 +239,7 @@ public class MainActivity extends FragmentActivity {
             case R.id.ll_manage_tracking:
             case R.id.ll_manage_overdue:
             case R.id.ll_manage_review:
+                img_left.setVisibility(manageFragment.getAddVisible());
                 manageFragment.onRightMenuClicked(view);
                 txt_title.setText(manageFragment.getTitle());
                 break;

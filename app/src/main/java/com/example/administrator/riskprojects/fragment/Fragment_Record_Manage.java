@@ -25,9 +25,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.administrator.riskprojects.Adpter.HiddenDangeMuitipleAdapter;
 import com.example.administrator.riskprojects.Adpter.HiddenDangeRecordAdapter;
 import com.example.administrator.riskprojects.Adpter.HiddenDangeTrackingAdapter;
+import com.example.administrator.riskprojects.OnItemClickListener;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.activity.DatePickerActivity;
+import com.example.administrator.riskprojects.activity.HiddenDangerRectificationManagementActivity;
 import com.example.administrator.riskprojects.activity.HiddenRiskRecordAddEditActivity;
 import com.example.administrator.riskprojects.activity.MainActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
@@ -38,6 +40,7 @@ import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.util.DensityUtil;
+import com.example.administrator.riskprojects.view.MyAlertDialog;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
@@ -60,7 +63,6 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
     protected NetClient netClient;
     List<HiddenDangerRecord> recordList = new ArrayList<HiddenDangerRecord>();
     List<ThreeFix> threeFixesList = new ArrayList<ThreeFix>();
-    private LinearLayoutCompat llAdd;
     private LinearLayoutCompat llOption;
     private TextView tvProfession;
     private TextView tvHiddenUnits;
@@ -129,13 +131,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        llAdd = layout.findViewById(R.id.ll_add);
-        llAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ctx, HiddenRiskRecordAddEditActivity.class));
-            }
-        });
+
         llOption = layout.findViewById(R.id.ll_option);
         tvProfession = layout.findViewById(R.id.tv_profession);
         tvHiddenUnits = layout.findViewById(R.id.tv_hidden_units);
@@ -670,13 +666,11 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
     public void onRightMenuClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_manage_detail:
-                llAdd.setVisibility(View.VISIBLE);
                 flag = 1;
                 adapter = new HiddenDangeRecordAdapter(recordList);
                 recyclerView.setAdapter(adapter);
                 break;
             case R.id.ll_manage_release:
-                llAdd.setVisibility(View.VISIBLE);
                 flag = 2;
                 String userRole = UserUtils.getUserRoleids(getActivity());
                 if (!"8".equals(userRole) && !"62".equals(userRole)) {
@@ -688,33 +682,57 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 }
                 break;
             case R.id.ll_manage_rectification:
-                llAdd.setVisibility(View.VISIBLE);
                 flag = 3;
                 String userRoles = UserUtils.getUserRoleids(getActivity());
                 if (!"8".equals(userRoles) && !"62".equals(userRoles)) {
                     threeFixesList.clear();
                     adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_RECTIFICATION, threeFixesList);
+                    ((HiddenDangeMuitipleAdapter) adapter).setItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, final int position, int flag) {
+                            if (flag == HiddenDangeMuitipleAdapter.FLAG_RECTIFICATION) {
+                                //@Todo 直接整改
+                                MyAlertDialog myAlertDialog = new MyAlertDialog(ctx,
+                                        new MyAlertDialog.DialogListener() {
+                                            @Override
+                                            public void affirm() {
+                                                //确定入口
+                                                goRectification(position);
+                                            }
+
+                                            @Override
+                                            public void cancel() {
+
+                                            }
+                                        }, "你确定要整改此么？");
+                                myAlertDialog.show();
+
+                            }
+                        }
+
+                        @Override
+                        public boolean onItemLongClick(View view, int position) {
+                            return false;
+                        }
+                    });
                     recyclerView.setAdapter(adapter);
                 } else {
                     Utils.showLongToast(getContext(), "没有权限进行该操作!");
                 }
                 break;
             case R.id.ll_manage_tracking:
-                llAdd.setVisibility(View.VISIBLE);
                 flag = 4;
                 threeFixesList.clear();
                 adapter = new HiddenDangeTrackingAdapter(threeFixesList);
                 recyclerView.setAdapter(adapter);
                 break;
             case R.id.ll_manage_overdue:
-                llAdd.setVisibility(View.VISIBLE);
                 flag = 5;
                 threeFixesList.clear();
                 adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_OVERDUE, threeFixesList);
                 recyclerView.setAdapter(adapter);
                 break;
             case R.id.ll_manage_review:
-                llAdd.setVisibility(View.VISIBLE);
                 flag = 6;
                 threeFixesList.clear();
                 adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_REVIEW, threeFixesList);
@@ -731,6 +749,30 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         areaid = "";
         tvHiddenUnits.setText("");
         getDataByPage(1);
+    }
+
+    //根据位置整改
+    private void goRectification(final int position) {
+        RequestParams params = new RequestParams();
+        params.put("ids", threeFixesList.get(position).getId());
+        netClient.post(Data.getInstance().getIp() + Constants.COMPLETERECTIFY, params, new BaseJsonRes() {
+
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "完成整改返回数据：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    Utils.showLongToast(ctx, "隐患整改成功！");
+                    threeFixesList.remove(position);
+                    adapter.notifyItemRemoved(position);
+                }
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "完成整改返回错误信息：" + content);
+                Utils.showLongToast(ctx, content);
+            }
+        });
     }
 
     public void onLeftMenuClicked(String aname, String aid, String pname, String pid, String hname, String hid) {
@@ -761,6 +803,15 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
 
         }
         return "";
+    }
+
+    public int getAddVisible() {
+        switch (flag) {
+            case 0:
+            case 1:
+                return View.VISIBLE;
+        }
+        return View.GONE;
     }
 
     @Override

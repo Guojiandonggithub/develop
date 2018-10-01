@@ -12,10 +12,10 @@
         android:layout_height="40dp"
         android:layout_centerVertical="true"
         android:contentDescription="@string/app_name"
-        android:paddingLeft="6dp"
+        android:paddingLeft="8dp"
         android:layout_marginLeft="6dp"
-        android:paddingRight="6dp"
-        android:src="@mipmap/ic_set_prerequisite"
+        android:paddingRight="8dp"
+        android:src="@mipmap/ic_add"
         android:visibility="gone"
         tools:visibility="visible" />
 

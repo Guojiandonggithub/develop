@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.administrator.riskprojects.OnItemClickListener;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.HiddenDangerDetailManagementActivity;
 import com.example.administrator.riskprojects.activity.HiddenDangerOverdueManagementActivity;
@@ -31,7 +32,13 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
     public static final int FLAG_REVIEW = 2;
     public static final int FLAG_RECTIFICATION = 3;
     private int flag = FLAG_OVERDUE;
+
+    public void setItemClickListener(OnItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
+
     List<ThreeFix> threeFixList;
+    private OnItemClickListener itemClickListener;
 
     public HiddenDangeMuitipleAdapter(int flag, List<ThreeFix> threeFixList) {
         this.flag = flag;
@@ -108,6 +115,14 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
 
             case FLAG_RECTIFICATION:
                 ((ViewHolder) holder).button.setText("整改");
+                ((ViewHolder) holder).button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (itemClickListener!=null) {
+                            itemClickListener.onItemClick(view, position, flag);
+                        }
+                    }
+                });
                 ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
