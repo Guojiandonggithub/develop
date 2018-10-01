@@ -34,6 +34,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsAllAdapter;
 import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsEachUnitAllAdapter;
 import com.example.administrator.riskprojects.Adpter.HiddenDangerStatisticsRepeatAdapter;
+import com.example.administrator.riskprojects.Adpter.HiddenQueryStaticAdapter;
 import com.example.administrator.riskprojects.Adpter.SpinnerAdapter;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.Data;
@@ -856,7 +857,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 if (curPage == 1) {
                     swipeRefreshLayout.setRefreshing(true);
                     dtatisticsList.clear();
-                    adapter = new HiddenDangerStatisticsRepeatAdapter(dtatisticsList);
+                    adapter = new HiddenQueryStaticAdapter(dtatisticsList);
                     recyclerView.setAdapter(adapter);
                 } else if (((MainActivity) ctx).index == 3) {
                     Toast.makeText(ctx, "正在加载" + curPage + "/" + pagesize, Toast.LENGTH_SHORT).show();
