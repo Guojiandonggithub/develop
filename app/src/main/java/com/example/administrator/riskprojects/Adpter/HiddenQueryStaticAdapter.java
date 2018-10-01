@@ -1,6 +1,7 @@
 package com.example.administrator.riskprojects.Adpter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +32,16 @@ public class HiddenQueryStaticAdapter extends RecyclerView.Adapter {
             ((ViewHolder) holder).tvHiddenContent.setText(recordList.get(position).getContent());
             ((ViewHolder) holder).tvNameOfTheProfessional.setText(recordList.get(position).getSname());
             ((ViewHolder) holder).tvHazardLevel.setText(recordList.get(position).getGname());
-            //((ViewHolder) holder).tvHiddenTroubleDescription.setText(recordList.get(position).getHiddenBelong());
-//            ((ViewHolder) holder).tvRepeatTheNumber.setText(recordList.get(position).getRepeatNum());
+            ((ViewHolder) holder).tvCheckUnit.setText(recordList.get(position).getHiddenBelong());
+            ((ViewHolder) holder).tvHiddenUnits.setText(recordList.get(position).getTeamGroupName());
+            String isuper = recordList.get(position).getIsupervision();
+            if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
+                isuper = "否";
+            } else {
+                isuper = "是";
+            }
+            ((ViewHolder) holder).tvIsSupervisor.setText(isuper);
+            ((ViewHolder) holder).tvFindTime.setText(recordList.get(position).getFindtime());
         }
 
         /*holder.itemView.setOnClickListener(new View.OnClickListener() {

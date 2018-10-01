@@ -26,6 +26,10 @@ public class HomeHiddenRecord {
 	private String content;//隐患内容
 	private String gname;//级别
 
+	//重复隐患记录统计
+	private String isupervision;//是否督办
+	private String findtime;//发现时间
+
 	public String getMonth() {
 		return month;
 	}
@@ -184,5 +188,21 @@ public class HomeHiddenRecord {
 
 	public void setGname(String gname) {
 		this.gname = gname;
+	}
+
+	public String getIsupervision() {
+		return isupervision;
+	}
+
+	public void setIsupervision(String isupervision) {
+		this.isupervision = isupervision;
+	}
+
+	public String getFindtime() {
+		return findtime;
+	}
+
+	public void setFindtime(String findtime) {
+		this.findtime = findtime;
 	}
 }
