@@ -109,7 +109,7 @@ public class PersonInfoEditActivity extends BaseActivity {
                     userInfos.setPhone(mEtPhone.getText().toString());
                     List<UserInfo> userInfoList = new ArrayList();
                     userInfoList.add(userInfos);
-                    String userStr = JSONArray.toJSONString(userInfos);
+                    String userStr = JSONArray.toJSONString(userInfoList);
                     Utils.putValue(PersonInfoEditActivity.this, Constants.UserInfo, userStr);
                     Intent intent = new Intent();
                     intent.putExtra("phone",mEtPhone.getText().toString());
