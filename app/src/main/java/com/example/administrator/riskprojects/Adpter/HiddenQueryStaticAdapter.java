@@ -1,5 +1,7 @@
 package com.example.administrator.riskprojects.Adpter;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -8,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.activity.HiddenDangerDetailManagementActivity;
+import com.example.administrator.riskprojects.activity.HiddenDangerDetailManagementAddOrDetailActivity;
+import com.example.administrator.riskprojects.activity.HiddenRiskRecordDetailActivity;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 
 import java.util.List;
@@ -44,17 +49,19 @@ public class HiddenQueryStaticAdapter extends RecyclerView.Adapter {
             ((ViewHolder) holder).tvFindTime.setText(recordList.get(position).getFindtime());
         }
 
-        /*holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(),
-                        HiddenRiskRecordDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("hiddenDangerRecord",recordList.get(position));
-                intent.putExtra("hiddenrecordBundle",bundle);
+                        HiddenDangerDetailManagementActivity.class);
+                String id = recordList.get(position).getId();
+                String employeeId = recordList.get(position).getEmployeeId();
+                intent.putExtra("id", id);
+                intent.putExtra("employeeId", employeeId);
+                intent.putExtra("statistics", "statistics");
                 holder.itemView.getContext().startActivity(intent);
             }
-        });*/
+        });
 
     }
 

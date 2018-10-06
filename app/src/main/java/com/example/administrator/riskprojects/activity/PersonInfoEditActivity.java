@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.example.administrator.riskprojects.BaseActivity;
+import com.example.administrator.riskprojects.LoginActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.GpHiddenDanger;
 import com.example.administrator.riskprojects.bean.SelectItem;
@@ -100,6 +101,11 @@ public class PersonInfoEditActivity extends BaseActivity {
             public void onMySuccess(String data) {
                 Log.i(TAG, "修改用户信息返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
+                    UserInfo userInfos = UserUtils.getUserModel(PersonInfoEditActivity.this);
+                    userInfos.setRealName(mEtName.getText().toString());
+                    userInfos.setPhone(mEtPhone.getText().toString());
+                    String userStr = JSON.toJSONString(userInfos);
+                    Utils.putValue(PersonInfoEditActivity.this, Constants.UserInfo, userStr);
                     Intent intent = new Intent();
                     intent.putExtra("phone",mEtPhone.getText().toString());
                     setResult(RESULT_OK, intent);

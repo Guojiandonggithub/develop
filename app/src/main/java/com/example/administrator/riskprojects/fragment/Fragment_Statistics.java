@@ -251,11 +251,11 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             String monthstr = "0" + month;
             month = Integer.parseInt(monthstr);
         }
-        int date = cal.get(Calendar.DATE);
+        /*int date = cal.get(Calendar.DATE);
         final String sname = year + "-" + (month + 1) + "-01";
         final String fname = year + "-" + (month + 1) + "-" + date;
         tvStartDate.setText(sname);
-        tvEndDate.setText(fname);
+        tvEndDate.setText(fname);*/
         cvSelectStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -486,8 +486,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     private void getHiddenStatisticsData(String currentdate) {
         RequestParams params = new RequestParams();
         params.put("employeeId", UserUtils.getUserID(getActivity()));
-        params.put("customParamsOne", tvStartDate.getText().toString());//开始时间
-        params.put("customParamsTwo", tvEndDate.getText().toString());//结束时间
+        if(!TextUtils.isEmpty(tvStartDate.getText())){
+            params.put("customParamsOne", tvStartDate.getText().toString());//开始时间
+        }
+        if(!TextUtils.isEmpty(tvEndDate.getText())){
+            params.put("customParamsTwo", tvEndDate.getText().toString());//结束时间
+        }
         netClient.post(Data.getInstance().getIp() + Constants.TEAMHDSTAISTICSDATAGRID, params, new BaseJsonRes() {
 
             @Override
@@ -533,8 +537,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     //隐患汇总表查询
     private void getHiddenSumaryMobile() {
         RequestParams params = new RequestParams();
-        params.put("customParamsOne", tvStartDate.getText().toString());//开始时间
-        params.put("customParamsTwo", tvEndDate.getText().toString());//结束时间
+        if(!TextUtils.isEmpty(tvStartDate.getText())){
+            params.put("customParamsOne", tvStartDate.getText().toString());//开始时间
+        }
+        if(!TextUtils.isEmpty(tvEndDate.getText())){
+            params.put("customParamsTwo", tvEndDate.getText().toString());//结束时间
+        }
         netClient.post(Data.getInstance().getIp() + Constants.SUMARYMOBILE, params, new BaseJsonRes() {
             @Override
             public void onStart() {
@@ -622,8 +630,12 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         paramsMap.put("page", Integer.toString(curPage));
         paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        paramsMap.put("customParamsFour", tvStartDate.getText().toString());//开始时间
-        paramsMap.put("customParamsFive", tvEndDate.getText().toString());//结束时间
+        if(!TextUtils.isEmpty(tvStartDate.getText())){
+            paramsMap.put("customParamsFour", tvStartDate.getText().toString());//开始时间
+        }
+        if(!TextUtils.isEmpty(tvEndDate.getText())){
+            paramsMap.put("customParamsFive", tvEndDate.getText().toString());//结束时间
+        }
         if (!TextUtils.isEmpty(sid)) {
             paramsMap.put("customParamsTwo", sid);//专业id
         }
@@ -681,9 +693,25 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         Log.e(TAG, "隐患处理单位图表分析参数ishandle:==== " + ishandle);
         RequestParams params = new RequestParams();
         if (!TextUtils.isEmpty(ishandle)) {
-            params.put("customParamsThree", ishandle);//开始时间
+            params.put("customParamsThree", ishandle);//是否处理
         }
         params.put("employeeId", UserUtils.getUserID(getActivity()));
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        if (month < 10) {
+            String monthstr = "0" + month;
+            month = Integer.parseInt(monthstr);
+        }
+        int date = cal.get(Calendar.DATE);
+        final String sname = year + "-" + (month + 1) + "-01";
+        final String fname = year + "-" + (month + 1) + "-" + date;
+        if(TextUtils.isEmpty(tvStartDate.getText())){
+            tvStartDate.setText(sname);
+        }
+        if(TextUtils.isEmpty(tvEndDate.getText())){
+            tvEndDate.setText(fname);
+        }
         params.put("customParamsOne", tvStartDate.getText().toString());//开始时间
         params.put("customParamsTwo", tvEndDate.getText().toString());//结束时间
         netClient.post(Data.getInstance().getIp() + Constants.DEPARTMENTSTATISTICSMOBILE, params, new BaseJsonRes() {
@@ -728,6 +756,22 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     //隐患处理图表分析接口
     private void getHiddenDangerSpecialStatistics(String pid) {
         RequestParams params = new RequestParams();
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        if (month < 10) {
+            String monthstr = "0" + month;
+            month = Integer.parseInt(monthstr);
+        }
+        int date = cal.get(Calendar.DATE);
+        final String sname = year + "-" + (month + 1) + "-01";
+        final String fname = year + "-" + (month + 1) + "-" + date;
+        if(TextUtils.isEmpty(tvStartDate.getText())){
+            tvStartDate.setText(sname);
+        }
+        if(TextUtils.isEmpty(tvEndDate.getText())){
+            tvEndDate.setText(fname);
+        }
         params.put("customParamsOne", tvStartDate.getText().toString());//开始时间
         params.put("customParamsTwo", tvEndDate.getText().toString());//结束时间
         if (!TextUtils.isEmpty(pid)) {
@@ -816,12 +860,16 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     //隐患查询统计
     private void getHiddenQueryStaticMobile(final int curPage) {
         RequestParams params = new RequestParams();
-        Map<String, String> paramsMap = new HashMap<String, String>();
+        Map<String, String> paramsMap = new HashMap();
         paramsMap.put("page", Integer.toString(curPage));
         paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        paramsMap.put("customParamsNine", tvStartDate.getText().toString());//开始时间
-        paramsMap.put("customParamsTen", tvEndDate.getText().toString());//结束时间
+        if(!TextUtils.isEmpty(tvStartDate.getText())){
+            paramsMap.put("customParamsNine", tvStartDate.getText().toString());//开始时间
+        }
+        if(!TextUtils.isEmpty(tvEndDate.getText())){
+            paramsMap.put("customParamsTen", tvEndDate.getText().toString());//结束时间
+        }
         SelectItem selectItem = (SelectItem) spOther.getSelectedItem();
         if (null != selectItem) {
             if (Integer.parseInt(selectItem.id)>=0) {

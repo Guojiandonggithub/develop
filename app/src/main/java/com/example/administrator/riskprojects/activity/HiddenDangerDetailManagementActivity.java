@@ -80,7 +80,14 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
     }
 
     private void setView() {
-        txtTitle.setText(R.string.hidden_danger_record_management);
+        final Intent intent = getIntent();
+        String statistics = intent.getStringExtra("statistics");
+        if(!TextUtils.isEmpty(statistics)){
+            txtTitle.setText(R.string.hazard_query_statistics);
+            llBottom.setVisibility(View.GONE);
+        }else{
+            txtTitle.setText(R.string.hidden_danger_record_management);
+        }
         tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,7 +95,6 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                         , new MyAlertDialog.DialogListener() {
                     @Override
                     public void affirm() {
-                        Intent intent = getIntent();
                         String id = intent.getStringExtra("id");
                         if (checkparam(intent)) {
                             deleteHiddenRecord(id);

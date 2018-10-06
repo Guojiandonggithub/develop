@@ -27,8 +27,26 @@ public class HomeHiddenRecord {
 	private String gname;//级别
 
 	//重复隐患记录统计
+	private String id; //隐患id
+	private String employeeId; //隐患录入人id
 	private String isupervision;//是否督办
 	private String findtime;//发现时间
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getEmployeeId() {
+		return employeeId;
+	}
+
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
+	}
 
 	public String getMonth() {
 		return month;
