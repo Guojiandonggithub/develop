@@ -30,7 +30,7 @@ public class HomeHiddenRecord {
 	private String id; //隐患id
 	private String employeeId; //隐患录入人id
 	private String isupervision;//是否督办
-	private String findtime;//发现时间
+	private String findTime;//发现时间
 	private String jbName;//发现时间
 
 	public String getId() {
@@ -217,12 +217,12 @@ public class HomeHiddenRecord {
 		this.isupervision = isupervision;
 	}
 
-	public String getFindtime() {
-		return findtime;
+	public String getFindTime() {
+		return findTime;
 	}
 
-	public void setFindtime(String findtime) {
-		this.findtime = findtime;
+	public void setFindTime(String findTime) {
+		this.findTime = findTime;
 	}
 
 	public String getJbName() {

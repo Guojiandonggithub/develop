@@ -48,7 +48,7 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
     protected NetClient netClient;
     Context context;
 
-    public HiddenDangeMuitipleAdapter(int flag, List<ThreeFix> threeFixList,Context context) {
+    public HiddenDangeMuitipleAdapter(int flag, List<ThreeFix> threeFixList, Context context) {
         this.flag = flag;
         this.threeFixList = threeFixList;
         this.context = context;
@@ -69,16 +69,16 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).tvTimeOrOrder.setText(threeFixList.get(position).getClassName());
         ((ViewHolder) holder).tvCategory.setText(threeFixList.get(position).getJbName());
         String isuper = threeFixList.get(position).getIsupervision();
-        if(TextUtils.isEmpty(isuper)||TextUtils.equals(isuper,"0")){
+        if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
             isuper = "未督办";
-        }else{
+        } else {
             isuper = "已督办";
         }
         ((ViewHolder) holder).tvSupervise.setText(isuper);
         switch (flag) {
             case FLAG_OVERDUE:
                 ((ViewHolder) holder).button.setText("重新下达");
-                ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+                ((ViewHolder) holder).button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         final ThreeFix threeFix = threeFixList.get(position);
@@ -93,15 +93,29 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
                                 new MyAlertDialog.DialogListener() {
                                     @Override
                                     public void affirm() {
-                                        handleOutTime(threeFix.getId(),position);
+                                        handleOutTime(threeFix.getId(), position);
                                     }
 
                                     @Override
                                     public void cancel() {
 
                                     }
-                                },"你确定要重新下达么？" );
+                                }, "你确定要重新下达么？");
                         myAlertDialog.show();
+                    }
+                });
+                ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final ThreeFix threeFix = threeFixList.get(position);
+                        Intent intent = new Intent(holder.itemView.getContext(),
+                                HiddenDangerOverdueManagementActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("threeFix", threeFix);
+                        intent.putExtra("threeBund", bundle);
+                        holder.itemView.getContext().startActivity(intent);
+
+
                     }
                 });
                 break;
@@ -143,11 +157,11 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
                         intent.putExtra("threeBund",bundle);
                         holder.itemView.getContext().startActivity(intent);*/
                         Intent intent = new Intent(holder.itemView.getContext(), HiddenDangerAcceptanceActivity.class);
-                        intent.putExtra("threeFixId",threeFix.getId());
-                        intent.putExtra("recheckresult",threeFix.getRecheckResult());
-                        intent.putExtra("description",threeFix.getDescription());
-                        intent.putExtra("recheckPersonId",threeFix.getRecheckPersonId());
-                        intent.putExtra("recheckPersonName",threeFix.getRecheckPersonName());
+                        intent.putExtra("threeFixId", threeFix.getId());
+                        intent.putExtra("recheckresult", threeFix.getRecheckResult());
+                        intent.putExtra("description", threeFix.getDescription());
+                        intent.putExtra("recheckPersonId", threeFix.getRecheckPersonId());
+                        intent.putExtra("recheckPersonName", threeFix.getRecheckPersonName());
                         holder.itemView.getContext().startActivity(intent);
                     }
                 });
@@ -158,7 +172,7 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
                 ((ViewHolder) holder).button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (itemClickListener!=null) {
+                        if (itemClickListener != null) {
                             itemClickListener.onItemClick(view, position, flag);
                         }
                     }
@@ -166,29 +180,28 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
                 ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Intent intent = new Intent(holder.itemView.getContext(),
-                                //HiddenDangerRectificationManagementActivity.class);
+                        Intent intent = new Intent(holder.itemView.getContext(), HiddenDangerRectificationManagementActivity.class);
                         final ThreeFix threeFix = threeFixList.get(position);
-                        /*Bundle bundle = new Bundle();
-                        bundle.putSerializable("threeFix",threeFix);
-                        intent.putExtra("threeBund",bundle);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("threeFix", threeFix);
+                        intent.putExtra("threeBund", bundle);
                         holder.itemView.getContext().startActivity(intent);
-*/
-                        MyAlertDialog myAlertDialog = new MyAlertDialog(context,
-                                new MyAlertDialog.DialogListener() {
-                                    @Override
-                                    public void affirm() {
-                                        //确定入口
-                                        getHiddenRecord(threeFix,position);
-                                    }
 
-                                    @Override
-                                    public void cancel() {
-
-                                    }
-                                },"你确定要整改此隐患吗？" );
-                        myAlertDialog.show();
-
+//                        MyAlertDialog myAlertDialog = new MyAlertDialog(context,
+//                                new MyAlertDialog.DialogListener() {
+//                                    @Override
+//                                    public void affirm() {
+//                                        //确定入口
+//                                        getHiddenRecord(threeFix,position);
+//                                    }
+//
+//                                    @Override
+//                                    public void cancel() {
+//
+//                                    }
+//                                },"你确定要整改此隐患吗？" );
+//                        myAlertDialog.show();
+//
                     }
                 });
                 break;
@@ -200,7 +213,7 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
     private void handleOutTime(String id, final int position) {//隐患id
         RequestParams params = new RequestParams();
         params.put("ids", id);
-        netClient.post(Data.getInstance().getIp()+Constants.HANDLEOUT_OVERDUELIST, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.HANDLEOUT_OVERDUELIST, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -208,7 +221,7 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
                 if (!TextUtils.isEmpty(data)) {
                     Utils.showLongToast(context, "重新下达成功");
                     threeFixList.remove(position);
-                    notifyDataSetChanged();
+                    notifyItemRemoved(position);
                 }
             }
 
@@ -254,10 +267,10 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
     }
 
     //完成整改
-    private void getHiddenRecord(final ThreeFix threeFix,final int position) {
+    private void getHiddenRecord(final ThreeFix threeFix, final int position) {
         RequestParams params = new RequestParams();
-        params.put("ids",threeFix.getId());
-        netClient.post(Data.getInstance().getIp()+ Constants.COMPLETERECTIFY, params, new BaseJsonRes() {
+        params.put("ids", threeFix.getId());
+        netClient.post(Data.getInstance().getIp() + Constants.COMPLETERECTIFY, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {

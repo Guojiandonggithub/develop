@@ -46,7 +46,7 @@ public class HiddenQueryStaticAdapter extends RecyclerView.Adapter {
                 isuper = "是";
             }
             ((ViewHolder) holder).tvIsSupervisor.setText(isuper);
-            ((ViewHolder) holder).tvFindTime.setText(recordList.get(position).getFindtime());
+            ((ViewHolder) holder).tvFindTime.setText(recordList.get(position).getFindTime()                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               );
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

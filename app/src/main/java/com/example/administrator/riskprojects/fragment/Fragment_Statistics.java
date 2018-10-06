@@ -871,7 +871,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             paramsMap.put("customParamsTen", tvEndDate.getText().toString());//结束时间
         }
         SelectItem selectItem = (SelectItem) spOther.getSelectedItem();
-        if (null != selectItem) {
+        if (null != selectItem&&!TextUtils.isEmpty(selectItem.id)) {
             if (Integer.parseInt(selectItem.id)>=0) {
                 paramsMap.put("customParamsSix", selectItem.id);//状态
             }
