@@ -36,7 +36,7 @@ public class HiddenQueryStaticAdapter extends RecyclerView.Adapter {
         if (recordList.size() > 0) {
             ((ViewHolder) holder).tvHiddenContent.setText(recordList.get(position).getContent());
             ((ViewHolder) holder).tvNameOfTheProfessional.setText(recordList.get(position).getSname());
-            ((ViewHolder) holder).tvHazardLevel.setText(recordList.get(position).getGname());
+            ((ViewHolder) holder).tvHazardLevel.setText(recordList.get(position).getJbName());
             ((ViewHolder) holder).tvCheckUnit.setText(recordList.get(position).getHiddenBelong());
             ((ViewHolder) holder).tvHiddenUnits.setText(recordList.get(position).getTeamGroupName());
             String isuper = recordList.get(position).getIsupervision();

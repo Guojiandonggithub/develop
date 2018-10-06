@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.LoginActivity;
 import com.example.administrator.riskprojects.R;
@@ -24,7 +25,9 @@ import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -104,7 +107,9 @@ public class PersonInfoEditActivity extends BaseActivity {
                     UserInfo userInfos = UserUtils.getUserModel(PersonInfoEditActivity.this);
                     userInfos.setRealName(mEtName.getText().toString());
                     userInfos.setPhone(mEtPhone.getText().toString());
-                    String userStr = JSON.toJSONString(userInfos);
+                    List<UserInfo> userInfoList = new ArrayList();
+                    userInfoList.add(userInfos);
+                    String userStr = JSONArray.toJSONString(userInfos);
                     Utils.putValue(PersonInfoEditActivity.this, Constants.UserInfo, userStr);
                     Intent intent = new Intent();
                     intent.putExtra("phone",mEtPhone.getText().toString());
