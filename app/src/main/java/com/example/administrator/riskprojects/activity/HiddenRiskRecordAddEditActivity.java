@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,8 +22,11 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.administrator.riskprojects.Adpter.AddPicAdapter;
 import com.example.administrator.riskprojects.Adpter.SpinnerAdapter;
 import com.example.administrator.riskprojects.BaseActivity;
+import com.example.administrator.riskprojects.BasePicActivity;
+import com.example.administrator.riskprojects.OnItemClickListener;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.Area;
 import com.example.administrator.riskprojects.bean.ClassNumber;
@@ -37,6 +43,10 @@ import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.util.DensityUtil;
 import com.juns.health.net.loopj.android.http.RequestParams;
+
+import org.devio.takephoto.model.TImage;
+import org.devio.takephoto.model.TResult;
+
 import java.util.Calendar;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +54,7 @@ import java.util.List;
 /**
  * 隐患记录 添加修改
  */
-public class HiddenRiskRecordAddEditActivity extends BaseActivity {
+public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
     private static final String TAG = "HiddenRiskRecordAddEdit";
     private TextView mTxtLeft;
     private ImageView mImgLeft;
@@ -86,9 +96,13 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     private LinearLayoutCompat llBottom;
     private TextView tvOk;
     private TextView tvHang;
+    private RecyclerView recyclerView;
     protected NetClient netClient;
     private HiddenDangerRecord record = new HiddenDangerRecord();
     private String id;
+    private AddPicAdapter picAdapter;
+    //存放图片路径
+    private List<String> paths = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,7 +197,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         llBottom = findViewById(R.id.ll_bottom);
         tvOk = findViewById(R.id.tv_ok);
         mTxtTitle.setText("隐患记录新增");
-        tvOk.setOnClickListener(new View.OnClickListener(){
+        tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 HiddenDangerRecord record = getHiddenDangerRecord();
@@ -193,12 +207,28 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                     flag = "update";
                     record.setId(id);
                 }
-                if(checkInput(record)){
-                    addEditHiddenDanger(record,flag);
+                if (checkInput(record)) {
+                    addEditHiddenDanger(record, flag);
                 }
             }
         });
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        recyclerView.setAdapter(picAdapter = new AddPicAdapter(paths));
+        picAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position, int flag) {
+                if (position == paths.size()) {
+                    /** * 图片多选 * @param limit 最多选择图片张数的限制 **/
+                    getTakePhoto().onPickMultiple(3 - paths.size());
+                }
+            }
 
+            @Override
+            public boolean onItemLongClick(View view, int position) {
+                return false;
+            }
+        });
     }
 
     private void setUpSpinner(Spinner spinner, final SpinnerAdapter adapter) {
@@ -222,22 +252,22 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     }
 
 
-    private void initdata(){
+    private void initdata() {
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
         if (!TextUtils.isEmpty(id)) {
             String hiddenrecordjson = getIntent().getStringExtra("hiddenrecordjson");
-            Log.e(TAG, "initdata: hiddenrecordjson-------------"+hiddenrecordjson);
+            Log.e(TAG, "initdata: hiddenrecordjson-------------" + hiddenrecordjson);
             record = JSONArray.parseObject(hiddenrecordjson, HiddenDangerRecord.class);
             etContent.setText(record.getContent());
             tvDate.setText(record.getFindTime());
             etLocation.setText(record.getHiddenPlace());
             etCheckPerson.setText(record.getCheckPerson());
             String isuper = record.getIsupervision();
-            if(TextUtils.equals(isuper,"0")){
+            if (TextUtils.equals(isuper, "0")) {
                 checkYes.setSelected(false);
                 checkNos.setSelected(true);
-            }else{
+            } else {
                 checkYes.setSelected(true);
                 checkNos.setSelected(false);
             }
@@ -263,7 +293,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     private void getCollieryTeam() {
         RequestParams params = new RequestParams();
         params.put("employeeId", UserUtils.getUserID(HiddenRiskRecordAddEditActivity.this));
-        netClient.post(Data.getInstance().getIp()+Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -274,14 +304,14 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                     int collieryTeamsint = 0;
                     for (int i = 0; i < collieryTeams.size(); i++) {
                         SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getTeamName().replaceAll("&nbsp;","   ");
+                        selectItem.name = collieryTeams.get(i).getTeamName().replaceAll("&nbsp;", "   ");
                         selectItem.id = collieryTeams.get(i).getId();
-                        if(collieryTeams.get(i).getId().equals(record.getTeamGroupCode())){
+                        if (collieryTeams.get(i).getId().equals(record.getTeamGroupCode())) {
                             collieryTeamsint = i;
                         }
                         selectItems.add(selectItem);
                     }
-                    mSpHiddenUnitsAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
+                    mSpHiddenUnitsAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems, Gravity.CENTER_VERTICAL | Gravity.LEFT);
                     setUpSpinner(spHiddenUnits, mSpHiddenUnitsAdapter);
                     mSpHiddenUnitsAdapter.notifyDataSetChanged();
                     spHiddenUnits.setSelection(collieryTeamsint);
@@ -300,7 +330,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     //获取所属专业
     private void getSpecialty() {
         RequestParams params = new RequestParams();
-        netClient.post(Data.getInstance().getIp()+Constants.GET_SPECIALTY, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.GET_SPECIALTY, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -313,7 +343,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                         SelectItem selectItem = new SelectItem();
                         selectItem.name = collieryTeams.get(i).getSname();
                         selectItem.id = collieryTeams.get(i).getId();
-                        if(collieryTeams.get(i).getId().equals(record.getSid())){
+                        if (collieryTeams.get(i).getId().equals(record.getSid())) {
                             sint = i;
                         }
                         selectItems.add(selectItem);
@@ -337,7 +367,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     //获取隐患类别
     private void getRiskGrade() {
         RequestParams params = new RequestParams();
-        netClient.post(Data.getInstance().getIp()+Constants.GET_RISKGRADE, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.GET_RISKGRADE, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -351,7 +381,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                         selectItem.name = collieryTeams.get(i).getGname();
                         selectItem.id = collieryTeams.get(i).getId();
                         selectItems.add(selectItem);
-                        if(collieryTeams.get(i).getId().equals(record.getGid())){
+                        if (collieryTeams.get(i).getId().equals(record.getGid())) {
                             riskGrade = i;
                         }
                     }
@@ -374,7 +404,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     //获取班次
     private void getClassNumber() {
         RequestParams params = new RequestParams();
-        netClient.post(Data.getInstance().getIp()+Constants.GET_CLASSNUMBER, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.GET_CLASSNUMBER, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -388,7 +418,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                         selectItem.name = collieryTeams.get(i).getClassName();
                         selectItem.id = collieryTeams.get(i).getId();
                         selectItems.add(selectItem);
-                        if(collieryTeams.get(i).getId().equals(record.getClassId())){
+                        if (collieryTeams.get(i).getId().equals(record.getClassId())) {
                             classNumberint = i;
                         }
                     }
@@ -412,7 +442,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     private void getArea() {
         RequestParams params = new RequestParams();
         params.put("employeeId", UserUtils.getUserID(HiddenRiskRecordAddEditActivity.this));
-        netClient.post(Data.getInstance().getIp()+Constants.GET_AREA, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.GET_AREA, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -426,7 +456,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                         selectItem.name = collieryTeams.get(i).getAreaName();
                         selectItem.id = collieryTeams.get(i).getId();
                         selectItems.add(selectItem);
-                        if(collieryTeams.get(i).getId().equals(record.getAreaId())){
+                        if (collieryTeams.get(i).getId().equals(record.getAreaId())) {
                             areaint = i;
                         }
                     }
@@ -449,8 +479,8 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     //获取隐患类型
     private void getHiddenType() {
         RequestParams params = new RequestParams();
-        params.put("dictTypeCode","YHLX");
-        netClient.post(Data.getInstance().getIp()+Constants.GET_DATADICT, params, new BaseJsonRes() {
+        params.put("dictTypeCode", "YHLX");
+        netClient.post(Data.getInstance().getIp() + Constants.GET_DATADICT, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -464,7 +494,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                         selectItem.name = collieryTeams.get(i).getName();
                         selectItem.id = collieryTeams.get(i).getId();
                         selectItems.add(selectItem);
-                        if(collieryTeams.get(i).getId().equals(record.getTid())){
+                        if (collieryTeams.get(i).getId().equals(record.getTid())) {
                             dataDictionary = i;
                         }
                     }
@@ -487,8 +517,8 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     //获取隐患级别
     private void getHiddenGrade() {
         RequestParams params = new RequestParams();
-        params.put("dictTypeCode","YHJB");
-        netClient.post(Data.getInstance().getIp()+Constants.GET_DATADICT, params, new BaseJsonRes() {
+        params.put("dictTypeCode", "YHJB");
+        netClient.post(Data.getInstance().getIp() + Constants.GET_DATADICT, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -502,7 +532,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                         selectItem.name = collieryTeams.get(i).getName();
                         selectItem.id = collieryTeams.get(i).getId();
                         selectItems.add(selectItem);
-                        if(collieryTeams.get(i).getName().equals(record.getJbName())){
+                        if (collieryTeams.get(i).getName().equals(record.getJbName())) {
                             dataDictionary = i;
                         }
                     }
@@ -526,8 +556,8 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     //获取检查单位
     private void getHiddenYHGSLX() {
         RequestParams params = new RequestParams();
-        params.put("dictTypeCode","YHGSLX");
-        netClient.post(Data.getInstance().getIp()+Constants.GET_DATADICT, params, new BaseJsonRes() {
+        params.put("dictTypeCode", "YHGSLX");
+        netClient.post(Data.getInstance().getIp() + Constants.GET_DATADICT, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -541,7 +571,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                         selectItem.name = collieryTeams.get(i).getName();
                         selectItem.id = collieryTeams.get(i).getId();
                         selectItems.add(selectItem);
-                        if(collieryTeams.get(i).getId().equals(record.getHiddenBelongId())){
+                        if (collieryTeams.get(i).getId().equals(record.getHiddenBelongId())) {
                             dataDictionary = i;
                         }
                     }
@@ -564,8 +594,8 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     //获取检查内容
     private void getCheckContent() {
         RequestParams params = new RequestParams();
-        params.put("dictTypeCode","JCNR");
-        netClient.post(Data.getInstance().getIp()+Constants.GET_DATADICT, params, new BaseJsonRes() {
+        params.put("dictTypeCode", "JCNR");
+        netClient.post(Data.getInstance().getIp() + Constants.GET_DATADICT, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -579,14 +609,14 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                         selectItem.name = collieryTeams.get(i).getName();
                         selectItem.id = collieryTeams.get(i).getId();
                         selectItems.add(selectItem);
-                        if(collieryTeams.get(i).getId().equals(record.getHiddenCheckContentId())){
+                        if (collieryTeams.get(i).getId().equals(record.getHiddenCheckContentId())) {
                             dataDictionary = i;
                         }
                     }
                     spCheckContentAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
                     setUpSpinner(spCheckContent, spCheckContentAdapter);
                     spCheckContentAdapter.notifyDataSetChanged();
-                    Log.e(TAG, "onMySuccess: getHiddenCheckContentId===="+ dataDictionary);
+                    Log.e(TAG, "onMySuccess: getHiddenCheckContentId====" + dataDictionary);
                     spCheckContent.setSelection(dataDictionary);
                 }
 
@@ -602,23 +632,23 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
 
     private void getHiddenRecord(String id) {//隐患id
         RequestParams params = new RequestParams();
-        params.put("hiddenDangerRecordId",id);
-        netClient.post(Data.getInstance().getIp()+Constants.HIDDENDANGERRECORD, params, new BaseJsonRes() {
+        params.put("hiddenDangerRecordId", id);
+        netClient.post(Data.getInstance().getIp() + Constants.HIDDENDANGERRECORD, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
                 Log.i(TAG, "隐患数据返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
-                    JSONObject returndata  = JSON.parseObject(data);
+                    JSONObject returndata = JSON.parseObject(data);
                     record = JSONArray.parseObject(data, HiddenDangerRecord.class);
                     etContent.setText(record.getContent());
                     etLocation.setText(record.getHiddenPlace());
                     etCheckPerson.setText(record.getCheckPerson());
                     String isuper = record.getIsupervision();
-                    if(TextUtils.equals(isuper,"0")){
+                    if (TextUtils.equals(isuper, "0")) {
                         checkYes.setSelected(false);
                         checkNos.setSelected(true);
-                    }else{
+                    } else {
                         checkYes.setSelected(true);
                         checkNos.setSelected(false);
                     }
@@ -640,20 +670,20 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     }
 
     //添加修改隐患记录
-    private void addEditHiddenDanger(HiddenDangerRecord hiddenDangerRecord,String flag) {
+    private void addEditHiddenDanger(HiddenDangerRecord hiddenDangerRecord, String flag) {
         RequestParams params = new RequestParams();
         hiddenDangerRecord.setFlag(record.getFlag());
         String hiddenDangerRecordStr = JSON.toJSONString(hiddenDangerRecord);
-        Log.i(TAG, "addHiddenDanger: 隐患添加修改="+hiddenDangerRecordStr);
-        params.put("hiddenDangerRecordJsonData",hiddenDangerRecordStr);
-        if(flag.equals("add")){
+        Log.i(TAG, "addHiddenDanger: 隐患添加修改=" + hiddenDangerRecordStr);
+        params.put("hiddenDangerRecordJsonData", hiddenDangerRecordStr);
+        if (flag.equals("add")) {
             flag = Constants.ADD_HIDDENDANGERRECORD;
-        }else{
+        } else {
             flag = Constants.UPDATE_HIDDENDANGERRECORD;
         }
 
-        Log.e(TAG, "addEditHiddenDanger: flag==============="+flag);
-        netClient.post(Data.getInstance().getIp()+flag, params, new BaseJsonRes() {
+        Log.e(TAG, "addEditHiddenDanger: flag===============" + flag);
+        netClient.post(Data.getInstance().getIp() + flag, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -661,7 +691,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data)) {
                     if (TextUtils.isEmpty(record.getId())) {
                         Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "隐患添加成功！");
-                    }else{
+                    } else {
                         Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "隐患修改成功！");
                     }
                     finish();
@@ -677,19 +707,19 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         });
     }
 
-    private HiddenDangerRecord getHiddenDangerRecord(){
+    private HiddenDangerRecord getHiddenDangerRecord() {
         HiddenDangerRecord record = new HiddenDangerRecord();
-        SelectItem spHiddenUnitItem = (SelectItem)spHiddenUnits.getSelectedItem();
+        SelectItem spHiddenUnitItem = (SelectItem) spHiddenUnits.getSelectedItem();
         //record.setTeamGroupCode(String.valueOf(spHiddenUnitItem.id));
         record.setTeamGroupId(String.valueOf(spHiddenUnitItem.id));
         record.setTeamGroupName(spHiddenUnitItem.toString());
 
-        SelectItem spProfessionalItem = (SelectItem)spProfessional.getSelectedItem();
+        SelectItem spProfessionalItem = (SelectItem) spProfessional.getSelectedItem();
         record.setSid(String.valueOf(spProfessionalItem.id));
         record.setSname(spProfessionalItem.toString());
 
 
-        SelectItem spHiddenClassItem = (SelectItem)spHiddenClass.getSelectedItem();
+        SelectItem spHiddenClassItem = (SelectItem) spHiddenClass.getSelectedItem();
         record.setGname(spHiddenClassItem.toString());
         record.setGid(String.valueOf(spHiddenClassItem.id));
 
@@ -698,36 +728,36 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         record.setTid(String.valueOf(spHiddenTypesItem.id));
 
 
-        SelectItem spOrderItem = (SelectItem)spOrder.getSelectedItem();
+        SelectItem spOrderItem = (SelectItem) spOrder.getSelectedItem();
         record.setClassName(spOrderItem.toString());
         record.setClassId(String.valueOf(spOrderItem.id));
 
-        SelectItem spHiddenSortItem = (SelectItem)spHiddenSort.getSelectedItem();
+        SelectItem spHiddenSortItem = (SelectItem) spHiddenSort.getSelectedItem();
         record.setHiddenBelong(spHiddenSortItem.toString());
         record.setHiddenBelongId(String.valueOf(spHiddenSortItem.id));
 
-        SelectItem spHiddenAreaItem = (SelectItem)spHiddenArea.getSelectedItem();
+        SelectItem spHiddenAreaItem = (SelectItem) spHiddenArea.getSelectedItem();
         String hiddenareaItem = spHiddenAreaItem.toString();
-        hiddenareaItem = hiddenareaItem.replaceAll("#","_");
+        hiddenareaItem = hiddenareaItem.replaceAll("#", "_");
         record.setAreaName(hiddenareaItem);
         record.setAreaId(String.valueOf(spHiddenAreaItem.id));
 
-        SelectItem selectedItem =(SelectItem)spCheckContent.getSelectedItem();
+        SelectItem selectedItem = (SelectItem) spCheckContent.getSelectedItem();
         record.setHiddenCheckContent(selectedItem.getName());
         record.setHiddenCheckContentId(selectedItem.getId());
 
-        SelectItem spIsHandleItem = (SelectItem)spIsHandle.getSelectedItem();
+        SelectItem spIsHandleItem = (SelectItem) spIsHandle.getSelectedItem();
         record.setIshandle(String.valueOf(spIsHandleItem.id));
 
-        if(checkYes.isSelected()){
+        if (checkYes.isSelected()) {
             record.setIsupervision("1");
         }
-        if(checkNos.isSelected()){
+        if (checkNos.isSelected()) {
             record.setIsupervision("0");
         }
 
         record.setJbName(spLevel.getSelectedItem().toString());
-        String dateStr = tvDate.getText().toString().replaceAll("\\.","-");
+        String dateStr = tvDate.getText().toString().replaceAll("\\.", "-");
         Calendar cal = Calendar.getInstance();
         //当前时：HOUR_OF_DAY-24小时制；HOUR-12小时制
         int hour = cal.get(Calendar.HOUR_OF_DAY);
@@ -735,7 +765,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         int minute = cal.get(Calendar.MINUTE);
         //当前秒
         int second = cal.get(Calendar.SECOND);
-        dateStr = dateStr + " " + hour + ":" + + minute+ ":" + second;
+        dateStr = dateStr + " " + hour + ":" + +minute + ":" + second;
         record.setFindTime(dateStr);
         record.setHiddenPlace(etLocation.getText().toString());
         record.setCheckPerson(etCheckPerson.getText().toString());
@@ -772,18 +802,42 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
 
         String role = UserUtils.getUserRoleids(HiddenRiskRecordAddEditActivity.this);
         String userid = UserUtils.getUserID(HiddenRiskRecordAddEditActivity.this);
-        Log.e(TAG, "flag:=== " + hiddenDangerRecord.getFlag() +"userid=========="+userid);
-        Log.e(TAG, "getEmployeeId:=== " + hiddenDangerRecord.getEmployeeId() +"userid=========="+userid);
-        if(!"1".equals(role)&&!userid.equals(hiddenDangerRecord.getEmployeeId())){
+        Log.e(TAG, "flag:=== " + hiddenDangerRecord.getFlag() + "userid==========" + userid);
+        Log.e(TAG, "getEmployeeId:=== " + hiddenDangerRecord.getEmployeeId() + "userid==========" + userid);
+        if (!"1".equals(role) && !userid.equals(hiddenDangerRecord.getEmployeeId())) {
             Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "您不是管理员或该隐患不是您上报的,不能进行修改!");
             return false;
         }
-        if(null!=hiddenDangerRecord.getFlag()){
-            if(Integer.parseInt(hiddenDangerRecord.getFlag())>=2){
+        if (null != hiddenDangerRecord.getFlag()) {
+            if (Integer.parseInt(hiddenDangerRecord.getFlag()) >= 2) {
                 Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "该隐患已经下达不能修改!");
                 return false;
             }
         }
         return true;
+    }
+
+
+    @Override
+    public void takeSuccess(TResult result) {
+        super.takeSuccess(result);
+        for (TImage image : result.getImages()) {
+            paths.add(image.getOriginalPath());
+        }
+        picAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void takeFail(TResult result, String msg) {
+        super.takeFail(result, msg);
+        Toast.makeText(this, "msg", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void takeCancel() {
+        super.takeCancel();
+        Toast.makeText(this, "取消选择", Toast.LENGTH_SHORT).show();
     }
 }
