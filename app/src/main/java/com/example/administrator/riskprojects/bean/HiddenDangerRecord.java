@@ -96,6 +96,7 @@ public class HiddenDangerRecord implements Serializable{
 	private String follingPersonName; // 跟踪人姓名
 	private String follingTeamId; // 跟踪人单位id
 	private String follingTeamName; // 跟踪人单位名称
+	private String checkPerson; // 跟踪人单位名称
 
 	public boolean isExpands() {
 		return expands;
@@ -836,5 +837,13 @@ public class HiddenDangerRecord implements Serializable{
 
 	public void setFollingTeamName(String follingTeamName) {
 		this.follingTeamName = follingTeamName;
+	}
+
+	public String getCheckPerson() {
+		return checkPerson;
+	}
+
+	public void setCheckPerson(String checkPerson) {
+		this.checkPerson = checkPerson;
 	}
 }

@@ -259,7 +259,13 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                     tvTrackingUnit.setText(record.getFollingTeamName());
                     tvTrackPeople.setText(record.getFollingPersonName());
                     tvAcceptanceOfThePeople.setText(record.getRecheckPersonName());
-                    tvAcceptanceOfTheResults.setText(record.getRecheckResult());
+                    String recheckresult = record.getRecheckResult();
+                    if(TextUtils.isEmpty(recheckresult)||TextUtils.equals(recheckresult,"1")){
+                        recheckresult = "未通过";
+                    }else{
+                        recheckresult = "已通过";
+                    }
+                    tvAcceptanceOfTheResults.setText(recheckresult);
                     tvOversee.setText(isuper);
                     tvCheckTheContent.setText(record.getHiddenCheckContent());
                 }

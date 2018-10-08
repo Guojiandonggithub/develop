@@ -51,14 +51,15 @@ public class HiddenDangerStatisticsEachUnitDetailActivity extends BaseActivity i
     }
 
     private void setView() {
-        txtTitle.setText(getResources().getString(R.string.summary_of_hazards));
         String teamGroupCode = getIntent().getStringExtra("teamGroupCode");
         String State = getIntent().getStringExtra("State");
         String statistics = getIntent().getStringExtra("statistics");
         if (TextUtils.isEmpty(statistics)) {
             Log.e(TAG, "详情参数:getHiddenRecord==========" + statistics);
+            txtTitle.setText(getResources().getString(R.string.hidden_danger_statistics_of_each_unit));
             getHiddenRecord(teamGroupCode, State);
         } else {
+            txtTitle.setText(getResources().getString(R.string.summary_of_hazards));
             String teamGroupName = getIntent().getStringExtra("teamGroupName");
             Log.e(TAG, "详情参数:getNotHandleList==========" + teamGroupName);
             getNotHandleList(Constants.PAGE, teamGroupName);

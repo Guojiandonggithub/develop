@@ -75,6 +75,11 @@ public class HiddenDangerAcceptanceActivity extends BaseActivity {
         String recheckPersonName = intent.getStringExtra("recheckPersonName");
         spAcceptanceResultsAdapter.notifyDataSetChanged();
         if(!TextUtils.isEmpty(recheckresult)){
+            if(TextUtils.isEmpty(recheckresult)||TextUtils.equals(recheckresult,"1")){
+                recheckresult = "未通过";
+            }else{
+                recheckresult = "已通过";
+            }
             spAcceptanceResults.setSelection(Integer.parseInt(recheckresult));
         }
         etContent.setText(description);

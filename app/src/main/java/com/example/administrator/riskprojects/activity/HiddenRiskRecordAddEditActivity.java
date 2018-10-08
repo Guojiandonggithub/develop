@@ -82,6 +82,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     private ImageView checkNos;
     private EditText etContent;
     private EditText etLocation;
+    private EditText etCheckPerson;
     private LinearLayoutCompat llBottom;
     private TextView tvOk;
     private TextView tvHang;
@@ -178,6 +179,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         });
         etContent = findViewById(R.id.et_content);
         etLocation = findViewById(R.id.et_add_location);
+        etCheckPerson = findViewById(R.id.et_add_checkPerson);
         llBottom = findViewById(R.id.ll_bottom);
         tvOk = findViewById(R.id.tv_ok);
         mTxtTitle.setText("隐患记录新增");
@@ -230,6 +232,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
             etContent.setText(record.getContent());
             tvDate.setText(record.getFindTime());
             etLocation.setText(record.getHiddenPlace());
+            etCheckPerson.setText(record.getCheckPerson());
             String isuper = record.getIsupervision();
             if(TextUtils.equals(isuper,"0")){
                 checkYes.setSelected(false);
@@ -610,6 +613,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
                     record = JSONArray.parseObject(data, HiddenDangerRecord.class);
                     etContent.setText(record.getContent());
                     etLocation.setText(record.getHiddenPlace());
+                    etCheckPerson.setText(record.getCheckPerson());
                     String isuper = record.getIsupervision();
                     if(TextUtils.equals(isuper,"0")){
                         checkYes.setSelected(false);
@@ -734,6 +738,7 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
         dateStr = dateStr + " " + hour + ":" + + minute+ ":" + second;
         record.setFindTime(dateStr);
         record.setHiddenPlace(etLocation.getText().toString());
+        record.setCheckPerson(etCheckPerson.getText().toString());
         record.setEmployeeId(UserUtils.getUserID(HiddenRiskRecordAddEditActivity.this));
         record.setRealName(UserUtils.getUserName(HiddenRiskRecordAddEditActivity.this));
         record.setFlag(record.getFlag());
@@ -753,6 +758,10 @@ public class HiddenRiskRecordAddEditActivity extends BaseActivity {
     private boolean checkInput(HiddenDangerRecord hiddenDangerRecord) {
         if (TextUtils.isEmpty(etContent.getText().toString())) {
             Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "隐患内容不能为空!");
+            return false;
+        }
+        if (TextUtils.isEmpty(etCheckPerson.getText().toString())) {
+            Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "检查人不能为空!");
             return false;
         }
 
