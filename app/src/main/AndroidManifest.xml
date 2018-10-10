@@ -20,27 +20,27 @@
         android:roundIcon="@mipmap/hiddendanger"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.InspectionActivity"></activity>
-        <activity android:name=".activity.AddHangRecordActivity" />
-        <activity android:name=".activity.SuperviseRecordManagementActivity" />
-        <activity android:name=".activity.AddSupervisorRecordActivity" />
-        <activity android:name=".activity.HiddenDangerStatisticsEachUnitDetailActivity" />
-        <activity android:name=".activity.HiddenRiskRecordDetailActivity" />
-        <activity android:name=".activity.FiveDecisionsActivity" />
-        <activity android:name=".activity.HiddenDangerAcceptanceActivity" />
-        <activity android:name=".activity.LeftOptionSelectActivity" />
-        <activity android:name=".activity.LeftStatisticsOptionSelectActivity" />
-        <activity android:name=".activity.HiddenDangerDetailManagementActivity" />
-        <activity android:name=".activity.HiddenDangeTrackingDetailListActivity" />
-        <activity android:name=".activity.DatePickerActivity" />
+        <activity android:name=".activity.InspectionActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.AddHangRecordActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.SuperviseRecordManagementActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.AddSupervisorRecordActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.HiddenDangerStatisticsEachUnitDetailActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.HiddenRiskRecordDetailActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.FiveDecisionsActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.HiddenDangerAcceptanceActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.LeftOptionSelectActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.LeftStatisticsOptionSelectActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.HiddenDangerDetailManagementActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.HiddenDangeTrackingDetailListActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.DatePickerActivity" android:screenOrientation="portrait" />
         <activity
             android:name=".activity.HiddenRiskTrackingAddEditActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity android:name=".activity.HiddenDangeTrackingManagementActivity" />
-        <activity android:name=".activity.PersonInfoEditActivity" />
-        <activity android:name=".activity.BleSdkActivity" />
-        <activity android:name=".activity.ChangePasswordActivity" />
-        <activity android:name=".LoginActivity">
+            android:windowSoftInputMode="adjustResize|stateHidden" android:screenOrientation="portrait" />
+        <activity android:name=".activity.HiddenDangeTrackingManagementActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.PersonInfoEditActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.BleSdkActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.ChangePasswordActivity" android:screenOrientation="portrait" />
+        <activity android:name=".LoginActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -50,14 +50,14 @@
         <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.HiddenRiskRecordAddEditActivity" />
-        <activity android:name=".activity.HiddenDangerReviewManagementActivity" />
-        <activity android:name=".activity.HiddenDangerReleaseManagementActivity" />
-        <activity android:name=".activity.HiddenDangerOverdueManagementActivity" />
-        <activity android:name=".activity.HiddenDangerRectificationManagementActivity" />
+        <activity android:name=".activity.HiddenRiskRecordAddEditActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.HiddenDangerReviewManagementActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.HiddenDangerReleaseManagementActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.HiddenDangerOverdueManagementActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.HiddenDangerRectificationManagementActivity" android:screenOrientation="portrait" />
         <activity
             android:name=".activity.HiddenDangerDetailManagementAddOrDetailActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:windowSoftInputMode="adjustResize|stateHidden" android:screenOrientation="portrait" />
 
         <receiver android:name=".net.NetworkConnectChangedReceiver" />
     </application>
