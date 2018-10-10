@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">煤矿隐患排查</string>
     <string name="home">主页</string>
+    <string name="inspection">巡检</string>
     <string name="guapai">挂牌督办</string>
     <string name="record_tracking">记录跟踪</string>
     <string name="statistical_analysis">统计分析</string>
@@ -84,11 +85,13 @@
     <string name="add">添加</string>
     <string name="addguapai">挂牌</string>
     <string name="ok_backspace">确\t\t定</string>
+    <string name="accredit_backspace">授\t\t权</string>
     <string name="hang_backspace">挂\t\t牌</string>
     <string name="modification">修改</string>
     <string name="modification_backspace">修\t\t改</string>
     <string name="delete">删除</string>
     <string name="delete_backspace">删\t\t除</string>
+    <string name="inspection_backspace">巡\t\t检</string>
     <string name="cancel">取消</string>
     <string name="ok">确定</string>
     <string name="hidden_units_colon">隐患单位：</string>

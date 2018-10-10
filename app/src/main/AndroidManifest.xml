@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/hiddendanger"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.AddHangRecordActivity"></activity>
+        <activity android:name=".activity.InspectionActivity"></activity>
+        <activity android:name=".activity.AddHangRecordActivity" />
         <activity android:name=".activity.SuperviseRecordManagementActivity" />
         <activity android:name=".activity.AddSupervisorRecordActivity" />
         <activity android:name=".activity.HiddenDangerStatisticsEachUnitDetailActivity" />

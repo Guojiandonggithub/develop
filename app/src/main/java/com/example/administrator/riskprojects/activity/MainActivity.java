@@ -24,6 +24,7 @@ import com.example.administrator.riskprojects.util.UpdateVersionUtil;
 
 public class MainActivity extends FragmentActivity {
     private TextView txt_title;
+    private TextView txt_title_right;
     private ImageView img_left;
     private ImageView img_right;
     private WarnTipDialog Tipdialog;
@@ -83,12 +84,19 @@ public class MainActivity extends FragmentActivity {
         fragments = new Fragment[]{homefragment, supervisionfragment,
                 manageFragment, statisticsfragment, minefragment};
         imagebuttons = new ImageView[5];
+        txt_title_right =findViewById(R.id.txt_title_right);
         imagebuttons[0] = (ImageView) findViewById(R.id.ib_contact_list);
         imagebuttons[1] = (ImageView) findViewById(R.id.ib_find);
         imagebuttons[2] = (ImageView) findViewById(R.id.iv_analysis);
         imagebuttons[3] = (ImageView) findViewById(R.id.ib_weixin);
         imagebuttons[4] = (ImageView) findViewById(R.id.ib_profile);
-
+        txt_title_right.setVisibility(View.VISIBLE);
+        txt_title_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, InspectionActivity.class));
+            }
+        });
         imagebuttons[0].setSelected(true);
         textviews = new TextView[5];
         textviews[0] = (TextView) findViewById(R.id.tv_contact_list);
@@ -118,30 +126,35 @@ public class MainActivity extends FragmentActivity {
                     homefragment.refresh();
                 }
                 txt_title.setText(R.string.home);
+                txt_title_right.setVisibility(View.VISIBLE);
                 img_left.setVisibility(View.GONE);
                 img_right.setVisibility(View.GONE);
                 break;
             case R.id.re_find:
                 index = 1;
                 txt_title.setText(R.string.guapai);
+                txt_title_right.setVisibility(View.GONE);
                 img_left.setVisibility(View.GONE);
                 img_right.setVisibility(View.GONE);
                 break;
             case R.id.analysis:
                 index = 2;
                 txt_title.setText(manageFragment.getTitle());
+                txt_title_right.setVisibility(View.GONE);
                 img_left.setVisibility(manageFragment.getAddVisible());
                 img_right.setVisibility(View.VISIBLE);
                 break;
             case R.id.re_weixin:
                 index = 3;
                 txt_title.setText(statisticsfragment.getTitle());
+                txt_title_right.setVisibility(View.GONE);
                 img_left.setVisibility(View.GONE);
                 img_right.setVisibility(View.VISIBLE);
                 break;
             case R.id.re_profile:
                 index = 4;
                 txt_title.setText(R.string.me);
+                txt_title_right.setVisibility(View.GONE);
                 img_left.setVisibility(View.GONE);
                 img_right.setVisibility(View.GONE);
                 break;
