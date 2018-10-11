@@ -112,6 +112,16 @@ public interface Constants {
 	String ADD_GPHIDDENDANGER = "hiddenDangerRecordMobileAction!gpHiddenDangerRecord.action";
 	//修改用户数据
 	String UPDATE_PERSONINFO = "employeeMobileAction!editUserInfo.action";
+	//主页获取近期销号、未整改记录
+	String GET_XIAOHAOLIST = "yesterdayHdStatisticsMobileAction!getXiaoHaoList.action";
+	//主页获取逾期隐患
+	String GET_WITHINTHETIMELIST = "hiddenDangerOutOfTimeMobileAction!findhiddenDangerOutTime.action";
+	//主页获取逾期隐患
+	String GET_FORACCEPTANCELIST = "hiddenDangerRecheckMobileAction!findhiddenDangerRecheck.action";
+	//获取巡检记录
+	String GET_CARDRECORDLIST = "cardRecordMobileAction!findCardRecordByUserId.action";
+	//提交巡检记录
+	String ADD_CARDRECORDLIST = "cardRecordMobileAction!addCardRecord.action";
 
 
 	public void addRecheck(Context context);

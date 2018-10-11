@@ -49,9 +49,9 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).ivStatusSecond.setImageResource(getImageResourceByFlag(recordList.get(position).getFlag(),recordList.get(position).getOutTimeFlag()));
         String isuper = recordList.get(position).getIsupervision();
         if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
-            isuper = "未督办";
+            isuper = "未挂牌";
         } else {
-            isuper = "已督办";
+            isuper = "已挂牌";
         }
         ((ViewHolder) holder).tvOversee.setText(isuper);
         if (recordList.get(position).isExpands()) {

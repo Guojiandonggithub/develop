@@ -53,7 +53,7 @@ public class BleSdkActivity extends AppCompatActivity {
                         public void onScanCard(String card, boolean isLowPower) {
                             addResult("扫描到蓝牙卡,卡号[" + card + "],电量[:" + (isLowPower ? "不足]" : "充足]"));
                         }
-                    }, BleScanner.ScanMode.SCAN_MODE_LOW_LATENCY);
+                    }, BleScanner.ScanMode.SCAN_MODE_BALANCED);
                     if (startScanSuccessful) {
                         addResult("---开始扫描---");
                     }

@@ -138,8 +138,6 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
     private void initView(View layout) {
         mSwipeRefreshLayout = layout.findViewById(R.id.swipeRefreshLayout);
         recyclerView = layout.findViewById(R.id.recyclerView);
-        mSwipeRefreshLayout = layout.findViewById(R.id.swipeRefreshLayout);
-        recyclerView = layout.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
         mSwipeRefreshLayout.setOnRefreshListener(this);

@@ -50,6 +50,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".activity.HomePageTotalDetailActivity" />
         <activity android:name=".activity.HiddenRiskRecordAddEditActivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.HiddenDangerReviewManagementActivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.HiddenDangerReleaseManagementActivity" android:screenOrientation="portrait" />

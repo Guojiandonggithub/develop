@@ -180,9 +180,9 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
                     String isuper = record.getIsupervision();
                     String guapai = "未挂牌";
                     if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
-                        isuper = "未督办";
+                        isuper = "未挂牌";
                     } else {
-                        isuper = "已督办";
+                        isuper = "已挂牌";
                         guapai = "已挂牌";
                     }
                     String ishandle = record.getIshandle();

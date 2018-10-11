@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -21,8 +22,10 @@ import com.example.administrator.riskprojects.Adpter.HomeHiddenDangerAdapter;
 import com.example.administrator.riskprojects.LoginActivity;
 import com.example.administrator.riskprojects.OnItemClickListener;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.activity.BleSdkActivity;
 import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.activity.HiddenDangerStatisticsEachUnitDetailActivity;
+import com.example.administrator.riskprojects.activity.HomePageTotalDetailActivity;
 import com.example.administrator.riskprojects.activity.MainActivity;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
@@ -48,6 +51,10 @@ public class Fragment_Home extends Fragment {
     private TextView mTvForAcceptanceNum;
     private RecyclerView mRecyclerView;
     protected NetClient netClient;
+    private LinearLayoutCompat mLlDeleteNum;
+    private LinearLayoutCompat mLlWithinTheTimeLimitNum;
+    private LinearLayoutCompat mLlUnchangeNum;
+    private LinearLayoutCompat mLlForAcceptanceNum;
     private HomeHiddenDangerAdapter adapter;
 
     @Override
@@ -59,9 +66,6 @@ public class Fragment_Home extends Fragment {
             parentActivity = (MainActivity) getActivity();
             layout = ctx.getLayoutInflater().inflate(R.layout.fragment_home,
                     null);
-			/*lvContact = (ListView) layout.findViewById(R.id.listview);
-			errorItem = (RelativeLayout) layout
-					.findViewById(R.id.rl_error_item);*/
         } else {
             ViewGroup parent = (ViewGroup) layout.getParent();
             if (parent != null) {
@@ -93,12 +97,60 @@ public class Fragment_Home extends Fragment {
     private void initView(View layout) {
         //已消号数量
         mTvDeleteNum = layout.findViewById(R.id.tv_delete_num);
+        mLlDeleteNum = layout.findViewById(R.id.ll_delete_num);
+        mLlDeleteNum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!mTvDeleteNum.getText().toString().equals("0")){
+                    Intent intent = new Intent(ctx, HomePageTotalDetailActivity.class);
+                    intent.putExtra("datatype","mLlDeleteNum");
+                    intent.putExtra("topname","已消号数量");
+                    startActivity(intent);
+                }
+            }
+        });
         //逾期数量
         mTvWithinTheTimeLimitNum = layout.findViewById(R.id.tv_within_the_time_limit_num);
+        mLlWithinTheTimeLimitNum = layout.findViewById(R.id.ll_within_the_time_limit_num);
+        mLlWithinTheTimeLimitNum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!mTvWithinTheTimeLimitNum.getText().toString().equals("0")){
+                    Intent intent = new Intent(ctx, HomePageTotalDetailActivity.class);
+                    intent.putExtra("datatype","mLlWithinTheTimeLimitNum");
+                    intent.putExtra("topname","逾期数量");
+                    startActivity(intent);
+                }
+            }
+        });
         //未整改
         mTvUnchangeNum = layout.findViewById(R.id.tv_unchange_num);
+        mLlUnchangeNum = layout.findViewById(R.id.ll_unchange_num);
+        mLlUnchangeNum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!mTvUnchangeNum.getText().toString().equals("0")){
+                    Intent intent = new Intent(ctx, HomePageTotalDetailActivity.class);
+                    intent.putExtra("datatype","mLlUnchangeNum");
+                    intent.putExtra("topname","未整改");
+                    startActivity(intent);
+                }
+            }
+        });
         //待验收
         mTvForAcceptanceNum = layout.findViewById(R.id.tv_for_acceptance_num);
+        mLlForAcceptanceNum = layout.findViewById(R.id.ll_for_acceptance_num);
+        mLlForAcceptanceNum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!mTvForAcceptanceNum.getText().toString().equals("0")){
+                    Intent intent = new Intent(ctx, HomePageTotalDetailActivity.class);
+                    intent.putExtra("datatype","mLlForAcceptanceNum");
+                    intent.putExtra("topname","待验收");
+                    startActivity(intent);
+                }
+            }
+        });
         mRecyclerView = layout.findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(ctx));
     }

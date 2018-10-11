@@ -44,6 +44,7 @@
                     android:layout_marginTop="3dp"
                     android:layout_marginRight="6dp"
                     android:layout_marginBottom="3dp"
+                    android:id="@+id/ll_delete_num"
                     android:layout_weight="1"
                     android:background="@drawable/blue_rectangle_white_stroke_4dp_corner"
                     android:elevation="@dimen/elevation_basic"
@@ -71,6 +72,7 @@
                 </android.support.v7.widget.LinearLayoutCompat>
 
                 <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_within_the_time_limit_num"
                     android:layout_width="0dp"
                     android:layout_height="69dp"
                     android:layout_marginLeft="6dp"
@@ -113,6 +115,7 @@
 
 
                 <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_unchange_num"
                     android:layout_width="0dp"
                     android:layout_height="69dp"
                     android:layout_marginLeft="6dp"
@@ -146,6 +149,7 @@
                 </android.support.v7.widget.LinearLayoutCompat>
 
                 <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_for_acceptance_num"
                     android:layout_width="0dp"
                     android:layout_height="69dp"
                     android:layout_marginLeft="6dp"

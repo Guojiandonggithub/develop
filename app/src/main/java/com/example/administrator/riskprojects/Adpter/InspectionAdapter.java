@@ -14,13 +14,14 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.administrator.riskprojects.OnItemClickListener;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.bean.CarRecord;
 
 import java.util.List;
 
 
 public class InspectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<String> list;
+    private List<CarRecord> recordList;
     private OnItemClickListener onItemClickListener;
 
     public void setWait(boolean wait) {
@@ -29,8 +30,8 @@ public class InspectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     boolean isWait = false;//倒计时
 
-    public InspectionAdapter(List<String> list) {
-        this.list = list;
+    public InspectionAdapter(List<CarRecord> recordList) {
+        this.recordList = recordList;
     }
 
     @NonNull
@@ -51,7 +52,8 @@ public class InspectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             ((ViewHolder) holder).tvTop.setTextColor(Color.parseColor("#999999"));
             ((ViewHolder) holder).tvTop.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         } else {
-            ((ViewHolder) holder).tvTop.setText(list.get(position));
+            ((ViewHolder) holder).tvTop.setText("巡检时间 "+recordList.get(position).getCardTime());
+            ((ViewHolder) holder).tvBottom.setText(recordList.get(position).getCardAdd());
             ((ViewHolder) holder).tvTop.setTextColor(Color.parseColor("#000000"));
             ((ViewHolder) holder).tvTop.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
@@ -62,7 +64,7 @@ public class InspectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        return isWait ? list.size() : list.size() + 1;
+        return isWait ? recordList.size() : recordList.size() + 1;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {

@@ -67,7 +67,7 @@ public class ThreeFix implements Serializable{
 	private String follingPersonName; // 跟踪人姓名
 	private String follingTeamId; // 跟踪人单位id
 	private String follingTeamName; // 跟踪人单位名称
-	private String isupervision; // 督办
+	private String isupervision; // 挂牌
 
 	public String getId() {
 		return id;

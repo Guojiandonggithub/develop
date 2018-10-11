@@ -70,9 +70,9 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).tvCategory.setText(threeFixList.get(position).getJbName());
         String isuper = threeFixList.get(position).getIsupervision();
         if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
-            isuper = "未督办";
+            isuper = "未挂牌";
         } else {
-            isuper = "已督办";
+            isuper = "已挂牌";
         }
         ((ViewHolder) holder).tvSupervise.setText(isuper);
         switch (flag) {

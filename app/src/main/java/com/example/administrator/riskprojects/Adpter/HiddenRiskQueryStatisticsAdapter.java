@@ -48,9 +48,9 @@ public class HiddenRiskQueryStatisticsAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).ivStatusSecond.setVisibility(View.GONE);
         String isuper = recordList.get(position).getIsupervision();
         if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
-            isuper = "未督办";
+            isuper = "未挂牌";
         } else {
-            isuper = "已督办";
+            isuper = "已挂牌";
         }
         ((ViewHolder) holder).tvOversee.setText(isuper);
         ((ViewHolder) holder).expand.setVisibility(View.VISIBLE);

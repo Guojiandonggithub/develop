@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:text="部&#12288;&#12288;门:"
+                    android:text="督办部门:"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/normal_ts" />
 

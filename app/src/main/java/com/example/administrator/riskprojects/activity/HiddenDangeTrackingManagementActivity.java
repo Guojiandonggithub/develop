@@ -110,9 +110,9 @@ public class HiddenDangeTrackingManagementActivity extends BaseActivity {
         mTvCategory.setText(threeFix.getGname());
         String isuper = threeFix.getIsupervision();
         if(TextUtils.isEmpty(isuper)||TextUtils.equals(isuper,"0")){
-            isuper = "未督办";
+            isuper = "未挂牌";
         }else{
-            isuper = "已督办";
+            isuper = "已挂牌";
         }
         mTvSupervise.setText(isuper);
         mTvFinishTime.setText(threeFix.getCompleteTime());

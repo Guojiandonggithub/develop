@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="填写用户名"
-                    android:text="libn999"
+                    android:text=""
                     android:maxLength="11"
                     android:singleLine="true"
                     android:textColorHint="#DDDDDD"
@@ -125,7 +125,7 @@
                     android:layout_centerVertical="true"
                     android:layout_weight="1"
                     android:hint="填写密码"
-                    android:text="111111"
+                    android:text=""
                     android:inputType="textPassword"
                     android:singleLine="true"
                     android:textColorHint="#DDDDDD"
@@ -137,6 +137,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:visibility="gone"
                 android:layout_marginTop="10dp">
 
                 <RadioGroup
