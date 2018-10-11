@@ -1,8 +1,12 @@
 package com.example.administrator.riskprojects.activity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -13,6 +17,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -47,6 +52,7 @@ import com.juns.health.net.loopj.android.http.RequestParams;
 import org.devio.takephoto.model.TImage;
 import org.devio.takephoto.model.TResult;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.ArrayList;
 import java.util.List;
@@ -220,7 +226,14 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
             public void onItemClick(View view, int position, int flag) {
                 if (position == paths.size()) {
                     /** * 图片多选 * @param limit 最多选择图片张数的限制 **/
-                    getTakePhoto().onPickMultiple(3 - paths.size());
+                    //
+                    showSelectDialog();
+                } else {
+                    startActivity(
+                            new Intent(HiddenRiskRecordAddEditActivity.this,
+                                    ViewBIgPicActivity.class).putExtra("url"
+                                    , paths.get(position)));
+
                 }
             }
 
@@ -229,6 +242,47 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 return false;
             }
         });
+    }
+
+    private void showSelectDialog() {
+        final BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(this);
+        View sheetView = getLayoutInflater().inflate(R.layout.dialog_bottomsheet_headpic, null);
+        Button btcancel = (Button) sheetView.findViewById(R.id.bt_cancel);
+        TextView tvphotoAlbum = (TextView) sheetView.findViewById(R.id.tv_photoAlbum);
+        TextView tvcamera = (TextView) sheetView.findViewById(R.id.tv_camera);
+
+        tvcamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                File file = new File(Environment.getExternalStorageDirectory(), "/temp/" + System.currentTimeMillis() + ".jpg");
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdirs();
+                }
+                Uri imageUri = Uri.fromFile(file);
+                getTakePhoto().onPickFromCapture(imageUri);
+                mBottomSheetDialog.dismiss();
+            }
+        });
+        tvphotoAlbum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                if (android.os.Build.VERSION.SDK_INT > M&&!TextUtils.isEmpty(getFilePath())){
+//                    setFilePath("");
+//                }
+                getTakePhoto().onPickMultiple(3 - paths.size());
+                mBottomSheetDialog.dismiss();
+            }
+        });
+
+        btcancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBottomSheetDialog.dismiss();
+            }
+        });
+
+        mBottomSheetDialog.setContentView(sheetView);
+        mBottomSheetDialog.show();
     }
 
     private void setUpSpinner(Spinner spinner, final SpinnerAdapter adapter) {
