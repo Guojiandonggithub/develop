@@ -138,7 +138,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                 Log.e(TAG, "onClick: hiddenrecordjson=============" + hiddenrecordjson);
                 intents.putExtra("hiddenrecordjson", hiddenrecordjson);
                 intents.putExtra("id", record.getId());
-                startActivity(intents);
+                startActivityForResult(intents,RESULT_FIRST_USER);
             }
         });
 

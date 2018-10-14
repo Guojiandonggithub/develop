@@ -761,6 +761,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                         Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "隐患添加成功！");
                     } else {
                         Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "隐患修改成功！");
+                        setResult(RESULT_OK,new Intent());
                     }
                     finish();
                 }
