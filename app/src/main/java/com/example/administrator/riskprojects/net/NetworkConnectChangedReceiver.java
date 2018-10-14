@@ -90,12 +90,16 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver {
 						Log.e(TAG, "当前WiFi连接可用 ");
 						new ReportRecord().addRecheck(context);
 						new ReportRecord().addAddhiddenrecord(context);
+						new ReportRecord().addHiddenPic(context);
+						new ReportRecord().addCardRecord(context);
 					} else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
 						// connected to the mobile provider's data plan
 						Data.getInstance().setMobile(true);
 						Log.e(TAG, "当前移动网络连接可用 ");
 						new ReportRecord().addRecheck(context);
 						new ReportRecord().addAddhiddenrecord(context);
+						new ReportRecord().addHiddenPic(context);
+						new ReportRecord().addCardRecord(context);
 					}
 				} else {
 					Log.e(TAG, "当前没有网络连接，请确保你已经打开网络 ");

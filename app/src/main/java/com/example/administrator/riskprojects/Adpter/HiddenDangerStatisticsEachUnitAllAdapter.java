@@ -47,7 +47,7 @@ public class HiddenDangerStatisticsEachUnitAllAdapter extends RecyclerView.Adapt
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(),
                         HiddenDangerStatisticsEachUnitDetailActivity.class);
-                String teamGroupCode = dtatisticsList.get(position).getTeamGroupCode();
+                String teamGroupCode = dtatisticsList.get(position).getTeamGroupId();
                 intent.putExtra("teamGroupCode",teamGroupCode);
                 holder.itemView.getContext().startActivity(intent);
             }

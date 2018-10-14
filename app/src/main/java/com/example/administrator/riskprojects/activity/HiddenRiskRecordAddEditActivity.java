@@ -106,6 +106,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
     protected NetClient netClient;
     private HiddenDangerRecord record = new HiddenDangerRecord();
     private String id;
+    private String imagegroup;
     private AddPicAdapter picAdapter;
     //存放图片路径
     private List<String> paths = new ArrayList<>();
@@ -206,16 +207,27 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HiddenDangerRecord record = getHiddenDangerRecord();
+                HiddenDangerRecord records = getHiddenDangerRecord();
 
                 String flag = "add";
                 if (!TextUtils.isEmpty(id)) {
                     flag = "update";
-                    record.setId(id);
+                    records.setId(id);
+                    String userid = UserUtils.getUserID(HiddenRiskRecordAddEditActivity.this);
+                    String roleids = UserUtils.getUserRoleids(HiddenRiskRecordAddEditActivity.this);
+                    if(record.getEmployeeId().equals(userid)||roleids.equals("1")){
+                        if (checkInput(records)) {
+                            upaction(paths,records, flag);
+                        }
+                    }else{
+                        Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有权限进行修改！");
+                    }
                 }
-                if (checkInput(record)) {
-                    addEditHiddenDanger(record, flag);
+                Log.e(TAG, "upaction=================: "+paths);
+                if (checkInput(records)) {
+                    upaction(paths,records, flag);
                 }
+
             }
         });
         recyclerView = findViewById(R.id.recyclerView);
@@ -318,6 +330,8 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
             etLocation.setText(record.getHiddenPlace());
             etCheckPerson.setText(record.getCheckPerson());
             String isuper = record.getIsupervision();
+            imagegroup = record.getImageGroup();
+            getPicList(imagegroup);
             if (TextUtils.equals(isuper, "0")) {
                 checkYes.setSelected(false);
                 checkNos.setSelected(true);
@@ -761,6 +775,45 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         });
     }
 
+    //上传图片
+    private void upaction(List<String> picList,final HiddenDangerRecord records,final  String flag) {
+        List<File> fileList = new ArrayList();
+            try {
+                for (int i=0;i<picList.size();i++){
+                    String picurl = picList.get(i);
+                    File file = new File(picurl);
+                    fileList.add(file);
+                }
+                if(picList.size()>0) {
+                    File file = new File(picList.get(0));
+                    RequestParams params = new RequestParams();
+                    params.put("mobile", file);
+                    String hiddenDangerRecordStr = JSON.toJSONString(records);
+                    params.put("record", hiddenDangerRecordStr);
+                    netClient.post(Data.getInstance().getIp() + Constants.UPLOAD_PIC, params, new BaseJsonRes() {
+
+                        @Override
+                        public void onMySuccess(String data) {
+                            records.setImageGroup(data);
+                            addEditHiddenDanger(records, flag);
+                            Log.i(TAG, "添加修改记录返回数据：" + data);
+                        }
+
+                        @Override
+                        public void onMyFailure(String content) {
+                            Log.e(TAG, "添加修改隐患记录返回错误信息：" + content);
+                            Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                        }
+                    });
+                }else{
+                    addEditHiddenDanger(records, flag);
+                }
+            }catch (Exception e) {
+                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, e.toString());
+            }
+        //}
+    }
+
     private HiddenDangerRecord getHiddenDangerRecord() {
         HiddenDangerRecord record = new HiddenDangerRecord();
         SelectItem spHiddenUnitItem = (SelectItem) spHiddenUnits.getSelectedItem();
@@ -893,5 +946,42 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
     public void takeCancel() {
         super.takeCancel();
         Toast.makeText(this, "取消选择", Toast.LENGTH_SHORT).show();
+    }
+
+    //查询图片列表
+    private void getPicList(String imageGroup) {
+        Log.i(TAG, "imageGroup: 图片imageGroup=========" + imageGroup);
+        try {
+            if(!TextUtils.isEmpty(imageGroup)){
+                RequestParams params = new RequestParams();
+                params.put("imageGroup",imageGroup);
+                netClient.post(Data.getInstance().getIp() + Constants.GET_PICLIST, params, new BaseJsonRes() {
+
+                    @Override
+                    public void onMySuccess(String data) {
+                        Log.i(TAG, "查询图片组返回数据：" + data);
+                        if (!TextUtils.isEmpty(data)) {
+                            //JSONObject returndata = JSON.parseObject(data);
+                            //String rows = returndata.getString("rows");
+                            JSONArray jsonArray = JSONArray.parseArray(data);
+                            for(int i=0;i<jsonArray.size();i++){
+                                JSONObject job = jsonArray.getJSONObject(i); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+                                paths.add(Constants.MAIN_ENGINE+job.get("imagePath"));
+                            }
+                            Log.e(TAG, "paths================: "+paths);
+                            picAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onMyFailure(String content) {
+                        Log.e(TAG, "查询图片组返回错误信息：" + content);
+                        Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                    }
+                });
+            }
+        }catch (Exception e) {
+            Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, e.toString());
+        }
     }
 }

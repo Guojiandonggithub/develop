@@ -39,7 +39,9 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         ((ViewHolder) holder).tvHiddenUnits.setText(recordList.get(position).getTeamGroupName());
-        ((ViewHolder) holder).tvTimeOrOrder.setText(recordList.get(position).getFindTime() + "/" + recordList.get(position).getClassName());
+        String findTimeStr = recordList.get(position).getFindTime();
+        String findTime = findTimeStr.substring(0,10);
+        ((ViewHolder) holder).tvTimeOrOrder.setText(findTime+ "/" + recordList.get(position).getClassName());
         ((ViewHolder) holder).tvHiddenContent.setText(recordList.get(position).getContent());
         ((ViewHolder) holder).tvHiddenDangerBelongs.setText(recordList.get(position).getHiddenBelong());
         ((ViewHolder) holder).tvProfessional.setText(recordList.get(position).getSname());

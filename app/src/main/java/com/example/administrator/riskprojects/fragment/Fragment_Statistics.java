@@ -305,9 +305,11 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     private void showLineChart(List<HomeHiddenRecord> dtatisticsList) {
         //设置数据
         List<Entry> entries = new ArrayList<Entry>();
-        for (int i = 0; i < dtatisticsList.size(); i++) {
-            float num = Float.parseFloat(dtatisticsList.get(i).getTotal());
-            entries.add(new Entry(i, num));
+        if(dtatisticsList.size()>0){
+            for (int i = 0; i < dtatisticsList.size(); i++) {
+                float num = Float.parseFloat(dtatisticsList.get(i).getTotal());
+                entries.add(new Entry(i, num));
+            }
         }
         //一个LineDataSet就是一条线
         LineDataSet lineDataSet = new LineDataSet(entries, "隐患条数");
@@ -450,28 +452,29 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
 
     public void showBarChart(List<HomeHiddenRecord> dtatisticsList, String name) {
         ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+        if(dtatisticsList.size()>0){
+            for (int i = 0; i < dtatisticsList.size(); i++) {
+                /**
+                 * 此处还可传入Drawable对象 BarEntry(float x, float y, Drawable icon)
+                 * 即可设置柱状图顶部的 icon展示
+                 */
+                ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
+                //i: 位置  (float) new Random().nextInt(100):值
+                float num = Float.parseFloat(dtatisticsList.get(i).getTotal());
+                BarEntry barEntry = new BarEntry(i, num);
+                entries.add(barEntry);
+                // 每一个BarDataSet代表一类柱状图
+                if (name.equals("name")) {
+                    BarDataSet barDataSet = new BarDataSet(entries, dtatisticsList.get(i).getName());
+                    initBarDataSet(barDataSet, getRandColor());
+                    dataSets.add(barDataSet);
+                } else {
+                    BarDataSet barDataSet = new BarDataSet(entries, dtatisticsList.get(i).getTeamGroupName());
+                    initBarDataSet(barDataSet, getRandColor());
+                    dataSets.add(barDataSet);
+                }
 
-        for (int i = 0; i < dtatisticsList.size(); i++) {
-            /**
-             * 此处还可传入Drawable对象 BarEntry(float x, float y, Drawable icon)
-             * 即可设置柱状图顶部的 icon展示
-             */
-            ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
-            //i: 位置  (float) new Random().nextInt(100):值
-            float num = Float.parseFloat(dtatisticsList.get(i).getTotal());
-            BarEntry barEntry = new BarEntry(i, num);
-            entries.add(barEntry);
-            // 每一个BarDataSet代表一类柱状图
-            if (name.equals("name")) {
-                BarDataSet barDataSet = new BarDataSet(entries, dtatisticsList.get(i).getName());
-                initBarDataSet(barDataSet, getRandColor());
-                dataSets.add(barDataSet);
-            } else {
-                BarDataSet barDataSet = new BarDataSet(entries, dtatisticsList.get(i).getTeamGroupName());
-                initBarDataSet(barDataSet, getRandColor());
-                dataSets.add(barDataSet);
             }
-
         }
         // 添加多个BarDataSet时
         BarData data = new BarData(dataSets);
@@ -788,7 +791,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             @Override
             public void onMySuccess(String data) {
                 Log.i(TAG, "隐患处理图表分析接口数据返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
+                if (!TextUtils.isEmpty(data)&&data.length()>=3) {
                     List<HomeHiddenRecord> dtatisticsList = JSONArray.parseArray(data, HomeHiddenRecord.class);
                     llLineChart.setVisibility(View.VISIBLE);
                     llBarChart.setVisibility(View.VISIBLE);

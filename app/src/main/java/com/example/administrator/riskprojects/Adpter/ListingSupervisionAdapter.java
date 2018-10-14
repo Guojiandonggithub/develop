@@ -34,7 +34,9 @@ public class ListingSupervisionAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
         ((ViewHolder) holder).mTvHiddenUnits.setText(recordList.get(position).getTeamGroupName());
-        ((ViewHolder) holder).mTvTimeOrOrder.setText(recordList.get(position).getFindTime()+"/"+recordList.get(position).getClassName());
+        String findTimeStr = recordList.get(position).getFindTime();
+        String findTime = findTimeStr.substring(0,10);
+        ((ViewHolder) holder).mTvTimeOrOrder.setText(findTime+"/"+recordList.get(position).getClassName());
         ((ViewHolder) holder).mIvStatus.setImageResource(getImageResourceByFlag(recordList.get(position).getFlag(),recordList.get(position).getOutTimeFlag()));
         ((ViewHolder) holder).mTvHiddenContent.setText(recordList.get(position).getContent());
         ((ViewHolder) holder).mTvHiddenDangerBelongs.setText(recordList.get(position).getHiddenBelong());

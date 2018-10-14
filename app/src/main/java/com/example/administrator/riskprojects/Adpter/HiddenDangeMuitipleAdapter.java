@@ -25,6 +25,7 @@ import com.example.administrator.riskprojects.bean.ThreeFix;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
+import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.view.MyAlertDialog;
 import com.juns.health.net.loopj.android.http.RequestParams;
@@ -100,7 +101,7 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
                                     public void cancel() {
 
                                     }
-                                }, "你确定要重新下达么？");
+                                }, "你确定要重新下达吗？");
                         myAlertDialog.show();
                     }
                 });
@@ -120,11 +121,13 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
                 });
                 break;
             case FLAG_REALEASE:
-                ((ViewHolder) holder).button.setText("五定");
-                ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ThreeFix threeFix = threeFixList.get(position);
+                String userRole = UserUtils.getUserRoleids(context);
+                if("1".equals(userRole)){
+                    ((ViewHolder) holder).button.setText("五定");
+                    ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ThreeFix threeFix = threeFixList.get(position);
                        /* Intent intent = new Intent(holder.itemView.getContext(),
                                 HiddenDangerReleaseManagementActivity.class);
                         Bundle bundle = new Bundle();
@@ -132,23 +135,30 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
                         intent.putExtra("threeBund",bundle);
                         holder.itemView.getContext().startActivity(intent);*/
 
-                        Intent intent = new Intent(
-                                holder.itemView.getContext(),
-                                FiveDecisionsActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("threeFix", threeFix);
-                        intent.putExtra("threeBund", bundle);
-                        holder.itemView.getContext().startActivity(intent);
-                    }
-                });
+                            Intent intent = new Intent(
+                                    holder.itemView.getContext(),
+                                    FiveDecisionsActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("threeFix", threeFix);
+                            intent.putExtra("threeBund", bundle);
+                            holder.itemView.getContext().startActivity(intent);
+                        }
+                    });
+                }else{
+                    ((ViewHolder) holder).button.setVisibility(View.GONE);
+                }
                 break;
 
             case FLAG_REVIEW:
-                ((ViewHolder) holder).button.setText("验收");
-                ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ThreeFix threeFix = threeFixList.get(position);
+                String userRoles = UserUtils.getUserRoleids(context);
+                String userid = UserUtils.getUserID(context);
+                String employeeId = threeFixList.get(position).getEmployeeId();
+                if("1".equals(userRoles)||userid.equals(employeeId)){
+                    ((ViewHolder) holder).button.setText("验收");
+                    ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ThreeFix threeFix = threeFixList.get(position);
                         /*Intent intent = new Intent(holder.itemView.getContext(),
                                 HiddenDangerReviewManagementActivity.class);
 
@@ -156,15 +166,18 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
                         bundle.putSerializable("threeFix",threeFix);
                         intent.putExtra("threeBund",bundle);
                         holder.itemView.getContext().startActivity(intent);*/
-                        Intent intent = new Intent(holder.itemView.getContext(), HiddenDangerAcceptanceActivity.class);
-                        intent.putExtra("threeFixId", threeFix.getId());
-                        intent.putExtra("recheckresult", threeFix.getRecheckResult());
-                        intent.putExtra("description", threeFix.getDescription());
-                        intent.putExtra("recheckPersonId", threeFix.getRecheckPersonId());
-                        intent.putExtra("recheckPersonName", threeFix.getRecheckPersonName());
-                        holder.itemView.getContext().startActivity(intent);
-                    }
-                });
+                            Intent intent = new Intent(holder.itemView.getContext(), HiddenDangerAcceptanceActivity.class);
+                            intent.putExtra("threeFixId", threeFix.getId());
+                            intent.putExtra("recheckresult", threeFix.getRecheckResult());
+                            intent.putExtra("description", threeFix.getDescription());
+                            intent.putExtra("recheckPersonId", threeFix.getRecheckPersonId());
+                            intent.putExtra("recheckPersonName", threeFix.getRecheckPersonName());
+                            holder.itemView.getContext().startActivity(intent);
+                        }
+                    });
+                }else{
+                    ((ViewHolder) holder).button.setVisibility(View.GONE);
+                }
                 break;
 
             case FLAG_RECTIFICATION:

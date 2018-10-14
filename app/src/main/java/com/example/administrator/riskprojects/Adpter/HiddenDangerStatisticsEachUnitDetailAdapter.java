@@ -38,7 +38,9 @@ public class HiddenDangerStatisticsEachUnitDetailAdapter extends RecyclerView.Ad
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if(recordList.size()>0){
             ((ViewHolder) holder).tvHiddenUnits.setText(recordList.get(position).getTeamGroupName());
-            ((ViewHolder) holder).tvTimeOrOrder.setText(recordList.get(position).getFindTime()+"/"+recordList.get(position).getClassName());
+            String findTimeStr = recordList.get(position).getFindTime();
+            String findTime = findTimeStr.substring(0,10);
+            ((ViewHolder) holder).tvTimeOrOrder.setText(findTime+"/"+recordList.get(position).getClassName());
             ((ViewHolder) holder).tvHiddenContent.setText(recordList.get(position).getContent());
             ((ViewHolder) holder).tvHiddenDangerBelongs.setText(recordList.get(position).getHiddenBelong());
         }

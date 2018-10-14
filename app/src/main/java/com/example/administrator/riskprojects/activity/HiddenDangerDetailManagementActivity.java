@@ -207,9 +207,6 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
         recyclerView = findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        //添加数据
-        List<String> strings =new ArrayList<>();
-        recyclerView.setAdapter(new PicAdapter(strings));
     }
 
     private void initdata() {
@@ -231,8 +228,13 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                     JSONObject returndata = JSON.parseObject(data);
                     hiddenrecordjson = data;
                     record = JSONArray.parseObject(data, HiddenDangerRecord.class);
+                    if(record.getFlag().equals("0")||record.getFlag().equals("4")){
+                        tvAdd.setVisibility(View.GONE);
+                    }
                     tvHiddenUnits.setText(record.getTeamGroupName());
-                    tvTimeOrOrder.setText(record.getFindTime() + "/" + record.getClassName());
+                    String findTimeStr = record.getFindTime();
+                    String findTime = findTimeStr.substring(0,10);
+                    tvTimeOrOrder.setText(findTime + "/" + record.getClassName());
                     tvHiddenContent.setText(record.getContent());
                     tvHiddenDangerBelongs.setText(record.getHiddenBelong());
                     tvProfessional.setText(record.getSname());
@@ -261,7 +263,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                     tvStatus.setText(status);
                     tvIsHandle.setText(ishandle);
                     tvHiddenDangerLogger.setText(record.getRealName());
-                    tvFinishTime.setText(record.getCompleteTime());
+                    tvFinishTime.setText(record.getFixTime());
                     tvPrincipal.setText(record.getThreeFixRealName());
                     tvMeasure.setText(record.getMeasure());
                     tvCapital.setText(record.getMoney());
@@ -273,14 +275,17 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                     tvTrackPeople.setText(record.getFollingPersonName());
                     tvAcceptanceOfThePeople.setText(record.getRecheckPersonName());
                     String recheckresult = record.getRecheckResult();
-                    if(TextUtils.isEmpty(recheckresult)||TextUtils.equals(recheckresult,"1")){
-                        recheckresult = "未通过";
+                    if(TextUtils.isEmpty(recheckresult)){
+                        recheckresult = "";
+                    }else if(TextUtils.equals(recheckresult,"0")){
+                        recheckresult = "通过";
                     }else{
-                        recheckresult = "已通过";
+                        recheckresult = "未通过";
                     }
                     tvAcceptanceOfTheResults.setText(recheckresult);
                     tvOversee.setText(isuper);
                     tvCheckTheContent.setText(record.getHiddenCheckContent());
+                    getPicList(record.getImageGroup());
                 }
 
             }
@@ -371,6 +376,42 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                 }
                 break;
             default:
+        }
+    }
+
+    //查询图片列表
+    private void getPicList(String imageGroup) {
+        Log.i(TAG, "imageGroup: 图片imageGroup=========" + imageGroup);
+        try {
+            if(!TextUtils.isEmpty(imageGroup)){
+                RequestParams params = new RequestParams();
+                params.put("imageGroup",imageGroup);
+                netClient.post(Data.getInstance().getIp() + Constants.GET_PICLIST, params, new BaseJsonRes() {
+
+                    @Override
+                    public void onMySuccess(String data) {
+                        Log.i(TAG, "查询图片组返回数据：" + data);
+                        if (!TextUtils.isEmpty(data)) {
+                            JSONArray jsonArray = JSONArray.parseArray(data);
+                            List<String> paths =new ArrayList<>();
+                            for(int i=0;i<jsonArray.size();i++){
+                                JSONObject job = jsonArray.getJSONObject(i); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+                                paths.add(Constants.MAIN_ENGINE+job.get("imagePath"));
+                            }
+                            Log.e(TAG, "paths================: "+paths);
+                            recyclerView.setAdapter(new PicAdapter(paths));
+                        }
+                    }
+
+                    @Override
+                    public void onMyFailure(String content) {
+                        Log.e(TAG, "查询图片组返回错误信息：" + content);
+                        Utils.showLongToast(HiddenDangerDetailManagementActivity.this, content);
+                    }
+                });
+            }
+        }catch (Exception e) {
+            Utils.showLongToast(HiddenDangerDetailManagementActivity.this, e.toString());
         }
     }
 

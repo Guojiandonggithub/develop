@@ -170,7 +170,9 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
                     hiddenrecordjson = data;
                     record = JSONArray.parseObject(data, HiddenDangerRecord.class);
                     tvHiddenUnits.setText(record.getTeamGroupName());
-                    tvTimeOrOrder.setText(record.getFindTime() + "/" + record.getClassName());
+                    String findTimeStr = record.getFindTime();
+                    String findTime = findTimeStr.substring(0,10);
+                    tvTimeOrOrder.setText(findTime + "/" + record.getClassName());
                     tvHiddenContent.setText(record.getContent());
                     tvHiddenDangerBelongs.setText(record.getHiddenBelong());
                     tvProfessional.setText(record.getSname());
@@ -198,7 +200,7 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
                     tvStatus.setText(status);
                     tvIsHandle.setText(ishandle);
                     tvHiddenDangerLogger.setText(record.getRealName());
-                    tvFinishTime.setText(record.getCompleteTime());
+                    tvFinishTime.setText(record.getFixTime());
                     tvPrincipal.setText(record.getThreeFixRealName());
                     tvMeasure.setText(record.getMeasure());
                     tvCapital.setText(record.getMoney());

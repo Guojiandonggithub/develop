@@ -194,7 +194,7 @@ public class UpdateVersionUtil {
                 });
             }
         });
-        builder.setNegativeButton("以后再说", new DialogInterface.OnClickListener() {
+        /*builder.setNegativeButton("以后再说", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -206,7 +206,7 @@ public class UpdateVersionUtil {
                 }
 
             }
-        });
+        });*/
         builder.create().show();
     }
 

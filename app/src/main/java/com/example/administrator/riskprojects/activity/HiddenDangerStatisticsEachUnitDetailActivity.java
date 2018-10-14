@@ -142,7 +142,7 @@ public class HiddenDangerStatisticsEachUnitDetailActivity extends BaseActivity i
             paramsMap.put("State", State);
         }
         if (!TextUtils.isEmpty(teamGroupCode)) {
-            paramsMap.put("teamGroupCode", teamGroupCode);
+            paramsMap.put("teamGroupId", teamGroupCode);
         }
         if (!TextUtils.isEmpty(ishandle)) {
             paramsMap.put("ishandle", ishandle);

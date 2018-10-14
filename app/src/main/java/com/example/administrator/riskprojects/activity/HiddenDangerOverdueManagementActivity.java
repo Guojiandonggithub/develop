@@ -113,7 +113,9 @@ public class HiddenDangerOverdueManagementActivity extends BaseActivity {
         mTvHiddenContent.setText(threeFix.getContent());
         mTvArea.setText(threeFix.getAreaName());
         mTvSpecialty.setText(threeFix.getSname());
-        mTvTimeOrOrder.setText(threeFix.getFindTime()+"/"+threeFix.getClassName());
+        String findTimeStr = threeFix.getFindTime();
+        String findTime = findTimeStr.substring(0,10);
+        mTvTimeOrOrder.setText(findTime+"/"+threeFix.getClassName());
         mTvCategory.setText(threeFix.getJbName());
         String isuper = threeFix.getIsupervision();
         if(TextUtils.isEmpty(isuper)||TextUtils.equals(isuper,"0")){
@@ -122,7 +124,7 @@ public class HiddenDangerOverdueManagementActivity extends BaseActivity {
             isuper = "已挂牌";
         }
         mTvSupervise.setText(isuper);
-        mTvFinishTime.setText(threeFix.getCompleteTime());
+        mTvFinishTime.setText(threeFix.getFixTime());
         mTvDepartment.setText(threeFix.getDeptName());
         mTvMeasure.setText(threeFix.getMeasure());
         mTvCapital.setText(threeFix.getMoney());

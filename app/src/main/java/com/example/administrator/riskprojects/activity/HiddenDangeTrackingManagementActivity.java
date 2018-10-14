@@ -12,6 +12,7 @@ import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.ThreeFix;
 import com.example.administrator.riskprojects.net.NetClient;
+import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 
 /**
@@ -58,9 +59,16 @@ public class HiddenDangeTrackingManagementActivity extends BaseActivity {
         mTvAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HiddenDangeTrackingManagementActivity.this, HiddenRiskTrackingAddEditActivity.class);
-                intent.putExtra("threeFixId",threeFix.getId());
-                startActivity(intent);
+                String employee = threeFix.getEmployeeId();
+                String userid = UserUtils.getUserID(HiddenDangeTrackingManagementActivity.this);
+                String userRole = UserUtils.getUserRoleids(HiddenDangeTrackingManagementActivity.this);
+                if("1".equals(userRole)||employee.equals(userid)){
+                    Intent intent = new Intent(HiddenDangeTrackingManagementActivity.this, HiddenRiskTrackingAddEditActivity.class);
+                    intent.putExtra("threeFixId",threeFix.getId());
+                    startActivity(intent);
+                }else{
+                    Utils.showLongToast(HiddenDangeTrackingManagementActivity.this, "没有添加跟踪记录权限");
+                }
             }
         });
 
@@ -106,7 +114,9 @@ public class HiddenDangeTrackingManagementActivity extends BaseActivity {
         mTvHiddenContent.setText(threeFix.getContent());
         mTvArea.setText(threeFix.getAreaName());
         mTvSpecialty.setText(threeFix.getSname());
-        mTvTimeOrOrder.setText(threeFix.getFindTime()+"/"+threeFix.getClassName());
+        String findTimeStr = threeFix.getFindTime();
+        String findTime = findTimeStr.substring(0,10);
+        mTvTimeOrOrder.setText(findTime+"/"+threeFix.getClassName());
         mTvCategory.setText(threeFix.getGname());
         String isuper = threeFix.getIsupervision();
         if(TextUtils.isEmpty(isuper)||TextUtils.equals(isuper,"0")){
@@ -115,8 +125,8 @@ public class HiddenDangeTrackingManagementActivity extends BaseActivity {
             isuper = "已挂牌";
         }
         mTvSupervise.setText(isuper);
-        mTvFinishTime.setText(threeFix.getCompleteTime());
-        mTvDepartment.setText(threeFix.getLuoshidanwei());
+        mTvFinishTime.setText(threeFix.getFixTime());
+        mTvDepartment.setText(threeFix.getTeamName());
         mTvMeasure.setText(threeFix.getMeasure());
         mTvCapital.setText(threeFix.getMoney());
         mTvPrincipal.setText(threeFix.getRealName());

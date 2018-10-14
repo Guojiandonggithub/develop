@@ -824,7 +824,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                                             public void cancel() {
 
                                             }
-                                        }, "你确定要整改此么？");
+                                        }, "您确定完成整改吗？");
                                 myAlertDialog.show();
 
                             }
@@ -848,9 +848,14 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 break;
             case R.id.ll_manage_overdue:
                 flag = 5;
-                threeFixesList.clear();
-                adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_OVERDUE,threeFixesList,getActivity());
-                recyclerView.setAdapter(adapter);
+                String userRolea = UserUtils.getUserRoleids(getActivity());
+                if (!"8".equals(userRolea) && !"62".equals(userRolea)) {
+                    threeFixesList.clear();
+                    adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_OVERDUE,threeFixesList,getActivity());
+                    recyclerView.setAdapter(adapter);
+                }else {
+                    Utils.showLongToast(getContext(), "没有权限进行该操作!");
+                }
                 break;
             case R.id.ll_manage_review:
                 flag = 6;

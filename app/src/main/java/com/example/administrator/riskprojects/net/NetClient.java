@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.bean.HiddenFollingRecord;
 import com.example.administrator.riskprojects.bean.ThreeFix;
+import com.example.administrator.riskprojects.bean.UploadPic;
 import com.example.administrator.riskprojects.common.NetUtil;
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.Utils;
@@ -125,6 +126,34 @@ public class NetClient {
 			String listStr = JSONArray.toJSONString(threeFixList);
 			Log.e(TAG, "隐患复查没网时: listStr============"+listStr);
 			Utils.putValue(context,Constants.ADDRECHECK,listStr);
+			Utils.showLongToast(context, Constants.SAVE_DATA);
+		}else if(url.equals(Constants.UPLOAD_PIC)){
+			List<UploadPic> uploadPics = new ArrayList();
+			String picurllist = Utils.getValue(context,Constants.ADDPIC);
+			if(!TextUtils.isEmpty(picurllist)){
+				uploadPics = JSONArray.parseArray(picurllist, UploadPic.class);
+			}
+			Map<String,String> map = getParameters(param);
+			UploadPic uploadPic = new UploadPic();
+			uploadPic.setRecord(map.get("record"));
+			uploadPic.setFileList(map.get("mobile"));
+			uploadPics.add(uploadPic);
+			String listStr = JSONArray.toJSONString(uploadPic);
+			Log.e(TAG, "隐患复查没网时: listStr============"+listStr);
+			Utils.putValue(context,Constants.ADDPIC,listStr);
+			Utils.showLongToast(context, Constants.SAVE_DATA);
+		}else if(url.equals(Constants.ADD_CARDRECORDLIST)){
+			List<String> cardrecordList = new ArrayList();
+			String cardrecordListStr = Utils.getValue(context,Constants.CARDRECORD);
+			if(!TextUtils.isEmpty(cardrecordListStr)){
+				cardrecordList = JSONArray.parseArray(cardrecordListStr, String.class);
+			}
+			Map<String,String> map = getParameters(param);
+			String str = map.get("carRecordJson");
+			cardrecordList.add(str);
+			String listStr = JSONArray.toJSONString(cardrecordList);
+			Log.e(TAG, "隐患复查没网时: listStr============"+listStr);
+			Utils.putValue(context,Constants.CARDRECORD,listStr);
 			Utils.showLongToast(context, Constants.SAVE_DATA);
 		}else{
 			Utils.showLongToast(context, Constants.NET_ERROR);

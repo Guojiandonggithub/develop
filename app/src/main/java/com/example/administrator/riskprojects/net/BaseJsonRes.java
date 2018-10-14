@@ -1,5 +1,7 @@
 package com.example.administrator.riskprojects.net;
 
+import android.util.Log;
+
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.util.FormatUtil;
@@ -9,13 +11,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public abstract class BaseJsonRes extends JsonHttpResponseHandler {
-
+	private static final String TAG = "BaseJsonRes";
 	@Override
 	public void onSuccess(JSONObject response) {
 		try {
-			System.out.println("============返回的值===================");
+			System.out.println("============返回的值==================="+response.toString());
 			FormatUtil.printJson(response.toString());
-			System.out.println("======================================");
 			String result = response.getString(Constants.Result);
 			String content = response.getString(Constants.Info);
 			if("success".equals(result)){

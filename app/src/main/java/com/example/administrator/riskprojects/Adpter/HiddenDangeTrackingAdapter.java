@@ -38,7 +38,9 @@ public class HiddenDangeTrackingAdapter extends RecyclerView.Adapter {
             ((ViewHolder) holder).tvHiddenContent.setText(threeFixList.get(position).getContent());
             ((ViewHolder) holder).tvArea.setText(threeFixList.get(position).getAreaName());
             ((ViewHolder) holder).tvSpecialty.setText(threeFixList.get(position).getSname());
-            ((ViewHolder) holder).tvTimeOrOrder.setText(threeFixList.get(position).getFindTime()+"/"+threeFixList.get(position).getClassName());
+            String findTimeStr = threeFixList.get(position).getFindTime();
+            String findTime = findTimeStr.substring(0,10);
+            ((ViewHolder) holder).tvTimeOrOrder.setText(findTime+"/"+threeFixList.get(position).getClassName());
             ((ViewHolder) holder).tvCategory.setText(threeFixList.get(position).getJbName());
             String isuper = threeFixList.get(position).getIsupervision();
             if(TextUtils.isEmpty(isuper)||TextUtils.equals(isuper,"0")){

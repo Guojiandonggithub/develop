@@ -79,12 +79,26 @@ public class InspectionActivity extends BaseActivity {
         SimpleDateFormat simpleDateTime = new SimpleDateFormat("HH:mm:ss");
         //获取当前时间
         Date date = new Date(System.currentTimeMillis());
-        /*Date date0 = simpleDateTime.parse("00:00:00");
-        Date date8 = simpleDateTime.parse("08:00:00");
-        Date date16 = simpleDateTime.parse("16:00:00");
-        Date date23 = simpleDateTime.parse("23:59:59");
-        String time = simpleDateTime.format(date);*/
-        tvTime.setText("今日班次："+simpleDateDate.format(date));
+        String classname="";
+        try {
+            Date date0 = simpleDateTime.parse("00:00:00");
+            Date date8 = simpleDateTime.parse("07:59:59");
+            Date date16 = simpleDateTime.parse("15:59:59");
+            Date date23 = simpleDateTime.parse("23:59:59");
+            String time = simpleDateTime.format(date);
+            Date currenttime = simpleDateTime.parse(time);
+            if(isDate2Bigger(currenttime,date8,date0)){
+                classname= "0点班";
+            }else if(isDate2Bigger(currenttime,date16,date8)){
+                classname= "8点班";
+            }else if(isDate2Bigger(currenttime,date23,date16)){
+                classname= "4点班";
+            }
+        }catch (Exception e){
+
+        }
+
+        tvTime.setText("今日班次："+simpleDateDate.format(date)+" "+classname);
         getCardRecordList(Integer.parseInt(Constants.PAGE));
     }
 
@@ -194,6 +208,7 @@ public class InspectionActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data)) {
                     if (!tvOk.isSelected()) {
                         //获取新记录
+                        tvOk.setEnabled(false);
                         getCardRecordList(Integer.parseInt(Constants.PAGE));
                         adapter.notifyDataSetChanged();
                         adapter.setWait(true);
@@ -206,6 +221,7 @@ public class InspectionActivity extends BaseActivity {
                                 //倒计时结束，列表最后的巡检显示
                                 adapter.setWait(false);
                                 adapter.notifyDataSetChanged();
+                                tvOk.setEnabled(true);
                             }
                         });
                         timeCount.start();
@@ -255,4 +271,20 @@ public class InspectionActivity extends BaseActivity {
     private void addResult(final String result) {
         Utils.showLongToast(InspectionActivity.this, result);
     }
+
+
+    /**
+     * 比较两个日期的大小，日期格式为yyyy-MM-dd
+     *
+     * @return true <br/>false
+     */
+    public static boolean isDate2Bigger(Date current,Date dt1, Date dt2) {
+
+        boolean isBigger = false;
+        if (dt1.getTime() >= current.getTime()&&dt2.getTime()<current.getTime()) {
+            isBigger = true;
+        }
+        return isBigger;
+    }
+
 }

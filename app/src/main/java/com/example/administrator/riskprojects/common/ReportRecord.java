@@ -10,17 +10,22 @@ import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.activity.FiveDecisionsActivity;
 import com.example.administrator.riskprojects.activity.HiddenDangerAcceptanceActivity;
 import com.example.administrator.riskprojects.activity.HiddenRiskRecordAddEditActivity;
+import com.example.administrator.riskprojects.activity.InspectionActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.bean.SelectItem;
 import com.example.administrator.riskprojects.bean.ThreeFix;
+import com.example.administrator.riskprojects.bean.UploadPic;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
+import com.example.administrator.riskprojects.util.TimeCount;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ReportRecord implements Constants{
 	private static final String TAG = "ReportRecord";
@@ -29,7 +34,7 @@ public class ReportRecord implements Constants{
 	public void addRecheck(final Context context) {
 		netClient = new NetClient(context);
 		String recheck = Utils.getValue(context,Constants.ADDRECHECK);
-		if(!TextUtils.isEmpty(recheck)||recheck.length()>2){
+		if(!TextUtils.isEmpty(recheck)&&recheck.length()>2){
 			Log.e(TAG, "隐患验收上报数据" + recheck);
 			final List<ThreeFix> threeFixList = JSONArray.parseArray(recheck, ThreeFix.class);
 			for (final ThreeFix threeFix: threeFixList){
@@ -68,7 +73,7 @@ public class ReportRecord implements Constants{
 		netClient = new NetClient(context);
 		String hiddenRecord = Utils.getValue(context,Constants.ADDHIDDENRECORD);
 		Log.e(TAG, "隐患添加上报数据: "+hiddenRecord);
-		if(!TextUtils.isEmpty(hiddenRecord)||hiddenRecord.length()>2){
+		if(!TextUtils.isEmpty(hiddenRecord)&&hiddenRecord.length()>2){
 			final List<HiddenDangerRecord> hiddenDangerRecordList = JSONArray.parseArray(hiddenRecord, HiddenDangerRecord.class);
 			for (final HiddenDangerRecord hiddenDangerRecord:hiddenDangerRecordList){
 				RequestParams params = new RequestParams();
@@ -92,6 +97,99 @@ public class ReportRecord implements Constants{
 					@Override
 					public void onMyFailure(String content) {
 						Log.e(TAG, "添加修改隐患记录返回错误信息：" + content);
+					}
+				});
+			}
+		}
+	}
+
+	//上传隐患图片
+	public void addHiddenPic(final Context context){
+		netClient = new NetClient(context);
+		String hiddenpicStr = Utils.getValue(context,Constants.ADDPIC);
+		Log.e(TAG, "上传隐患图片上报数据: "+hiddenpicStr);
+		if(!TextUtils.isEmpty(hiddenpicStr)||hiddenpicStr.length()>2){
+			final List<UploadPic> uploadPicList = JSONArray.parseArray(hiddenpicStr, UploadPic.class);
+			for (final UploadPic uploadPic:uploadPicList){
+				RequestParams params = new RequestParams();
+				params.put("mobile",uploadPic.getFileList());
+				netClient.post(Data.getInstance().getIp()+Constants.UPLOAD_PIC, params, new BaseJsonRes() {
+
+					@Override
+					public void onMySuccess(String data) {
+						Log.i(TAG, "上传隐患图片返回数据：" + data);
+						if (!TextUtils.isEmpty(data)) {
+							HiddenDangerRecord hiddenDangerRecord = JSON.parseObject(uploadPic.getRecord(),HiddenDangerRecord.class);
+							hiddenDangerRecord.setImageGroup(data);
+							String hiddenDangerRecordStr = JSON.toJSONString(hiddenDangerRecord);
+							addhiddenrecord(context,hiddenDangerRecordStr,uploadPicList,uploadPic);
+						}
+
+					}
+
+					@Override
+					public void onMyFailure(String content) {
+						Log.e(TAG, "添加修改隐患记录返回错误信息：" + content);
+					}
+				});
+			}
+		}
+	}
+
+	public void addhiddenrecord(final Context context,String hiddenRecord,final List<UploadPic> uploadPicList,final UploadPic uploadPic){
+		netClient = new NetClient(context);
+		Log.e(TAG, "隐患添加上报数据: "+hiddenRecord);
+		if(!TextUtils.isEmpty(hiddenRecord)){
+				RequestParams params = new RequestParams();
+				Log.i(TAG, "addHiddenDanger: 隐患添加修改="+hiddenRecord);
+				params.put("hiddenDangerRecordJsonData",hiddenRecord);
+				netClient.post(Data.getInstance().getIp()+Constants.ADD_HIDDENDANGERRECORD, params, new BaseJsonRes() {
+
+					@Override
+					public void onMySuccess(String data) {
+						Log.i(TAG, "添加修改记录上报返回数据：" + data);
+						if (!TextUtils.isEmpty(data)) {
+							uploadPicList.remove(uploadPic);
+							String listStr = JSONArray.toJSONString(uploadPicList);
+							Log.e(TAG, "上传图片有网时: listStr============"+listStr);
+							Utils.putValue(context,Constants.ADDPIC,listStr);
+						}
+
+					}
+
+					@Override
+					public void onMyFailure(String content) {
+						Log.e(TAG, "添加修改隐患记录返回错误信息：" + content);
+					}
+				});
+			}
+		}
+
+	//提交巡检记录
+	public void addCardRecord(final Context context) {
+		String cardrecordStr = Utils.getValue(context,Constants.CARDRECORD);
+		Log.e(TAG, "提交巡检记录上报数据: "+cardrecordStr);
+		if(!TextUtils.isEmpty(cardrecordStr)||cardrecordStr.length()>2){
+			final List<String> carRecordList = JSONArray.parseArray(cardrecordStr, String.class);
+			for (final String carRecord:carRecordList){
+				RequestParams params = new RequestParams();
+				params.put("carRecordJson", carRecord);
+				netClient.post(Data.getInstance().getIp()+ Constants.ADD_CARDRECORDLIST, params, new BaseJsonRes() {
+
+					@Override
+					public void onMySuccess(String data) {
+						Log.i(TAG, "提交巡检记录返回数据：" + data);
+						if (!TextUtils.isEmpty(data)) {
+							carRecordList.remove(carRecord);
+							String listStr = JSONArray.toJSONString(carRecordList);
+							Log.e(TAG, "隐患复查有网时: listStr============"+listStr);
+							Utils.putValue(context,Constants.CARDRECORD,listStr);
+						}
+					}
+
+					@Override
+					public void onMyFailure(String content) {
+						Log.e(TAG, "提交巡检记录返回错误信息：" + content);
 					}
 				});
 			}

@@ -117,7 +117,7 @@
                                 android:layout_marginLeft="16dp"
                                 android:layout_marginRight="16dp"
                                 android:layout_weight="1"
-                                android:text="2018.09.15"
+                                android:text=""
                                 android:singleLine="true"
                                 android:ellipsize="marquee"
                                 android:textColor="@color/blue1"

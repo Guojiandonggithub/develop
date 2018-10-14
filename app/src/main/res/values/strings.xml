@@ -13,9 +13,9 @@
     <string name="log_ble_sdk">轨迹跟踪</string>
     <string name="log_out">退出登录</string>
     <string name="monthly_hidden_statistics">当月隐患统计</string>
-    <string name="the_hidden_danger_that_already_eliminated_recently">• 近期已消号的隐患 •</string>
-    <string name="anticipated_pitfalls">• 逾期的隐患 •</string>
-    <string name="unchange">• 未整改 •</string>
+    <string name="the_hidden_danger_that_already_eliminated_recently">• 已销号 •</string>
+    <string name="anticipated_pitfalls">• 逾期的 •</string>
+    <string name="unchange">• 整改中 •</string>
     <string name="for_acceptance">• 待验收 •</string>
     <string name="hidden_units">隐患单位</string>
     <string name="processed">已处理</string>

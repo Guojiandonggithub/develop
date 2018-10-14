@@ -104,7 +104,7 @@ public class Fragment_Home extends Fragment {
                 if(!mTvDeleteNum.getText().toString().equals("0")){
                     Intent intent = new Intent(ctx, HomePageTotalDetailActivity.class);
                     intent.putExtra("datatype","mLlDeleteNum");
-                    intent.putExtra("topname","已消号数量");
+                    intent.putExtra("topname","已销号");
                     startActivity(intent);
                 }
             }
@@ -118,7 +118,7 @@ public class Fragment_Home extends Fragment {
                 if(!mTvWithinTheTimeLimitNum.getText().toString().equals("0")){
                     Intent intent = new Intent(ctx, HomePageTotalDetailActivity.class);
                     intent.putExtra("datatype","mLlWithinTheTimeLimitNum");
-                    intent.putExtra("topname","逾期数量");
+                    intent.putExtra("topname","逾期的");
                     startActivity(intent);
                 }
             }
@@ -132,7 +132,7 @@ public class Fragment_Home extends Fragment {
                 if(!mTvUnchangeNum.getText().toString().equals("0")){
                     Intent intent = new Intent(ctx, HomePageTotalDetailActivity.class);
                     intent.putExtra("datatype","mLlUnchangeNum");
-                    intent.putExtra("topname","未整改");
+                    intent.putExtra("topname","整改中");
                     startActivity(intent);
                 }
             }
@@ -208,20 +208,20 @@ public class Fragment_Home extends Fragment {
                             switch (flag) {
                                 case -1:
                                     Intent intent = new Intent(getActivity(), HiddenDangerStatisticsEachUnitDetailActivity.class);
-                                    intent.putExtra("teamGroupCode",recordList.get(position).getTeamGroupCode());
+                                    intent.putExtra("teamGroupCode",recordList.get(position).getTeamGroupId());
                                     startActivity(intent);
                                     //((MainActivity) ctx).onHomeListItemClicked(recordList.get(position).getTeamGroupCode(),flag);
                                     break;
                                 case 1:
                                     Intent nothandle = new Intent(getActivity(), HiddenDangerStatisticsEachUnitDetailActivity.class);
-                                    nothandle.putExtra("teamGroupCode",recordList.get(position).getTeamGroupCode());
+                                    nothandle.putExtra("teamGroupCode",recordList.get(position).getTeamGroupId());
                                     nothandle.putExtra("ishandle","1");
                                     startActivity(nothandle);
                                     //((MainActivity) ctx).onHomeListItemClicked(recordList.get(position).getTeamGroupCode(),flag);
                                     break;
                                 case 2:
                                     Intent handle = new Intent(getActivity(), HiddenDangerStatisticsEachUnitDetailActivity.class);
-                                    handle.putExtra("teamGroupCode",recordList.get(position).getTeamGroupCode());
+                                    handle.putExtra("teamGroupCode",recordList.get(position).getTeamGroupId());
                                     handle.putExtra("ishandle","0");
                                     startActivity(handle);
                                     //((MainActivity) ctx).onHomeListItemClicked(recordList.get(position).getTeamGroupCode(),flag);
