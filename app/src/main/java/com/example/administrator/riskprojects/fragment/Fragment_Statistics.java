@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -141,6 +142,13 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     private LinearLayoutCompat llSelectHiddenUnits;
     private TextView tvSpHiddenUnits;
     private Spinner spHiddenUnits;
+    private LinearLayoutCompat layoutEmptyList;
+    private TextView errorMessage;
+    private TextView errorTips;
+    private Button btnRefresh;
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -187,6 +195,19 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
 
         llYear = layout.findViewById(R.id.ll_year);
         spYear = layout.findViewById(R.id.sp_year);
+
+        layoutEmptyList = layout.findViewById(R.id.layout_empty_list);
+        errorMessage = layout.findViewById(R.id.error_message);
+        errorTips = layout.findViewById(R.id.error_tips);
+        btnRefresh = layout.findViewById(R.id.btn_refresh);
+
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layoutEmptyList.setVisibility(View.GONE);
+                onRefresh();
+            }
+        });
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -506,6 +527,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 adapter = new HiddenDangerStatisticsEachUnitAllAdapter(dtatisticsList);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
+                layoutEmptyList.setVisibility(View.GONE);
             }
 
             @Override
@@ -533,6 +555,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 super.onFinish();
                 onLoading = false;
                 swipeRefreshLayout.setRefreshing(false);
+                setEmptyLayout();
             }
         });
     }
@@ -556,7 +579,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 adapter = new HiddenDangerStatisticsAllAdapter(dtatisticsList);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-            }
+                layoutEmptyList.setVisibility(View.GONE);  }
 
             @Override
             public void onMySuccess(String data) {
@@ -585,6 +608,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 super.onFinish();
                 onLoading = false;
                 swipeRefreshLayout.setRefreshing(false);
+                setEmptyLayout();
             }
         });
     }
@@ -658,7 +682,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 } else if (((MainActivity) ctx).index == 3) {
                     Toast.makeText(ctx, "正在加载" + curPage + "/" + pagesize, Toast.LENGTH_SHORT).show();
                 }
-            }
+                layoutEmptyList.setVisibility(View.GONE);}
 
             @Override
             public void onMySuccess(String data) {
@@ -687,6 +711,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 super.onFinish();
                 onLoading = false;
                 swipeRefreshLayout.setRefreshing(false);
+                setEmptyLayout();
             }
         });
     }
@@ -724,7 +749,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 super.onStart();
                 llLineChart.setVisibility(View.GONE);
                 llBarChart.setVisibility(View.GONE);
-            }
+                layoutEmptyList.setVisibility(View.GONE);  }
 
             @Override
             public void onMySuccess(String data) {
@@ -786,7 +811,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 super.onStart();
                 llLineChart.setVisibility(View.GONE);
                 llBarChart.setVisibility(View.GONE);
-            }
+                layoutEmptyList.setVisibility(View.GONE);     }
 
             @Override
             public void onMySuccess(String data) {
@@ -827,6 +852,11 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         params.put("customParamsOne", yearStr);
         params.put("employeeId", UserUtils.getUserID(getActivity()));
         netClient.post(Data.getInstance().getIp() + Constants.FINDHIDDENDANGERYEARCHARTSTATISTICS, params, new BaseJsonRes() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                layoutEmptyList.setVisibility(View.GONE);
+            }
 
             @Override
             public void onMySuccess(String data) {
@@ -913,7 +943,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 } else if (((MainActivity) ctx).index == 3) {
                     Toast.makeText(ctx, "正在加载" + curPage + "/" + pagesize, Toast.LENGTH_SHORT).show();
                 }
-            }
+                layoutEmptyList.setVisibility(View.GONE); }
 
             @Override
             public void onMySuccess(String data) {
@@ -941,6 +971,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 super.onFinish();
                 onLoading = false;
                 swipeRefreshLayout.setRefreshing(false);
+                setEmptyLayout();
             }
         });
     }
@@ -1539,5 +1570,13 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
 
         }
         return "";
+    }
+
+    private void setEmptyLayout() {
+        if (adapter == null || adapter.getItemCount() == 0) {
+            layoutEmptyList.setVisibility(View.VISIBLE);
+            errorMessage.setText("没有查询到数据");
+            errorTips.setText("您可以通过改变筛选条件来查看更多数据");
+        }
     }
 }

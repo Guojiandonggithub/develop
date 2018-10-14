@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
@@ -20,8 +20,8 @@
             android:background="@color/white"
             android:orientation="vertical"
             android:paddingLeft="14dp"
-            android:visibility="gone"
-            android:paddingRight="14dp">
+            android:paddingRight="14dp"
+            android:visibility="gone">
 
             <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -196,8 +196,9 @@
                     android:id="@+id/ll_select_top"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:visibility="gone"
-                    android:background="@color/colorDevide" />
+                    android:background="@color/colorDevide"
+                    android:visibility="gone" />
+
                 <android.support.v7.widget.LinearLayoutCompat
                     android:id="@+id/ll_select_profession"
                     android:layout_width="match_parent"
@@ -223,12 +224,14 @@
                         android:background="@null"
                         android:spinnerMode="dropdown" />
                 </android.support.v7.widget.LinearLayoutCompat>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:visibility="gone"
+                    android:background="@color/colorDevide"
 
-                    android:background="@color/colorDevide" />
+                    android:visibility="gone" />
+
                 <android.support.v7.widget.LinearLayoutCompat
                     android:id="@+id/ll_select_area"
                     android:layout_width="match_parent"
@@ -256,7 +259,6 @@
                 </android.support.v7.widget.LinearLayoutCompat>
 
 
-
                 <android.support.v7.widget.LinearLayoutCompat
                     android:id="@+id/ll_select_check_units"
                     android:layout_width="match_parent"
@@ -282,6 +284,7 @@
                         android:background="@null"
                         android:spinnerMode="dropdown" />
                 </android.support.v7.widget.LinearLayoutCompat>
+
                 <android.support.v7.widget.LinearLayoutCompat
                     android:id="@+id/ll_select_is_handle"
                     android:layout_width="match_parent"
@@ -307,6 +310,7 @@
                         android:background="@null"
                         android:spinnerMode="dropdown" />
                 </android.support.v7.widget.LinearLayoutCompat>
+
                 <android.support.v7.widget.LinearLayoutCompat
                     android:id="@+id/ll_select_status"
                     android:layout_width="match_parent"
@@ -332,6 +336,7 @@
                         android:background="@null"
                         android:spinnerMode="dropdown" />
                 </android.support.v7.widget.LinearLayoutCompat>
+
                 <android.support.v7.widget.LinearLayoutCompat
                     android:id="@+id/ll_select_rectification_results"
                     android:layout_width="match_parent"
@@ -357,6 +362,7 @@
                         android:background="@null"
                         android:spinnerMode="dropdown" />
                 </android.support.v7.widget.LinearLayoutCompat>
+
                 <android.support.v7.widget.LinearLayoutCompat
                     android:id="@+id/ll_select_check_results"
                     android:layout_width="match_parent"
@@ -412,25 +418,32 @@
 
     </android.support.v7.widget.LinearLayoutCompat>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@color/bar_color">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:background="@color/white"
-            android:clipToPadding="false"
-            tools:itemCount="3"
-            tools:listitem="@layout/item_listing_supervision" />
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/bar_color">
 
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@color/white"
+                android:clipToPadding="false"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_listing_supervision" />
 
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <include layout="@layout/layout_empty_list" />
+    </FrameLayout>
 
 </android.support.v7.widget.LinearLayoutCompat>

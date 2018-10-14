@@ -181,17 +181,17 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btn_login"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_margin="55dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/layerlist_login_button_bg"
-            android:paddingTop="7dp"
-            android:paddingBottom="7dp"
-            android:text="登    录"
-            android:textColor="#39A3DD"
-            android:textSize="18sp" />
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="55dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/layerlist_login_button_bg"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:text="登    录"
+        android:textColor="#39A3DD"
+        android:textSize="18sp" />
     </android.support.v7.widget.LinearLayoutCompat>
 
 </ScrollView>

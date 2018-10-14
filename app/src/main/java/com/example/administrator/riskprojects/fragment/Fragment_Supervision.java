@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,6 +59,11 @@ public class Fragment_Supervision extends Fragment implements SwipeRefreshLayout
     private int pagesize = 1;
     private ListingSupervisionAdapter adapter;
     private List<HiddenDangerRecord> list = new ArrayList<HiddenDangerRecord>();
+    private LinearLayoutCompat layoutEmptyList;
+    private TextView errorMessage;
+    private TextView errorTips;
+    private Button btnRefresh;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,6 +87,17 @@ public class Fragment_Supervision extends Fragment implements SwipeRefreshLayout
     }
 
     private void initView(View layout) {
+        layoutEmptyList = layout.findViewById(R.id.layout_empty_list);
+        errorMessage = layout.findViewById(R.id.error_message);
+        errorTips = layout.findViewById(R.id.error_tips);
+        btnRefresh = layout.findViewById(R.id.btn_refresh);
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onRefresh();
+            }
+        });
+
         mSwipeRefreshLayout = layout.findViewById(R.id.swipeRefreshLayout);
         mRecyclerView = layout.findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(ctx));
@@ -145,16 +163,17 @@ public class Fragment_Supervision extends Fragment implements SwipeRefreshLayout
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", Integer.toString(curpage));
         paramsMap.put("rows", Constants.ROWS);
-        paramsMap.put("isupervision",Constants.ISUPERVISION);
+        paramsMap.put("isupervision", Constants.ISUPERVISION);
         paramsMap.put("employeeId", UserUtils.getUserID(getContext()));
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("hiddenDangerRecordJsonData", jsonString);
-        Log.e(TAG, "getHiddenRecord: 督办参数======"+params);
-        netClient.post(Data.getInstance().getIp()+Constants.GET_HIDDENRECORD, params, new BaseJsonRes() {
+        Log.e(TAG, "getHiddenRecord: 督办参数======" + params);
+        netClient.post(Data.getInstance().getIp() + Constants.GET_HIDDENRECORD, params, new BaseJsonRes() {
             @Override
             public void onStart() {
                 super.onStart();
                 onLoading = true;
+                layoutEmptyList.setVisibility(View.GONE);
                 if (curpage == 1) {
                     if (!mSwipeRefreshLayout.isRefreshing()) {
                         mSwipeRefreshLayout.setRefreshing(true);
@@ -175,7 +194,7 @@ public class Fragment_Supervision extends Fragment implements SwipeRefreshLayout
                     List<HiddenDangerRecord> recordList = JSONArray.parseArray(rows, HiddenDangerRecord.class);
                     if (page == 1) {
                         list.clear();
-                        if(recordList.size()==0){
+                        if (recordList.size() == 0) {
                             Utils.showLongToast(getContext(), "没有查询到数据!");
                         }
                     }
@@ -196,6 +215,11 @@ public class Fragment_Supervision extends Fragment implements SwipeRefreshLayout
                 super.onFinish();
                 mSwipeRefreshLayout.setRefreshing(false);
                 onLoading = false;
+                if (adapter.getItemCount() == 0) {
+                    layoutEmptyList.setVisibility(View.VISIBLE);
+                    errorMessage.setText("没有查询到数据");
+                    errorTips.setVisibility(View.GONE);
+                }
             }
         });
     }

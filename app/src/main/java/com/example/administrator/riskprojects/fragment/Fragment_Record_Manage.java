@@ -17,10 +17,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.administrator.riskprojects.bean.Area;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -114,6 +116,10 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
     private LinearLayoutCompat llExpand;
     private TextView tvExpand;
     private ImageView ivExpand;
+    private LinearLayoutCompat layoutEmptyList;
+    private TextView errorMessage;
+    private TextView errorTips;
+    private Button btnRefresh;
 
 
     @Override
@@ -136,6 +142,19 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
     }
 
     private void initView(View layout) {
+
+        layoutEmptyList = layout.findViewById(R.id.layout_empty_list);
+        errorMessage = layout.findViewById(R.id.error_message);
+        errorTips = layout.findViewById(R.id.error_tips);
+        btnRefresh = layout.findViewById(R.id.btn_refresh);
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layoutEmptyList.setVisibility(View.GONE);
+                onRefresh();
+            }
+        });
+
         mSwipeRefreshLayout = layout.findViewById(R.id.swipeRefreshLayout);
         recyclerView = layout.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
@@ -308,7 +327,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         paramsMap.put("page", page);
         paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        if(TextUtils.isEmpty(tvStartDate.getText())){
+        if (TextUtils.isEmpty(tvStartDate.getText())) {
             paramsMap.put("customParamsFour", tvStartDate.getText().toString());
         }
         SelectItem spProfessionItem = (SelectItem) spProfession.getSelectedItem();
@@ -337,7 +356,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         }
         SelectItem spStatusItem = (SelectItem) spStatus.getSelectedItem();
         if (null != spStatusItem) {
-            if (Integer.parseInt(spStatusItem.id)>=0) {
+            if (Integer.parseInt(spStatusItem.id) >= 0) {
                 paramsMap.put("customParamsSix", spStatusItem.id);//状态
             }
         }
@@ -348,6 +367,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
             public void onStart() {
                 super.onStart();
                 onLoading = true;
+                layoutEmptyList.setVisibility(View.GONE);
                 if (page.equals("1")) {
                     if (!mSwipeRefreshLayout.isRefreshing()) {
                         mSwipeRefreshLayout.setRefreshing(true);
@@ -368,7 +388,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     List<HiddenDangerRecord> tempList = JSONArray.parseArray(rows, HiddenDangerRecord.class);
                     if (curpage == 1) {
                         recordList.clear();
-                        if(tempList.size()==0){
+                        if (tempList.size() == 0) {
                             Utils.showLongToast(getContext(), "没有查询到数据!");
                         }
                     }
@@ -389,8 +409,17 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 super.onFinish();
                 mSwipeRefreshLayout.setRefreshing(false);
                 onLoading = false;
+                setEmptyLayout();
             }
         });
+    }
+
+    private void setEmptyLayout() {
+        if (adapter == null || adapter.getItemCount() == 0) {
+            layoutEmptyList.setVisibility(View.VISIBLE);
+            errorMessage.setText("没有查询到数据");
+            errorTips.setText("您可以通过改变筛选条件来查看更多数据");
+        }
     }
 
     private void getReleaseList(final String page) {//下达隐患查询
@@ -399,7 +428,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         paramsMap.put("page", page);
         paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        if(TextUtils.isEmpty(tvStartDate.getText())){
+        if (TextUtils.isEmpty(tvStartDate.getText())) {
             paramsMap.put("customParamsThree", tvStartDate.getText().toString());
         }
         SelectItem spProfessionItem = (SelectItem) spProfession.getSelectedItem();
@@ -421,6 +450,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
             public void onStart() {
                 super.onStart();
                 onLoading = true;
+                layoutEmptyList.setVisibility(View.GONE);
                 if (page.equals("1")) {
                     if (!mSwipeRefreshLayout.isRefreshing()) {
                         mSwipeRefreshLayout.setRefreshing(true);
@@ -441,7 +471,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
                     if (curpage == 1) {
                         threeFixesList.clear();
-                        if(tempList.size()==0){
+                        if (tempList.size() == 0) {
                             Utils.showLongToast(getContext(), "没有查询到数据!");
                         }
                     }
@@ -462,7 +492,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 super.onFinish();
                 mSwipeRefreshLayout.setRefreshing(false);
                 onLoading = false;
-            }
+                setEmptyLayout(); }
         });
     }
 
@@ -472,7 +502,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         paramsMap.put("page", page);
         paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        if(TextUtils.isEmpty(tvStartDate.getText())){
+        if (TextUtils.isEmpty(tvStartDate.getText())) {
             paramsMap.put("customParamsFour", tvStartDate.getText().toString());
         }
         SelectItem spProfessionItem = (SelectItem) spProfession.getSelectedItem();
@@ -500,6 +530,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
             public void onStart() {
                 super.onStart();
                 onLoading = true;
+                layoutEmptyList.setVisibility(View.GONE);
                 if (page.equals("1")) {
                     if (!mSwipeRefreshLayout.isRefreshing()) {
                         mSwipeRefreshLayout.setRefreshing(true);
@@ -520,7 +551,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
                     if (curpage == 1) {
                         threeFixesList.clear();
-                        if(tempList.size()==0){
+                        if (tempList.size() == 0) {
                             Utils.showLongToast(getContext(), "没有查询到数据!");
                         }
                     }
@@ -542,7 +573,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 super.onFinish();
                 mSwipeRefreshLayout.setRefreshing(false);
                 onLoading = false;
-            }
+                setEmptyLayout(); }
         });
     }
 
@@ -553,7 +584,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         paramsMap.put("page", page);
         paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        if(TextUtils.isEmpty(tvStartDate.getText())){
+        if (TextUtils.isEmpty(tvStartDate.getText())) {
             paramsMap.put("customParamsThree", tvStartDate.getText().toString());
         }
         SelectItem spProfessionItem = (SelectItem) spProfession.getSelectedItem();
@@ -576,6 +607,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
             public void onStart() {
                 super.onStart();
                 onLoading = true;
+                layoutEmptyList.setVisibility(View.GONE);
                 if (page.equals("1")) {
                     if (!mSwipeRefreshLayout.isRefreshing()) {
                         mSwipeRefreshLayout.setRefreshing(true);
@@ -596,7 +628,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
                     if (curpage == 1) {
                         threeFixesList.clear();
-                        if(tempList.size()==0){
+                        if (tempList.size() == 0) {
                             Utils.showLongToast(getContext(), "没有查询到数据!");
                         }
                     }
@@ -617,7 +649,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 super.onFinish();
                 mSwipeRefreshLayout.setRefreshing(false);
                 onLoading = false;
-            }
+                setEmptyLayout(); }
         });
     }
 
@@ -627,7 +659,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         paramsMap.put("page", page);
         paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        if(TextUtils.isEmpty(tvStartDate.getText())){
+        if (TextUtils.isEmpty(tvStartDate.getText())) {
             paramsMap.put("customParamsFour", tvStartDate.getText().toString());
         }
         SelectItem spProfessionItem = (SelectItem) spProfession.getSelectedItem();
@@ -650,6 +682,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
             public void onStart() {
                 super.onStart();
                 onLoading = true;
+                layoutEmptyList.setVisibility(View.GONE);
                 if (page.equals("1")) {
                     if (!mSwipeRefreshLayout.isRefreshing()) {
                         mSwipeRefreshLayout.setRefreshing(true);
@@ -670,7 +703,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
                     if (curpage == 1) {
                         threeFixesList.clear();
-                        if(tempList.size()==0){
+                        if (tempList.size() == 0) {
                             Utils.showLongToast(getContext(), "没有查询到数据!");
                         }
                     }
@@ -692,7 +725,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 super.onFinish();
                 mSwipeRefreshLayout.setRefreshing(false);
                 onLoading = false;
-            }
+                setEmptyLayout(); }
         });
     }
 
@@ -702,7 +735,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         paramsMap.put("page", page);
         paramsMap.put("rows", Constants.ROWS);
         paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        if(TextUtils.isEmpty(tvStartDate.getText())){
+        if (TextUtils.isEmpty(tvStartDate.getText())) {
             paramsMap.put("customParamsFour", tvStartDate.getText().toString());
         }
         SelectItem spProfessionItem = (SelectItem) spProfession.getSelectedItem();
@@ -731,6 +764,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
             public void onStart() {
                 super.onStart();
                 onLoading = true;
+                layoutEmptyList.setVisibility(View.GONE);
                 if (page.equals("1")) {
                     if (!mSwipeRefreshLayout.isRefreshing()) {
                         mSwipeRefreshLayout.setRefreshing(true);
@@ -751,7 +785,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
                     if (curpage == 1) {
                         threeFixesList.clear();
-                        if(tempList.size()==0){
+                        if (tempList.size() == 0) {
                             Utils.showLongToast(getContext(), "没有查询到数据!");
                         }
                     }
@@ -773,7 +807,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 super.onFinish();
                 mSwipeRefreshLayout.setRefreshing(false);
                 onLoading = false;
-            }
+                setEmptyLayout();  }
         });
     }
 
@@ -795,7 +829,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 String userRole = UserUtils.getUserRoleids(getActivity());
                 if (!"8".equals(userRole) && !"62".equals(userRole)) {
                     threeFixesList.clear();
-                    adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_REALEASE, threeFixesList,getActivity());
+                    adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_REALEASE, threeFixesList, getActivity());
                     recyclerView.setAdapter(adapter);
                 } else {
                     Utils.showLongToast(getContext(), "没有权限进行该操作!");
@@ -806,7 +840,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 String userRoles = UserUtils.getUserRoleids(getActivity());
                 if (!"8".equals(userRoles) && !"62".equals(userRoles)) {
                     threeFixesList.clear();
-                    adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_RECTIFICATION, threeFixesList,getActivity());
+                    adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_RECTIFICATION, threeFixesList, getActivity());
                     ((HiddenDangeMuitipleAdapter) adapter).setItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, final int position, int flag) {
@@ -851,16 +885,16 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 String userRolea = UserUtils.getUserRoleids(getActivity());
                 if (!"8".equals(userRolea) && !"62".equals(userRolea)) {
                     threeFixesList.clear();
-                    adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_OVERDUE,threeFixesList,getActivity());
+                    adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_OVERDUE, threeFixesList, getActivity());
                     recyclerView.setAdapter(adapter);
-                }else {
+                } else {
                     Utils.showLongToast(getContext(), "没有权限进行该操作!");
                 }
                 break;
             case R.id.ll_manage_review:
                 flag = 6;
                 threeFixesList.clear();
-                adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_REVIEW, threeFixesList,getActivity());
+                adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_REVIEW, threeFixesList, getActivity());
                 recyclerView.setAdapter(adapter);
                 break;
             default:
@@ -1009,7 +1043,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                         selectItems.add(selectItem);
                     }
                     spProfessionAdapter = SpinnerAdapter.createFromResource(getActivity(), selectItems);
-                    setSpinner(spProfession,spProfessionAdapter,flag);
+                    setSpinner(spProfession, spProfessionAdapter, flag);
                 }
 
             }
@@ -1118,8 +1152,8 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
     //获取检查单位
     private void getHiddenYHGSLX(final int flag) {
         RequestParams params = new RequestParams();
-        params.put("dictTypeCode","YHGSLX");
-        netClient.post(Data.getInstance().getIp()+Constants.GET_DATADICT, params, new BaseJsonRes() {
+        params.put("dictTypeCode", "YHGSLX");
+        netClient.post(Data.getInstance().getIp() + Constants.GET_DATADICT, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -1144,9 +1178,9 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             spCheckUnitsAdapter.setSelectedPostion(position);
-                            if(flag==1){
+                            if (flag == 1) {
                                 getHiddenRecord(Constants.PAGE);
-                            }else{
+                            } else {
                                 getReviewList(Constants.PAGE);
                             }
                         }
@@ -1200,7 +1234,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
     private void getArea(final int flag) {
         RequestParams params = new RequestParams();
         params.put("employeeId", UserUtils.getUserID(getActivity()));
-        netClient.post(Data.getInstance().getIp()+Constants.GET_AREA, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.GET_AREA, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
@@ -1221,7 +1255,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                         selectItems.add(selectItem);
                     }
                     spAreaAdapter = SpinnerAdapter.createFromResource(getActivity(), selectItems);
-                    setSpinner(spArea, spAreaAdapter,flag);
+                    setSpinner(spArea, spAreaAdapter, flag);
                 }
 
             }
@@ -1235,22 +1269,22 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
     }
 
     //专业列表
-    private void setSpinner(final Spinner spinner,final SpinnerAdapter adapter,final int flag) {
+    private void setSpinner(final Spinner spinner, final SpinnerAdapter adapter, final int flag) {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 adapter.setSelectedPostion(position);
-                if(flag==1){
+                if (flag == 1) {
                     getHiddenRecord(Constants.PAGE);
-                }else if(flag==2){
+                } else if (flag == 2) {
                     getReleaseList(Constants.PAGE);
-                }else if(flag==3){
+                } else if (flag == 3) {
                     getRectificationList(Constants.PAGE);
-                }else if(flag==4){
+                } else if (flag == 4) {
                     getTrackingList(Constants.PAGE);
-                }else if(flag==5){
+                } else if (flag == 5) {
                     getOverdueList(Constants.PAGE);
-                }else if(flag==6){
+                } else if (flag == 6) {
                     getReviewList(Constants.PAGE);
                 }
             }
@@ -1260,7 +1294,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
 
             }
         });
-            spinner.setAdapter(adapter);
+        spinner.setAdapter(adapter);
     }
 
 }
