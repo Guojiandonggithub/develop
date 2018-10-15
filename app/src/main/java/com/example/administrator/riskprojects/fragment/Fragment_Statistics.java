@@ -524,7 +524,15 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 onLoading = true;
                 swipeRefreshLayout.setRefreshing(true);
                 dtatisticsList.clear();
-                adapter = new HiddenDangerStatisticsEachUnitAllAdapter(dtatisticsList);
+                String startDate="";
+                String endDate="";
+                if(!TextUtils.isEmpty(tvStartDate.getText())){
+                    startDate = tvStartDate.getText().toString();
+                }
+                if(!TextUtils.isEmpty(tvEndDate.getText())){
+                    endDate = tvEndDate.getText().toString();
+                }
+                adapter = new HiddenDangerStatisticsEachUnitAllAdapter(dtatisticsList,startDate,endDate);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 layoutEmptyList.setVisibility(View.GONE);
@@ -576,7 +584,16 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                 onLoading = true;
                 swipeRefreshLayout.setRefreshing(true);
                 dtatisticsList.clear();
-                adapter = new HiddenDangerStatisticsAllAdapter(dtatisticsList);
+                String startDate="";
+                String endDate="";
+                if(!TextUtils.isEmpty(tvStartDate.getText())){
+                    startDate = tvStartDate.getText().toString();
+                }
+                if(!TextUtils.isEmpty(tvEndDate.getText())){
+                    endDate = tvEndDate.getText().toString();
+                }
+                Log.e(TAG, "startDate==========: "+startDate+"endDate--------"+endDate);
+                adapter = new HiddenDangerStatisticsAllAdapter(dtatisticsList,startDate,endDate);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 layoutEmptyList.setVisibility(View.GONE);  }
@@ -1459,7 +1476,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
         titleTop.setText(R.string.hidden_danger_statistics_of_each_unit);
         titleBottom.setText(R.string.hidden_danger_statistics_of_each_unit);
         getHiddenStatisticsData("false");
-        adapter = new HiddenDangerStatisticsEachUnitAllAdapter(dtatisticsList);
+        adapter = new HiddenDangerStatisticsEachUnitAllAdapter(dtatisticsList,"","");
         recyclerView.setAdapter(adapter);
         swipeRefreshLayout.setVisibility(View.VISIBLE);
         llLineChart.setVisibility(View.GONE);
@@ -1506,7 +1523,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
 
     private void setList(List<HomeHiddenRecord> dtatisticsList) {
         swipeRefreshLayout.setVisibility(View.VISIBLE);
-        HiddenDangerStatisticsEachUnitAllAdapter adapter = new HiddenDangerStatisticsEachUnitAllAdapter(dtatisticsList);
+        HiddenDangerStatisticsEachUnitAllAdapter adapter = new HiddenDangerStatisticsEachUnitAllAdapter(dtatisticsList,"","");
         recyclerView.setAdapter(adapter);
     }
 

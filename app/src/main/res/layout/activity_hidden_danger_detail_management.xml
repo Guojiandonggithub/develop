@@ -571,7 +571,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="隐患录入人"
+                                android:text="检查人"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/normal_ts" />
 
@@ -597,6 +597,7 @@
                             android:background="@color/white" />
 
                         <android.support.v7.widget.LinearLayoutCompat
+                            android:id="@+id/ll_rectification_plan"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
@@ -808,12 +809,12 @@
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
                                         android:gravity="left"
-                                        android:text="@string/to_carry_out_the_people"
+                                        android:text="@string/track_people"
                                         android:textColor="@color/white"
                                         android:textSize="@dimen/normal_ts" />
 
                                     <TextView
-                                        android:id="@+id/tv_to_carry_out_the_people"
+                                        android:id="@+id/tv_track_people"
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="2"
@@ -844,12 +845,12 @@
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
                                         android:gravity="left"
-                                        android:text="@string/department"
+                                        android:text="@string/tracking_unit"
                                         android:textColor="@color/white"
                                         android:textSize="@dimen/normal_ts" />
 
                                     <TextView
-                                        android:id="@+id/tv_department"
+                                        android:id="@+id/tv_tracking_unit"
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="2"
@@ -862,41 +863,6 @@
 
                                 </android.support.v7.widget.LinearLayoutCompat>
 
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0.67dp"
-                                    android:background="@color/white" />
-
-                                <android.support.v7.widget.LinearLayoutCompat
-                                    android:layout_width="match_parent"
-                                    android:layout_height="33dp"
-                                    android:gravity="center_vertical"
-                                    android:orientation="horizontal"
-                                    android:paddingLeft="48dp">
-
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="left"
-                                        android:text="@string/headquarters"
-                                        android:textColor="@color/white"
-                                        android:textSize="@dimen/normal_ts" />
-
-                                    <TextView
-                                        android:id="@+id/tv_headquarters"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="2"
-                                        android:ellipsize="marquee"
-                                        android:gravity="left"
-                                        android:singleLine="true"
-                                        android:text="0"
-                                        android:textColor="@color/white"
-                                        android:textSize="@dimen/normal_ts" />
-
-                                </android.support.v7.widget.LinearLayoutCompat>
                             </android.support.v7.widget.LinearLayoutCompat>
                         </android.support.v7.widget.LinearLayoutCompat>
 
@@ -906,76 +872,7 @@
                             android:background="@color/white" />
 
                         <android.support.v7.widget.LinearLayoutCompat
-                            android:layout_width="match_parent"
-                            android:layout_height="33dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="@string/tracking_unit"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/normal_ts" />
-
-                            <TextView
-                                android:id="@+id/tv_tracking_unit"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:ellipsize="marquee"
-                                android:gravity="center"
-                                android:singleLine="true"
-                                android:text="0"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/normal_ts" />
-
-
-                        </android.support.v7.widget.LinearLayoutCompat>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.67dp"
-                            android:background="@color/white" />
-
-                        <android.support.v7.widget.LinearLayoutCompat
-                            android:layout_width="match_parent"
-                            android:layout_height="33dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="@string/track_people"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/normal_ts" />
-
-                            <TextView
-                                android:id="@+id/tv_track_people"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:ellipsize="marquee"
-                                android:gravity="center"
-                                android:singleLine="true"
-                                android:text="0"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/normal_ts" />
-
-
-                        </android.support.v7.widget.LinearLayoutCompat>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.67dp"
-                            android:background="@color/white" />
-
-                        <android.support.v7.widget.LinearLayoutCompat
+                            android:id="@+id/ll_acceptance_of_the_people"
                             android:layout_width="match_parent"
                             android:layout_height="33dp"
                             android:gravity="center_vertical"
@@ -1011,6 +908,7 @@
                             android:background="@color/white" />
 
                         <android.support.v7.widget.LinearLayoutCompat
+                            android:id="@+id/ll_acceptance_of_the_results"
                             android:layout_width="match_parent"
                             android:layout_height="33dp"
                             android:gravity="center_vertical"

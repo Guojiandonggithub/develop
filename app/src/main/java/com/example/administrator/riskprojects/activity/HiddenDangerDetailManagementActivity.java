@@ -48,6 +48,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
     private TextView tvOversee;
     private ImageView ivStatusSecond;
     private LinearLayoutCompat clickMore;
+    private LinearLayoutCompat rectificationPlan;
     private ImageView ivStatus;
     private LinearLayoutCompat llBottom;
     private TextView tvDelete;
@@ -67,12 +68,11 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
     private TextView tvMeasure;
     private TextView tvCapital;
     private TextView tvTheNumberOfProcessing;
-    private TextView tvToCarryOutThePeople;
-    private TextView tvDepartment;
-    private TextView tvHeadquarters;
     private TextView tvTrackingUnit;
     private TextView tvTrackPeople;
     private TextView tvAcceptanceOfThePeople;
+    private LinearLayoutCompat llAcceptanceOfThePeople;
+    private LinearLayoutCompat llAcceptanceOfTheResults;
     private TextView tvAcceptanceOfTheResults;
     private RecyclerView recyclerView;
 
@@ -89,11 +89,19 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
     private void setView() {
         final Intent intent = getIntent();
         String statistics = intent.getStringExtra("statistics");
+        String hiddenriskrecorddetail = intent.getStringExtra("hiddenriskrecorddetail");
         if(!TextUtils.isEmpty(statistics)){
             txtTitle.setText(R.string.hazard_query_statistics);
             llBottom.setVisibility(View.GONE);
         }else{
             txtTitle.setText(R.string.hidden_danger_record_management);
+        }
+
+        if(!TextUtils.isEmpty(hiddenriskrecorddetail)){
+            txtTitle.setText("隐患详情");
+            tvDelete.setVisibility(View.GONE);
+            tvChange.setVisibility(View.GONE);
+            tvAdd.setVisibility(View.GONE);
         }
         tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,8 +176,8 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
         txtTitle = findViewById(R.id.txt_title);
         imgRight = findViewById(R.id.img_right);
         txtRight = findViewById(R.id.txt_right);
-        //
         tvHiddenUnits = findViewById(R.id.tv_hidden_units);
+        rectificationPlan = findViewById(R.id.ll_rectification_plan);
         tvTimeOrOrder = findViewById(R.id.tv_time_or_order);
         tvHiddenContent = findViewById(R.id.tv_hidden_content);
         tvHiddenDangerBelongs = findViewById(R.id.tv_hidden_danger_belongs);
@@ -197,13 +205,12 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
         tvMeasure = findViewById(R.id.tv_measure);
         tvCapital = findViewById(R.id.tv_capital);
         tvTheNumberOfProcessing = findViewById(R.id.tv_the_number_of_processing);
-        tvToCarryOutThePeople = findViewById(R.id.tv_to_carry_out_the_people);
-        tvDepartment = findViewById(R.id.tv_department);
-        tvHeadquarters = findViewById(R.id.tv_headquarters);
         tvTrackingUnit = findViewById(R.id.tv_tracking_unit);
         tvTrackPeople = findViewById(R.id.tv_track_people);
         tvAcceptanceOfThePeople = findViewById(R.id.tv_acceptance_of_the_people);
+        llAcceptanceOfThePeople = findViewById(R.id.ll_acceptance_of_the_people);
         tvAcceptanceOfTheResults = findViewById(R.id.tv_acceptance_of_the_results);
+        llAcceptanceOfTheResults = findViewById(R.id.ll_acceptance_of_the_results);
         recyclerView = findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
@@ -268,9 +275,6 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                     tvMeasure.setText(record.getMeasure());
                     tvCapital.setText(record.getMoney());
                     tvTheNumberOfProcessing.setText(record.getPersonNum());
-                    tvToCarryOutThePeople.setText(record.getPracticablePerson());
-                    tvDepartment.setText(record.getDeptName());
-                    tvHeadquarters.setText(record.getThreeFixTeamName());
                     tvTrackingUnit.setText(record.getFollingTeamName());
                     tvTrackPeople.setText(record.getFollingPersonName());
                     tvAcceptanceOfThePeople.setText(record.getRecheckPersonName());
@@ -351,10 +355,17 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
         }
         switch (flag) {
             case "0":
+                rectificationPlan.setVisibility(View.GONE);
+                llAcceptanceOfThePeople.setVisibility(View.GONE);
+                llAcceptanceOfTheResults.setVisibility(View.GONE);
                 return "筛选";
             case "1":
+                llAcceptanceOfThePeople.setVisibility(View.GONE);
+                llAcceptanceOfTheResults.setVisibility(View.GONE);
                 return "五定中";
             case "2":
+                llAcceptanceOfThePeople.setVisibility(View.GONE);
+                llAcceptanceOfTheResults.setVisibility(View.GONE);
                 return "整改中";
             case "3":
                 return "验收中";

@@ -2,6 +2,7 @@ package com.example.administrator.riskprojects.Adpter;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,18 @@ import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 import java.util.List;
 
 public class HiddenDangerStatisticsAllAdapter extends RecyclerView.Adapter {
+    private static final String TAG = "HiddenDangerStatisticsA";
     private List<HomeHiddenRecord> dtatisticsList;
+    private String tvStartDate;
+    private String tvEndDate;
 
 
 
-    public HiddenDangerStatisticsAllAdapter(List<HomeHiddenRecord> dtatisticsList) {
+    public HiddenDangerStatisticsAllAdapter(List<HomeHiddenRecord> dtatisticsList,String tvStartDate,String tvEndDate) {
         this.dtatisticsList = dtatisticsList;
+        this.tvStartDate = tvStartDate;
+        this.tvEndDate = tvEndDate;
+        Log.e(TAG, "HiddenDangerStatisticsAllAdapter=========="+tvStartDate+"===="+tvEndDate);
     }
 
     @Override
@@ -42,12 +49,14 @@ public class HiddenDangerStatisticsAllAdapter extends RecyclerView.Adapter {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(holder.itemView.getContext(),
+            /*Intent intent = new Intent(holder.itemView.getContext(),
                     HiddenDangerStatisticsEachUnitDetailActivity.class);
             String teamGroupName = dtatisticsList.get(position).getHiddenBelong();
             intent.putExtra("teamGroupName",teamGroupName);
             intent.putExtra("statistics","true");
-            holder.itemView.getContext().startActivity(intent);
+            intent.putExtra("tvEndDate",tvEndDate);
+            intent.putExtra("tvStartDate",tvStartDate);
+            holder.itemView.getContext().startActivity(intent);*/
         }
     });
 

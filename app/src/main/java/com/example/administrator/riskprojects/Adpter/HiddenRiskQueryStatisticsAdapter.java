@@ -66,6 +66,10 @@ public class HiddenRiskQueryStatisticsAdapter extends RecyclerView.Adapter {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("hiddenDangerRecord",recordList.get(position));
                 intent.putExtra("hiddenrecordBundle",bundle);
+                /*Intent intent = new Intent(holder.itemView.getContext(),
+                        HiddenDangerDetailManagementActivity.class);
+                intent.putExtra("id",recordList.get(position).getId());
+                intent.putExtra("hiddenriskrecorddetail",recordList.get(position).getId());*/
                 holder.itemView.getContext().startActivity(intent);
             }
         });

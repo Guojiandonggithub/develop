@@ -21,9 +21,10 @@ public interface Constants {
 	String SAVE_DATA = "网络错误，数据已保存，有网时自动上报！";
 	String PAGE = "1";
 	String ROWS = "10";
-	// 外网地址pl
-	String MAIN_ENGINE = "http://59.49.107.27:8191/yhpc/";
-	//String MAIN_ENGINE = "http://192.168.111.5:8080/yhpc/";
+	// 外网地址
+	//String MAIN_ENGINE = "http://59.49.107.27:8191/yhpc/";
+	String MAIN_ENGINE = "http://192.168.4.50:8070/";
+	//String MAIN_ENGINE = "http://192.168.5.50:8070/";
 	String ISUPERVISION = "1";
 	// 内网地址
 	String INNER_MAIN_ENGINE = "123123";
@@ -99,6 +100,8 @@ public interface Constants {
 	String ADD_THREEFIXANDCONFIRM = "mobile/hiddenDangerThreeFixMobileAction!addThreeFixAndConfirm.action";
 	// 首页下边统计详情接口
 	String GET_HIDDENDANGERDETAILLIST = "mobile/yesterdayHdStatisticsMobileAction!getHiddenDangerDetailList.action";
+	// 各单位隐患统计详情接口
+	String GET_TEAMDETAILLIST = "mobile/yesterdayHdStatisticsMobileAction!getTeamDetailList.action";
 	// 查询未消耗的数据
 	String GET_NOTHANDLELIST = "mobile/hiddenDangerSumaryMobileAction!findHiddenDangerNotHandleList.action";
 	// 获取整改人、跟踪人

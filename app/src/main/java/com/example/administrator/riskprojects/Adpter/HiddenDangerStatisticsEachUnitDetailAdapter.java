@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.HiddenDangeTrackingManagementActivity;
+import com.example.administrator.riskprojects.activity.HiddenDangerDetailManagementActivity;
 import com.example.administrator.riskprojects.activity.HiddenRiskRecordDetailActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
@@ -48,11 +49,15 @@ public class HiddenDangerStatisticsEachUnitDetailAdapter extends RecyclerView.Ad
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Intent intent = new Intent(holder.itemView.getContext(),
+                        //HiddenRiskRecordDetailActivity.class);
+                //Bundle bundle = new Bundle();
+                //bundle.putSerializable("hiddenDangerRecord",recordList.get(position));
+                //intent.putExtra("hiddenrecordBundle",bundle);
                 Intent intent = new Intent(holder.itemView.getContext(),
-                        HiddenRiskRecordDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("hiddenDangerRecord",recordList.get(position));
-                intent.putExtra("hiddenrecordBundle",bundle);
+                        HiddenDangerDetailManagementActivity.class);
+                intent.putExtra("id",recordList.get(position).getId());
+                intent.putExtra("hiddenriskrecorddetail",recordList.get(position).getId());
                 holder.itemView.getContext().startActivity(intent);
             }
         });

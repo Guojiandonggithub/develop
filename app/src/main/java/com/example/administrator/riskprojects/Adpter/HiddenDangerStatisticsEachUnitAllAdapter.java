@@ -19,11 +19,14 @@ import java.util.List;
 
 public class HiddenDangerStatisticsEachUnitAllAdapter extends RecyclerView.Adapter {
     private List<HomeHiddenRecord> dtatisticsList;
+    private String tvStartDate;
+    private String tvEndDate;
 
 
-
-    public HiddenDangerStatisticsEachUnitAllAdapter(List<HomeHiddenRecord> dtatisticsList) {
+    public HiddenDangerStatisticsEachUnitAllAdapter(List<HomeHiddenRecord> dtatisticsList,String tvStartDate,String tvEndDate) {
         this.dtatisticsList = dtatisticsList;
+        this.tvStartDate = tvStartDate;
+        this.tvEndDate = tvEndDate;
     }
 
     @Override
@@ -49,6 +52,9 @@ public class HiddenDangerStatisticsEachUnitAllAdapter extends RecyclerView.Adapt
                         HiddenDangerStatisticsEachUnitDetailActivity.class);
                 String teamGroupCode = dtatisticsList.get(position).getTeamGroupId();
                 intent.putExtra("teamGroupCode",teamGroupCode);
+                intent.putExtra("getTeamdetaillist","getTeamdetaillist");
+                intent.putExtra("tvStartDate",tvStartDate);
+                intent.putExtra("tvEndDate",tvEndDate);
                 holder.itemView.getContext().startActivity(intent);
             }
         });
