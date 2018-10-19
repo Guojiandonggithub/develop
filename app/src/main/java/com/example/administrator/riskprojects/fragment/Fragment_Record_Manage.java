@@ -384,7 +384,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     JSONObject returndata = JSON.parseObject(data);
                     String rows = returndata.getString("rows");
                     curpage = Integer.parseInt(returndata.getString("page"));
-                    pagesize = Integer.parseInt(returndata.getString("pagesize"));
+                    pagesize = Integer.parseInt(returndata.getString("totalPage"));
                     List<HiddenDangerRecord> tempList = JSONArray.parseArray(rows, HiddenDangerRecord.class);
                     if (curpage == 1) {
                         recordList.clear();
@@ -467,7 +467,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     JSONObject returndata = JSON.parseObject(data);
                     String rows = returndata.getString("rows");
                     curpage = Integer.parseInt(returndata.getString("page"));
-                    pagesize = Integer.parseInt(returndata.getString("pagesize"));
+                    pagesize = Integer.parseInt(returndata.getString("totalPage"));
                     List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
                     if (curpage == 1) {
                         threeFixesList.clear();
@@ -547,7 +547,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     JSONObject returndata = JSON.parseObject(data);
                     String rows = returndata.getString("rows");
                     curpage = Integer.parseInt(returndata.getString("page"));
-                    pagesize = Integer.parseInt(returndata.getString("pagesize"));
+                    pagesize = Integer.parseInt(returndata.getString("totalPage"));
                     List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
                     if (curpage == 1) {
                         threeFixesList.clear();
@@ -624,7 +624,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     JSONObject returndata = JSON.parseObject(data);
                     String rows = returndata.getString("rows");
                     curpage = Integer.parseInt(returndata.getString("page"));
-                    pagesize = Integer.parseInt(returndata.getString("pagesize"));
+                    pagesize = Integer.parseInt(returndata.getString("totalPage"));
                     List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
                     if (curpage == 1) {
                         threeFixesList.clear();
@@ -699,7 +699,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     JSONObject returndata = JSON.parseObject(data);
                     String rows = returndata.getString("rows");
                     curpage = Integer.parseInt(returndata.getString("page"));
-                    pagesize = Integer.parseInt(returndata.getString("pagesize"));
+                    pagesize = Integer.parseInt(returndata.getString("totalPage"));
                     List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
                     if (curpage == 1) {
                         threeFixesList.clear();
@@ -781,7 +781,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     JSONObject returndata = JSON.parseObject(data);
                     String rows = returndata.getString("rows");
                     curpage = Integer.parseInt(returndata.getString("page"));
-                    pagesize = Integer.parseInt(returndata.getString("pagesize"));
+                    pagesize = Integer.parseInt(returndata.getString("totalPage"));
                     List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
                     if (curpage == 1) {
                         threeFixesList.clear();

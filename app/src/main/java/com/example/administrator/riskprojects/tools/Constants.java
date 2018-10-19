@@ -22,11 +22,11 @@ public interface Constants {
 	String PAGE = "1";
 	String ROWS = "10";
 	// 外网地址
-	//String MAIN_ENGINE = "http://59.49.107.27:8191/yhpc/";
+	String MAIN_ENGINE = "http://59.49.107.27:8191/yhpc/";
+	//String MAIN_ENGINE = "http://192.168.111.6:8070/";
 	//String MAIN_ENGINE = "http://192.168.4.50:8070/";
 	//String MAIN_ENGINE = "http://192.168.5.50:8070/";
 	//String MAIN_ENGINE = "http://192.168.111.5:8070/";
-	String MAIN_ENGINE = "http://192.168.111.6:8070/";
 	String ISUPERVISION = "1";
 	// 内网地址
 	String INNER_MAIN_ENGINE = "123123";

@@ -218,7 +218,7 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
                     JSONObject returndata = JSON.parseObject(data);
                     String rows = returndata.getString("rows");
                     String page = returndata.getString("page");
-                    String pagesize = returndata.getString("pagesize");
+                    String pagesize = returndata.getString("totalPage");
                     List<HiddenFollingRecord>  tempList = JSONArray.parseArray(rows, HiddenFollingRecord.class);
                     jsonArray = returndata.getJSONArray("rows");
                     hiddenFollingRecordList.addAll(tempList);

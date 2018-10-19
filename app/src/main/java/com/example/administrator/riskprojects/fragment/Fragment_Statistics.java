@@ -272,11 +272,11 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             String monthstr = "0" + month;
             month = Integer.parseInt(monthstr);
         }
-        /*int date = cal.get(Calendar.DATE);
+        int date = cal.get(Calendar.DATE);
         final String sname = year + "-" + (month + 1) + "-01";
         final String fname = year + "-" + (month + 1) + "-" + date;
         tvStartDate.setText(sname);
-        tvEndDate.setText(fname);*/
+        tvEndDate.setText(fname);
         cvSelectStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -708,7 +708,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                     JSONObject returndata = JSON.parseObject(data);
                     String rows = returndata.getString("rows");
                     page = Integer.parseInt(returndata.getString("page"));
-                    pagesize = Integer.parseInt(returndata.getString("pagesize"));
+                    pagesize = Integer.parseInt(returndata.getString("totalPage"));
                     List<HomeHiddenRecord> tempList = JSONArray.parseArray(rows, HomeHiddenRecord.class);
                     dtatisticsList.addAll(tempList);
                     adapter.notifyDataSetChanged();
@@ -969,7 +969,7 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
                     JSONObject returndata = JSON.parseObject(data);
                     String rows = returndata.getString("rows");
                     page = Integer.parseInt(returndata.getString("page"));
-                    pagesize = Integer.parseInt(returndata.getString("pagesize"));
+                    pagesize = Integer.parseInt(returndata.getString("totalPage"));
                     List<HomeHiddenRecord> tempList = JSONArray.parseArray(rows, HomeHiddenRecord.class);
                     dtatisticsList.addAll(tempList);
                     adapter.notifyDataSetChanged();

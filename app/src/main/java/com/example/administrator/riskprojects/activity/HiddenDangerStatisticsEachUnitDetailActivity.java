@@ -199,7 +199,7 @@ public class HiddenDangerStatisticsEachUnitDetailActivity extends BaseActivity i
                     JSONObject returndata = JSON.parseObject(data);
                     String rows = returndata.getString("rows");
                     page = Integer.parseInt(returndata.getString("page"));
-                    pagesize = Integer.parseInt(returndata.getString("pagesize"));
+                    pagesize = Integer.parseInt(returndata.getString("totalPage"));
                     List<HiddenDangerRecord> recordList = JSONArray.parseArray(rows, HiddenDangerRecord.class);
                     if (page == 1) {
                         list.clear();
@@ -286,7 +286,7 @@ public class HiddenDangerStatisticsEachUnitDetailActivity extends BaseActivity i
                     JSONObject returndata = JSON.parseObject(data);
                     String rows = returndata.getString("rows");
                     page = Integer.parseInt(returndata.getString("page"));
-                    pagesize = Integer.parseInt(returndata.getString("pagesize"));
+                    pagesize = Integer.parseInt(returndata.getString("totalPage"));
                     List<HiddenDangerRecord> recordList = JSONArray.parseArray(rows, HiddenDangerRecord.class);
                     if (page == 1) {
                         list.clear();

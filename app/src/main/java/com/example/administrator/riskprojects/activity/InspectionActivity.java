@@ -172,7 +172,7 @@ public class InspectionActivity extends BaseActivity {
                         JSONObject returndata = JSON.parseObject(data);
                         String rows = returndata.getString("rows");
                         int page = Integer.parseInt(returndata.getString("page"));
-                        int pagesize = Integer.parseInt(returndata.getString("pagesize"));
+                        int pagesize = Integer.parseInt(returndata.getString("totalPage"));
                         List<CarRecord> recordList = JSONArray.parseArray(rows, CarRecord.class);
                         adapter = new InspectionAdapter(recordList);
                         recyclerView.setAdapter(adapter);
