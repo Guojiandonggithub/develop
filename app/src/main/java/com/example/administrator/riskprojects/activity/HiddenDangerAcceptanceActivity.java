@@ -57,12 +57,12 @@ public class HiddenDangerAcceptanceActivity extends BaseActivity {
 
     private void setView() {
         txtTitle.setText("隐患验收");
-        List<SelectItem> selectItems = new ArrayList<SelectItem>();
         SelectItem selectItemw = new SelectItem();
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
         SelectItem selectItemy = new SelectItem();
-        selectItemy.name = "未验收";
+        selectItemy.name = "不合格";
         selectItemy.id = "1";
-        selectItemw.name = "已验收";
+        selectItemw.name = "合格";
         selectItemw.id = "0";
         selectItems.add(selectItemw);
         selectItems.add(selectItemy);

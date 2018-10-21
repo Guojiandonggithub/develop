@@ -193,6 +193,14 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
                     }else{
                         ishandle = "已处理";
                     }
+                    String recheckResult = record.getRecheckResult();
+                    if(TextUtils.isEmpty(recheckResult)){
+                        recheckResult = "";
+                    }else if("0".equals(recheckResult)){
+                        recheckResult = "未验收";
+                    }else{
+                        recheckResult = "已验收";
+                    }
                     tvDiscoveryTime.setText(record.getFindTime());
                     tvOversee.setText(isuper);
                     tvIsHang.setText(guapai);
@@ -205,13 +213,14 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
                     tvMeasure.setText(record.getMeasure());
                     tvCapital.setText(record.getMoney());
                     tvTheNumberOfProcessing.setText(record.getPersonNum());
-                    tvToCarryOutThePeople.setText(record.getPracticablePerson());
-                    tvDepartment.setText(record.getDeptName());
-                    tvHeadquarters.setText(record.getThreeFixTeamName());
+                    //tvToCarryOutThePeople.setText(record.getPracticablePerson());
+                    //tvDepartment.setText(record.getDeptName());
+                    //tvHeadquarters.setText(record.getThreeFixTeamName());
+                    tvCheckTheContent.setText(record.getHiddenCheckContent());
                     tvTrackingUnit.setText(record.getFollingTeamName());
                     tvTrackPeople.setText(record.getFollingPersonName());
                     tvAcceptanceOfThePeople.setText(record.getRecheckPersonName());
-                    tvAcceptanceOfTheResults.setText(record.getRecheckResult());
+                    tvAcceptanceOfTheResults.setText(recheckResult);
                 }
 
             }

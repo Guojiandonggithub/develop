@@ -75,6 +75,9 @@
             android:name=".activity.BleSdkActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.SocketActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.ChangePasswordActivity"
             android:screenOrientation="portrait" />
         <activity

@@ -23,6 +23,7 @@ import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.util.UpdateVersionUtil;
 import com.example.administrator.riskprojects.view.MyAlertDialog;
+import com.example.administrator.riskprojects.activity.SocketActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -73,12 +74,12 @@ public class Fragment_mine extends Fragment {
                 startActivityForResult(new Intent(ctx, PersonInfoEditActivity.class), Integer.parseInt(Constants.PAGE));
             }
         });
-        mTvBleSdk.setOnClickListener(new View.OnClickListener() {
+        /*mTvBleSdk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ctx, BleSdkActivity.class));
+                startActivity(new Intent(ctx, SocketActivity.class));
             }
-        });
+        });*/
         mTvVersion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
