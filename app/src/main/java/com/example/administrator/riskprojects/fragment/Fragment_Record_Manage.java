@@ -1297,4 +1297,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         spinner.setAdapter(adapter);
     }
 
+    public void setIdFlag(int flags) {
+             flag = flags;
+       }
 }

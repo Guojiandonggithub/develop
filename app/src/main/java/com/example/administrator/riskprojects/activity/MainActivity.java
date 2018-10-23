@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -447,10 +448,45 @@ public class MainActivity extends FragmentActivity {
             if (!TextUtils.isEmpty(message)) {
                 try {
                     JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
-            //        下面是例子 可以传进来 id 和  type 还有其他想传进来的 都可以在这操作
-            //        String type = json.optString("type");
-            //        String id = json.optString("id");
-
+                    Log.e(TAG, "operation================== "+json);
+                    String operation = json.optString("optionation");
+                    Log.e(TAG, "operation================== "+operation);
+                    switch (operation) {
+                        case "add":
+                            break;
+                        case "chose":
+                            manageFragment.setIdFlag(2);
+                            onTabClicked(findViewById(R.id.analysis));
+                            //设置属性，请求时使用
+                            //onMenuClicked(findViewById(R.id.ll_manage_release));
+                            break;
+                        case "threeFix":
+                            manageFragment.setIdFlag(3);
+                            onTabClicked(findViewById(R.id.analysis));
+                            //设置属性，请求时使用
+                            //onMenuClicked(findViewById(R.id.ll_manage_rectification));
+                            break;
+                        case "recheck":
+                            manageFragment.setIdFlag(6);
+                            onTabClicked(findViewById(R.id.analysis));
+                            //设置属性，请求时使用
+                            //onMenuClicked(findViewById(R.id.ll_manage_review));
+                            break;
+                        case "finish":
+                            /*onTabClicked(findViewById(R.id.analysis));
+                            //设置属性，请求时使用
+                            //statisticsfragment.setIdFlag(id, flag);
+                            onMenuClicked(findViewById(R.id.ll_manage_review));*/
+                            break;
+                        case "outTime":
+                            manageFragment.setIdFlag(5);
+                            onTabClicked(findViewById(R.id.analysis));
+                            //设置属性，请求时使用
+                            onMenuClicked(findViewById(R.id.ll_manage_overdue));
+                            break;
+                        default:
+                            break;
+                    }
                 } catch (JSONException e) {
                 }
             }

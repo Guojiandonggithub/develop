@@ -6,8 +6,8 @@ android {
         applicationId "com.example.administrator.riskprojects"
         minSdkVersion 18
         targetSdkVersion 23
-        versionCode 16
-        versionName "1.16"
+        versionCode 17
+        versionName "1.17"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         ndk {
@@ -48,6 +48,8 @@ dependencies {
     implementation 'org.devio.takephoto:takephoto_library:4.1.0'
     implementation 'com.github.chrisbanes:PhotoView:2.1.4'
     implementation project(':bleSdk')
-    implementation 'cn.jiguang.sdk:jpush:3.1.6'  // 此处以JPush 3.1.6 版本为例。
-    implementation 'cn.jiguang.sdk:jcore:1.2.5'  // 此处以JCore 1.2.5 版本为例。
+    implementation 'cn.jiguang.sdk:jpush:3.1.6'
+    // 此处以JPush 3.1.6 版本为例。
+    implementation 'cn.jiguang.sdk:jcore:1.2.5'
+    // 此处以JCore 1.2.5 版本为例。
 }
