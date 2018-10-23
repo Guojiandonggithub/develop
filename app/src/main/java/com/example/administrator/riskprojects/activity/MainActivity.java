@@ -1,5 +1,7 @@
 package com.example.administrator.riskprojects.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -7,7 +9,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,11 +27,21 @@ import com.example.administrator.riskprojects.fragment.Fragment_Statistics;
 import com.example.administrator.riskprojects.fragment.Fragment_Supervision;
 import com.example.administrator.riskprojects.fragment.Fragment_mine;
 import com.example.administrator.riskprojects.net.NetworkConnectChangedReceiver;
+import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.util.UpdateVersionUtil;
 import com.example.administrator.riskprojects.view.MyAlertDialog;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Timer;
 import java.util.TimerTask;
+
+import cn.jpush.android.api.JPushInterface;
+
+
+import static com.example.administrator.riskprojects.activity.TagAliasOperatorHelper.ACTION_SET;
+import static com.example.administrator.riskprojects.activity.TagAliasOperatorHelper.sequence;
 
 public class MainActivity extends FragmentActivity {
     private TextView txt_title;
@@ -48,6 +62,7 @@ public class MainActivity extends FragmentActivity {
     public int index;
     private int currentTabIndex;// 当前fragment的index
 
+
     private LinearLayoutCompat mLlDialog;
     private LinearLayoutCompat mLlManageDetail;
     private LinearLayoutCompat mLlManageRelease;
@@ -63,6 +78,7 @@ public class MainActivity extends FragmentActivity {
     };
     private LinearLayoutCompat mLlManage;
     private LinearLayoutCompat mLlChart;
+    public static boolean isForeground = false;
 
 
     @Override
@@ -73,9 +89,22 @@ public class MainActivity extends FragmentActivity {
         initTabView();
         initPopWindow();
         receiver();
-        new UpdateVersionUtil().versionUpdata(MainActivity.this,true);
+        setUpAlias();
+        handlePushMessage(getIntent());
+        new UpdateVersionUtil().versionUpdata(MainActivity.this, true);
 //        upDateVersion();
     }
+
+    private void setUpAlias() {
+        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+        tagAliasBean.action = ACTION_SET;
+        sequence++;
+        tagAliasBean.alias = UserUtils.getUserID(this);
+        tagAliasBean.isAliasAction = true;
+        TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), sequence, tagAliasBean);
+    }
+
+
 
     private void upDateVersion() {
         new UpdateVersionUtil().versionUpdata(this, true);
@@ -91,7 +120,7 @@ public class MainActivity extends FragmentActivity {
         fragments = new Fragment[]{homefragment, supervisionfragment,
                 manageFragment, statisticsfragment, minefragment};
         imagebuttons = new ImageView[5];
-        txt_title_right =findViewById(R.id.txt_title_right);
+        txt_title_right = findViewById(R.id.txt_title_right);
         imagebuttons[0] = (ImageView) findViewById(R.id.ib_contact_list);
         imagebuttons[1] = (ImageView) findViewById(R.id.ib_find);
         imagebuttons[2] = (ImageView) findViewById(R.id.iv_analysis);
@@ -192,7 +221,13 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onResume() {
+        isForeground = true;
         super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        isForeground = false;
+        super.onPause();
     }
 
     @Override
@@ -266,7 +301,7 @@ public class MainActivity extends FragmentActivity {
             case R.id.ll_chart_01:
             case R.id.ll_chart_02:
             case R.id.ll_chart_03:
-            //case R.id.ll_chart_04:
+                //case R.id.ll_chart_04:
             case R.id.ll_chart_05:
             case R.id.ll_chart_06:
             case R.id.ll_chart_07:
@@ -324,12 +359,12 @@ public class MainActivity extends FragmentActivity {
         onMenuClicked(findViewById(R.id.ll_chart_01));
     }
 
-    private void receiver(){
+    private void receiver() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
         filter.addAction("android.net.wifi.STATE_CHANGE");
-        registerReceiver(new NetworkConnectChangedReceiver(),filter);
+        registerReceiver(new NetworkConnectChangedReceiver(), filter);
     }
 
     //重写onKeyDown方法,对按键(不一定是返回按键)监听
@@ -351,5 +386,76 @@ public class MainActivity extends FragmentActivity {
         }
         return false;
     }
+
+
+    //for receive customer msg from jpush server
+    private MessageReceiver mMessageReceiver;
+    public static final String MESSAGE_RECEIVED_ACTION = "com.mwh.enterprise.MESSAGE_RECEIVED_ACTION";
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_MESSAGE = "message";
+    public static final String KEY_EXTRAS = "extras";
+
+    public void registerMessageReceiver() {
+        mMessageReceiver = new MessageReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+        filter.addAction(MESSAGE_RECEIVED_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, filter);
+    }
+
+    public class MessageReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try {
+                if (MESSAGE_RECEIVED_ACTION.equals(intent.getAction())) {
+                    String messge = intent.getStringExtra(KEY_MESSAGE);
+                    String extras = intent.getStringExtra(KEY_EXTRAS);
+                    StringBuilder showMsg = new StringBuilder();
+                    showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
+                    if (!TextUtils.isEmpty(extras)) {
+                        showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
+                    }
+                    setCostomMsg(showMsg.toString());
+
+                }
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    private void setCostomMsg(String msg) {
+        System.out.println("main-push:" + msg);
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+//        if (null != tvLocaltion) {
+//            tvLocaltion.setText(msg);
+//            tvLocaltion.setVisibility(android.view.View.VISIBLE);
+//        }
+    }
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handlePushMessage(intent);
+    }
+
+    private void handlePushMessage(Intent intent) {
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            String message = bundle.getString(JPushInterface.EXTRA_ALERT);
+            if (!TextUtils.isEmpty(message)) {
+                try {
+                    JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
+            //        下面是例子 可以传进来 id 和  type 还有其他想传进来的 都可以在这操作
+            //        String type = json.optString("type");
+            //        String id = json.optString("id");
+
+                } catch (JSONException e) {
+                }
+            }
+        }
+    }
+
 
 }

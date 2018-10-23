@@ -15,6 +15,7 @@ import com.example.administrator.riskprojects.LoginActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.BleSdkActivity;
 import com.example.administrator.riskprojects.activity.ChangePasswordActivity;
+import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.activity.HiddenDangeTrackingDetailListActivity;
 import com.example.administrator.riskprojects.activity.HiddenRiskRecordDetailActivity;
 import com.example.administrator.riskprojects.activity.PersonInfoEditActivity;
@@ -93,6 +94,7 @@ public class Fragment_mine extends Fragment {
                         , new MyAlertDialog.DialogListener() {
                     @Override
                     public void affirm() {
+                        Data.getInstance().deleteAlias();
                         startActivity(new Intent(getActivity(), LoginActivity.class));
                         getActivity().onBackPressed();//销毁自己
                     }
