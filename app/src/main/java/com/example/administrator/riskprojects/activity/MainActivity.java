@@ -91,9 +91,15 @@ public class MainActivity extends FragmentActivity {
         initPopWindow();
         receiver();
         setUpAlias();
-        handlePushMessage(getIntent());
+        registerMessageReceiver();
         new UpdateVersionUtil().versionUpdata(MainActivity.this, true);
 //        upDateVersion();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        handlePushMessage(getIntent());
     }
 
     private void setUpAlias() {
@@ -104,7 +110,6 @@ public class MainActivity extends FragmentActivity {
         tagAliasBean.isAliasAction = true;
         TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), sequence, tagAliasBean);
     }
-
 
 
     private void upDateVersion() {
@@ -200,6 +205,7 @@ public class MainActivity extends FragmentActivity {
             FragmentTransaction trx = getSupportFragmentManager()
                     .beginTransaction();
             trx.hide(fragments[currentTabIndex]);
+            System.out.println("fragments.isadd" + fragments[index].getClass().getSimpleName() + ":" + Boolean.toString(fragments[index].isAdded()));
             if (!fragments[index].isAdded()) {
                 trx.add(R.id.fragment_container, fragments[index]);
             }
@@ -225,6 +231,7 @@ public class MainActivity extends FragmentActivity {
         isForeground = true;
         super.onResume();
     }
+
     @Override
     protected void onPause() {
         isForeground = false;
@@ -412,12 +419,13 @@ public class MainActivity extends FragmentActivity {
                 if (MESSAGE_RECEIVED_ACTION.equals(intent.getAction())) {
                     String messge = intent.getStringExtra(KEY_MESSAGE);
                     String extras = intent.getStringExtra(KEY_EXTRAS);
-                    StringBuilder showMsg = new StringBuilder();
-                    showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
-                    if (!TextUtils.isEmpty(extras)) {
-                        showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
-                    }
-                    setCostomMsg(showMsg.toString());
+                    handleExtra(extras);
+//                    StringBuilder showMsg = new StringBuilder();
+//                    showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
+//                    if (!TextUtils.isEmpty(extras)) {
+//                        showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
+//                    }
+//                    setCostomMsg(showMsg.toString());
 
                 }
             } catch (Exception e) {
@@ -428,6 +436,7 @@ public class MainActivity extends FragmentActivity {
     private void setCostomMsg(String msg) {
         System.out.println("main-push:" + msg);
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+
 //        if (null != tvLocaltion) {
 //            tvLocaltion.setText(msg);
 //            tvLocaltion.setVisibility(android.view.View.VISIBLE);
@@ -446,50 +455,58 @@ public class MainActivity extends FragmentActivity {
         if (bundle != null) {
             String message = bundle.getString(JPushInterface.EXTRA_ALERT);
             if (!TextUtils.isEmpty(message)) {
-                try {
-                    JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
-                    Log.e(TAG, "operation================== "+json);
-                    String operation = json.optString("optionation");
-                    Log.e(TAG, "operation================== "+operation);
-                    switch (operation) {
-                        case "add":
-                            break;
-                        case "chose":
-                            manageFragment.setIdFlag(2);
-                            onTabClicked(findViewById(R.id.analysis));
-                            //设置属性，请求时使用
-                            //onMenuClicked(findViewById(R.id.ll_manage_release));
-                            break;
-                        case "threeFix":
-                            manageFragment.setIdFlag(3);
-                            onTabClicked(findViewById(R.id.analysis));
-                            //设置属性，请求时使用
-                            //onMenuClicked(findViewById(R.id.ll_manage_rectification));
-                            break;
-                        case "recheck":
-                            manageFragment.setIdFlag(6);
-                            onTabClicked(findViewById(R.id.analysis));
-                            //设置属性，请求时使用
-                            //onMenuClicked(findViewById(R.id.ll_manage_review));
-                            break;
-                        case "finish":
-                            /*onTabClicked(findViewById(R.id.analysis));
-                            //设置属性，请求时使用
-                            //statisticsfragment.setIdFlag(id, flag);
-                            onMenuClicked(findViewById(R.id.ll_manage_review));*/
-                            break;
-                        case "outTime":
-                            manageFragment.setIdFlag(5);
-                            onTabClicked(findViewById(R.id.analysis));
-                            //设置属性，请求时使用
-                            onMenuClicked(findViewById(R.id.ll_manage_overdue));
-                            break;
-                        default:
-                            break;
-                    }
-                } catch (JSONException e) {
-                }
+                String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
+                handleExtra(extra);
             }
+        }
+    }
+
+    private void handleExtra(String extra) {
+        try {
+            JSONObject json = new JSONObject(extra);
+            Log.e(TAG, "operation================== " + json);
+            String operation = json.optString("operation");
+            Log.e(TAG, "operation================== " + operation);
+//            onTabClicked(findViewById(R.id.re_find));
+
+            switch (operation) {
+                case "add":
+                    break;
+                case "chose":
+                    manageFragment.setIdFlag(2);
+                    onTabClicked(findViewById(R.id.analysis));
+                    //设置属性，请求时使用
+                    //onMenuClicked(findViewById(R.id.ll_manage_release));
+                    break;
+                case "threeFix":
+                    manageFragment.setIdFlag(3);
+                    onTabClicked(findViewById(R.id.analysis));
+                    //设置属性，请求时使用
+                    //onMenuClicked(findViewById(R.id.ll_manage_rectification));
+                    break;
+                case "recheck":
+                    manageFragment.setIdFlag(6);
+                    onTabClicked(findViewById(R.id.analysis));
+                    //设置属性，请求时使用
+                    //onMenuClicked(findViewById(R.id.ll_manage_review));
+                    break;
+                case "finish":
+                    /*onTabClicked(findViewById(R.id.analysis));
+                    //设置属性，请求时使用
+                    //statisticsfragment.setIdFlag(id, flag);
+                    onMenuClicked(findViewById(R.id.ll_manage_review));*/
+                    break;
+                case "outTime":
+                    manageFragment.setIdFlag(5);
+                    onTabClicked(findViewById(R.id.analysis));
+                    //设置属性，请求时使用
+                    onMenuClicked(findViewById(R.id.ll_manage_overdue));
+                    break;
+                default:
+                    break;
+        }
+        } catch (
+                JSONException e) {
         }
     }
 

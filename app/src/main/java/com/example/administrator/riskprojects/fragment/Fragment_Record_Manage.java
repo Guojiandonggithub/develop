@@ -492,7 +492,8 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 super.onFinish();
                 mSwipeRefreshLayout.setRefreshing(false);
                 onLoading = false;
-                setEmptyLayout(); }
+                setEmptyLayout();
+            }
         });
     }
 
@@ -573,7 +574,8 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 super.onFinish();
                 mSwipeRefreshLayout.setRefreshing(false);
                 onLoading = false;
-                setEmptyLayout(); }
+                setEmptyLayout();
+            }
         });
     }
 
@@ -649,7 +651,8 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 super.onFinish();
                 mSwipeRefreshLayout.setRefreshing(false);
                 onLoading = false;
-                setEmptyLayout(); }
+                setEmptyLayout();
+            }
         });
     }
 
@@ -725,7 +728,8 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 super.onFinish();
                 mSwipeRefreshLayout.setRefreshing(false);
                 onLoading = false;
-                setEmptyLayout(); }
+                setEmptyLayout();
+            }
         });
     }
 
@@ -807,7 +811,8 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 super.onFinish();
                 mSwipeRefreshLayout.setRefreshing(false);
                 onLoading = false;
-                setEmptyLayout();  }
+                setEmptyLayout();
+            }
         });
     }
 
@@ -946,19 +951,26 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
     public String getTitle() {
         switch (flag) {
             case 0:
-                return getResources().getString(R.string.hidden_danger_record_management);
+//                return getResources().getString(R.string.hidden_danger_record_management);
+                return "隐患记录管理";
             case 1:
-                return getResources().getString(R.string.hidden_danger_record_management);
+//                return getResources().getString(R.string.hidden_danger_record_management);
+                return "隐患记录管理";
             case 2:
-                return getResources().getString(R.string.hidden_danger_management);
+//                return getResources().getString(R.string.hidden_danger_management);
+                return "隐患下达管理";
             case 3:
-                return getResources().getString(R.string.hidden_danger_rectification_management);
+//                return getResources().getString(R.string.hidden_danger_rectification_management);
+                return "隐患整改管理";
             case 4:
-                return getResources().getString(R.string.hidden_danger_tracking_management);
+//                return getResources().getString(R.string.hidden_danger_tracking_management);
+                return "隐患跟踪管理";
             case 5:
-                return getResources().getString(R.string.risk_overdue_management);
+//                return getResources().getString(R.string.risk_overdue_management);
+                return "隐患逾期管理";
             case 6:
-                return getResources().getString(R.string.hidden_danger_review_management);
+//                return getResources().getString(R.string.hidden_danger_review_management);
+                return "隐患验收管理";
 
         }
         return "";
@@ -1298,6 +1310,6 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
     }
 
     public void setIdFlag(int flags) {
-             flag = flags;
-       }
+        flag = flags;
+    }
 }
