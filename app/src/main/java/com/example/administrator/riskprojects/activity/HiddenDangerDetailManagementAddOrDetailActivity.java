@@ -2,7 +2,9 @@ package com.example.administrator.riskprojects.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.administrator.riskprojects.Adpter.PicAdapter;
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
@@ -20,6 +23,9 @@ import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.juns.health.net.loopj.android.http.RequestParams;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivity {
     private static final String TAG = "HiddenDangerDetailManag";
@@ -61,11 +67,11 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
     private TextView tvTheNumberOfProcessing;
     private TextView tvToCarryOutThePeople;
     private TextView tvDepartment;
-    private TextView tvHeadquarters;
     private TextView tvTrackingUnit;
     private TextView tvTrackPeople;
     private TextView tvAcceptanceOfThePeople;
     private TextView tvAcceptanceOfTheResults;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,11 +149,12 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
         tvTheNumberOfProcessing = findViewById(R.id.tv_the_number_of_processing);
         tvToCarryOutThePeople = findViewById(R.id.tv_to_carry_out_the_people);
         tvDepartment = findViewById(R.id.tv_department);
-        tvHeadquarters = findViewById(R.id.tv_headquarters);
         tvTrackingUnit = findViewById(R.id.tv_tracking_unit);
         tvTrackPeople = findViewById(R.id.tv_track_people);
         tvAcceptanceOfThePeople = findViewById(R.id.tv_acceptance_of_the_people);
         tvAcceptanceOfTheResults = findViewById(R.id.tv_acceptance_of_the_results);
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
     }
 
     private void initdata() {
@@ -214,13 +221,13 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
                     tvCapital.setText(record.getMoney());
                     tvTheNumberOfProcessing.setText(record.getPersonNum());
                     //tvToCarryOutThePeople.setText(record.getPracticablePerson());
-                    //tvDepartment.setText(record.getDeptName());
-                    //tvHeadquarters.setText(record.getThreeFixTeamName());
+                    tvDepartment.setText(record.getTeamName());
                     tvCheckTheContent.setText(record.getHiddenCheckContent());
                     tvTrackingUnit.setText(record.getFollingTeamName());
                     tvTrackPeople.setText(record.getFollingPersonName());
                     tvAcceptanceOfThePeople.setText(record.getRecheckPersonName());
                     tvAcceptanceOfTheResults.setText(recheckResult);
+                    getPicList(record.getImageGroup());
                 }
 
             }
@@ -299,6 +306,42 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
                 return "跟踪";
             default:
                 return "未知";
+        }
+    }
+
+    //查询图片列表
+    private void getPicList(String imageGroup) {
+        Log.i(TAG, "imageGroup: 图片imageGroup=========" + imageGroup);
+        try {
+            if(!TextUtils.isEmpty(imageGroup)){
+                RequestParams params = new RequestParams();
+                params.put("imageGroup",imageGroup);
+                netClient.post(Data.getInstance().getIp() + Constants.GET_PICLIST, params, new BaseJsonRes() {
+
+                    @Override
+                    public void onMySuccess(String data) {
+                        Log.i(TAG, "查询图片组返回数据：" + data);
+                        if (!TextUtils.isEmpty(data)) {
+                            JSONArray jsonArray = JSONArray.parseArray(data);
+                            List<String> paths =new ArrayList<>();
+                            for(int i=0;i<jsonArray.size();i++){
+                                JSONObject job = jsonArray.getJSONObject(i); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+                                paths.add(Constants.MAIN_ENGINE+job.get("imagePath"));
+                            }
+                            Log.e(TAG, "paths================: "+paths);
+                            recyclerView.setAdapter(new PicAdapter(paths));
+                        }
+                    }
+
+                    @Override
+                    public void onMyFailure(String content) {
+                        Log.e(TAG, "查询图片组返回错误信息：" + content);
+                        Utils.showLongToast(HiddenDangerDetailManagementAddOrDetailActivity.this, content);
+                    }
+                });
+            }
+        }catch (Exception e) {
+            Utils.showLongToast(HiddenDangerDetailManagementAddOrDetailActivity.this, e.toString());
         }
     }
 

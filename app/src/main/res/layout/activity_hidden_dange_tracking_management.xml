@@ -17,7 +17,10 @@
         android:layout_weight="1"
         android:background="@color/white"
         android:clipToPadding="false">
-
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,9 +67,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:ellipsize="marquee"
                         android:gravity="center"
-                        android:singleLine="true"
                         android:text="0"
                         android:textColor="@color/white"
                         android:textSize="@dimen/normal_ts" />
@@ -327,7 +328,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="left"
-                                android:text="@string/department_group"
+                                android:text="整改单位"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/normal_ts" />
 
@@ -345,6 +346,40 @@
 
                         </android.support.v7.widget.LinearLayoutCompat>
 
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.67dp"
+                            android:background="@color/white" />
+
+                        <android.support.v7.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="33dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingLeft="48dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="left"
+                                android:text="@string/principal"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/normal_ts" />
+
+                            <TextView
+                                android:id="@+id/tv_principal"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:ellipsize="marquee"
+                                android:gravity="left"
+                                android:singleLine="true"
+                                android:text="0"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/normal_ts" />
+
+                        </android.support.v7.widget.LinearLayoutCompat>
 
                         <View
                             android:layout_width="match_parent"
@@ -373,9 +408,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
-                                android:ellipsize="marquee"
                                 android:gravity="left"
-                                android:singleLine="true"
                                 android:text="0"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/normal_ts" />
@@ -435,12 +468,12 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="left"
-                                android:text="@string/principal"
+                                android:text="@string/the_number_of_processing"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/normal_ts" />
 
                             <TextView
-                                android:id="@+id/tv_principal"
+                                android:id="@+id/tv_the_number_of_processing"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
@@ -450,6 +483,7 @@
                                 android:text="0"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/normal_ts" />
+
 
                         </android.support.v7.widget.LinearLayoutCompat>
 
@@ -462,25 +496,24 @@
                             android:layout_width="match_parent"
                             android:layout_height="33dp"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="48dp">
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:gravity="left"
-                                android:text="@string/handler"
+                                android:gravity="center"
+                                android:text="@string/tracking_unit"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/normal_ts" />
 
                             <TextView
-                                android:id="@+id/tv_handler"
+                                android:id="@+id/tv_tracking_unit"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
                                 android:ellipsize="marquee"
-                                android:gravity="left"
+                                android:gravity="center"
                                 android:singleLine="true"
                                 android:text="0"
                                 android:textColor="@color/white"
@@ -536,6 +569,17 @@
                     android:background="@color/white" />
             </android.support.v7.widget.LinearLayoutCompat>
         </FrameLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        tools:listitem="@layout/item_pic"
+        android:layout_marginBottom="8dp" />
+
+</android.support.v7.widget.LinearLayoutCompat>
     </ScrollView>
 
     <android.support.v7.widget.LinearLayoutCompat

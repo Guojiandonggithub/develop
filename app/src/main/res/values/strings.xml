@@ -51,7 +51,7 @@
     <string name="chart_analysis_of_hazard_handling">隐患处理图表分析</string>
     <string name="chart_analysis_of_hazard_year">隐患年度图表分析</string>
     <string name="finish_time">完成时间</string>
-    <string name="department" tools:ignore="ExtraTranslation">部门</string>
+    <string name="department" tools:ignore="ExtraTranslation">整改单位</string>
     <string name="headquarters">队组</string>
     <string name="principal">负责人</string>
     <string name="measure">措施</string>

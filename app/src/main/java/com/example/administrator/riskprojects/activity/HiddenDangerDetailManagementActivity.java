@@ -67,6 +67,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
     private TextView tvPrincipal;
     private TextView tvMeasure;
     private TextView tvCapital;
+    private TextView tvRecyclerView;
     private TextView tvTheNumberOfProcessing;
     private TextView tvTrackingUnit;
     private TextView tvTrackPeople;
@@ -204,6 +205,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
         tvPrincipal = findViewById(R.id.tv_principal);
         tvMeasure = findViewById(R.id.tv_measure);
         tvCapital = findViewById(R.id.tv_capital);
+        tvRecyclerView = findViewById(R.id.tv_department);
         tvTheNumberOfProcessing = findViewById(R.id.tv_the_number_of_processing);
         tvTrackingUnit = findViewById(R.id.tv_tracking_unit);
         tvTrackPeople = findViewById(R.id.tv_track_people);
@@ -274,6 +276,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                     tvPrincipal.setText(record.getThreeFixRealName());
                     tvMeasure.setText(record.getMeasure());
                     tvCapital.setText(record.getMoney());
+                    tvRecyclerView.setText(record.getTeamName());
                     tvTheNumberOfProcessing.setText(record.getPersonNum());
                     tvTrackingUnit.setText(record.getFollingTeamName());
                     tvTrackPeople.setText(record.getFollingPersonName());

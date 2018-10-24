@@ -68,6 +68,7 @@ public class ThreeFix implements Serializable{
 	private String follingTeamId; // 跟踪人单位id
 	private String follingTeamName; // 跟踪人单位名称
 	private String isupervision; // 挂牌
+	private String imageGroup; // 挂牌
 
 	public String getId() {
 		return id;
@@ -563,5 +564,13 @@ public class ThreeFix implements Serializable{
 
 	public void setIsupervision(String isupervision) {
 		this.isupervision = isupervision;
+	}
+
+	public String getImageGroup() {
+		return imageGroup;
+	}
+
+	public void setImageGroup(String imageGroup) {
+		this.imageGroup = imageGroup;
 	}
 }
