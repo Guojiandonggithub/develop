@@ -125,7 +125,7 @@ public class HiddenDangerOverdueManagementActivity extends BaseActivity {
         }
         mTvSupervise.setText(isuper);
         mTvFinishTime.setText(threeFix.getFixTime());
-        mTvDepartment.setText(threeFix.getDeptName());
+        mTvDepartment.setText(threeFix.getTeamName());
         mTvMeasure.setText(threeFix.getMeasure());
         mTvCapital.setText(threeFix.getMoney());
         mTvPrincipal.setText(threeFix.getRealName());

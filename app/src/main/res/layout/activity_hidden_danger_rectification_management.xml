@@ -64,9 +64,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:ellipsize="marquee"
                         android:gravity="center"
-                        android:singleLine="true"
                         android:text="0"
                         android:textColor="@color/white"
                         android:textSize="@dimen/normal_ts" />
@@ -373,9 +371,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
-                                android:ellipsize="marquee"
                                 android:gravity="left"
-                                android:singleLine="true"
                                 android:text="0"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/normal_ts" />

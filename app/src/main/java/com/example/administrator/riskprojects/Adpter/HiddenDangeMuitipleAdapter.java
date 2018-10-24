@@ -159,20 +159,20 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
                         @Override
                         public void onClick(View v) {
                             ThreeFix threeFix = threeFixList.get(position);
-                        /*Intent intent = new Intent(holder.itemView.getContext(),
+                        Intent intent = new Intent(holder.itemView.getContext(),
                                 HiddenDangerReviewManagementActivity.class);
 
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("threeFix",threeFix);
                         intent.putExtra("threeBund",bundle);
-                        holder.itemView.getContext().startActivity(intent);*/
-                            Intent intent = new Intent(holder.itemView.getContext(), HiddenDangerAcceptanceActivity.class);
+                        holder.itemView.getContext().startActivity(intent);
+                            /*Intent intent = new Intent(holder.itemView.getContext(), HiddenDangerAcceptanceActivity.class);
                             intent.putExtra("threeFixId", threeFix.getId());
                             intent.putExtra("recheckresult", threeFix.getRecheckResult());
                             intent.putExtra("description", threeFix.getDescription());
                             intent.putExtra("recheckPersonId", threeFix.getRecheckPersonId());
                             intent.putExtra("recheckPersonName", threeFix.getRecheckPersonName());
-                            holder.itemView.getContext().startActivity(intent);
+                            holder.itemView.getContext().startActivity(intent);*/
                         }
                     });
                 }else{
