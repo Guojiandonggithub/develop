@@ -98,7 +98,6 @@ public class HiddenDangerReviewManagementActivity extends BaseActivity {
         mTvHandler = findViewById(R.id.tv_the_number_of_processing);
         recyclerView = findViewById(R.id.recyclerView);
         mTvHiddenUnits = findViewById(R.id.tv_hidden_units);
-        getPicList(threeFix.getImageGroup());
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
     }
 
@@ -151,6 +150,7 @@ public class HiddenDangerReviewManagementActivity extends BaseActivity {
         mTvTrackUnit.setText(threeFix.getFollingTeamName());
         mTvHandler.setText(threeFix.getPersonNum());
         mTvHiddenUnits.setText(threeFix.getTeamGroupName());
+        getPicList(threeFix.getImageGroup());
     }
 
     //查询图片列表
