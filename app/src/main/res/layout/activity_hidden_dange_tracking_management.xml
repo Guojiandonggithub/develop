@@ -91,6 +91,42 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
+                        android:text="@string/hidden_units"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/normal_ts" />
+
+
+                    <TextView
+                        android:id="@+id/tv_hidden_units"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:ellipsize="marquee"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="@string/processed"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/normal_ts" />
+
+
+                </android.support.v7.widget.LinearLayoutCompat>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.67dp"
+                    android:background="@color/white" />
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="33dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
                         android:text="@string/area"
                         android:textColor="@color/white"
                         android:textSize="@dimen/normal_ts" />

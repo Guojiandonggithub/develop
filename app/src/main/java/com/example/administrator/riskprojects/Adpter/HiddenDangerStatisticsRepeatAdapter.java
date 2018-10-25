@@ -1,18 +1,12 @@
 package com.example.administrator.riskprojects.Adpter;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.riskprojects.R;
-import com.example.administrator.riskprojects.activity.HiddenRiskRecordDetailActivity;
-import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 
 import java.util.List;
@@ -37,9 +31,9 @@ public class HiddenDangerStatisticsRepeatAdapter extends RecyclerView.Adapter {
         if(recordList.size()>0){
             ((ViewHolder) holder).tvHiddenContent.setText(recordList.get(position).getContent());
             ((ViewHolder) holder).tvNameOfTheProfessional.setText(recordList.get(position).getSname());
-            ((ViewHolder) holder).tvHazardLevel.setText(recordList.get(position).getGname());
+            ((ViewHolder) holder).tvHazardLevel.setText(recordList.get(position).getJbName());
             //((ViewHolder) holder).tvHiddenTroubleDescription.setText(recordList.get(position).getHiddenBelong());
-            ((ViewHolder) holder).tvRepeatTheNumber.setText(recordList.get(position).getRepeatNum());
+            ((ViewHolder) holder).tvRepeatTheNumber.setText(recordList.get(position).getTotal());
         }
 
         /*holder.itemView.setOnClickListener(new View.OnClickListener() {

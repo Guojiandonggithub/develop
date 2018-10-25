@@ -10,14 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.riskprojects.OnItemClickListener;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.activity.FiveDecisionsActivity;
-import com.example.administrator.riskprojects.activity.HiddenDangerAcceptanceActivity;
 import com.example.administrator.riskprojects.activity.HiddenDangerOverdueManagementActivity;
 import com.example.administrator.riskprojects.activity.HiddenDangerRectificationManagementActivity;
 import com.example.administrator.riskprojects.activity.HiddenDangerReviewManagementActivity;
@@ -181,7 +179,7 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
                 break;
 
             case FLAG_RECTIFICATION:
-                ((ViewHolder) holder).button.setText("整改");
+                ((ViewHolder) holder).button.setText("完成整改");
                 ((ViewHolder) holder).button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

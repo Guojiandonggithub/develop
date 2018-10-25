@@ -27,6 +27,8 @@ public interface Constants {
 	//String MAIN_ENGINE = "http://192.168.4.50:8070/";
 	//String MAIN_ENGINE = "http://192.168.5.50:8070/";
 	//String MAIN_ENGINE = "http://192.168.111.5:8070/";
+	//String MAIN_ENGINE = "http://1.63.57.103:8070/";
+	//String MAIN_ENGINE = "http://1.63.57.102:8070 /";
 	String ISUPERVISION = "1";
 	// 内网地址
 	String INNER_MAIN_ENGINE = "123123";

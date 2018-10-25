@@ -46,6 +46,7 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
     private TextView mTvDepartment;
     private TextView mTvMeasure;
     private TextView mTvCapital;
+    private TextView mTvHiddenUnits;
     private TextView mTvPrincipal;
     private TextView mTvTheRectificationResults;
     private TextView mTvToCarryOutThePeople;
@@ -83,6 +84,7 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
         mTvDepartment = findViewById(R.id.tv_department);
         mTvMeasure = findViewById(R.id.tv_measure);
         mTvCapital = findViewById(R.id.tv_capital);
+        mTvHiddenUnits = findViewById(R.id.tv_hidden_units);
         mTvPrincipal = findViewById(R.id.tv_principal);
         mTvTheNumberOfProcessing = findViewById(R.id.tv_the_number_of_processing);
         mTvTheRectificationResults = findViewById(R.id.tv_the_rectification_results);
@@ -136,6 +138,7 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
         mTvDepartment.setText(threeFix.getTeamName());
         mTvMeasure.setText(threeFix.getMeasure());
         mTvCapital.setText(threeFix.getMoney());
+        mTvHiddenUnits.setText(threeFix.getTeamGroupName());
         mTvPrincipal.setText(threeFix.getRealName());
         String rectifyResult = threeFix.getRectifyResult();
         if(TextUtils.isEmpty(rectifyResult)){

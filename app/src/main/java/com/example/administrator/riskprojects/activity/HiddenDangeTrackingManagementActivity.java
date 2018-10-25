@@ -57,6 +57,7 @@ public class HiddenDangeTrackingManagementActivity extends BaseActivity {
     private TextView mTvDetail;
     private ThreeFix threeFix;
     private RecyclerView recyclerView;
+    private TextView mTvHiddenUnits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +123,7 @@ public class HiddenDangeTrackingManagementActivity extends BaseActivity {
         mTvDetail = findViewById(R.id.tv_detail);
         Bundle  bundle = getIntent().getBundleExtra("threeBund");
         threeFix = (ThreeFix) bundle.getSerializable("threeFix");
+        mTvHiddenUnits = findViewById(R.id.tv_hidden_units);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
     }
@@ -149,6 +151,7 @@ public class HiddenDangeTrackingManagementActivity extends BaseActivity {
         mTvHandler.setText(threeFix.getPersonNum());
         mTvTrackPeople.setText(threeFix.getFollingPersonName());
         mTvTrackUnit.setText(threeFix.getFollingTeamName().trim());
+        mTvHiddenUnits.setText(threeFix.getTeamGroupName());
         getPicList(threeFix.getImageGroup());
     }
 

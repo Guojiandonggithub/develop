@@ -58,6 +58,7 @@ public class HiddenDangerOverdueManagementActivity extends BaseActivity {
     private TextView mTvTrackUnit;
     private TextView mTvHandler;
     private RecyclerView recyclerView;
+    private TextView mTvHiddenUnits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +94,7 @@ public class HiddenDangerOverdueManagementActivity extends BaseActivity {
         mTvOk = findViewById(R.id.tv_ok);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        mTvHiddenUnits = findViewById(R.id.tv_hidden_units);
         String userRoles = UserUtils.getUserRoleids(HiddenDangerOverdueManagementActivity.this);
         if("8".equals(userRoles)||"62".equals(userRoles)){
             mTvOk.setVisibility(View.GONE);
@@ -151,6 +153,7 @@ public class HiddenDangerOverdueManagementActivity extends BaseActivity {
         mTvTrackPeople.setText(threeFix.getFollingPersonName());
         mTvTrackUnit.setText(threeFix.getFollingTeamName());
         mTvHandler.setText(threeFix.getPersonNum());
+        mTvHiddenUnits.setText(threeFix.getTeamGroupName());
         getPicList(threeFix.getImageGroup());
     }
 

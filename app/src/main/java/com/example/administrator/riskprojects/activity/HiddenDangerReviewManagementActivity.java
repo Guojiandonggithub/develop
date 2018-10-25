@@ -59,6 +59,7 @@ public class HiddenDangerReviewManagementActivity extends BaseActivity {
     private TextView mTvHandler;
     private RecyclerView recyclerView;
     protected NetClient netClient;
+    private TextView mTvHiddenUnits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,8 @@ public class HiddenDangerReviewManagementActivity extends BaseActivity {
         mTvTrackUnit = findViewById(R.id.tv_tracking_unit);
         mTvHandler = findViewById(R.id.tv_the_number_of_processing);
         recyclerView = findViewById(R.id.recyclerView);
+        mTvHiddenUnits = findViewById(R.id.tv_hidden_units);
+        getPicList(threeFix.getImageGroup());
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
     }
 
@@ -147,7 +150,7 @@ public class HiddenDangerReviewManagementActivity extends BaseActivity {
         mTvTrackPeople.setText(threeFix.getFollingPersonName());
         mTvTrackUnit.setText(threeFix.getFollingTeamName());
         mTvHandler.setText(threeFix.getPersonNum());
-        getPicList(threeFix.getImageGroup());
+        mTvHiddenUnits.setText(threeFix.getTeamGroupName());
     }
 
     //查询图片列表
