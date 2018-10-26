@@ -140,7 +140,9 @@ public class HiddenDangerReviewManagementActivity extends BaseActivity {
         mTvToCarryOutThePeople.setText(threeFix.getPracticablePerson());
         mTvAcceptanceOfThePeople.setText(threeFix.getRecheckPersonName());
         String result = threeFix.getRecheckResult();
-        if(TextUtils.isEmpty(result)||TextUtils.equals(result,"1")){
+        if(TextUtils.isEmpty(result)){
+            result = "未验收";
+        }else if(TextUtils.equals(result,"1")){
             result = "未通过";
         }else{
             result = "已通过";

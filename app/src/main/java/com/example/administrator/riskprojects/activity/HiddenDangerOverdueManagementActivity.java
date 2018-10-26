@@ -159,6 +159,7 @@ public class HiddenDangerOverdueManagementActivity extends BaseActivity {
 
     //隐逾期患重新下达
     private void handleOutTime(String id) {//隐患id
+        mTvOk.setClickable(false);
         RequestParams params = new RequestParams();
         params.put("ids", id);
         netClient.post(Data.getInstance().getIp()+Constants.HANDLEOUT_OVERDUELIST, params, new BaseJsonRes() {
@@ -176,7 +177,7 @@ public class HiddenDangerOverdueManagementActivity extends BaseActivity {
             public void onMyFailure(String content) {
                 Log.e(TAG, "隐逾期患重新下达返回错误信息：" + content);
                 Utils.showLongToast(HiddenDangerOverdueManagementActivity.this, content);
-                return;
+                mTvOk.setClickable(true);
             }
         });
     }

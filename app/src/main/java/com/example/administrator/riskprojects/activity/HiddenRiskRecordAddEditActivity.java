@@ -1,6 +1,5 @@
 package com.example.administrator.riskprojects.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -10,7 +9,6 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,7 +27,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.administrator.riskprojects.Adpter.AddPicAdapter;
 import com.example.administrator.riskprojects.Adpter.SpinnerAdapter;
-import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.BasePicActivity;
 import com.example.administrator.riskprojects.OnItemClickListener;
 import com.example.administrator.riskprojects.R;
@@ -53,8 +50,8 @@ import org.devio.takephoto.model.TImage;
 import org.devio.takephoto.model.TResult;
 
 import java.io.File;
-import java.util.Calendar;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -772,12 +769,14 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
             public void onMyFailure(String content) {
                 Log.e(TAG, "添加修改隐患记录返回错误信息：" + content);
                 Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                tvOk.setClickable(true);
             }
         });
     }
 
     //上传图片
     private void upaction(List<String> picList,final HiddenDangerRecord records,final  String flag) {
+        tvOk.setClickable(false);
         List<File> fileList = new ArrayList();
             try {
                 for (int i=0;i<picList.size();i++){
@@ -804,6 +803,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                         public void onMyFailure(String content) {
                             Log.e(TAG, "添加修改隐患记录返回错误信息：" + content);
                             Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                            tvOk.setClickable(true);
                         }
                     });
                 }else{

@@ -13,11 +13,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSONArray;
 import com.example.administrator.riskprojects.Adpter.SpinnerAdapter;
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
-import com.example.administrator.riskprojects.bean.DataDictionary;
 import com.example.administrator.riskprojects.bean.SelectItem;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
@@ -75,13 +73,6 @@ public class HiddenDangerAcceptanceActivity extends BaseActivity {
         String recheckPersonName = intent.getStringExtra("recheckPersonName");
         spAcceptanceResultsAdapter.notifyDataSetChanged();
         if(!TextUtils.isEmpty(recheckresult)){
-            if(TextUtils.isEmpty(recheckresult)){
-                recheckresult = "";
-            }else if(TextUtils.equals(recheckresult,"0")){
-                recheckresult = "通过";
-            }else{
-                recheckresult = "未通过";
-            }
             spAcceptanceResults.setSelection(Integer.parseInt(recheckresult));
         }
         etContent.setText(description);
@@ -135,6 +126,7 @@ public class HiddenDangerAcceptanceActivity extends BaseActivity {
 
     //验收
     private void addRecheck() {
+        tvOk.setClickable(false);
         SelectItem selectedItem =(SelectItem)spAcceptanceResults.getSelectedItem();
         RequestParams params = new RequestParams();
         String threeFixId = getIntent().getStringExtra("threeFixId");
@@ -162,6 +154,7 @@ public class HiddenDangerAcceptanceActivity extends BaseActivity {
             public void onMyFailure(String content) {
                 Log.e(TAG, "隐患验收返回错误信息：" + content);
                 Utils.showLongToast(HiddenDangerAcceptanceActivity.this, content);
+                tvOk.setClickable(true);
             }
         });
     }

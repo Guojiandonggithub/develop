@@ -220,9 +220,9 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
 
     }
 
-    //隐逾期患重新下达
-    private void handleOutTime(String id, final int position) {//隐患id
-        RequestParams params = new RequestParams();
+        //隐逾期患重新下达
+        private void handleOutTime(String id, final int position) {//隐患id
+            RequestParams params = new RequestParams();
         params.put("ids", id);
         netClient.post(Data.getInstance().getIp() + Constants.HANDLEOUT_OVERDUELIST, params, new BaseJsonRes() {
 

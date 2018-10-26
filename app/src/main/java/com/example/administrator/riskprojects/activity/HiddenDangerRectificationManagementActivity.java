@@ -158,6 +158,7 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
 
     //完成整改
     private void getHiddenRecord() {
+        mTvOk.setClickable(false);
         RequestParams params = new RequestParams();
         params.put("ids",threeFix.getId());
         netClient.post(Data.getInstance().getIp()+Constants.COMPLETERECTIFY, params, new BaseJsonRes() {
@@ -175,6 +176,7 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
             public void onMyFailure(String content) {
                 Log.e(TAG, "完成整改返回错误信息：" + content);
                 Utils.showLongToast(HiddenDangerRectificationManagementActivity.this, content);
+                mTvOk.setClickable(true);
             }
         });
     }

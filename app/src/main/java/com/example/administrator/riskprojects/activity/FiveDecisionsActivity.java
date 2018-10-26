@@ -17,12 +17,10 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.example.administrator.riskprojects.Adpter.SpinnerAdapter;
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.CollieryTeam;
-import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.bean.SelectItem;
 import com.example.administrator.riskprojects.bean.ThreeFix;
 import com.example.administrator.riskprojects.bean.UserInfo;
@@ -33,6 +31,7 @@ import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.util.DensityUtil;
 import com.juns.health.net.loopj.android.http.RequestParams;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -455,6 +454,7 @@ public class FiveDecisionsActivity extends BaseActivity {
 
     //隐患下达
     private void addThreeFixAndConfirm(ThreeFix threeFix) {
+        tvOk.setClickable(false);
         RequestParams params = new RequestParams();
         String threeFixStr = JSON.toJSONString(threeFix);
         Log.i(TAG, "addHiddenDanger: 隐患下达修改="+threeFixStr);
@@ -477,6 +477,7 @@ public class FiveDecisionsActivity extends BaseActivity {
             public void onMyFailure(String content) {
                 Log.e(TAG, "隐患下达返回错误信息：" + content);
                 Utils.showLongToast(FiveDecisionsActivity.this, content);
+                tvOk.setClickable(true);
             }
         });
     }

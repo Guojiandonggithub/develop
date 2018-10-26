@@ -1,7 +1,6 @@
 package com.example.administrator.riskprojects.activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -13,11 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.HiddenFollingRecord;
-import com.example.administrator.riskprojects.bean.ThreeFix;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
@@ -102,6 +99,7 @@ public class HiddenRiskTrackingAddEditActivity extends BaseActivity {
 
     //添加跟踪记录
     private void addEditTracking(final HiddenFollingRecord hiddenFollingRecord,String flag) {
+        mTvOk.setClickable(false);
         RequestParams params = new RequestParams();
         String hiddenFollingRecordStr = JSON.toJSONString(hiddenFollingRecord);
         params.put("follingRecordJsonData",hiddenFollingRecordStr);
@@ -124,7 +122,7 @@ public class HiddenRiskTrackingAddEditActivity extends BaseActivity {
             public void onMyFailure(String content) {
                 Log.e(TAG, "添加跟踪记录返回错误信息：" + content);
                 Utils.showLongToast(HiddenRiskTrackingAddEditActivity.this, content);
-                return;
+                mTvOk.setClickable(true);
             }
         });
     }
