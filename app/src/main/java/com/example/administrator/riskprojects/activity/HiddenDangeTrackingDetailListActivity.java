@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +55,10 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
     private boolean onLoading = false;
     private int page = 1;
     private int pagesize = 1;
+    private LinearLayoutCompat layoutEmptyList;
+    private TextView errorMessage;
+    private TextView errorTips;
+    private Button btnRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +151,7 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
                             //loading more data
 
                             if (page < pagesize) {
-                                getFollingRecordList(getIntent().getStringExtra("threeFixId"),Integer.toString(page + 1));
+                                getFollingRecordList(getIntent().getStringExtra("threeFixId"), Integer.toString(page + 1));
                             } else {
                                 Toast.makeText(HiddenDangeTrackingDetailListActivity.this, "全部加载完毕", Toast.LENGTH_SHORT).show();
                             }
@@ -164,7 +170,6 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
     }
 
 
-
     private void initView() {
         mTxtLeft = findViewById(R.id.txt_left);
         mImgLeft = findViewById(R.id.img_left);
@@ -173,6 +178,16 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
         mTxtRight = findViewById(R.id.txt_right);
         mSwipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         mRecyclerView = findViewById(R.id.recyclerView);
+        layoutEmptyList = findViewById(R.id.layout_empty_list);
+        errorMessage = findViewById(R.id.error_message);
+        errorTips = findViewById(R.id.error_tips);
+        btnRefresh = findViewById(R.id.btn_refresh);
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onRefresh();
+            }
+        });
     }
 
     private void initdata() {
@@ -181,7 +196,7 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
         getFollingRecordList(threeFixId, Constants.PAGE);
     }
 
-    private void getFollingRecordList(String threeFixId, final String curpage) {//隐患跟踪记录查询
+    private void  getFollingRecordList(String threeFixId, final String curpage) {//隐患跟踪记录查询
         RequestParams params = new RequestParams();
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", curpage);
@@ -189,17 +204,21 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
         paramsMap.put("threeFixId", threeFixId);
         String jsonString = JSON.toJSONString(paramsMap);
         params.put("follingRecordJsonData", jsonString);
-        netClient.post(Data.getInstance().getIp()+Constants.GET_FOLLINGRECORD, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.GET_FOLLINGRECORD, params, new BaseJsonRes() {
 
             @Override
             public void onStart() {
                 super.onStart();
                 onLoading = true;
+                layoutEmptyList.setVisibility(View.GONE);
                 if (curpage.equals("1")) {
                     if (!mSwipeRefreshLayout.isRefreshing()) {
                         mSwipeRefreshLayout.setRefreshing(true);
                     }
-                } {
+                    hiddenFollingRecordList.clear();
+                    adapter.notifyDataSetChanged();
+                }else
+                {
                     Toast.makeText(HiddenDangeTrackingDetailListActivity.this, "正在加载" + curpage + "/" + pagesize, Toast.LENGTH_SHORT).show();
                 }
             }
@@ -209,6 +228,11 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
                 super.onFinish();
                 mSwipeRefreshLayout.setRefreshing(false);
                 onLoading = false;
+                if (adapter.getItemCount() == 0) {
+                    layoutEmptyList.setVisibility(View.VISIBLE);
+                    errorMessage.setText("没有查询到数据");
+                    errorTips.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -217,9 +241,9 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
                 if (!TextUtils.isEmpty(data)) {
                     JSONObject returndata = JSON.parseObject(data);
                     String rows = returndata.getString("rows");
-                    String page = returndata.getString("page");
-                    String pagesize = returndata.getString("totalPage");
-                    List<HiddenFollingRecord>  tempList = JSONArray.parseArray(rows, HiddenFollingRecord.class);
+                    page = Integer.parseInt(returndata.getString("page"));
+                    pagesize = Integer.parseInt(returndata.getString("totalPage"));
+                    List<HiddenFollingRecord> tempList = JSONArray.parseArray(rows, HiddenFollingRecord.class);
                     jsonArray = returndata.getJSONArray("rows");
                     hiddenFollingRecordList.addAll(tempList);
                     adapter.notifyDataSetChanged();
@@ -239,7 +263,7 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
     private void deleteHiddenTrackingRecord(String id) {//隐患跟踪记录id
         RequestParams params = new RequestParams();
         params.put("follingRecordId", id);
-        netClient.post(Data.getInstance().getIp()+Constants.DELETE_FOLLINGRECORD, params, new BaseJsonRes() {
+        netClient.post(Data.getInstance().getIp() + Constants.DELETE_FOLLINGRECORD, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
