@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSONArray;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
-import com.example.administrator.riskprojects.bean.HiddenFollingRecord;
 import com.example.administrator.riskprojects.bean.ThreeFix;
 import com.example.administrator.riskprojects.bean.UploadPic;
 import com.example.administrator.riskprojects.common.NetUtil;
@@ -15,8 +14,6 @@ import com.juns.health.net.loopj.android.http.AsyncHttpClient;
 import com.juns.health.net.loopj.android.http.JsonHttpResponseHandler;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -80,86 +77,112 @@ public class NetClient {
                      final JsonHttpResponseHandler res) {
 		System.out.println("请求URL：" + url);
 		System.out.println("params：" + params);
+		System.out.println("!NetUtil.checkNetWork(context)：" + !NetUtil.checkNetWork(context));
 		if (!NetUtil.checkNetWork(context)) {
+			Log.e(TAG, "saveReportData===========: "+url);
 			saveReportData(url,params.toString());
 			return;
-		}
-		try {
-			if (params != null) {
-				client.post(url, params, res);
-			} else {
-				client.post(url, res);
+		}else{
+			try {
+				if (params != null) {
+					client.post(url, params, res);
+				} else {
+					client.post(url, res);
+				}
+			} catch (Exception e) {
+				// TODO
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			// TODO
-			e.printStackTrace();
 		}
 	}
 
 	private void saveReportData(String url,String param){
-		if(url.contains(Constants.ADD_HIDDENDANGERRECORD)){
-			List<HiddenDangerRecord> recordList = new ArrayList<>();
-			String hiddenRecord = Utils.getValue(context,Constants.ADDHIDDENRECORD);
-			if(!TextUtils.isEmpty(hiddenRecord)){
-				recordList = JSONArray.parseArray(hiddenRecord, HiddenDangerRecord.class);
-			}
-			HiddenDangerRecord record = JSONArray.parseObject(param.split("=")[1], HiddenDangerRecord.class);
-			recordList.add(record);
-			String listStr = JSONArray.toJSONString(recordList);
-			Log.e(TAG, "隐患上报没网时: listStr============"+listStr);
-			Utils.putValue(context,Constants.ADDHIDDENRECORD,listStr);
-			Utils.showLongToast(context, Constants.SAVE_DATA);
-		}else if(url.contains(Constants.ADD_RECHECK)){
-			List<ThreeFix> threeFixList = new ArrayList<>();
-			String hiddenRecord = Utils.getValue(context,Constants.ADDRECHECK);
-			if(!TextUtils.isEmpty(hiddenRecord)){
-				threeFixList = JSONArray.parseArray(hiddenRecord, ThreeFix.class);
-			}
-			ThreeFix threeFix = new ThreeFix();
-			Map<String,String> map = getParameters(param);
-			threeFix.setId(map.get("id"));
-			threeFix.setRecheckPersonId(map.get("recheckPersonId"));
-			threeFix.setRecheckPersonName(map.get("recheckPersonName"));
-			threeFix.setRecheckResult(map.get("recheckResult"));
-			threeFix.setDescription(map.get("description"));
-			threeFixList.add(threeFix);
-			String listStr = JSONArray.toJSONString(threeFixList);
-			Log.e(TAG, "隐患复查没网时: listStr============"+listStr);
-			Utils.putValue(context,Constants.ADDRECHECK,listStr);
-			Utils.showLongToast(context, Constants.SAVE_DATA);
-		}else if(url.equals(Constants.UPLOAD_PIC)){
-			List<UploadPic> uploadPics = new ArrayList();
-			String picurllist = Utils.getValue(context,Constants.ADDPIC);
-			if(!TextUtils.isEmpty(picurllist)){
-				uploadPics = JSONArray.parseArray(picurllist, UploadPic.class);
-			}
-			Map<String,String> map = getParameters(param);
-			UploadPic uploadPic = new UploadPic();
-			uploadPic.setRecord(map.get("record"));
-			uploadPic.setFileList(map.get("mobile"));
-			uploadPics.add(uploadPic);
-			String listStr = JSONArray.toJSONString(uploadPic);
-			Log.e(TAG, "隐患复查没网时: listStr============"+listStr);
-			Utils.putValue(context,Constants.ADDPIC,listStr);
-			Utils.showLongToast(context, Constants.SAVE_DATA);
-		}else if(url.equals(Constants.ADD_CARDRECORDLIST)){
-			List<String> cardrecordList = new ArrayList();
-			String cardrecordListStr = Utils.getValue(context,Constants.CARDRECORD);
-			if(!TextUtils.isEmpty(cardrecordListStr)){
-				cardrecordList = JSONArray.parseArray(cardrecordListStr, String.class);
-			}
-			Map<String,String> map = getParameters(param);
-			String str = map.get("carRecordJson");
-			cardrecordList.add(str);
-			String listStr = JSONArray.toJSONString(cardrecordList);
-			Log.e(TAG, "隐患复查没网时: listStr============"+listStr);
-			Utils.putValue(context,Constants.CARDRECORD,listStr);
-			Utils.showLongToast(context, Constants.SAVE_DATA);
-		}else{
-			Utils.showLongToast(context, Constants.NET_ERROR);
+		System.out.print("url=================="+url);
+		System.out.print("Constants.ADD_HIDDENDANGERRECORD=================="+Constants.ADD_HIDDENDANGERRECORD);
+		switch (url) {
+			case Constants.MAIN_ENGINE+Constants.ADD_HIDDENDANGERRECORD://添加隐患
+				hiddenReport(param);
+				break;
+			case Constants.MAIN_ENGINE+Constants.ADD_RECHECK://添加验收
+				recheckReport(param);
+				break;
+			case Constants.MAIN_ENGINE+Constants.UPLOAD_PIC://添加图片
+				uploadPid(param);
+				break;
+			case Constants.MAIN_ENGINE+Constants.ADD_CARDRECORDLIST://添加打卡记录
+				cardRecordReport(param);
+				break;
+			default:
+				Utils.showLongToast(context, Constants.NET_ERROR);
+				break;
 		}
 	}
 
+	private void hiddenReport(String param){
+		List<HiddenDangerRecord> recordList = new ArrayList<>();
+		String hiddenRecord = Utils.getValue(context,Constants.ADDHIDDENRECORD);
+		if(!TextUtils.isEmpty(hiddenRecord)){
+			recordList = JSONArray.parseArray(hiddenRecord, HiddenDangerRecord.class);
+		}
+		HiddenDangerRecord record = JSONArray.parseObject(param.split("=")[1], HiddenDangerRecord.class);
+		recordList.add(record);
+		String listStr = JSONArray.toJSONString(recordList);
+		Log.e(TAG, "隐患上报没网时: listStr============"+listStr);
+		Utils.putValue(context,Constants.ADDHIDDENRECORD,listStr);
+		Utils.showLongToast(context, Constants.SAVE_DATA);
+	}
+
+	private void recheckReport(String param){
+		List<ThreeFix> threeFixList = new ArrayList<>();
+		String hiddenRecord = Utils.getValue(context,Constants.ADDRECHECK);
+		if(!TextUtils.isEmpty(hiddenRecord)){
+			threeFixList = JSONArray.parseArray(hiddenRecord, ThreeFix.class);
+		}
+		ThreeFix threeFix = new ThreeFix();
+		Map<String,String> map = getParameters(param);
+		threeFix.setId(map.get("id"));
+		threeFix.setRecheckPersonId(map.get("recheckPersonId"));
+		threeFix.setRecheckPersonName(map.get("recheckPersonName"));
+		threeFix.setRecheckResult(map.get("recheckResult"));
+		threeFix.setDescription(map.get("description"));
+		threeFixList.add(threeFix);
+		String listStr = JSONArray.toJSONString(threeFixList);
+		Log.e(TAG, "隐患复查没网时: listStr============"+listStr);
+		Utils.putValue(context,Constants.ADDRECHECK,listStr);
+		Utils.showLongToast(context, Constants.SAVE_DATA);
+	}
+
+	private void uploadPid(String param){
+		List<UploadPic> uploadPics = new ArrayList();
+		String picurllist = Utils.getValue(context,Constants.ADDPIC);
+		if(!TextUtils.isEmpty(picurllist)){
+			uploadPics = JSONArray.parseArray(picurllist, UploadPic.class);
+		}
+		Map<String,String> map = getParameters(param);
+		UploadPic uploadPic = new UploadPic();
+		uploadPic.setRecord(map.get("record"));
+		//uploadPic.setFileList(map.get("mobile"));
+		uploadPic.setFileList(map.get("fileurl"));
+		uploadPics.add(uploadPic);
+		String listStr = JSONArray.toJSONString(uploadPics);
+		Log.e(TAG, "隐患上传图片没网时: listStr============"+listStr);
+		Utils.putValue(context,Constants.ADDPIC,listStr);
+		Utils.showLongToast(context, Constants.SAVE_DATA);
+	}
+	private void cardRecordReport(String param){
+		List<String> cardrecordList = new ArrayList();
+		String cardrecordListStr = Utils.getValue(context,Constants.CARDRECORD);
+		if(!TextUtils.isEmpty(cardrecordListStr)){
+			cardrecordList = JSONArray.parseArray(cardrecordListStr, String.class);
+		}
+		Map<String,String> map = getParameters(param);
+		String str = map.get("carRecordJson");
+		cardrecordList.add(str);
+		String listStr = JSONArray.toJSONString(cardrecordList);
+		Log.e(TAG, "打卡记录没网时: listStr============"+listStr);
+		Utils.putValue(context,Constants.CARDRECORD,listStr);
+		Utils.showLongToast(context, Constants.SAVE_DATA);
+	}
 
 	public static final String AND = "&";
 

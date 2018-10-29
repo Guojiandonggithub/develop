@@ -1,11 +1,9 @@
 package com.example.administrator.riskprojects.fragment;
 
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,18 +11,15 @@ import android.widget.TextView;
 
 import com.example.administrator.riskprojects.LoginActivity;
 import com.example.administrator.riskprojects.R;
-import com.example.administrator.riskprojects.activity.BleSdkActivity;
 import com.example.administrator.riskprojects.activity.ChangePasswordActivity;
 import com.example.administrator.riskprojects.activity.Data;
-import com.example.administrator.riskprojects.activity.HiddenDangeTrackingDetailListActivity;
-import com.example.administrator.riskprojects.activity.HiddenRiskRecordDetailActivity;
 import com.example.administrator.riskprojects.activity.PersonInfoEditActivity;
 import com.example.administrator.riskprojects.bean.UserInfo;
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.UserUtils;
+import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.util.UpdateVersionUtil;
 import com.example.administrator.riskprojects.view.MyAlertDialog;
-import com.example.administrator.riskprojects.activity.SocketActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -94,6 +89,7 @@ public class Fragment_mine extends Fragment {
                         , new MyAlertDialog.DialogListener() {
                     @Override
                     public void affirm() {
+                        Utils.putValue(getActivity(), Constants.UserInfo, "");
                         Data.getInstance().deleteAlias();
                         startActivity(new Intent(getActivity(), LoginActivity.class));
                         getActivity().onBackPressed();//销毁自己

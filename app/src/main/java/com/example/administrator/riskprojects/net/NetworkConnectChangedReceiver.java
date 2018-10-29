@@ -11,7 +11,6 @@ import android.util.Log;
 
 import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.common.ReportRecord;
-import com.example.administrator.riskprojects.tools.Constants;
 
 
 /**
@@ -39,8 +38,8 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver {
 					//APP.getInstance().setEnablaWifi(false);
 					break;
 				case WifiManager.WIFI_STATE_DISABLING:
-
 					break;
+
 				case WifiManager.WIFI_STATE_ENABLING:
 					break;
 				case WifiManager.WIFI_STATE_ENABLED:
@@ -89,16 +88,16 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver {
 						Data.getInstance().setWifi(true);
 						Log.e(TAG, "当前WiFi连接可用 ");
 						new ReportRecord().addRecheck(context);
-						new ReportRecord().addAddhiddenrecord(context);
 						new ReportRecord().addHiddenPic(context);
+						new ReportRecord().addAddhiddenrecord(context);
 						new ReportRecord().addCardRecord(context);
 					} else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
 						// connected to the mobile provider's data plan
 						Data.getInstance().setMobile(true);
 						Log.e(TAG, "当前移动网络连接可用 ");
 						new ReportRecord().addRecheck(context);
-						new ReportRecord().addAddhiddenrecord(context);
 						new ReportRecord().addHiddenPic(context);
+						new ReportRecord().addAddhiddenrecord(context);
 						new ReportRecord().addCardRecord(context);
 					}
 				} else {

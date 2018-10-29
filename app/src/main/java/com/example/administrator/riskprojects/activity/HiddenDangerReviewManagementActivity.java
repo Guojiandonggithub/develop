@@ -124,7 +124,7 @@ public class HiddenDangerReviewManagementActivity extends BaseActivity {
         String findTimeStr = threeFix.getFindTime();
         String findTime = findTimeStr.substring(0,10);
         mTvTimeOrOrder.setText(findTime+"/"+threeFix.getClassName());
-        mTvCategory.setText(threeFix.getGname());
+        mTvCategory.setText(threeFix.getJbName());
         String isuper = threeFix.getIsupervision();
         if(TextUtils.isEmpty(isuper)||TextUtils.equals(isuper,"0")){
             isuper = "未挂牌";

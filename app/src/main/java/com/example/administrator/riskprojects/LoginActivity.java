@@ -2,11 +2,9 @@ package com.example.administrator.riskprojects;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,14 +14,13 @@ import android.widget.Toast;
 
 import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.activity.MainActivity;
+import com.example.administrator.riskprojects.common.NetUtil;
 import com.example.administrator.riskprojects.dialog.FlippingLoadingDialog;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
-import com.example.administrator.riskprojects.net.NetworkConnectChangedReceiver;
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
-import com.example.administrator.riskprojects.util.UpdateVersionUtil;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
 import java.util.List;
@@ -47,10 +44,30 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private static final int num = 123;//用于验证获取的权
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        netClient = new NetClient(this);
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                setContentView(R.layout.activity_login);
+                netClient = new NetClient(this);
+                String jsondata = Utils.getValue(LoginActivity.this, Constants.UserInfo);
+                if(jsondata.equals("")){
+                    init();
+                }else{
+                    if (!NetUtil.checkNetWork(LoginActivity.this)) {
+                        Intent intent = new Intent(LoginActivity.this,
+                                MainActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.push_up_in,
+                                R.anim.push_up_out);
+                    }else{
+                        String userName = Utils.getValue(LoginActivity.this, Constants.NAME);
+                        String password = Utils.getValue(LoginActivity.this, Constants.PWD);
+                        getLogin(userName,password);
+                    }
+        }
+
+    }
+
+    private void init(){
         initControl();
         setListener();
         requireSomePermission();
@@ -67,18 +84,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
 
     protected void initControl() {
-        et_username = (EditText) findViewById(R.id.et_username);
-        et_password = (EditText) findViewById(R.id.et_password);
-        outer_net = (RadioButton) findViewById(R.id.outer_net);
-        intra_net = (RadioButton) findViewById(R.id.intra_net);
-        radio_net = (RadioGroup) findViewById(R.id.radio_net);
-        btn_login = (Button) findViewById(R.id.btn_login);
-        radio_net.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                selectRadioButton();
-            }
-        });
+            et_username = (EditText) findViewById(R.id.et_username);
+            et_password = (EditText) findViewById(R.id.et_password);
+            outer_net = (RadioButton) findViewById(R.id.outer_net);
+            intra_net = (RadioButton) findViewById(R.id.intra_net);
+            radio_net = (RadioGroup) findViewById(R.id.radio_net);
+            btn_login = (Button) findViewById(R.id.btn_login);
+            radio_net.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    selectRadioButton();
+                }
+            });
     }
 
     private void selectRadioButton(){

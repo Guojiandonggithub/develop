@@ -6,8 +6,8 @@ android {
         applicationId "com.example.administrator.riskprojects"
         minSdkVersion 18
         targetSdkVersion 23
-        versionCode 19
-        versionName "1.19"
+        versionCode 22
+        versionName "1.22"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         ndk {

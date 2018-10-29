@@ -7,25 +7,18 @@ import android.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.example.administrator.riskprojects.activity.Data;
-import com.example.administrator.riskprojects.activity.FiveDecisionsActivity;
-import com.example.administrator.riskprojects.activity.HiddenDangerAcceptanceActivity;
-import com.example.administrator.riskprojects.activity.HiddenRiskRecordAddEditActivity;
-import com.example.administrator.riskprojects.activity.InspectionActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
-import com.example.administrator.riskprojects.bean.SelectItem;
 import com.example.administrator.riskprojects.bean.ThreeFix;
 import com.example.administrator.riskprojects.bean.UploadPic;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
-import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
-import com.example.administrator.riskprojects.util.TimeCount;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
-import java.util.HashMap;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
-import java.util.Map;
 
 public class ReportRecord implements Constants{
 	private static final String TAG = "ReportRecord";
@@ -100,6 +93,8 @@ public class ReportRecord implements Constants{
 					}
 				});
 			}
+		}else{
+			Log.e(TAG, "隐患添加没有数据");
 		}
 	}
 
@@ -111,8 +106,13 @@ public class ReportRecord implements Constants{
 		if(!TextUtils.isEmpty(hiddenpicStr)||hiddenpicStr.length()>2){
 			final List<UploadPic> uploadPicList = JSONArray.parseArray(hiddenpicStr, UploadPic.class);
 			for (final UploadPic uploadPic:uploadPicList){
+				File file = new File(uploadPic.getFileList());
 				RequestParams params = new RequestParams();
-				params.put("mobile",uploadPic.getFileList());
+				try {
+					params.put("mobile", file);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
 				netClient.post(Data.getInstance().getIp()+Constants.UPLOAD_PIC, params, new BaseJsonRes() {
 
 					@Override
@@ -133,6 +133,8 @@ public class ReportRecord implements Constants{
 					}
 				});
 			}
+		}else{
+			Log.e(TAG, "图片上传没有数据");
 		}
 	}
 
@@ -193,6 +195,8 @@ public class ReportRecord implements Constants{
 					}
 				});
 			}
+		}else{
+			Log.e(TAG, "打卡记录没有数据");
 		}
 	}
 }

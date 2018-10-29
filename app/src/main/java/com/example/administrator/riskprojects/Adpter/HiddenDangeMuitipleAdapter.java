@@ -30,6 +30,7 @@ import com.juns.health.net.loopj.android.http.RequestParams;
 
 import java.util.List;
 
+//ThreeFix
 public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
     private static final String TAG = "HiddenDangeMuitipleAdap";
     public static final int FLAG_OVERDUE = 0;
@@ -150,7 +151,7 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
             case FLAG_REVIEW:
                 String userRoles = UserUtils.getUserRoleids(context);
                 String userid = UserUtils.getUserID(context);
-                String employeeId = threeFixList.get(position).getEmployeeId();
+                String employeeId = threeFixList.get(position).getRecheckPersonId();
                 if("1".equals(userRoles)||userid.equals(employeeId)){
                     ((ViewHolder) holder).button.setText("验收");
                     ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {

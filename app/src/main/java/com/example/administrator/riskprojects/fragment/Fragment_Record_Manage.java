@@ -1,7 +1,6 @@
 package com.example.administrator.riskprojects.fragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,7 +22,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.riskprojects.bean.Area;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -35,14 +33,14 @@ import com.example.administrator.riskprojects.OnItemClickListener;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.activity.DatePickerActivity;
-import com.example.administrator.riskprojects.activity.HiddenDangerRectificationManagementActivity;
-import com.example.administrator.riskprojects.activity.HiddenRiskRecordAddEditActivity;
 import com.example.administrator.riskprojects.activity.MainActivity;
+import com.example.administrator.riskprojects.bean.Area;
 import com.example.administrator.riskprojects.bean.DataDictionary;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.bean.SelectItem;
 import com.example.administrator.riskprojects.bean.Specialty;
 import com.example.administrator.riskprojects.bean.ThreeFix;
+import com.example.administrator.riskprojects.common.NetUtil;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
@@ -316,102 +314,99 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
 
     private void initViews() {
         flag = 1;
-        adapter = new HiddenDangeRecordAdapter(recordList);
+        adapter = new HiddenDangeRecordAdapter(recordList,getActivity());
         recyclerView.setAdapter(adapter);
         getDataByPage(1);
     }
 
     private void getHiddenRecord(final String page) {//分页当前页
-        RequestParams params = new RequestParams();
-        Map<String, String> paramsMap = new HashMap<String, String>();
-        paramsMap.put("page", page);
-        paramsMap.put("rows", Constants.ROWS);
-        paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        if (TextUtils.isEmpty(tvStartDate.getText())) {
-            paramsMap.put("customParamsFour", tvStartDate.getText().toString());
-        }
-        SelectItem spProfessionItem = (SelectItem) spProfession.getSelectedItem();
-        if (null != spProfessionItem) {
-            if (!TextUtils.isEmpty(spProfessionItem.id)) {
-                paramsMap.put("customParamsTwo", spProfessionItem.id);//状态
+        if (!NetUtil.checkNetWork(getActivity())) {
+            String jsondata = Utils.getValue(getActivity(), Constants.GET_HIDDENRECORD);
+            if("".equals(jsondata)){
+                Utils.showLongToast(getContext(), "没有联网，没有请求到数据");
+            }else{
+                resultHiddenReord(jsondata);
             }
-        }
-        SelectItem spAreaItem = (SelectItem) spArea.getSelectedItem();
-        if (null != spAreaItem) {
-            if (!TextUtils.isEmpty(spAreaItem.id)) {
-                paramsMap.put("customParamsThree", spAreaItem.id);//状态
+        }else{
+            RequestParams params = new RequestParams();
+            Map<String, String> paramsMap = new HashMap<String, String>();
+            paramsMap.put("page", page);
+            paramsMap.put("rows", Constants.ROWS);
+            paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
+            if (TextUtils.isEmpty(tvStartDate.getText())) {
+                paramsMap.put("customParamsFour", tvStartDate.getText().toString());
             }
-        }
-        SelectItem spCheckUnitsItem = (SelectItem) spCheckUnits.getSelectedItem();
-        if (null != spCheckUnitsItem) {
-            if (!TextUtils.isEmpty(spCheckUnitsItem.id)) {
-                paramsMap.put("customParamsSeven", spCheckUnitsItem.id);//状态
-            }
-        }
-        SelectItem spIsHandleAdapterItem = (SelectItem) spIsHandle.getSelectedItem();
-        if (null != spIsHandleAdapterItem) {
-            if (!TextUtils.isEmpty(spIsHandleAdapterItem.id)) {
-                paramsMap.put("customParamsFive", spIsHandleAdapterItem.id);//状态
-            }
-        }
-        SelectItem spStatusItem = (SelectItem) spStatus.getSelectedItem();
-        if (null != spStatusItem) {
-            if (Integer.parseInt(spStatusItem.id) >= 0) {
-                paramsMap.put("customParamsSix", spStatusItem.id);//状态
-            }
-        }
-        String jsonString = JSON.toJSONString(paramsMap);
-        params.put("hiddenDangerRecordJsonData", jsonString);
-        netClient.post(Data.getInstance().getIp() + Constants.GET_HIDDENRECORD, params, new BaseJsonRes() {
-            @Override
-            public void onStart() {
-                super.onStart();
-                onLoading = true;
-                layoutEmptyList.setVisibility(View.GONE);
-                if (page.equals("1")) {
-                    if (!mSwipeRefreshLayout.isRefreshing()) {
-                        mSwipeRefreshLayout.setRefreshing(true);
-                    }
-                } else if (((MainActivity) ctx).index == 2) {
-                    Toast.makeText(ctx, "正在加载" + page + "/" + pagesize, Toast.LENGTH_SHORT).show();
+            SelectItem spProfessionItem = (SelectItem) spProfession.getSelectedItem();
+            if (null != spProfessionItem) {
+                if (!TextUtils.isEmpty(spProfessionItem.id)) {
+                    paramsMap.put("customParamsTwo", spProfessionItem.id);//状态
                 }
             }
-
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "隐患数据返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    JSONObject returndata = JSON.parseObject(data);
-                    String rows = returndata.getString("rows");
-                    curpage = Integer.parseInt(returndata.getString("page"));
-                    pagesize = Integer.parseInt(returndata.getString("totalPage"));
-                    List<HiddenDangerRecord> tempList = JSONArray.parseArray(rows, HiddenDangerRecord.class);
-                    if (curpage == 1) {
-                        recordList.clear();
-                        if (tempList.size() == 0) {
-                            Utils.showLongToast(getContext(), "没有查询到数据!");
+            SelectItem spAreaItem = (SelectItem) spArea.getSelectedItem();
+            if (null != spAreaItem) {
+                if (!TextUtils.isEmpty(spAreaItem.id)) {
+                    paramsMap.put("customParamsThree", spAreaItem.id);//状态
+                }
+            }
+            SelectItem spCheckUnitsItem = (SelectItem) spCheckUnits.getSelectedItem();
+            if (null != spCheckUnitsItem) {
+                if (!TextUtils.isEmpty(spCheckUnitsItem.id)) {
+                    paramsMap.put("customParamsSeven", spCheckUnitsItem.id);//状态
+                }
+            }
+            SelectItem spIsHandleAdapterItem = (SelectItem) spIsHandle.getSelectedItem();
+            if (null != spIsHandleAdapterItem) {
+                if (!TextUtils.isEmpty(spIsHandleAdapterItem.id)) {
+                    paramsMap.put("customParamsFive", spIsHandleAdapterItem.id);//状态
+                }
+            }
+            SelectItem spStatusItem = (SelectItem) spStatus.getSelectedItem();
+            if (null != spStatusItem) {
+                if (Integer.parseInt(spStatusItem.id) >= 0) {
+                    paramsMap.put("customParamsSix", spStatusItem.id);//状态
+                }
+            }
+            String jsonString = JSON.toJSONString(paramsMap);
+            params.put("hiddenDangerRecordJsonData", jsonString);
+            netClient.post(Data.getInstance().getIp() + Constants.GET_HIDDENRECORD, params, new BaseJsonRes() {
+                @Override
+                public void onStart() {
+                    super.onStart();
+                    onLoading = true;
+                    layoutEmptyList.setVisibility(View.GONE);
+                    if (page.equals("1")) {
+                        if (!mSwipeRefreshLayout.isRefreshing()) {
+                            mSwipeRefreshLayout.setRefreshing(true);
                         }
+                    } else if (((MainActivity) ctx).index == 2) {
+                        Toast.makeText(ctx, "正在加载" + page + "/" + pagesize, Toast.LENGTH_SHORT).show();
                     }
-                    recordList.addAll(tempList);
-                    adapter.notifyDataSetChanged();
                 }
 
-            }
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "隐患数据返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.putValue(getActivity(), Constants.GET_HIDDENRECORD, data);
+                        resultHiddenReord(data);
+                    }
+                }
 
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "隐患数据返回错误信息：" + content);
-                Utils.showLongToast(getContext(), content);
-            }
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "隐患数据返回错误信息：" + content);
+                    Utils.showLongToast(getContext(), content);
+                }
 
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                mSwipeRefreshLayout.setRefreshing(false);
-                onLoading = false;
-                setEmptyLayout();
-            }
-        });
+                @Override
+                public void onFinish() {
+                    super.onFinish();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    onLoading = false;
+                    setEmptyLayout();
+                }
+            });
+        }
     }
 
     private void setEmptyLayout() {
@@ -423,207 +418,226 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
     }
 
     private void getReleaseList(final String page) {//下达隐患查询
-        RequestParams params = new RequestParams();
-        Map<String, String> paramsMap = new HashMap<String, String>();
-        paramsMap.put("page", page);
-        paramsMap.put("rows", Constants.ROWS);
-        paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        if (TextUtils.isEmpty(tvStartDate.getText())) {
-            paramsMap.put("customParamsThree", tvStartDate.getText().toString());
-        }
-        SelectItem spProfessionItem = (SelectItem) spProfession.getSelectedItem();
-        if (null != spProfessionItem) {
-            if (!TextUtils.isEmpty(spProfessionItem.id)) {
-                paramsMap.put("customParamsOne", spProfessionItem.id);//状态
+        if (!NetUtil.checkNetWork(getActivity())) {
+            String jsondata = Utils.getValue(getActivity(), Constants.GET_HIDDENRELEASELIST);
+            if("".equals(jsondata)){
+                Utils.showLongToast(getContext(), "没有联网，没有请求到数据");
+            }else{
+                resultHiddenThreeFix(jsondata);
             }
-        }
-        SelectItem spAreaItem = (SelectItem) spArea.getSelectedItem();
-        if (null != spAreaItem) {
-            if (!TextUtils.isEmpty(spAreaItem.id)) {
-                paramsMap.put("customParamsTwo", spAreaItem.id);//状态
+        }else{
+            RequestParams params = new RequestParams();
+            Map<String, String> paramsMap = new HashMap<String, String>();
+            paramsMap.put("page", page);
+            paramsMap.put("rows", Constants.ROWS);
+            paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
+            if (TextUtils.isEmpty(tvStartDate.getText())) {
+                paramsMap.put("customParamsThree", tvStartDate.getText().toString());
             }
-        }
-        String jsonString = JSON.toJSONString(paramsMap);
-        params.put("threeFixJsonData", jsonString);
-        netClient.post(Data.getInstance().getIp() + Constants.GET_HIDDENRELEASELIST, params, new BaseJsonRes() {
-            @Override
-            public void onStart() {
-                super.onStart();
-                onLoading = true;
-                layoutEmptyList.setVisibility(View.GONE);
-                if (page.equals("1")) {
-                    if (!mSwipeRefreshLayout.isRefreshing()) {
-                        mSwipeRefreshLayout.setRefreshing(true);
-                    }
-                } else if (((MainActivity) ctx).index == 2) {
-                    Toast.makeText(ctx, "正在加载" + page + "/" + pagesize, Toast.LENGTH_SHORT).show();
+            SelectItem spProfessionItem = (SelectItem) spProfession.getSelectedItem();
+            if (null != spProfessionItem) {
+                if (!TextUtils.isEmpty(spProfessionItem.id)) {
+                    paramsMap.put("customParamsOne", spProfessionItem.id);//状态
                 }
             }
-
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "下达隐患查询返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    JSONObject returndata = JSON.parseObject(data);
-                    String rows = returndata.getString("rows");
-                    curpage = Integer.parseInt(returndata.getString("page"));
-                    pagesize = Integer.parseInt(returndata.getString("totalPage"));
-                    List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
-                    if (curpage == 1) {
-                        threeFixesList.clear();
-                        if (tempList.size() == 0) {
-                            Utils.showLongToast(getContext(), "没有查询到数据!");
+            SelectItem spAreaItem = (SelectItem) spArea.getSelectedItem();
+            if (null != spAreaItem) {
+                if (!TextUtils.isEmpty(spAreaItem.id)) {
+                    paramsMap.put("customParamsTwo", spAreaItem.id);//状态
+                }
+            }
+            String jsonString = JSON.toJSONString(paramsMap);
+            params.put("threeFixJsonData", jsonString);
+            netClient.post(Data.getInstance().getIp() + Constants.GET_HIDDENRELEASELIST, params, new BaseJsonRes() {
+                @Override
+                public void onStart() {
+                    super.onStart();
+                    onLoading = true;
+                    layoutEmptyList.setVisibility(View.GONE);
+                    if (page.equals("1")) {
+                        if (!mSwipeRefreshLayout.isRefreshing()) {
+                            mSwipeRefreshLayout.setRefreshing(true);
                         }
+                    } else if (((MainActivity) ctx).index == 2) {
+                        Toast.makeText(ctx, "正在加载" + page + "/" + pagesize, Toast.LENGTH_SHORT).show();
                     }
-                    threeFixesList.addAll(tempList);
-                    adapter.notifyDataSetChanged();
                 }
 
-            }
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "下达隐患查询返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.putValue(getActivity(), Constants.GET_HIDDENRELEASELIST, data);
+                        resultHiddenThreeFix(data);
+                    }
 
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "下达隐患查询返回错误信息：" + content);
-                Utils.showLongToast(getContext(), content);
-            }
+                }
 
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                mSwipeRefreshLayout.setRefreshing(false);
-                onLoading = false;
-                setEmptyLayout();
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "下达隐患查询返回错误信息：" + content);
+                    Utils.showLongToast(getContext(), content);
+                }
+
+                @Override
+                public void onFinish() {
+                    super.onFinish();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    onLoading = false;
+                    setEmptyLayout();
+                }
+            });
+        }
     }
 
     private void getRectificationList(final String page) {//整改隐患查询
-        RequestParams params = new RequestParams();
-        Map<String, String> paramsMap = new HashMap<String, String>();
-        paramsMap.put("page", page);
-        paramsMap.put("rows", Constants.ROWS);
-        paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        if (TextUtils.isEmpty(tvStartDate.getText())) {
-            paramsMap.put("customParamsFour", tvStartDate.getText().toString());
-        }
-        SelectItem spProfessionItem = (SelectItem) spProfession.getSelectedItem();
-        if (null != spProfessionItem) {
-            if (!TextUtils.isEmpty(spProfessionItem.id)) {
-                paramsMap.put("customParamsTwo", spProfessionItem.id);//状态
+        if (!NetUtil.checkNetWork(getActivity())) {
+            String jsondata = Utils.getValue(getActivity(), Constants.GET_RECTIFICATIONLIST);
+            if("".equals(jsondata)){
+                Utils.showLongToast(getContext(), "没有联网，没有请求到数据");
+            }else{
+                resultHiddenThreeFix(jsondata);
             }
-        }
-        SelectItem spAreaItem = (SelectItem) spArea.getSelectedItem();
-        if (null != spAreaItem) {
-            if (!TextUtils.isEmpty(spAreaItem.id)) {
-                paramsMap.put("customParamsThree", spAreaItem.id);//状态
+        }else{
+            RequestParams params = new RequestParams();
+            Map<String, String> paramsMap = new HashMap<String, String>();
+            paramsMap.put("page", page);
+            paramsMap.put("rows", Constants.ROWS);
+            paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
+            if (TextUtils.isEmpty(tvStartDate.getText())) {
+                paramsMap.put("customParamsFour", tvStartDate.getText().toString());
             }
-        }
-        SelectItem spCheckUnitsItem = (SelectItem) spCheckUnits.getSelectedItem();
-        if (null != spCheckUnitsItem) {
-            if (!TextUtils.isEmpty(spCheckUnitsItem.id)) {
-                paramsMap.put("customParamsThree", spCheckUnitsItem.id);//状态
-            }
-        }
-        String jsonString = JSON.toJSONString(paramsMap);
-        params.put("threeFixJsonData", jsonString);
-        netClient.post(Data.getInstance().getIp() + Constants.GET_RECTIFICATIONLIST, params, new BaseJsonRes() {
-            @Override
-            public void onStart() {
-                super.onStart();
-                onLoading = true;
-                layoutEmptyList.setVisibility(View.GONE);
-                if (page.equals("1")) {
-                    if (!mSwipeRefreshLayout.isRefreshing()) {
-                        mSwipeRefreshLayout.setRefreshing(true);
-                    }
-                } else if (((MainActivity) ctx).index == 2) {
-                    Toast.makeText(ctx, "正在加载" + page + "/" + pagesize, Toast.LENGTH_SHORT).show();
+            SelectItem spProfessionItem = (SelectItem) spProfession.getSelectedItem();
+            if (null != spProfessionItem) {
+                if (!TextUtils.isEmpty(spProfessionItem.id)) {
+                    paramsMap.put("customParamsTwo", spProfessionItem.id);//状态
                 }
             }
-
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "整改隐患查询返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    JSONObject returndata = JSON.parseObject(data);
-                    String rows = returndata.getString("rows");
-                    curpage = Integer.parseInt(returndata.getString("page"));
-                    pagesize = Integer.parseInt(returndata.getString("totalPage"));
-                    List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
-                    if (curpage == 1) {
-                        threeFixesList.clear();
-                        if (tempList.size() == 0) {
-                            Utils.showLongToast(getContext(), "没有查询到数据!");
+            SelectItem spAreaItem = (SelectItem) spArea.getSelectedItem();
+            if (null != spAreaItem) {
+                if (!TextUtils.isEmpty(spAreaItem.id)) {
+                    paramsMap.put("customParamsThree", spAreaItem.id);//状态
+                }
+            }
+            SelectItem spCheckUnitsItem = (SelectItem) spCheckUnits.getSelectedItem();
+            if (null != spCheckUnitsItem) {
+                if (!TextUtils.isEmpty(spCheckUnitsItem.id)) {
+                    paramsMap.put("customParamsThree", spCheckUnitsItem.id);//状态
+                }
+            }
+            String jsonString = JSON.toJSONString(paramsMap);
+            params.put("threeFixJsonData", jsonString);
+            netClient.post(Data.getInstance().getIp() + Constants.GET_RECTIFICATIONLIST, params, new BaseJsonRes() {
+                @Override
+                public void onStart() {
+                    super.onStart();
+                    onLoading = true;
+                    layoutEmptyList.setVisibility(View.GONE);
+                    if (page.equals("1")) {
+                        if (!mSwipeRefreshLayout.isRefreshing()) {
+                            mSwipeRefreshLayout.setRefreshing(true);
                         }
+                    } else if (((MainActivity) ctx).index == 2) {
+                        Toast.makeText(ctx, "正在加载" + page + "/" + pagesize, Toast.LENGTH_SHORT).show();
                     }
-                    threeFixesList.addAll(tempList);
-                    adapter.notifyDataSetChanged();
                 }
 
-            }
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "整改隐患查询返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.putValue(getActivity(), Constants.GET_RECTIFICATIONLIST, data);
+                        resultHiddenThreeFix(data);
+                        /*JSONObject returndata = JSON.parseObject(data);
+                        String rows = returndata.getString("rows");
+                        curpage = Integer.parseInt(returndata.getString("page"));
+                        pagesize = Integer.parseInt(returndata.getString("totalPage"));
+                        List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
+                        if (curpage == 1) {
+                            threeFixesList.clear();
+                            if (tempList.size() == 0) {
+                                Utils.showLongToast(getContext(), "没有查询到数据!");
+                            }
+                        }
+                        threeFixesList.addAll(tempList);
+                        adapter.notifyDataSetChanged();*/
+                    }
 
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "整改隐患查询返回错误信息：" + content);
-                Utils.showLongToast(getContext(), content);
-            }
+                }
+
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "整改隐患查询返回错误信息：" + content);
+                    Utils.showLongToast(getContext(), content);
+                }
 
 
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                mSwipeRefreshLayout.setRefreshing(false);
-                onLoading = false;
-                setEmptyLayout();
-            }
-        });
+                @Override
+                public void onFinish() {
+                    super.onFinish();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    onLoading = false;
+                    setEmptyLayout();
+                }
+            });
+        }
     }
 
 
     private void getTrackingList(final String page) {//跟踪隐患查询
-        RequestParams params = new RequestParams();
-        Map<String, String> paramsMap = new HashMap<String, String>();
-        paramsMap.put("page", page);
-        paramsMap.put("rows", Constants.ROWS);
-        paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        if (TextUtils.isEmpty(tvStartDate.getText())) {
-            paramsMap.put("customParamsThree", tvStartDate.getText().toString());
-        }
-        SelectItem spProfessionItem = (SelectItem) spProfession.getSelectedItem();
-        if (null != spProfessionItem) {
-            if (!TextUtils.isEmpty(spProfessionItem.id)) {
-                paramsMap.put("customParamsOne", spProfessionItem.id);//状态
+        if (!NetUtil.checkNetWork(getActivity())) {
+            String jsondata = Utils.getValue(getActivity(), Constants.GET_TRACKINGLIST);
+            if("".equals(jsondata)){
+                Utils.showLongToast(getContext(), "没有联网，没有请求到数据");
+            }else{
+                resultHiddenThreeFix(jsondata);
             }
-        }
-        SelectItem spAreaItem = (SelectItem) spArea.getSelectedItem();
-        if (null != spAreaItem) {
-            if (!TextUtils.isEmpty(spAreaItem.id)) {
-                paramsMap.put("customParamsTwo", spAreaItem.id);//状态
+        }else{
+            RequestParams params = new RequestParams();
+            Map<String, String> paramsMap = new HashMap<String, String>();
+            paramsMap.put("page", page);
+            paramsMap.put("rows", Constants.ROWS);
+            paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
+            if (TextUtils.isEmpty(tvStartDate.getText())) {
+                paramsMap.put("customParamsThree", tvStartDate.getText().toString());
             }
-        }
-        String jsonString = JSON.toJSONString(paramsMap);
-        params.put("threeFixJsonData", jsonString);
-        netClient.post(Data.getInstance().getIp() + Constants.GET_RECTIFICATIONLIST, params, new BaseJsonRes() {
-
-            @Override
-            public void onStart() {
-                super.onStart();
-                onLoading = true;
-                layoutEmptyList.setVisibility(View.GONE);
-                if (page.equals("1")) {
-                    if (!mSwipeRefreshLayout.isRefreshing()) {
-                        mSwipeRefreshLayout.setRefreshing(true);
-                    }
-                } else if (((MainActivity) ctx).index == 2) {
-                    Toast.makeText(ctx, "正在加载" + page + "/" + pagesize, Toast.LENGTH_SHORT).show();
+            SelectItem spProfessionItem = (SelectItem) spProfession.getSelectedItem();
+            if (null != spProfessionItem) {
+                if (!TextUtils.isEmpty(spProfessionItem.id)) {
+                    paramsMap.put("customParamsOne", spProfessionItem.id);//状态
                 }
             }
+            SelectItem spAreaItem = (SelectItem) spArea.getSelectedItem();
+            if (null != spAreaItem) {
+                if (!TextUtils.isEmpty(spAreaItem.id)) {
+                    paramsMap.put("customParamsTwo", spAreaItem.id);//状态
+                }
+            }
+            String jsonString = JSON.toJSONString(paramsMap);
+            params.put("threeFixJsonData", jsonString);
+            netClient.post(Data.getInstance().getIp() + Constants.GET_TRACKINGLIST, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "跟踪隐患查询返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    JSONObject returndata = JSON.parseObject(data);
+                @Override
+                public void onStart() {
+                    super.onStart();
+                    onLoading = true;
+                    layoutEmptyList.setVisibility(View.GONE);
+                    if (page.equals("1")) {
+                        if (!mSwipeRefreshLayout.isRefreshing()) {
+                            mSwipeRefreshLayout.setRefreshing(true);
+                        }
+                    } else if (((MainActivity) ctx).index == 2) {
+                        Toast.makeText(ctx, "正在加载" + page + "/" + pagesize, Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "跟踪隐患查询返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.putValue(getActivity(), Constants.GET_TRACKINGLIST, data);
+                        resultHiddenThreeFix(data);
+                    /*JSONObject returndata = JSON.parseObject(data);
                     String rows = returndata.getString("rows");
                     curpage = Integer.parseInt(returndata.getString("page"));
                     pagesize = Integer.parseInt(returndata.getString("totalPage"));
@@ -635,185 +649,180 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                         }
                     }
                     threeFixesList.addAll(tempList);
-                    adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();*/
+                    }
+
                 }
 
-            }
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "跟踪隐患查询返回错误信息：" + content);
+                    Utils.showLongToast(getContext(), content);
+                }
 
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "跟踪隐患查询返回错误信息：" + content);
-                Utils.showLongToast(getContext(), content);
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                mSwipeRefreshLayout.setRefreshing(false);
-                onLoading = false;
-                setEmptyLayout();
-            }
-        });
+                @Override
+                public void onFinish() {
+                    super.onFinish();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    onLoading = false;
+                    setEmptyLayout();
+                }
+            });
+        }
     }
 
     private void getOverdueList(final String page) {//逾期隐患查询
-        RequestParams params = new RequestParams();
-        Map<String, String> paramsMap = new HashMap<String, String>();
-        paramsMap.put("page", page);
-        paramsMap.put("rows", Constants.ROWS);
-        paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        if (TextUtils.isEmpty(tvStartDate.getText())) {
-            paramsMap.put("customParamsFour", tvStartDate.getText().toString());
-        }
-        SelectItem spProfessionItem = (SelectItem) spProfession.getSelectedItem();
-        if (null != spProfessionItem) {
-            if (!TextUtils.isEmpty(spProfessionItem.id)) {
-                paramsMap.put("customParamsTwo", spProfessionItem.id);//状态
+        if (!NetUtil.checkNetWork(getActivity())) {
+            String jsondata = Utils.getValue(getActivity(), Constants.GET_TRACKINGLIST);
+            if("".equals(jsondata)){
+                Utils.showLongToast(getContext(), "没有联网，没有请求到数据");
+            }else{
+                resultHiddenThreeFix(jsondata);
             }
-        }
-        SelectItem spAreaItem = (SelectItem) spArea.getSelectedItem();
-        if (null != spAreaItem) {
-            if (!TextUtils.isEmpty(spAreaItem.id)) {
-                paramsMap.put("customParamsThree", spAreaItem.id);//状态
+        }else{
+            RequestParams params = new RequestParams();
+            Map<String, String> paramsMap = new HashMap<String, String>();
+            paramsMap.put("page", page);
+            paramsMap.put("rows", Constants.ROWS);
+            paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
+            if (TextUtils.isEmpty(tvStartDate.getText())) {
+                paramsMap.put("customParamsFour", tvStartDate.getText().toString());
             }
-        }
-        String jsonString = JSON.toJSONString(paramsMap);
-        params.put("threeFixJsonData", jsonString);
-        netClient.post(Data.getInstance().getIp() + Constants.GET_OVERDUELIST, params, new BaseJsonRes() {
-
-            @Override
-            public void onStart() {
-                super.onStart();
-                onLoading = true;
-                layoutEmptyList.setVisibility(View.GONE);
-                if (page.equals("1")) {
-                    if (!mSwipeRefreshLayout.isRefreshing()) {
-                        mSwipeRefreshLayout.setRefreshing(true);
-                    }
-                } else if (((MainActivity) ctx).index == 2) {
-                    Toast.makeText(ctx, "正在加载" + page + "/" + pagesize, Toast.LENGTH_SHORT).show();
+            SelectItem spProfessionItem = (SelectItem) spProfession.getSelectedItem();
+            if (null != spProfessionItem) {
+                if (!TextUtils.isEmpty(spProfessionItem.id)) {
+                    paramsMap.put("customParamsTwo", spProfessionItem.id);//状态
                 }
             }
+            SelectItem spAreaItem = (SelectItem) spArea.getSelectedItem();
+            if (null != spAreaItem) {
+                if (!TextUtils.isEmpty(spAreaItem.id)) {
+                    paramsMap.put("customParamsThree", spAreaItem.id);//状态
+                }
+            }
+            String jsonString = JSON.toJSONString(paramsMap);
+            params.put("threeFixJsonData", jsonString);
+            netClient.post(Data.getInstance().getIp() + Constants.GET_OVERDUELIST, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "逾期隐患查询返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    JSONObject returndata = JSON.parseObject(data);
-                    String rows = returndata.getString("rows");
-                    curpage = Integer.parseInt(returndata.getString("page"));
-                    pagesize = Integer.parseInt(returndata.getString("totalPage"));
-                    List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
-                    if (curpage == 1) {
-                        threeFixesList.clear();
-                        if (tempList.size() == 0) {
-                            Utils.showLongToast(getContext(), "没有查询到数据!");
+                @Override
+                public void onStart() {
+                    super.onStart();
+                    onLoading = true;
+                    layoutEmptyList.setVisibility(View.GONE);
+                    if (page.equals("1")) {
+                        if (!mSwipeRefreshLayout.isRefreshing()) {
+                            mSwipeRefreshLayout.setRefreshing(true);
                         }
+                    } else if (((MainActivity) ctx).index == 2) {
+                        Toast.makeText(ctx, "正在加载" + page + "/" + pagesize, Toast.LENGTH_SHORT).show();
                     }
-                    threeFixesList.addAll(tempList);
-                    adapter.notifyDataSetChanged();
                 }
 
-            }
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "逾期隐患查询返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.putValue(getActivity(), Constants.GET_OVERDUELIST, data);
+                        resultHiddenThreeFix(data);
+                    }
+                }
 
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "逾期隐患查询返回错误信息：" + content);
-                Utils.showLongToast(getContext(), content);
-            }
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "逾期隐患查询返回错误信息：" + content);
+                    Utils.showLongToast(getContext(), content);
+                }
 
 
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                mSwipeRefreshLayout.setRefreshing(false);
-                onLoading = false;
-                setEmptyLayout();
-            }
-        });
+                @Override
+                public void onFinish() {
+                    super.onFinish();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    onLoading = false;
+                    setEmptyLayout();
+                }
+            });
+        }
     }
 
     private void getReviewList(final String page) {//验收隐患查询
-        RequestParams params = new RequestParams();
-        Map<String, String> paramsMap = new HashMap<String, String>();
-        paramsMap.put("page", page);
-        paramsMap.put("rows", Constants.ROWS);
-        paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
-        if (TextUtils.isEmpty(tvStartDate.getText())) {
-            paramsMap.put("customParamsFour", tvStartDate.getText().toString());
-        }
-        SelectItem spProfessionItem = (SelectItem) spProfession.getSelectedItem();
-        if (null != spProfessionItem) {
-            if (!TextUtils.isEmpty(spProfessionItem.id)) {
-                paramsMap.put("customParamsTwo", spProfessionItem.id);//状态
+        if (!NetUtil.checkNetWork(getActivity())) {
+            String jsondata = Utils.getValue(getActivity(), Constants.GET_REVIEWLIST);
+            if("".equals(jsondata)){
+                Utils.showLongToast(getContext(), "没有联网，没有请求到数据");
+            }else{
+                resultHiddenThreeFix(jsondata);
             }
-        }
-        SelectItem spAreaItem = (SelectItem) spArea.getSelectedItem();
-        if (null != spAreaItem) {
-            if (!TextUtils.isEmpty(spAreaItem.id)) {
-                paramsMap.put("customParamsThree", spAreaItem.id);//状态
+        }else{
+            RequestParams params = new RequestParams();
+            Map<String, String> paramsMap = new HashMap<String, String>();
+            paramsMap.put("page", page);
+            paramsMap.put("rows", Constants.ROWS);
+            paramsMap.put("employeeId", UserUtils.getUserID(getActivity()));
+            if (TextUtils.isEmpty(tvStartDate.getText())) {
+                paramsMap.put("customParamsFour", tvStartDate.getText().toString());
             }
-        }
-        SelectItem spCheckUnitsItem = (SelectItem) spCheckUnits.getSelectedItem();
-        if (null != spCheckUnitsItem) {
-            if (!TextUtils.isEmpty(spCheckUnitsItem.id)) {
-                paramsMap.put("customParamsFive", spCheckUnitsItem.id);//状态
-            }
-        }
-        String jsonString = JSON.toJSONString(paramsMap);
-        params.put("threeFixJsonData", jsonString);
-        netClient.post(Data.getInstance().getIp() + Constants.GET_REVIEWLIST, params, new BaseJsonRes() {
-
-            @Override
-            public void onStart() {
-                super.onStart();
-                onLoading = true;
-                layoutEmptyList.setVisibility(View.GONE);
-                if (page.equals("1")) {
-                    if (!mSwipeRefreshLayout.isRefreshing()) {
-                        mSwipeRefreshLayout.setRefreshing(true);
-                    }
-                } else if (((MainActivity) ctx).index == 2) {
-                    Toast.makeText(ctx, "正在加载" + page + "/" + pagesize, Toast.LENGTH_SHORT).show();
+            SelectItem spProfessionItem = (SelectItem) spProfession.getSelectedItem();
+            if (null != spProfessionItem) {
+                if (!TextUtils.isEmpty(spProfessionItem.id)) {
+                    paramsMap.put("customParamsTwo", spProfessionItem.id);//状态
                 }
             }
+            SelectItem spAreaItem = (SelectItem) spArea.getSelectedItem();
+            if (null != spAreaItem) {
+                if (!TextUtils.isEmpty(spAreaItem.id)) {
+                    paramsMap.put("customParamsThree", spAreaItem.id);//状态
+                }
+            }
+            SelectItem spCheckUnitsItem = (SelectItem) spCheckUnits.getSelectedItem();
+            if (null != spCheckUnitsItem) {
+                if (!TextUtils.isEmpty(spCheckUnitsItem.id)) {
+                    paramsMap.put("customParamsFive", spCheckUnitsItem.id);//状态
+                }
+            }
+            String jsonString = JSON.toJSONString(paramsMap);
+            params.put("threeFixJsonData", jsonString);
+            netClient.post(Data.getInstance().getIp() + Constants.GET_REVIEWLIST, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "验收隐患查询返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    JSONObject returndata = JSON.parseObject(data);
-                    String rows = returndata.getString("rows");
-                    curpage = Integer.parseInt(returndata.getString("page"));
-                    pagesize = Integer.parseInt(returndata.getString("totalPage"));
-                    List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
-                    if (curpage == 1) {
-                        threeFixesList.clear();
-                        if (tempList.size() == 0) {
-                            Utils.showLongToast(getContext(), "没有查询到数据!");
+                @Override
+                public void onStart() {
+                    super.onStart();
+                    onLoading = true;
+                    layoutEmptyList.setVisibility(View.GONE);
+                    if (page.equals("1")) {
+                        if (!mSwipeRefreshLayout.isRefreshing()) {
+                            mSwipeRefreshLayout.setRefreshing(true);
                         }
+                    } else if (((MainActivity) ctx).index == 2) {
+                        Toast.makeText(ctx, "正在加载" + page + "/" + pagesize, Toast.LENGTH_SHORT).show();
                     }
-                    threeFixesList.addAll(tempList);
-                    adapter.notifyDataSetChanged();
                 }
 
-            }
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "验收隐患查询返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.putValue(getActivity(), Constants.GET_REVIEWLIST, data);
+                        resultHiddenThreeFix(data);
+                    }
+                }
 
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "验收隐患查询返回错误信息：" + content);
-                Utils.showLongToast(getContext(), content);
-            }
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "验收隐患查询返回错误信息：" + content);
+                    Utils.showLongToast(getContext(), content);
+                }
 
 
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                mSwipeRefreshLayout.setRefreshing(false);
-                onLoading = false;
-                setEmptyLayout();
-            }
-        });
+                @Override
+                public void onFinish() {
+                    super.onFinish();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    onLoading = false;
+                    setEmptyLayout();
+                }
+            });
+        }
     }
 
 
@@ -826,7 +835,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         switch (view.getId()) {
             case R.id.ll_manage_detail:
                 flag = 1;
-                adapter = new HiddenDangeRecordAdapter(recordList);
+                adapter = new HiddenDangeRecordAdapter(recordList,getActivity());
                 recyclerView.setAdapter(adapter);
                 break;
             case R.id.ll_manage_release:
@@ -1307,6 +1316,38 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
             }
         });
         spinner.setAdapter(adapter);
+    }
+
+    private void resultHiddenReord(String data){
+        JSONObject returndata = JSON.parseObject(data);
+        String rows = returndata.getString("rows");
+        curpage = Integer.parseInt(returndata.getString("page"));
+        pagesize = Integer.parseInt(returndata.getString("totalPage"));
+        List<HiddenDangerRecord> tempList = JSONArray.parseArray(rows, HiddenDangerRecord.class);
+        if (curpage == 1) {
+            recordList.clear();
+            if (tempList.size() == 0) {
+                Utils.showLongToast(getContext(), "没有查询到数据!");
+            }
+        }
+        recordList.addAll(tempList);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void resultHiddenThreeFix(String data){
+        JSONObject returndata = JSON.parseObject(data);
+        String rows = returndata.getString("rows");
+        curpage = Integer.parseInt(returndata.getString("page"));
+        pagesize = Integer.parseInt(returndata.getString("totalPage"));
+        List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
+        if (curpage == 1) {
+            threeFixesList.clear();
+            if (tempList.size() == 0) {
+                Utils.showLongToast(getContext(), "没有查询到数据!");
+            }
+        }
+        threeFixesList.addAll(tempList);
+        adapter.notifyDataSetChanged();
     }
 
     public void setIdFlag(int flags) {

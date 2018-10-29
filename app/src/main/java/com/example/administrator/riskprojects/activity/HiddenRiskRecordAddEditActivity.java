@@ -38,6 +38,7 @@ import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.bean.RiskGrade;
 import com.example.administrator.riskprojects.bean.SelectItem;
 import com.example.administrator.riskprojects.bean.Specialty;
+import com.example.administrator.riskprojects.common.NetUtil;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
@@ -219,10 +220,12 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                     }else{
                         Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有权限进行修改！");
                     }
-                }
-                Log.e(TAG, "upaction=================: "+paths);
-                if (checkInput(records)) {
-                    upaction(paths,records, flag);
+                }else{
+                    Log.e(TAG, "upaction=================: "+paths);
+                    if (checkInput(records)) {
+                        Log.e(TAG, "flag=================: "+flag);
+                        upaction(paths,records, flag);
+                    }
                 }
 
             }
@@ -342,6 +345,8 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
             String ishandle = record.getIshandle();
             spIsHandleAdapter.notifyDataSetChanged();
             spIsHandle.setSelection(Integer.parseInt(ishandle));
+        }else{
+            etCheckPerson.setText(UserUtils.getUserName(HiddenRiskRecordAddEditActivity.this));
         }
         getCollieryTeam();
         getSpecialty();
@@ -356,382 +361,296 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
 
     //获取部门/队组成员
     private void getCollieryTeam() {
-        RequestParams params = new RequestParams();
-        params.put("employeeId", UserUtils.getUserID(HiddenRiskRecordAddEditActivity.this));
-        netClient.post(Data.getInstance().getIp() + Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
+            String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_COLLIERYTEAM);
+            if("".equals(jsondata)){
+                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
+            }else{
+                resultColliery(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            params.put("employeeId", UserUtils.getUserID(HiddenRiskRecordAddEditActivity.this));
+            netClient.post(Data.getInstance().getIp() + Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取部门/队组成员返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    int collieryTeamsint = 0;
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getTeamName().replaceAll("&nbsp;", "   ");
-                        selectItem.id = collieryTeams.get(i).getId();
-                        if (collieryTeams.get(i).getId().equals(record.getTeamGroupCode())) {
-                            collieryTeamsint = i;
-                        }
-                        selectItems.add(selectItem);
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取部门/队组成员返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_COLLIERYTEAM, data);
+                        resultColliery(data);
                     }
-                    mSpHiddenUnitsAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems, Gravity.CENTER_VERTICAL | Gravity.LEFT);
-                    setUpSpinner(spHiddenUnits, mSpHiddenUnitsAdapter);
-                    mSpHiddenUnitsAdapter.notifyDataSetChanged();
-                    spHiddenUnits.setSelection(collieryTeamsint);
+
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取部门/队组成员返回错误信息：" + content);
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取部门/队组成员返回错误信息：" + content);
+                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                }
+            });
+        }
     }
 
     //获取所属专业
     private void getSpecialty() {
-        RequestParams params = new RequestParams();
-        netClient.post(Data.getInstance().getIp() + Constants.GET_SPECIALTY, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
+            String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_SPECIALTY);
+            if("".equals(jsondata)){
+                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
+            }else{
+                resultSpecialty(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            netClient.post(Data.getInstance().getIp() + Constants.GET_SPECIALTY, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取所属专业返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<Specialty> collieryTeams = JSONArray.parseArray(data, Specialty.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    int sint = 0;
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getSname();
-                        selectItem.id = collieryTeams.get(i).getId();
-                        if (collieryTeams.get(i).getId().equals(record.getSid())) {
-                            sint = i;
-                        }
-                        selectItems.add(selectItem);
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取所属专业返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_SPECIALTY, data);
+                        resultSpecialty(data);
                     }
-                    spProfessionalAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
-                    setUpSpinner(spProfessional, spProfessionalAdapter);
-                    spProfessionalAdapter.notifyDataSetChanged();
-                    spProfessional.setSelection(sint);
+
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取所属专业返回错误信息：" + content);
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取所属专业返回错误信息：" + content);
+                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                }
+            });
+        }
     }
 
     //获取隐患类别
     private void getRiskGrade() {
-        RequestParams params = new RequestParams();
-        netClient.post(Data.getInstance().getIp() + Constants.GET_RISKGRADE, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
+            String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_RISKGRADE);
+            if("".equals(jsondata)){
+                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
+            }else{
+                resultGrade(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            netClient.post(Data.getInstance().getIp() + Constants.GET_RISKGRADE, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取隐患类别返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<RiskGrade> collieryTeams = JSONArray.parseArray(data, RiskGrade.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    int riskGrade = 0;
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getGname();
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
-                        if (collieryTeams.get(i).getId().equals(record.getGid())) {
-                            riskGrade = i;
-                        }
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取隐患类别返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_RISKGRADE, data);
+                        resultGrade(data);
                     }
-                    spHiddenClassAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
-                    setUpSpinner(spHiddenClass, spHiddenClassAdapter);
-                    spHiddenClassAdapter.notifyDataSetChanged();
-                    spHiddenClass.setSelection(riskGrade);
+
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取隐患类别返回错误信息：" + content);
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取隐患类别返回错误信息：" + content);
+                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                }
+            });
+        }
     }
 
     //获取班次
     private void getClassNumber() {
-        RequestParams params = new RequestParams();
-        netClient.post(Data.getInstance().getIp() + Constants.GET_CLASSNUMBER, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
+            String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_CLASSNUMBER);
+            if("".equals(jsondata)){
+                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
+            }else{
+                resultClassNumber(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            netClient.post(Data.getInstance().getIp() + Constants.GET_CLASSNUMBER, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取班次返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<ClassNumber> collieryTeams = JSONArray.parseArray(data, ClassNumber.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    int classNumberint = 0;
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getClassName();
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
-                        if (collieryTeams.get(i).getId().equals(record.getClassId())) {
-                            classNumberint = i;
-                        }
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取班次返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_CLASSNUMBER, data);
+                        resultClassNumber(data);
                     }
-                    spOrderAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
-                    setUpSpinner(spOrder, spOrderAdapter);
-                    spOrderAdapter.notifyDataSetChanged();
-                    spOrder.setSelection(classNumberint);
+
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取班次返回错误信息：" + content);
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取班次返回错误信息：" + content);
+                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                }
+            });
+        }
     }
 
     //获取区域
     private void getArea() {
-        RequestParams params = new RequestParams();
-        params.put("employeeId", UserUtils.getUserID(HiddenRiskRecordAddEditActivity.this));
-        netClient.post(Data.getInstance().getIp() + Constants.GET_AREA, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
+            String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_AREA);
+            if("".equals(jsondata)){
+                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
+            }else{
+                resultArea(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            params.put("employeeId", UserUtils.getUserID(HiddenRiskRecordAddEditActivity.this));
+            netClient.post(Data.getInstance().getIp() + Constants.GET_AREA, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取区域返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<Area> collieryTeams = JSONArray.parseArray(data, Area.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    int areaint = 0;
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getAreaName();
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
-                        if (collieryTeams.get(i).getId().equals(record.getAreaId())) {
-                            areaint = i;
-                        }
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取区域返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_AREA, data);
+                        resultArea(data);
                     }
-                    spHiddenAreaAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
-                    setUpSpinner(spHiddenArea, spHiddenAreaAdapter);
-                    spHiddenAreaAdapter.notifyDataSetChanged();
-                    spHiddenArea.setSelection(areaint);
+
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取区域返回错误信息：" + content);
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取区域返回错误信息：" + content);
+                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                }
+            });
+        }
     }
 
     //获取隐患类型
     private void getHiddenType() {
-        RequestParams params = new RequestParams();
-        params.put("dictTypeCode", "YHLX");
-        netClient.post(Data.getInstance().getIp() + Constants.GET_DATADICT, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
+            String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT);
+            if("".equals(jsondata)){
+                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
+            }else{
+                resultHiddenType(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            params.put("dictTypeCode", "YHLX");
+            netClient.post(Data.getInstance().getIp() + Constants.GET_DATADICT, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取隐患类型返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    int dataDictionary = 0;
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getName();
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
-                        if (collieryTeams.get(i).getId().equals(record.getTid())) {
-                            dataDictionary = i;
-                        }
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取隐患类型返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT, data);
+                        resultHiddenType(data);
                     }
-                    spHiddenTypesAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
-                    setUpSpinner(spHiddenTypes, spHiddenTypesAdapter);
-                    spHiddenTypesAdapter.notifyDataSetChanged();
-                    spHiddenTypes.setSelection(dataDictionary);
+
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取隐患类型返回错误信息：" + content);
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取隐患类型返回错误信息：" + content);
+                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                }
+            });
+        }
     }
 
     //获取隐患级别
     private void getHiddenGrade() {
-        RequestParams params = new RequestParams();
-        params.put("dictTypeCode", "YHJB");
-        netClient.post(Data.getInstance().getIp() + Constants.GET_DATADICT, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
+            String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT);
+            if("".equals(jsondata)){
+                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
+            }else{
+                resultHiddenGrade(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            params.put("dictTypeCode", "YHJB");
+            netClient.post(Data.getInstance().getIp() + Constants.GET_DATADICT, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取隐患级别返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    int dataDictionary = 0;
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getName();
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
-                        if (collieryTeams.get(i).getName().equals(record.getJbName())) {
-                            dataDictionary = i;
-                        }
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取隐患级别返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT, data);
+                        resultHiddenGrade(data);
                     }
-                    spLevelAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
-                    setUpSpinner(spLevel, spLevelAdapter);
-                    spLevelAdapter.notifyDataSetChanged();
-                    spLevel.setSelection(dataDictionary);
 
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取隐患级别返回错误信息：" + content);
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取隐患级别返回错误信息：" + content);
+                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                }
+            });
+        }
     }
 
     //获取检查单位
     private void getHiddenYHGSLX() {
-        RequestParams params = new RequestParams();
-        params.put("dictTypeCode", "YHGSLX");
-        netClient.post(Data.getInstance().getIp() + Constants.GET_DATADICT, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
+            String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT);
+            if("".equals(jsondata)){
+                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
+            }else{
+                resultHiddenYHGSLX(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            params.put("dictTypeCode", "YHGSLX");
+            netClient.post(Data.getInstance().getIp() + Constants.GET_DATADICT, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取检查单位返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    int dataDictionary = 0;
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getName();
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
-                        if (collieryTeams.get(i).getId().equals(record.getHiddenBelongId())) {
-                            dataDictionary = i;
-                        }
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取检查单位返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT, data);
+                        resultHiddenYHGSLX(data);
                     }
-                    spHiddenSortAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
-                    setUpSpinner(spHiddenSort, spHiddenSortAdapter);
-                    spHiddenSortAdapter.notifyDataSetChanged();
-                    spHiddenSort.setSelection(dataDictionary);
+
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取检查单位返回错误信息：" + content);
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取检查单位返回错误信息：" + content);
+                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                }
+            });
+        }
     }
 
     //获取检查内容
     private void getCheckContent() {
-        RequestParams params = new RequestParams();
-        params.put("dictTypeCode", "JCNR");
-        netClient.post(Data.getInstance().getIp() + Constants.GET_DATADICT, params, new BaseJsonRes() {
-
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取检查内容返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    int dataDictionary = 0;
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getName();
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
-                        if (collieryTeams.get(i).getId().equals(record.getHiddenCheckContentId())) {
-                            dataDictionary = i;
-                        }
-                    }
-                    spCheckContentAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
-                    setUpSpinner(spCheckContent, spCheckContentAdapter);
-                    spCheckContentAdapter.notifyDataSetChanged();
-                    Log.e(TAG, "onMySuccess: getHiddenCheckContentId====" + dataDictionary);
-                    spCheckContent.setSelection(dataDictionary);
-                }
-
+        if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
+            String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT);
+            if("".equals(jsondata)){
+                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
+            }else{
+                resultCheckContent(jsondata);
             }
+        }else{
+            RequestParams params = new RequestParams();
+            params.put("dictTypeCode", "JCNR");
+            netClient.post(Data.getInstance().getIp() + Constants.GET_DATADICT, params, new BaseJsonRes() {
 
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取检查内容返回错误信息：" + content);
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
-            }
-        });
-    }
-
-    private void getHiddenRecord(String id) {//隐患id
-        RequestParams params = new RequestParams();
-        params.put("hiddenDangerRecordId", id);
-        netClient.post(Data.getInstance().getIp() + Constants.HIDDENDANGERRECORD, params, new BaseJsonRes() {
-
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "隐患数据返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    JSONObject returndata = JSON.parseObject(data);
-                    record = JSONArray.parseObject(data, HiddenDangerRecord.class);
-                    etContent.setText(record.getContent());
-                    etLocation.setText(record.getHiddenPlace());
-                    etCheckPerson.setText(record.getCheckPerson());
-                    String isuper = record.getIsupervision();
-                    if (TextUtils.equals(isuper, "0")) {
-                        checkYes.setSelected(false);
-                        checkNos.setSelected(true);
-                    } else {
-                        checkYes.setSelected(true);
-                        checkNos.setSelected(false);
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取检查内容返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT, data);
+                        resultCheckContent(data);
                     }
-                    String ishandle = record.getIshandle();
-                    spIsHandleAdapter.notifyDataSetChanged();
-                    spIsHandle.setSelection(Integer.parseInt(ishandle));
 
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "隐患数据返回错误信息：" + content);
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
-                return;
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取检查内容返回错误信息：" + content);
+                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                }
+            });
+        }
     }
 
     //添加修改隐患记录
@@ -746,7 +665,6 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         } else {
             flag = Constants.UPDATE_HIDDENDANGERRECORD;
         }
-
         Log.e(TAG, "addEditHiddenDanger: flag===============" + flag);
         netClient.post(Data.getInstance().getIp() + flag, params, new BaseJsonRes() {
 
@@ -788,6 +706,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                     File file = new File(picList.get(0));
                     RequestParams params = new RequestParams();
                     params.put("mobile", file);
+                    params.put("fileurl", picList.get(0));
                     String hiddenDangerRecordStr = JSON.toJSONString(records);
                     params.put("record", hiddenDangerRecordStr);
                     netClient.post(Data.getInstance().getIp() + Constants.UPLOAD_PIC, params, new BaseJsonRes() {
@@ -984,5 +903,176 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         }catch (Exception e) {
             Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, e.toString());
         }
+    }
+
+    private void resultColliery(String data){
+        List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        int collieryTeamsint = 0;
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getTeamName().replaceAll("&nbsp;", "   ");
+            selectItem.id = collieryTeams.get(i).getId();
+            if (collieryTeams.get(i).getId().equals(record.getTeamGroupCode())) {
+                collieryTeamsint = i;
+            }
+            selectItems.add(selectItem);
+        }
+        mSpHiddenUnitsAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems, Gravity.CENTER_VERTICAL | Gravity.LEFT);
+        setUpSpinner(spHiddenUnits, mSpHiddenUnitsAdapter);
+        mSpHiddenUnitsAdapter.notifyDataSetChanged();
+        spHiddenUnits.setSelection(collieryTeamsint);
+    }
+
+    private void resultSpecialty(String data){
+        List<Specialty> collieryTeams = JSONArray.parseArray(data, Specialty.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        int sint = 0;
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getSname();
+            selectItem.id = collieryTeams.get(i).getId();
+            if (collieryTeams.get(i).getId().equals(record.getSid())) {
+                sint = i;
+            }
+            selectItems.add(selectItem);
+        }
+        spProfessionalAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
+        setUpSpinner(spProfessional, spProfessionalAdapter);
+        spProfessionalAdapter.notifyDataSetChanged();
+        spProfessional.setSelection(sint);
+    }
+
+    private void resultGrade(String data){
+        List<RiskGrade> collieryTeams = JSONArray.parseArray(data, RiskGrade.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        int riskGrade = 0;
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getGname();
+            selectItem.id = collieryTeams.get(i).getId();
+            selectItems.add(selectItem);
+            if (collieryTeams.get(i).getId().equals(record.getGid())) {
+                riskGrade = i;
+            }
+        }
+        spHiddenClassAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
+        setUpSpinner(spHiddenClass, spHiddenClassAdapter);
+        spHiddenClassAdapter.notifyDataSetChanged();
+        spHiddenClass.setSelection(riskGrade);
+    }
+
+    private void resultClassNumber(String data){
+        List<ClassNumber> collieryTeams = JSONArray.parseArray(data, ClassNumber.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        int classNumberint = 0;
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getClassName();
+            selectItem.id = collieryTeams.get(i).getId();
+            selectItems.add(selectItem);
+            if (collieryTeams.get(i).getId().equals(record.getClassId())) {
+                classNumberint = i;
+            }
+        }
+        spOrderAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
+        setUpSpinner(spOrder, spOrderAdapter);
+        spOrderAdapter.notifyDataSetChanged();
+        spOrder.setSelection(classNumberint);
+    }
+
+    private void resultArea(String data){
+        List<Area> collieryTeams = JSONArray.parseArray(data, Area.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        int areaint = 0;
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getAreaName();
+            selectItem.id = collieryTeams.get(i).getId();
+            selectItems.add(selectItem);
+            if (collieryTeams.get(i).getId().equals(record.getAreaId())) {
+                areaint = i;
+            }
+        }
+        spHiddenAreaAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
+        setUpSpinner(spHiddenArea, spHiddenAreaAdapter);
+        spHiddenAreaAdapter.notifyDataSetChanged();
+        spHiddenArea.setSelection(areaint);
+    }
+
+    private void resultHiddenType(String data){
+        List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        int dataDictionary = 0;
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getName();
+            selectItem.id = collieryTeams.get(i).getId();
+            selectItems.add(selectItem);
+            if (collieryTeams.get(i).getId().equals(record.getTid())) {
+                dataDictionary = i;
+            }
+        }
+        spHiddenTypesAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
+        setUpSpinner(spHiddenTypes, spHiddenTypesAdapter);
+        spHiddenTypesAdapter.notifyDataSetChanged();
+        spHiddenTypes.setSelection(dataDictionary);
+    }
+
+    private void resultHiddenGrade(String data){
+        List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        int dataDictionary = 0;
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getName();
+            selectItem.id = collieryTeams.get(i).getId();
+            selectItems.add(selectItem);
+            if (collieryTeams.get(i).getName().equals(record.getJbName())) {
+                dataDictionary = i;
+            }
+        }
+        spLevelAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
+        setUpSpinner(spLevel, spLevelAdapter);
+        spLevelAdapter.notifyDataSetChanged();
+        spLevel.setSelection(dataDictionary);
+    }
+    private void resultHiddenYHGSLX(String data){
+        List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        int dataDictionary = 0;
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getName();
+            selectItem.id = collieryTeams.get(i).getId();
+            selectItems.add(selectItem);
+            if (collieryTeams.get(i).getId().equals(record.getHiddenBelongId())) {
+                dataDictionary = i;
+            }
+        }
+        spHiddenSortAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
+        setUpSpinner(spHiddenSort, spHiddenSortAdapter);
+        spHiddenSortAdapter.notifyDataSetChanged();
+        spHiddenSort.setSelection(dataDictionary);
+    }
+
+    private void resultCheckContent(String data){
+        List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        int dataDictionary = 0;
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getName();
+            selectItem.id = collieryTeams.get(i).getId();
+            selectItems.add(selectItem);
+            if (collieryTeams.get(i).getId().equals(record.getHiddenCheckContentId())) {
+                dataDictionary = i;
+            }
+        }
+        spCheckContentAdapter = SpinnerAdapter.createFromResource(HiddenRiskRecordAddEditActivity.this, selectItems);
+        setUpSpinner(spCheckContent, spCheckContentAdapter);
+        spCheckContentAdapter.notifyDataSetChanged();
+        Log.e(TAG, "onMySuccess: getHiddenCheckContentId====" + dataDictionary);
+        spCheckContent.setSelection(dataDictionary);
     }
 }
