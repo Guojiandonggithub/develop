@@ -39,6 +39,7 @@ import com.example.administrator.riskprojects.bean.RiskGrade;
 import com.example.administrator.riskprojects.bean.SelectItem;
 import com.example.administrator.riskprojects.bean.Specialty;
 import com.example.administrator.riskprojects.common.NetUtil;
+import com.example.administrator.riskprojects.dialog.FlippingLoadingDialog;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
@@ -108,6 +109,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
     private AddPicAdapter picAdapter;
     //存放图片路径
     private List<String> paths = new ArrayList<>();
+    protected FlippingLoadingDialog mLoadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,7 +208,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
             @Override
             public void onClick(View view) {
                 HiddenDangerRecord records = getHiddenDangerRecord();
-
+                getLoadingDialog("正在连接服务器...  ").show();
                 String flag = "add";
                 if (!TextUtils.isEmpty(id)) {
                     flag = "update";
@@ -218,7 +220,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                             upaction(paths,records, flag);
                         }
                     }else{
-                        Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有权限进行修改！");
+                        Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "没有权限进行修改！");
                     }
                 }else{
                     Log.e(TAG, "upaction=================: "+paths);
@@ -364,7 +366,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
             String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_COLLIERYTEAM);
             if("".equals(jsondata)){
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
+                Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
             }else{
                 resultColliery(jsondata);
             }
@@ -386,7 +388,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 @Override
                 public void onMyFailure(String content) {
                     Log.e(TAG, "获取部门/队组成员返回错误信息：" + content);
-                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                    Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, content);
                 }
             });
         }
@@ -397,7 +399,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
             String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_SPECIALTY);
             if("".equals(jsondata)){
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
+                Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
             }else{
                 resultSpecialty(jsondata);
             }
@@ -418,7 +420,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 @Override
                 public void onMyFailure(String content) {
                     Log.e(TAG, "获取所属专业返回错误信息：" + content);
-                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                    Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, content);
                 }
             });
         }
@@ -429,7 +431,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
             String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_RISKGRADE);
             if("".equals(jsondata)){
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
+                Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
             }else{
                 resultGrade(jsondata);
             }
@@ -450,7 +452,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 @Override
                 public void onMyFailure(String content) {
                     Log.e(TAG, "获取隐患类别返回错误信息：" + content);
-                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                    Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, content);
                 }
             });
         }
@@ -461,7 +463,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
             String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_CLASSNUMBER);
             if("".equals(jsondata)){
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
+                Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
             }else{
                 resultClassNumber(jsondata);
             }
@@ -482,7 +484,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 @Override
                 public void onMyFailure(String content) {
                     Log.e(TAG, "获取班次返回错误信息：" + content);
-                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                    Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, content);
                 }
             });
         }
@@ -493,7 +495,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
             String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_AREA);
             if("".equals(jsondata)){
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
+                Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
             }else{
                 resultArea(jsondata);
             }
@@ -515,7 +517,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 @Override
                 public void onMyFailure(String content) {
                     Log.e(TAG, "获取区域返回错误信息：" + content);
-                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                    Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, content);
                 }
             });
         }
@@ -526,7 +528,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
             String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT);
             if("".equals(jsondata)){
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
+                Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
             }else{
                 resultHiddenType(jsondata);
             }
@@ -548,7 +550,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 @Override
                 public void onMyFailure(String content) {
                     Log.e(TAG, "获取隐患类型返回错误信息：" + content);
-                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                    Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, content);
                 }
             });
         }
@@ -559,7 +561,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
             String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT);
             if("".equals(jsondata)){
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
+                Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
             }else{
                 resultHiddenGrade(jsondata);
             }
@@ -581,7 +583,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 @Override
                 public void onMyFailure(String content) {
                     Log.e(TAG, "获取隐患级别返回错误信息：" + content);
-                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                    Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, content);
                 }
             });
         }
@@ -592,7 +594,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
             String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT);
             if("".equals(jsondata)){
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
+                Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
             }else{
                 resultHiddenYHGSLX(jsondata);
             }
@@ -614,7 +616,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 @Override
                 public void onMyFailure(String content) {
                     Log.e(TAG, "获取检查单位返回错误信息：" + content);
-                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                    Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, content);
                 }
             });
         }
@@ -625,7 +627,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
             String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT);
             if("".equals(jsondata)){
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
+                Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
             }else{
                 resultCheckContent(jsondata);
             }
@@ -647,7 +649,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 @Override
                 public void onMyFailure(String content) {
                     Log.e(TAG, "获取检查内容返回错误信息：" + content);
-                    Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                    Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, content);
                 }
             });
         }
@@ -671,11 +673,12 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
             @Override
             public void onMySuccess(String data) {
                 Log.i(TAG, "添加修改记录返回数据：" + data);
+                getLoadingDialog("正在连接服务器...  ").dismiss();
                 if (!TextUtils.isEmpty(data)) {
                     if (TextUtils.isEmpty(record.getId())) {
-                        Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "隐患添加成功！");
+                        Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "隐患添加成功！");
                     } else {
-                        Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "隐患修改成功！");
+                        Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "隐患修改成功！");
                         setResult(RESULT_OK,new Intent());
                     }
                     finish();
@@ -686,7 +689,8 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "添加修改隐患记录返回错误信息：" + content);
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                getLoadingDialog("正在连接服务器...  ").dismiss();
+                Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, content);
                 tvOk.setClickable(true);
             }
         });
@@ -721,7 +725,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                         @Override
                         public void onMyFailure(String content) {
                             Log.e(TAG, "添加修改隐患记录返回错误信息：" + content);
-                            Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                            Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, content);
                             tvOk.setClickable(true);
                         }
                     });
@@ -729,7 +733,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                     addEditHiddenDanger(records, flag);
                 }
             }catch (Exception e) {
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, e.toString());
+                Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, e.toString());
             }
         //}
     }
@@ -814,16 +818,16 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
     //检查输入
     private boolean checkInput(HiddenDangerRecord hiddenDangerRecord) {
         if (TextUtils.isEmpty(etContent.getText().toString())) {
-            Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "隐患内容不能为空!");
+            Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "隐患内容不能为空!");
             return false;
         }
         if (TextUtils.isEmpty(etCheckPerson.getText().toString())) {
-            Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "检查人不能为空!");
+            Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "检查人不能为空!");
             return false;
         }
 
         if (TextUtils.isEmpty(tvDate.getText().toString())) {
-            Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "隐患时间不能为空!");
+            Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "隐患时间不能为空!");
             return false;
         }
 
@@ -832,12 +836,12 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         Log.e(TAG, "flag:=== " + hiddenDangerRecord.getFlag() + "userid==========" + userid);
         Log.e(TAG, "getEmployeeId:=== " + hiddenDangerRecord.getEmployeeId() + "userid==========" + userid);
         if (!"1".equals(role) && !userid.equals(hiddenDangerRecord.getEmployeeId())) {
-            Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "您不是管理员或该隐患不是您上报的,不能进行修改!");
+            Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "您不是管理员或该隐患不是您上报的,不能进行修改!");
             return false;
         }
         if (null != hiddenDangerRecord.getFlag()) {
             if (Integer.parseInt(hiddenDangerRecord.getFlag()) >= 2) {
-                Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, "该隐患已经下达不能修改!");
+                Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "该隐患已经下达不能修改!");
                 return false;
             }
         }
@@ -896,12 +900,12 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                     @Override
                     public void onMyFailure(String content) {
                         Log.e(TAG, "查询图片组返回错误信息：" + content);
-                        Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, content);
+                        Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, content);
                     }
                 });
             }
         }catch (Exception e) {
-            Utils.showLongToast(HiddenRiskRecordAddEditActivity.this, e.toString());
+            Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, e.toString());
         }
     }
 
@@ -1074,5 +1078,11 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         spCheckContentAdapter.notifyDataSetChanged();
         Log.e(TAG, "onMySuccess: getHiddenCheckContentId====" + dataDictionary);
         spCheckContent.setSelection(dataDictionary);
+    }
+
+    public FlippingLoadingDialog getLoadingDialog(String msg) {
+        if (mLoadingDialog == null)
+            mLoadingDialog = new FlippingLoadingDialog(HiddenRiskRecordAddEditActivity.this, msg);
+        return mLoadingDialog;
     }
 }

@@ -2,7 +2,6 @@ package com.example.administrator.riskprojects.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -19,8 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.riskprojects.LoginActivity;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.dialog.FlippingLoadingDialog;
 import com.example.administrator.riskprojects.dialog.WarnTipDialog;
 import com.example.administrator.riskprojects.fragment.Fragment_Home;
 import com.example.administrator.riskprojects.fragment.Fragment_Record_Manage;
@@ -35,11 +34,7 @@ import com.example.administrator.riskprojects.view.MyAlertDialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import cn.jpush.android.api.JPushInterface;
-
 
 import static com.example.administrator.riskprojects.activity.TagAliasOperatorHelper.ACTION_SET;
 import static com.example.administrator.riskprojects.activity.TagAliasOperatorHelper.sequence;
@@ -80,6 +75,7 @@ public class MainActivity extends FragmentActivity {
     private LinearLayoutCompat mLlManage;
     private LinearLayoutCompat mLlChart;
     public static boolean isForeground = false;
+    protected FlippingLoadingDialog mLoadingDialog;
 
 
     @Override
@@ -100,6 +96,12 @@ public class MainActivity extends FragmentActivity {
     protected void onStart() {
         super.onStart();
         handlePushMessage(getIntent());
+    }
+
+    public FlippingLoadingDialog getLoadingDialog(String msg,Context context) {
+        if (mLoadingDialog == null)
+            mLoadingDialog = new FlippingLoadingDialog(context, msg);
+        return mLoadingDialog;
     }
 
     private void setUpAlias() {

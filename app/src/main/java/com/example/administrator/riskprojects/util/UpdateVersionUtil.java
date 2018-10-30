@@ -84,7 +84,7 @@ public class UpdateVersionUtil {
                     Log.e(TAG, "oldversion旧版本================= "+oldversion);
                     Log.e(TAG, "oldversion新版本================= "+version);
                     if(version.equals(oldversion)){
-                        Utils.showLongToast(context, "已经是最新版本，不需要更新！");
+                        Utils.showShortToast(context, "已经是最新版本，不需要更新！");
                     }else{
                         String newVersionPath = returndata.getString("newVersionPath");
                         showUpdateDialog(newVersionPath, "1");

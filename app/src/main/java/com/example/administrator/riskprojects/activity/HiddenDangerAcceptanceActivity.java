@@ -17,6 +17,7 @@ import com.example.administrator.riskprojects.Adpter.SpinnerAdapter;
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.SelectItem;
+import com.example.administrator.riskprojects.dialog.FlippingLoadingDialog;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
@@ -27,6 +28,7 @@ import com.juns.health.net.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class HiddenDangerAcceptanceActivity extends BaseActivity {
     private static final String TAG = "HiddenDangerAcceptanceA";
@@ -43,6 +45,7 @@ public class HiddenDangerAcceptanceActivity extends BaseActivity {
     private SpinnerAdapter spAcceptanceResultsAdapter;
     protected NetClient netClient;
     private String recheckPersonId;
+    protected FlippingLoadingDialog mLoadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,14 +140,16 @@ public class HiddenDangerAcceptanceActivity extends BaseActivity {
         params.put("recheckPersonId",recheckPersonId);
         params.put("recheckPersonName",etAddLocation.getText().toString());
         Log.e(TAG, "addRecheck: 隐患验收参数==="+params);
+        getLoadingDialog("正在连接服务器...  ").show();
         netClient.post(Data.getInstance().getIp()+Constants.ADD_RECHECK, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
                 Log.i(TAG, "隐患验收返回数据：" + data);
+                getLoadingDialog("正在连接服务器...  ").dismiss();
                 if (!TextUtils.isEmpty(data)) {
                     if (!TextUtils.isEmpty(data)) {
-                        Utils.showLongToast(HiddenDangerAcceptanceActivity.this, "验收成功");
+                        Utils.showShortToast(HiddenDangerAcceptanceActivity.this, "验收成功");
                     }
                     finish();
                 }
@@ -152,10 +157,18 @@ public class HiddenDangerAcceptanceActivity extends BaseActivity {
 
             @Override
             public void onMyFailure(String content) {
+                getLoadingDialog("正在连接服务器...  ").dismiss();
                 Log.e(TAG, "隐患验收返回错误信息：" + content);
-                Utils.showLongToast(HiddenDangerAcceptanceActivity.this, content);
+                Utils.showShortToast(HiddenDangerAcceptanceActivity.this, content);
                 tvOk.setClickable(true);
             }
         });
     }
+
+    public FlippingLoadingDialog getLoadingDialog(String msg) {
+        if (mLoadingDialog == null)
+            mLoadingDialog = new FlippingLoadingDialog(HiddenDangerAcceptanceActivity.this, msg);
+        return mLoadingDialog;
+    }
+
 }

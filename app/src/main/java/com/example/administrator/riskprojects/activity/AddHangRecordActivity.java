@@ -11,7 +11,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -22,7 +21,6 @@ import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.CollieryTeam;
 import com.example.administrator.riskprojects.bean.GpHiddenDanger;
-import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.bean.SelectItem;
 import com.example.administrator.riskprojects.bean.UserInfo;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
@@ -32,6 +30,7 @@ import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.util.DensityUtil;
 import com.juns.health.net.loopj.android.http.RequestParams;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,7 +106,7 @@ public class AddHangRecordActivity extends BaseActivity {
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "获取部门/队组成员返回错误信息：" + content);
-                Utils.showLongToast(AddHangRecordActivity.this, content);
+                Utils.showShortToast(AddHangRecordActivity.this, content);
             }
         });
     }
@@ -183,7 +182,7 @@ public class AddHangRecordActivity extends BaseActivity {
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "督办人查询返回错误信息：" + content);
-                Utils.showLongToast(AddHangRecordActivity.this, content);
+                Utils.showShortToast(AddHangRecordActivity.this, content);
             }
         });
     }
@@ -199,21 +198,21 @@ public class AddHangRecordActivity extends BaseActivity {
     //检查输入
     private boolean checkInput() {
         if (TextUtils.isEmpty(etContent.getText().toString())) {
-            Utils.showLongToast(AddHangRecordActivity.this, "整改要求不能为空!");
+            Utils.showShortToast(AddHangRecordActivity.this, "整改要求不能为空!");
             return false;
         }
 
         if (TextUtils.isEmpty(tvDate.getText().toString())) {
-            Utils.showLongToast(AddHangRecordActivity.this, "挂牌时间不能为空!");
+            Utils.showShortToast(AddHangRecordActivity.this, "挂牌时间不能为空!");
             return false;
         }
         SelectItem peopleUnit = (SelectItem)spTrackPeopleUnit.getSelectedItem();
         if(null==peopleUnit){
-            Utils.showLongToast(AddHangRecordActivity.this, "督办单位不能为空!");
+            Utils.showShortToast(AddHangRecordActivity.this, "督办单位不能为空!");
         }
         SelectItem people = (SelectItem)spTrackPeople.getSelectedItem();
         if(null==people){
-            Utils.showLongToast(AddHangRecordActivity.this, "督办人不能为空!");
+            Utils.showShortToast(AddHangRecordActivity.this, "督办人不能为空!");
         }
         return true;
     }
@@ -260,7 +259,7 @@ public class AddHangRecordActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data)) {
                     Intent intent = new Intent();
                     setResult(RESULT_OK, intent);
-                    Utils.showLongToast(AddHangRecordActivity.this, "挂牌添加成功");
+                    Utils.showShortToast(AddHangRecordActivity.this, "挂牌添加成功");
                     finish();
                 }
 
@@ -269,7 +268,7 @@ public class AddHangRecordActivity extends BaseActivity {
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "隐患添加挂牌返回错误信息：" + content);
-                Utils.showLongToast(AddHangRecordActivity.this, content);
+                Utils.showShortToast(AddHangRecordActivity.this, content);
             }
         });
     }

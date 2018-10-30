@@ -236,7 +236,7 @@ public class LeftStatisticsOptionSelectActivity extends BaseActivity {
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "获取区域返回错误信息：" + content);
-                Utils.showLongToast(LeftStatisticsOptionSelectActivity.this, content);
+                Utils.showShortToast(LeftStatisticsOptionSelectActivity.this, content);
             }
         });
     }

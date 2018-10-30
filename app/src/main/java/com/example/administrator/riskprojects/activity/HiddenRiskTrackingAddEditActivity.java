@@ -90,7 +90,7 @@ public class HiddenRiskTrackingAddEditActivity extends BaseActivity {
                 if(!TextUtils.isEmpty(follingRecord)){
                     addEditTracking(hiddenFollingRecord,flag);
                 }else{
-                    Utils.showLongToast(HiddenRiskTrackingAddEditActivity.this, "记录内容不能为空!");
+                    Utils.showShortToast(HiddenRiskTrackingAddEditActivity.this, "记录内容不能为空!");
                 }
             }
 
@@ -111,7 +111,7 @@ public class HiddenRiskTrackingAddEditActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data)) {
                     Intent intent = new Intent(HiddenRiskTrackingAddEditActivity.this, HiddenDangeTrackingDetailListActivity.class);
                     intent.putExtra("threeFixId", hiddenFollingRecord.getThreeFixId());
-                    Utils.showLongToast(HiddenRiskTrackingAddEditActivity.this, "操作成功!");
+                    Utils.showShortToast(HiddenRiskTrackingAddEditActivity.this, "操作成功!");
                     startActivity(intent);
                     finish();
                 }
@@ -121,7 +121,7 @@ public class HiddenRiskTrackingAddEditActivity extends BaseActivity {
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "添加跟踪记录返回错误信息：" + content);
-                Utils.showLongToast(HiddenRiskTrackingAddEditActivity.this, content);
+                Utils.showShortToast(HiddenRiskTrackingAddEditActivity.this, content);
                 mTvOk.setClickable(true);
             }
         });

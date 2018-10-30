@@ -13,10 +13,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.example.administrator.riskprojects.BaseActivity;
-import com.example.administrator.riskprojects.LoginActivity;
 import com.example.administrator.riskprojects.R;
-import com.example.administrator.riskprojects.bean.GpHiddenDanger;
-import com.example.administrator.riskprojects.bean.SelectItem;
 import com.example.administrator.riskprojects.bean.UserInfo;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
@@ -26,9 +23,7 @@ import com.example.administrator.riskprojects.tools.Utils;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -114,7 +109,7 @@ public class PersonInfoEditActivity extends BaseActivity {
                     Intent intent = new Intent();
                     intent.putExtra("phone",mEtPhone.getText().toString());
                     setResult(RESULT_OK, intent);
-                    Utils.showLongToast(PersonInfoEditActivity.this, "用户数据修改成功");
+                    Utils.showShortToast(PersonInfoEditActivity.this, "用户数据修改成功");
                     finish();
                 }
 
@@ -123,7 +118,7 @@ public class PersonInfoEditActivity extends BaseActivity {
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "修改用户信息返回错误信息：" + content);
-                Utils.showLongToast(PersonInfoEditActivity.this, content);
+                Utils.showShortToast(PersonInfoEditActivity.this, content);
             }
         });
     }
@@ -131,12 +126,12 @@ public class PersonInfoEditActivity extends BaseActivity {
     //检查输入
     private boolean checkInput() {
         if (TextUtils.isEmpty(mEtName.getText().toString())) {
-            Utils.showLongToast(PersonInfoEditActivity.this, "姓名不能为空!");
+            Utils.showShortToast(PersonInfoEditActivity.this, "姓名不能为空!");
             return false;
         }
 
         if (TextUtils.isEmpty(mEtPhone.getText().toString())) {
-            Utils.showLongToast(PersonInfoEditActivity.this, "手机号不能为空!");
+            Utils.showShortToast(PersonInfoEditActivity.this, "手机号不能为空!");
             return false;
         }
         return true;

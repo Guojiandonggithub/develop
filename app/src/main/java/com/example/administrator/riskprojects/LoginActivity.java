@@ -100,7 +100,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     private void selectRadioButton(){
         RadioButton rb = (RadioButton)LoginActivity.this.findViewById(radio_net.getCheckedRadioButtonId());
-        Utils.showLongToast(LoginActivity.this, rb.getText().toString());
+        Utils.showShortToast(LoginActivity.this, rb.getText().toString());
         Data app = (Data)getApplication();
         if(rb.getText().equals("内网")){
             app.setIp(Constants.INNER_MAIN_ENGINE);
@@ -119,7 +119,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             case R.id.btn_login:
                 RadioButton rb = (RadioButton)LoginActivity.this.findViewById(radio_net.getCheckedRadioButtonId());
                 if(rb.getText().equals("内网")){
-                    Utils.showLongToast(LoginActivity.this, "内网地址未提供！");
+                    Utils.showShortToast(LoginActivity.this, "内网地址未提供！");
                 }else{
                     getLogin();
                 }
@@ -164,11 +164,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 @Override
                 public void onMyFailure(String content) {
                     getLoadingDialog("正在登录").dismiss();
-                    Utils.showLongToast(LoginActivity.this, content);
+                    Utils.showShortToast(LoginActivity.this, content);
                 }
             });
         } else {
-            Utils.showLongToast(LoginActivity.this, "请填写账号或密码！");
+            Utils.showShortToast(LoginActivity.this, "请填写账号或密码！");
         }
     }
 

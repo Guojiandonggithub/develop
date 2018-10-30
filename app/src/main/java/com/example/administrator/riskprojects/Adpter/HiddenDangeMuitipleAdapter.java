@@ -20,6 +20,8 @@ import com.example.administrator.riskprojects.activity.HiddenDangerOverdueManage
 import com.example.administrator.riskprojects.activity.HiddenDangerRectificationManagementActivity;
 import com.example.administrator.riskprojects.activity.HiddenDangerReviewManagementActivity;
 import com.example.administrator.riskprojects.bean.ThreeFix;
+import com.example.administrator.riskprojects.common.NetUtil;
+import com.example.administrator.riskprojects.dialog.FlippingLoadingDialog;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
@@ -38,6 +40,7 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
     public static final int FLAG_REVIEW = 2;
     public static final int FLAG_RECTIFICATION = 3;
     private int flag = FLAG_OVERDUE;
+    protected FlippingLoadingDialog mLoadingDialog;
 
     public void setItemClickListener(OnItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
@@ -223,27 +226,28 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
 
         //隐逾期患重新下达
         private void handleOutTime(String id, final int position) {//隐患id
-            RequestParams params = new RequestParams();
-        params.put("ids", id);
-        netClient.post(Data.getInstance().getIp() + Constants.HANDLEOUT_OVERDUELIST, params, new BaseJsonRes() {
+            if (NetUtil.checkNetWork(context)) {
+                RequestParams params = new RequestParams();
+                params.put("ids", id);
+                netClient.post(Data.getInstance().getIp() + Constants.HANDLEOUT_OVERDUELIST, params, new BaseJsonRes() {
+                    @Override
+                    public void onMySuccess(String data) {
+                        Log.i(TAG, "隐逾期患重新下达返回数据：" + data);
+                        if (!TextUtils.isEmpty(data)) {
+                            Utils.showShortToast(context, "重新下达成功");
+                            threeFixList.remove(position);
+                            notifyItemRemoved(position);
+                        }
+                    }
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "隐逾期患重新下达返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    Utils.showLongToast(context, "重新下达成功");
-                    threeFixList.remove(position);
-                    notifyItemRemoved(position);
-                }
+                    @Override
+                    public void onMyFailure(String content) {
+                        Log.e(TAG, "隐逾期患重新下达返回错误信息：" + content);
+                        Utils.showShortToast(context, content);
+                        return;
+                    }
+                });
             }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "隐逾期患重新下达返回错误信息：" + content);
-                Utils.showLongToast(context, content);
-                return;
-            }
-        });
     }
 
     @Override
@@ -288,7 +292,7 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
             public void onMySuccess(String data) {
                 Log.i(TAG, "完成整改返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
-                    Utils.showLongToast(context, "隐患整改成功！");
+                    Utils.showShortToast(context, "隐患整改成功！");
                     threeFixList.remove(position);
                     notifyDataSetChanged();
                 }
@@ -297,8 +301,15 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "完成整改返回错误信息：" + content);
-                Utils.showLongToast(context, content);
+                Utils.showShortToast(context, content);
             }
         });
     }
+
+    public FlippingLoadingDialog getLoadingDialog(String msg) {
+        if (mLoadingDialog == null)
+            mLoadingDialog = new FlippingLoadingDialog(context, msg);
+        return mLoadingDialog;
+    }
+
 }

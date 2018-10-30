@@ -323,7 +323,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         if (!NetUtil.checkNetWork(getActivity())) {
             String jsondata = Utils.getValue(getActivity(), Constants.GET_HIDDENRECORD);
             if("".equals(jsondata)){
-                Utils.showLongToast(getContext(), "没有联网，没有请求到数据");
+                Utils.showShortToast(getContext(), "没有联网，没有请求到数据");
             }else{
                 resultHiddenReord(jsondata);
             }
@@ -395,7 +395,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 @Override
                 public void onMyFailure(String content) {
                     Log.e(TAG, "隐患数据返回错误信息：" + content);
-                    Utils.showLongToast(getContext(), content);
+                    Utils.showShortToast(getContext(), content);
                 }
 
                 @Override
@@ -421,7 +421,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         if (!NetUtil.checkNetWork(getActivity())) {
             String jsondata = Utils.getValue(getActivity(), Constants.GET_HIDDENRELEASELIST);
             if("".equals(jsondata)){
-                Utils.showLongToast(getContext(), "没有联网，没有请求到数据");
+                Utils.showShortToast(getContext(), "没有联网，没有请求到数据");
             }else{
                 resultHiddenThreeFix(jsondata);
             }
@@ -476,7 +476,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 @Override
                 public void onMyFailure(String content) {
                     Log.e(TAG, "下达隐患查询返回错误信息：" + content);
-                    Utils.showLongToast(getContext(), content);
+                    Utils.showShortToast(getContext(), content);
                 }
 
                 @Override
@@ -494,7 +494,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         if (!NetUtil.checkNetWork(getActivity())) {
             String jsondata = Utils.getValue(getActivity(), Constants.GET_RECTIFICATIONLIST);
             if("".equals(jsondata)){
-                Utils.showLongToast(getContext(), "没有联网，没有请求到数据");
+                Utils.showShortToast(getContext(), "没有联网，没有请求到数据");
             }else{
                 resultHiddenThreeFix(jsondata);
             }
@@ -556,7 +556,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                         if (curpage == 1) {
                             threeFixesList.clear();
                             if (tempList.size() == 0) {
-                                Utils.showLongToast(getContext(), "没有查询到数据!");
+                                Utils.showShortToast(getContext(), "没有查询到数据!");
                             }
                         }
                         threeFixesList.addAll(tempList);
@@ -568,7 +568,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 @Override
                 public void onMyFailure(String content) {
                     Log.e(TAG, "整改隐患查询返回错误信息：" + content);
-                    Utils.showLongToast(getContext(), content);
+                    Utils.showShortToast(getContext(), content);
                 }
 
 
@@ -588,7 +588,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         if (!NetUtil.checkNetWork(getActivity())) {
             String jsondata = Utils.getValue(getActivity(), Constants.GET_TRACKINGLIST);
             if("".equals(jsondata)){
-                Utils.showLongToast(getContext(), "没有联网，没有请求到数据");
+                Utils.showShortToast(getContext(), "没有联网，没有请求到数据");
             }else{
                 resultHiddenThreeFix(jsondata);
             }
@@ -645,7 +645,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     if (curpage == 1) {
                         threeFixesList.clear();
                         if (tempList.size() == 0) {
-                            Utils.showLongToast(getContext(), "没有查询到数据!");
+                            Utils.showShortToast(getContext(), "没有查询到数据!");
                         }
                     }
                     threeFixesList.addAll(tempList);
@@ -657,7 +657,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 @Override
                 public void onMyFailure(String content) {
                     Log.e(TAG, "跟踪隐患查询返回错误信息：" + content);
-                    Utils.showLongToast(getContext(), content);
+                    Utils.showShortToast(getContext(), content);
                 }
 
                 @Override
@@ -675,7 +675,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         if (!NetUtil.checkNetWork(getActivity())) {
             String jsondata = Utils.getValue(getActivity(), Constants.GET_TRACKINGLIST);
             if("".equals(jsondata)){
-                Utils.showLongToast(getContext(), "没有联网，没有请求到数据");
+                Utils.showShortToast(getContext(), "没有联网，没有请求到数据");
             }else{
                 resultHiddenThreeFix(jsondata);
             }
@@ -730,7 +730,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 @Override
                 public void onMyFailure(String content) {
                     Log.e(TAG, "逾期隐患查询返回错误信息：" + content);
-                    Utils.showLongToast(getContext(), content);
+                    Utils.showShortToast(getContext(), content);
                 }
 
 
@@ -749,7 +749,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         if (!NetUtil.checkNetWork(getActivity())) {
             String jsondata = Utils.getValue(getActivity(), Constants.GET_REVIEWLIST);
             if("".equals(jsondata)){
-                Utils.showLongToast(getContext(), "没有联网，没有请求到数据");
+                Utils.showShortToast(getContext(), "没有联网，没有请求到数据");
             }else{
                 resultHiddenThreeFix(jsondata);
             }
@@ -810,7 +810,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                 @Override
                 public void onMyFailure(String content) {
                     Log.e(TAG, "验收隐患查询返回错误信息：" + content);
-                    Utils.showLongToast(getContext(), content);
+                    Utils.showShortToast(getContext(), content);
                 }
 
 
@@ -828,7 +828,12 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
 
     @Override
     public void onRefresh() {
-        getDataByPage(1);
+        if (NetUtil.checkNetWork(getActivity())) {
+            getDataByPage(1);
+        }else{
+            Utils.showShortToast(getContext(), "网络连接错误，无法刷新数据!");
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     public void onRightMenuClicked(View view) {
@@ -846,7 +851,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_REALEASE, threeFixesList, getActivity());
                     recyclerView.setAdapter(adapter);
                 } else {
-                    Utils.showLongToast(getContext(), "没有权限进行该操作!");
+                    Utils.showShortToast(getContext(), "没有权限进行该操作!");
                 }
                 break;
             case R.id.ll_manage_rectification:
@@ -885,7 +890,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     });
                     recyclerView.setAdapter(adapter);
                 } else {
-                    Utils.showLongToast(getContext(), "没有权限进行该操作!");
+                    Utils.showShortToast(getContext(), "没有权限进行该操作!");
                 }
                 break;
             case R.id.ll_manage_tracking:
@@ -902,7 +907,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     adapter = new HiddenDangeMuitipleAdapter(HiddenDangeMuitipleAdapter.FLAG_OVERDUE, threeFixesList, getActivity());
                     recyclerView.setAdapter(adapter);
                 } else {
-                    Utils.showLongToast(getContext(), "没有权限进行该操作!");
+                    Utils.showShortToast(getContext(), "没有权限进行该操作!");
                 }
                 break;
             case R.id.ll_manage_review:
@@ -934,7 +939,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
             public void onMySuccess(String data) {
                 Log.i(TAG, "完成整改返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
-                    Utils.showLongToast(ctx, "隐患整改成功！");
+                    Utils.showShortToast(ctx, "隐患整改成功！");
                     threeFixesList.remove(position);
                     adapter.notifyItemRemoved(position);
                 }

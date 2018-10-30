@@ -15,7 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import java.text.SimpleDateFormat;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -23,7 +23,6 @@ import com.example.administrator.riskprojects.Adpter.InspectionAdapter;
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.CarRecord;
-import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
@@ -34,11 +33,10 @@ import com.juns.health.net.loopj.android.http.RequestParams;
 import com.khdz.patrol.bleSdk.BleScanner;
 import com.khdz.patrol.bleSdk.IScanCardCallback;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class InspectionActivity extends BaseActivity {
@@ -183,7 +181,7 @@ public class InspectionActivity extends BaseActivity {
                 @Override
                 public void onMyFailure(String content) {
                     Log.e(TAG, "巡检记录返回错误信息：" + content);
-                    Utils.showLongToast(InspectionActivity.this, content);
+                    Utils.showShortToast(InspectionActivity.this, content);
                 }
             });
     }
@@ -235,7 +233,7 @@ public class InspectionActivity extends BaseActivity {
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "提交巡检记录返回错误信息：" + content);
-                Utils.showLongToast(InspectionActivity.this, content);
+                Utils.showShortToast(InspectionActivity.this, content);
             }
         });
     }
@@ -269,7 +267,7 @@ public class InspectionActivity extends BaseActivity {
     }
 
     private void addResult(final String result) {
-        Utils.showLongToast(InspectionActivity.this, result);
+        Utils.showShortToast(InspectionActivity.this, result);
     }
 
 

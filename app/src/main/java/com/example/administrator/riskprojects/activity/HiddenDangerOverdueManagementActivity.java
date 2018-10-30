@@ -168,7 +168,7 @@ public class HiddenDangerOverdueManagementActivity extends BaseActivity {
             public void onMySuccess(String data) {
                 Log.i(TAG, "隐逾期患重新下达返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
-                    Utils.showLongToast(HiddenDangerOverdueManagementActivity.this, "重新下达成功");
+                    Utils.showShortToast(HiddenDangerOverdueManagementActivity.this, "重新下达成功");
                 }
                 finish();
             }
@@ -176,7 +176,7 @@ public class HiddenDangerOverdueManagementActivity extends BaseActivity {
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "隐逾期患重新下达返回错误信息：" + content);
-                Utils.showLongToast(HiddenDangerOverdueManagementActivity.this, content);
+                Utils.showShortToast(HiddenDangerOverdueManagementActivity.this, content);
                 mTvOk.setClickable(true);
             }
         });
@@ -209,12 +209,12 @@ public class HiddenDangerOverdueManagementActivity extends BaseActivity {
                     @Override
                     public void onMyFailure(String content) {
                         Log.e(TAG, "查询图片组返回错误信息：" + content);
-                        Utils.showLongToast(HiddenDangerOverdueManagementActivity.this, content);
+                        Utils.showShortToast(HiddenDangerOverdueManagementActivity.this, content);
                     }
                 });
             }
         }catch (Exception e) {
-            Utils.showLongToast(HiddenDangerOverdueManagementActivity.this, e.toString());
+            Utils.showShortToast(HiddenDangerOverdueManagementActivity.this, e.toString());
         }
     }
 }

@@ -103,7 +103,7 @@ public class SuperviseRecordManagementActivity extends BaseActivity {
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "查询督办列表返回错误信息：" + content);
-                Utils.showLongToast(SuperviseRecordManagementActivity.this, content);
+                Utils.showShortToast(SuperviseRecordManagementActivity.this, content);
                 return;
             }
         });

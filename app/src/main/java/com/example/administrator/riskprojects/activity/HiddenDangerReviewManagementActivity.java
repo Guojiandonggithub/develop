@@ -182,12 +182,12 @@ public class HiddenDangerReviewManagementActivity extends BaseActivity {
                     @Override
                     public void onMyFailure(String content) {
                         Log.e(TAG, "查询图片组返回错误信息：" + content);
-                        Utils.showLongToast(HiddenDangerReviewManagementActivity.this, content);
+                        Utils.showShortToast(HiddenDangerReviewManagementActivity.this, content);
                     }
                 });
             }
         }catch (Exception e) {
-            Utils.showLongToast(HiddenDangerReviewManagementActivity.this, e.toString());
+            Utils.showShortToast(HiddenDangerReviewManagementActivity.this, e.toString());
         }
     }
 }

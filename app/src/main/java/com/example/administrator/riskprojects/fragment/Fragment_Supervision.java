@@ -27,6 +27,7 @@ import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.activity.MainActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.common.NetUtil;
+import com.example.administrator.riskprojects.dialog.FlippingLoadingDialog;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
@@ -59,6 +60,7 @@ public class Fragment_Supervision extends Fragment implements SwipeRefreshLayout
     private TextView errorMessage;
     private TextView errorTips;
     private Button btnRefresh;
+    protected FlippingLoadingDialog mLoadingDialog;
 
 
     @Override
@@ -174,6 +176,7 @@ public class Fragment_Supervision extends Fragment implements SwipeRefreshLayout
             String jsonString = JSON.toJSONString(paramsMap);
             params.put("hiddenDangerRecordJsonData", jsonString);
             Log.e(TAG, "getHiddenRecord: 督办参数======" + params);
+            getLoadingDialog("正在连接服务器...  ").show();
             netClient.post(Data.getInstance().getIp() + Constants.GET_HIDDENRECORD, params, new BaseJsonRes() {
                 @Override
                 public void onStart() {
@@ -192,6 +195,7 @@ public class Fragment_Supervision extends Fragment implements SwipeRefreshLayout
                 @Override
                 public void onMySuccess(String data) {
                     Log.i(TAG, "挂牌督办隐患数据返回数据：" + data);
+                    getLoadingDialog("正在连接服务器...  ").dismiss();
                     if (!TextUtils.isEmpty(data)) {
                         Utils.putValue(getActivity(), "duban", data);
                         resultHiddenRecord(data);
@@ -200,6 +204,7 @@ public class Fragment_Supervision extends Fragment implements SwipeRefreshLayout
 
                 @Override
                 public void onMyFailure(String content) {
+                    getLoadingDialog("正在连接服务器...  ").dismiss();
                     Log.e(TAG, "挂牌督办隐患数据返回错误信息：" + content);
                     Utils.showLongToast(getContext(), content);
 
@@ -208,6 +213,7 @@ public class Fragment_Supervision extends Fragment implements SwipeRefreshLayout
                 @Override
                 public void onFinish() {
                     super.onFinish();
+                    getLoadingDialog("正在连接服务器...  ").dismiss();
                     mSwipeRefreshLayout.setRefreshing(false);
                     onLoading = false;
                     if (adapter.getItemCount() == 0) {
@@ -224,7 +230,12 @@ public class Fragment_Supervision extends Fragment implements SwipeRefreshLayout
     //加载结束后需要调用    mSwipeRefreshLayout.setRefreshing(false);
     @Override
     public void onRefresh() {
-        getHiddenRecord(1);
+        if (NetUtil.checkNetWork(getActivity())) {
+            getHiddenRecord(1);
+        }else{
+            Utils.showShortToast(getContext(), "网络连接错误，无法刷新数据!");
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     private void resultHiddenRecord(String data){
@@ -242,4 +253,11 @@ public class Fragment_Supervision extends Fragment implements SwipeRefreshLayout
         list.addAll(recordList);
         adapter.notifyDataSetChanged();
     }
+
+    public FlippingLoadingDialog getLoadingDialog(String msg) {
+        if (mLoadingDialog == null)
+            mLoadingDialog = new FlippingLoadingDialog(getActivity(), msg);
+        return mLoadingDialog;
+    }
+
 }

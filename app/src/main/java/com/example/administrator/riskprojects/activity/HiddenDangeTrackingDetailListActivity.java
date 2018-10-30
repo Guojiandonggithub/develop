@@ -18,17 +18,14 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.administrator.riskprojects.Adpter.HiddenDangeMuitipleAdapter;
 import com.example.administrator.riskprojects.Adpter.HomeHiddenDangerdetailListAdapter;
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.OnItemClickListener;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.HiddenFollingRecord;
-import com.example.administrator.riskprojects.bean.ThreeFix;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
-import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.util.DensityUtil;
 import com.example.administrator.riskprojects.view.MyAlertDialog;
@@ -254,7 +251,7 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "隐患跟踪记录查询返回错误信息：" + content);
-                Utils.showLongToast(HiddenDangeTrackingDetailListActivity.this, content);
+                Utils.showShortToast(HiddenDangeTrackingDetailListActivity.this, content);
             }
         });
     }
@@ -269,7 +266,7 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
             public void onMySuccess(String data) {
                 Log.i(TAG, "删除隐患记录返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
-                    Utils.showLongToast(HiddenDangeTrackingDetailListActivity.this, "删除成功");
+                    Utils.showShortToast(HiddenDangeTrackingDetailListActivity.this, "删除成功");
                 }
                 finish();
             }
@@ -277,7 +274,7 @@ public class HiddenDangeTrackingDetailListActivity extends BaseActivity implemen
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "删除隐患记录返回错误信息：" + content);
-                Utils.showLongToast(HiddenDangeTrackingDetailListActivity.this, content);
+                Utils.showShortToast(HiddenDangeTrackingDetailListActivity.this, content);
                 return;
             }
         });

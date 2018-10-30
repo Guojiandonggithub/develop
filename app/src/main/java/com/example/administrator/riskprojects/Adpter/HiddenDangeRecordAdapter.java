@@ -91,7 +91,7 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
                     Log.e(TAG, "隐患状态flag:============ "+flag);
                     holder.itemView.getContext().startActivity(intent);
                 }else{
-                    Utils.showLongToast(context, "当前没有网络，无法获取信息");
+                    Utils.showShortToast(context, "当前没有网络，无法获取信息");
                 }
             }
         });

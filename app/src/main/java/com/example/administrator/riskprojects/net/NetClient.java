@@ -1,5 +1,9 @@
 package com.example.administrator.riskprojects.net;
+
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -8,6 +12,7 @@ import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.bean.ThreeFix;
 import com.example.administrator.riskprojects.bean.UploadPic;
 import com.example.administrator.riskprojects.common.NetUtil;
+import com.example.administrator.riskprojects.dialog.FlippingLoadingDialog;
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.juns.health.net.loopj.android.http.AsyncHttpClient;
@@ -22,6 +27,7 @@ import java.util.TreeMap;
 public class NetClient {
 	private static final String TAG = "NetClient";
 	private static Context context;
+	protected FlippingLoadingDialog mLoadingDialog;
 	// http 请求
 	private AsyncHttpClient client;
 	// 超时时间
@@ -47,7 +53,7 @@ public class NetClient {
 	public void get(String url, RequestParams params,
                     final JsonHttpResponseHandler res) {
 		if (!NetUtil.checkNetWork(context)) {
-			Utils.showLongToast(context, Constants.NET_ERROR);
+			Utils.showShortToast(context, Constants.NET_ERROR);
 			return;
 		}
 		try {
@@ -80,6 +86,7 @@ public class NetClient {
 		System.out.println("!NetUtil.checkNetWork(context)：" + !NetUtil.checkNetWork(context));
 		if (!NetUtil.checkNetWork(context)) {
 			Log.e(TAG, "saveReportData===========: "+url);
+			getLoadingDialog("正在连接服务器...  ").dismiss();
 			saveReportData(url,params.toString());
 			return;
 		}else{
@@ -90,7 +97,6 @@ public class NetClient {
 					client.post(url, res);
 				}
 			} catch (Exception e) {
-				// TODO
 				e.printStackTrace();
 			}
 		}
@@ -113,7 +119,7 @@ public class NetClient {
 				cardRecordReport(param);
 				break;
 			default:
-				Utils.showLongToast(context, Constants.NET_ERROR);
+				Utils.showShortToast(context, Constants.NET_ERROR);
 				break;
 		}
 	}
@@ -129,7 +135,9 @@ public class NetClient {
 		String listStr = JSONArray.toJSONString(recordList);
 		Log.e(TAG, "隐患上报没网时: listStr============"+listStr);
 		Utils.putValue(context,Constants.ADDHIDDENRECORD,listStr);
-		Utils.showLongToast(context, Constants.SAVE_DATA);
+		Utils.showShortToast(context, Constants.SAVE_DATA);
+		Activity activity = findActivity(context);
+		activity.finish();
 	}
 
 	private void recheckReport(String param){
@@ -149,7 +157,9 @@ public class NetClient {
 		String listStr = JSONArray.toJSONString(threeFixList);
 		Log.e(TAG, "隐患复查没网时: listStr============"+listStr);
 		Utils.putValue(context,Constants.ADDRECHECK,listStr);
-		Utils.showLongToast(context, Constants.SAVE_DATA);
+		Utils.showShortToast(context, Constants.SAVE_DATA);
+		Activity activity = findActivity(context);
+		activity.finish();
 	}
 
 	private void uploadPid(String param){
@@ -167,7 +177,9 @@ public class NetClient {
 		String listStr = JSONArray.toJSONString(uploadPics);
 		Log.e(TAG, "隐患上传图片没网时: listStr============"+listStr);
 		Utils.putValue(context,Constants.ADDPIC,listStr);
-		Utils.showLongToast(context, Constants.SAVE_DATA);
+		Utils.showShortToast(context, Constants.SAVE_DATA);
+		Activity activity = findActivity(context);
+		activity.finish();
 	}
 	private void cardRecordReport(String param){
 		List<String> cardrecordList = new ArrayList();
@@ -181,7 +193,9 @@ public class NetClient {
 		String listStr = JSONArray.toJSONString(cardrecordList);
 		Log.e(TAG, "打卡记录没网时: listStr============"+listStr);
 		Utils.putValue(context,Constants.CARDRECORD,listStr);
-		Utils.showLongToast(context, Constants.SAVE_DATA);
+		Utils.showShortToast(context, Constants.SAVE_DATA);
+		Activity activity = findActivity(context);
+		activity.finish();
 	}
 
 	public static final String AND = "&";
@@ -216,5 +230,24 @@ public class NetClient {
 
 		return params;
 
+	}
+
+	public FlippingLoadingDialog getLoadingDialog(String msg) {
+		if (mLoadingDialog == null)
+			mLoadingDialog = new FlippingLoadingDialog(context, msg);
+		return mLoadingDialog;
+	}
+
+	@Nullable
+	public static Activity findActivity(Context context) {
+		if (context instanceof Activity) {
+			return (Activity) context;
+		}
+		if (context instanceof ContextWrapper) {
+			ContextWrapper wrapper = (ContextWrapper) context;
+			return findActivity(wrapper.getBaseContext());
+		} else {
+			return null;
+		}
 	}
 }

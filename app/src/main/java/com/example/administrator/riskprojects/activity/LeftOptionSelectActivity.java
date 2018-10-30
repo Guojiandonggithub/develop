@@ -268,7 +268,7 @@ public class LeftOptionSelectActivity extends BaseActivity {
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "获取所属专业返回错误信息：" + content);
-                Utils.showLongToast(LeftOptionSelectActivity.this, content);
+                Utils.showShortToast(LeftOptionSelectActivity.this, content);
             }
         });
     }
@@ -301,7 +301,7 @@ public class LeftOptionSelectActivity extends BaseActivity {
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "获取部门/队组成员返回错误信息：" + content);
-                Utils.showLongToast(LeftOptionSelectActivity.this, content);
+                Utils.showShortToast(LeftOptionSelectActivity.this, content);
             }
         });
     }

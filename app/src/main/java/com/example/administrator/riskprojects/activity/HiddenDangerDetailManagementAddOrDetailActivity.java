@@ -235,7 +235,7 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "隐患数据返回错误信息：" + content);
-                Utils.showLongToast(HiddenDangerDetailManagementAddOrDetailActivity.this, content);
+                Utils.showShortToast(HiddenDangerDetailManagementAddOrDetailActivity.this, content);
                 return;
             }
         });
@@ -251,7 +251,7 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
             public void onMySuccess(String data) {
                 Log.i(TAG, "删除隐患返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
-                    Utils.showLongToast(HiddenDangerDetailManagementAddOrDetailActivity.this, "删除成功");
+                    Utils.showShortToast(HiddenDangerDetailManagementAddOrDetailActivity.this, "删除成功");
                 }
                 finish();
             }
@@ -259,7 +259,7 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "删除隐患返回错误信息：" + content);
-                Utils.showLongToast(HiddenDangerDetailManagementAddOrDetailActivity.this, content);
+                Utils.showShortToast(HiddenDangerDetailManagementAddOrDetailActivity.this, content);
                 return;
             }
         });
@@ -336,12 +336,12 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
                     @Override
                     public void onMyFailure(String content) {
                         Log.e(TAG, "查询图片组返回错误信息：" + content);
-                        Utils.showLongToast(HiddenDangerDetailManagementAddOrDetailActivity.this, content);
+                        Utils.showShortToast(HiddenDangerDetailManagementAddOrDetailActivity.this, content);
                     }
                 });
             }
         }catch (Exception e) {
-            Utils.showLongToast(HiddenDangerDetailManagementAddOrDetailActivity.this, e.toString());
+            Utils.showShortToast(HiddenDangerDetailManagementAddOrDetailActivity.this, e.toString());
         }
     }
 

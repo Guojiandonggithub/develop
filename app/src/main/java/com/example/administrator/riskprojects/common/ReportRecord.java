@@ -81,7 +81,7 @@ public class ReportRecord implements Constants{
 						if (!TextUtils.isEmpty(data)) {
 							hiddenDangerRecordList.remove(hiddenDangerRecord);
 							String listStr = JSONArray.toJSONString(hiddenDangerRecordList);
-							Log.e(TAG, "隐患复查有网时: listStr============"+listStr);
+							Log.e(TAG, "隐患添加有网时: listStr============"+listStr);
 							Utils.putValue(context,Constants.ADDHIDDENRECORD,listStr);
 						}
 
@@ -184,7 +184,7 @@ public class ReportRecord implements Constants{
 						if (!TextUtils.isEmpty(data)) {
 							carRecordList.remove(carRecord);
 							String listStr = JSONArray.toJSONString(carRecordList);
-							Log.e(TAG, "隐患复查有网时: listStr============"+listStr);
+							Log.e(TAG, "提交巡检记录有网时: listStr============"+listStr);
 							Utils.putValue(context,Constants.CARDRECORD,listStr);
 						}
 					}

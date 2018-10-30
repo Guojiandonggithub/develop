@@ -16,6 +16,7 @@ import com.example.administrator.riskprojects.Adpter.PicAdapter;
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.ThreeFix;
+import com.example.administrator.riskprojects.dialog.FlippingLoadingDialog;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
@@ -58,6 +59,7 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
     protected NetClient netClient;
     private TextView mTvTheNumberOfProcessing;
     private RecyclerView recyclerView;
+    protected FlippingLoadingDialog mLoadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,4 +218,11 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
             Utils.showLongToast(HiddenDangerRectificationManagementActivity.this, e.toString());
         }
     }
+
+    public FlippingLoadingDialog getLoadingDialog(String msg) {
+        if (mLoadingDialog == null)
+            mLoadingDialog = new FlippingLoadingDialog(HiddenDangerRectificationManagementActivity.this, msg);
+        return mLoadingDialog;
+    }
+
 }

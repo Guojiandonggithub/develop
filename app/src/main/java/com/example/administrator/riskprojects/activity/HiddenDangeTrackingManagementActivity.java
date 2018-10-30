@@ -82,7 +82,7 @@ public class HiddenDangeTrackingManagementActivity extends BaseActivity {
                     intent.putExtra("threeFixId",threeFix.getId());
                     startActivity(intent);
                 }else{
-                    Utils.showLongToast(HiddenDangeTrackingManagementActivity.this, "没有添加跟踪记录权限");
+                    Utils.showShortToast(HiddenDangeTrackingManagementActivity.this, "没有添加跟踪记录权限");
                 }
             }
         });
@@ -182,12 +182,12 @@ public class HiddenDangeTrackingManagementActivity extends BaseActivity {
                     @Override
                     public void onMyFailure(String content) {
                         Log.e(TAG, "查询图片组返回错误信息：" + content);
-                        Utils.showLongToast(HiddenDangeTrackingManagementActivity.this, content);
+                        Utils.showShortToast(HiddenDangeTrackingManagementActivity.this, content);
                     }
                 });
             }
         }catch (Exception e) {
-            Utils.showLongToast(HiddenDangeTrackingManagementActivity.this, e.toString());
+            Utils.showShortToast(HiddenDangeTrackingManagementActivity.this, e.toString());
         }
     }
 }

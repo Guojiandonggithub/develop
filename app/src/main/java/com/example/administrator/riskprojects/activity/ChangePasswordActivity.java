@@ -98,7 +98,7 @@ public class ChangePasswordActivity extends BaseActivity {
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "获取隐患数据返回错误信息：" + content);
-                Utils.showLongToast(ChangePasswordActivity.this, content);
+                Utils.showShortToast(ChangePasswordActivity.this, content);
             }
         });
 

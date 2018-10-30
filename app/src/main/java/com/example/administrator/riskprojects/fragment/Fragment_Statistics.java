@@ -40,13 +40,13 @@ import com.example.administrator.riskprojects.Adpter.SpinnerAdapter;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.activity.DatePickerActivity;
-import com.example.administrator.riskprojects.activity.HiddenRiskRecordAddEditActivity;
 import com.example.administrator.riskprojects.activity.MainActivity;
 import com.example.administrator.riskprojects.bean.CollieryTeam;
 import com.example.administrator.riskprojects.bean.DataDictionary;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 import com.example.administrator.riskprojects.bean.SelectItem;
 import com.example.administrator.riskprojects.bean.Specialty;
+import com.example.administrator.riskprojects.common.NetUtil;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
@@ -1531,7 +1531,13 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
     public void onRefresh() {
         page = 1;
         pagesize = 1;
-        getDateByPage(1);
+        if (NetUtil.checkNetWork(getActivity())) {
+            getDateByPage(1);
+        }else{
+            com.example.administrator.riskprojects.tools.Utils.showShortToast(getContext(), "网络连接错误，无法刷新数据!");
+            swipeRefreshLayout.setRefreshing(false);
+        }
+
     }
 
     public void onLeftMenuClicked(String aname, String aid, String pname, String pidstr, String hname, String hid) {

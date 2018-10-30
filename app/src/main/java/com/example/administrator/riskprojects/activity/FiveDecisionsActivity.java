@@ -24,6 +24,7 @@ import com.example.administrator.riskprojects.bean.CollieryTeam;
 import com.example.administrator.riskprojects.bean.SelectItem;
 import com.example.administrator.riskprojects.bean.ThreeFix;
 import com.example.administrator.riskprojects.bean.UserInfo;
+import com.example.administrator.riskprojects.dialog.FlippingLoadingDialog;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
@@ -62,6 +63,7 @@ public class FiveDecisionsActivity extends BaseActivity {
     private TextView tvOk;
     private ThreeFix threeFix;
     protected NetClient netClient;
+    protected FlippingLoadingDialog mLoadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,40 +183,40 @@ public class FiveDecisionsActivity extends BaseActivity {
     //检查输入
     private boolean checkInput(ThreeFix threeFix) {
         if (TextUtils.isEmpty(threeFix.getMeasure())) {
-            Utils.showLongToast(FiveDecisionsActivity.this, "措施不能为空!");
+            Utils.showShortToast(FiveDecisionsActivity.this, "措施不能为空!");
             return false;
         }
 
         if (TextUtils.isEmpty(threeFix.getMoney())) {
-            Utils.showLongToast(FiveDecisionsActivity.this, "资金不能为空!");
+            Utils.showShortToast(FiveDecisionsActivity.this, "资金不能为空!");
             return false;
         }
 
         if (TextUtils.isEmpty(threeFix.getPersonNum())) {
-            Utils.showLongToast(FiveDecisionsActivity.this, "处理人数不能为空!");
+            Utils.showShortToast(FiveDecisionsActivity.this, "处理人数不能为空!");
             return false;
         }
 
         if (TextUtils.isEmpty(threeFix.getFixTime())) {
-            Utils.showLongToast(FiveDecisionsActivity.this, "完成时间不能为空!");
+            Utils.showShortToast(FiveDecisionsActivity.this, "完成时间不能为空!");
             return false;
         }
 
         if (TextUtils.isEmpty(threeFix.getEmployeeId())) {
-            Utils.showLongToast(FiveDecisionsActivity.this, "负责人不能为空!");
+            Utils.showShortToast(FiveDecisionsActivity.this, "负责人不能为空!");
             return false;
         }
 
         if (TextUtils.isEmpty(threeFix.getFollingPersonId())) {
-            Utils.showLongToast(FiveDecisionsActivity.this, "跟踪人不能为空!");
+            Utils.showShortToast(FiveDecisionsActivity.this, "跟踪人不能为空!");
             return false;
         }
         if (TextUtils.isEmpty(threeFix.getFollingTeamId())) {
-            Utils.showLongToast(FiveDecisionsActivity.this, "跟踪单位不能为空!");
+            Utils.showShortToast(FiveDecisionsActivity.this, "跟踪单位不能为空!");
             return false;
         }
         if (TextUtils.isEmpty(threeFix.getTeamId())) {
-            Utils.showLongToast(FiveDecisionsActivity.this, "责任单位不能为空!");
+            Utils.showShortToast(FiveDecisionsActivity.this, "责任单位不能为空!");
             return false;
         }
         return true;
@@ -314,7 +316,7 @@ public class FiveDecisionsActivity extends BaseActivity {
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "获取部门/队组成员返回错误信息：" + content);
-                Utils.showLongToast(FiveDecisionsActivity.this, content);
+                Utils.showShortToast(FiveDecisionsActivity.this, content);
             }
         });
     }
@@ -365,7 +367,7 @@ public class FiveDecisionsActivity extends BaseActivity {
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "获取部门/队组成员返回错误信息：" + content);
-                Utils.showLongToast(FiveDecisionsActivity.this, content);
+                Utils.showShortToast(FiveDecisionsActivity.this, content);
             }
         });
     }
@@ -405,7 +407,7 @@ public class FiveDecisionsActivity extends BaseActivity {
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "整改负责人查询返回错误信息：" + content);
-                Utils.showLongToast(FiveDecisionsActivity.this, content);
+                Utils.showShortToast(FiveDecisionsActivity.this, content);
             }
         });
     }
@@ -446,7 +448,7 @@ public class FiveDecisionsActivity extends BaseActivity {
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "跟踪人查询返回错误信息：" + content);
-                Utils.showLongToast(FiveDecisionsActivity.this, content);
+                Utils.showShortToast(FiveDecisionsActivity.this, content);
             }
         });
     }
@@ -459,13 +461,15 @@ public class FiveDecisionsActivity extends BaseActivity {
         String threeFixStr = JSON.toJSONString(threeFix);
         Log.i(TAG, "addHiddenDanger: 隐患下达修改="+threeFixStr);
         params.put("threeFixJsonData",threeFixStr);
+        getLoadingDialog("正在连接服务器...  ").show();
         netClient.post(Data.getInstance().getIp()+Constants.ADD_THREEFIXANDCONFIRM, params, new BaseJsonRes() {
 
             @Override
             public void onMySuccess(String data) {
+                getLoadingDialog("正在连接服务器...  ").dismiss();
                 Log.i(TAG, "隐患下达返回数据：" + data);
                 if (!TextUtils.isEmpty(data)) {
-                    Utils.showLongToast(FiveDecisionsActivity.this, "隐患下达成功！");
+                    Utils.showShortToast(FiveDecisionsActivity.this, "隐患下达成功！");
                     //返回finish 测试
                     //setResult(RESULT_OK);
                     finish();
@@ -475,10 +479,18 @@ public class FiveDecisionsActivity extends BaseActivity {
 
             @Override
             public void onMyFailure(String content) {
+                getLoadingDialog("正在连接服务器...  ").dismiss();
                 Log.e(TAG, "隐患下达返回错误信息：" + content);
-                Utils.showLongToast(FiveDecisionsActivity.this, content);
+                Utils.showShortToast(FiveDecisionsActivity.this, content);
                 tvOk.setClickable(true);
             }
         });
     }
+
+    public FlippingLoadingDialog getLoadingDialog(String msg) {
+        if (mLoadingDialog == null)
+            mLoadingDialog = new FlippingLoadingDialog(FiveDecisionsActivity.this, msg);
+        return mLoadingDialog;
+    }
+
 }
