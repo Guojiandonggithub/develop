@@ -26,9 +26,9 @@ public interface Constants {
 	// 外网地址
 	//String MAIN_ENGINE = "http://59.49.107.27:8191/yhpc/";
 	//String MAIN_ENGINE = "http://192.168.4.50:8070/";
-	String MAIN_ENGINE = "http://192.168.5.50:8070/";
+	//String MAIN_ENGINE = "http://192.168.5.50:8070/";
 	//String MAIN_ENGINE = "http://1.63.57.10:28070 /";
-	//String MAIN_ENGINE = "http://1.63.57.10:38070/";
+	String MAIN_ENGINE = "http://1.63.57.10:38070/";
 	//String MAIN_ENGINE = "http://192.168.111.6:8070/";
 	//String MAIN_ENGINE = "http://192.168.111.5:8070/";
 

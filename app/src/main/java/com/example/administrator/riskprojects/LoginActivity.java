@@ -90,6 +90,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             intra_net = (RadioButton) findViewById(R.id.intra_net);
             radio_net = (RadioGroup) findViewById(R.id.radio_net);
             btn_login = (Button) findViewById(R.id.btn_login);
+        String username = Utils.getValue(LoginActivity.this, Constants.NAME);
+        String password = Utils.getValue(LoginActivity.this, Constants.PWD);
+            if(!TextUtils.isEmpty(username)){
+                et_username.setText(username);
+            }
+            if(!TextUtils.isEmpty(password)){
+                et_password.setText(password);
+            }
             radio_net.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {

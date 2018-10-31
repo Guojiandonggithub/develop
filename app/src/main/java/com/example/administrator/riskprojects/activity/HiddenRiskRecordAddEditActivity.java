@@ -559,7 +559,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
     //获取隐患级别
     private void getHiddenGrade() {
         if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
-            String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT);
+            String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, "hiddenGrade");
             if("".equals(jsondata)){
                 Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
             }else{
@@ -574,7 +574,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 public void onMySuccess(String data) {
                     Log.i(TAG, "获取隐患级别返回数据：" + data);
                     if (!TextUtils.isEmpty(data)) {
-                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT, data);
+                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, "hiddenGrade", data);
                         resultHiddenGrade(data);
                     }
 
@@ -592,7 +592,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
     //获取检查单位
     private void getHiddenYHGSLX() {
         if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
-            String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT);
+            String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, "hiddenYHGSLX");
             if("".equals(jsondata)){
                 Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
             }else{
@@ -607,7 +607,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 public void onMySuccess(String data) {
                     Log.i(TAG, "获取检查单位返回数据：" + data);
                     if (!TextUtils.isEmpty(data)) {
-                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT, data);
+                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, "hiddenYHGSLX", data);
                         resultHiddenYHGSLX(data);
                     }
 
@@ -625,7 +625,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
     //获取检查内容
     private void getCheckContent() {
         if (!NetUtil.checkNetWork(HiddenRiskRecordAddEditActivity.this)) {
-            String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT);
+            String jsondata = Utils.getValue(HiddenRiskRecordAddEditActivity.this, "checkContent");
             if("".equals(jsondata)){
                 Utils.showShortToast(HiddenRiskRecordAddEditActivity.this, "没有联网，没有请求到数据");
             }else{
@@ -640,7 +640,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 public void onMySuccess(String data) {
                     Log.i(TAG, "获取检查内容返回数据：" + data);
                     if (!TextUtils.isEmpty(data)) {
-                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT, data);
+                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, "checkContent", data);
                         resultCheckContent(data);
                     }
 
