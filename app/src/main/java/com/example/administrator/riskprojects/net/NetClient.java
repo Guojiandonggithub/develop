@@ -194,8 +194,8 @@ public class NetClient {
 		Log.e(TAG, "打卡记录没网时: listStr============"+listStr);
 		Utils.putValue(context,Constants.CARDRECORD,listStr);
 		Utils.showShortToast(context, Constants.SAVE_DATA);
-		Activity activity = findActivity(context);
-		activity.finish();
+		//Activity activity = findActivity(context);
+		//activity.finish();
 	}
 
 	public static final String AND = "&";

@@ -138,6 +138,8 @@ public interface Constants {
 	String UPLOAD_PIC = "imageAction.upaction";
 	//查询图片组
 	String GET_PICLIST = "mobile/hiddenDangerRecordMobileAction!getHiddenDangerImageList.action";
+	//查询打卡地点
+	String GET_CARDBASICLIST = "mobile/cardBasicAction!getCardBasicList.action";
 
 
 	public void addRecheck(Context context);

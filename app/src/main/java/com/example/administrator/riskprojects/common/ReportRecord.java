@@ -169,12 +169,16 @@ public class ReportRecord implements Constants{
 
 	//提交巡检记录
 	public void addCardRecord(final Context context) {
+		netClient = new NetClient(context);
 		String cardrecordStr = Utils.getValue(context,Constants.CARDRECORD);
 		Log.e(TAG, "提交巡检记录上报数据: "+cardrecordStr);
 		if(!TextUtils.isEmpty(cardrecordStr)||cardrecordStr.length()>2){
 			final List<String> carRecordList = JSONArray.parseArray(cardrecordStr, String.class);
+			Log.e(TAG, "carRecordList============: "+carRecordList);
 			for (final String carRecord:carRecordList){
 				RequestParams params = new RequestParams();
+				Log.e(TAG, "carRecord============: "+carRecord);
+				Log.e(TAG, "netClient============: "+netClient);
 				params.put("carRecordJson", carRecord);
 				netClient.post(Data.getInstance().getIp()+ Constants.ADD_CARDRECORDLIST, params, new BaseJsonRes() {
 

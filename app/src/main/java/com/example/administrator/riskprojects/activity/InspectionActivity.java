@@ -23,6 +23,7 @@ import com.example.administrator.riskprojects.Adpter.InspectionAdapter;
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.CarRecord;
+import com.example.administrator.riskprojects.common.NetUtil;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
@@ -34,11 +35,13 @@ import com.khdz.patrol.bleSdk.BleScanner;
 import com.khdz.patrol.bleSdk.IScanCardCallback;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//巡检
 public class InspectionActivity extends BaseActivity {
     private BleScanner mBleScanner;
     private static final String TAG = "InspectionActivity";
@@ -57,6 +60,7 @@ public class InspectionActivity extends BaseActivity {
     private TimeCount timeCount;
     private List<String> test;
     protected NetClient netClient;
+    List<CarRecord> recordList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +101,7 @@ public class InspectionActivity extends BaseActivity {
         }
 
         tvTime.setText("今日班次："+simpleDateDate.format(date)+" "+classname);
+        getCardBasicList();
         getCardRecordList(Integer.parseInt(Constants.PAGE));
     }
 
@@ -154,13 +159,38 @@ public class InspectionActivity extends BaseActivity {
 
     //获取巡检记录列表
     private void getCardRecordList(final int page) {
-        RequestParams params = new RequestParams();
-        Map<String, String> paramsMap = new HashMap();
-        paramsMap.put("page", Integer.toString(page));
-        paramsMap.put("rows", Constants.ROWS);
-        paramsMap.put("userId", UserUtils.getUserID(InspectionActivity.this));
-        String jsonString = JSON.toJSONString(paramsMap);
-        params.put("carRecordJson", jsonString);
+        if (!NetUtil.checkNetWork(InspectionActivity.this)) {
+            String cardrecordStr = Utils.getValue(InspectionActivity.this, Constants.CARDRECORD);
+            String jsondata = Utils.getValue(InspectionActivity.this, Constants.GET_CARDBASICLIST);
+            List<CarRecord> recordBasic = new ArrayList<>();
+            if(!TextUtils.isEmpty(jsondata)){
+                recordBasic = JSONArray.parseArray(jsondata, CarRecord.class);
+            }
+            Log.e(TAG, "jsondata============= "+jsondata);
+            if(!TextUtils.isEmpty(cardrecordStr)||cardrecordStr.length()>2){
+                final List<String> carRecordList = JSONArray.parseArray(cardrecordStr, String.class);
+                for (final String carRecord:carRecordList){
+                    CarRecord carRecord1 = JSONObject.parseObject(carRecord, CarRecord.class);
+                    for (final CarRecord carRecord2:recordBasic){
+                        if(carRecord1.getCardCode().equals(carRecord2.getCardCode())){
+                            carRecord1.setCardAdd(carRecord2.getCardAdd());
+                        }
+                    }
+                    recordList.add(carRecord1);
+                }
+                adapter = new InspectionAdapter(recordList);
+                recyclerView.setAdapter(adapter);
+            }else{
+                Utils.showShortToast(InspectionActivity.this, "由于联网原因，没有获取到打卡数据");
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            Map<String, String> paramsMap = new HashMap();
+            paramsMap.put("page", Integer.toString(page));
+            paramsMap.put("rows", Constants.ROWS);
+            paramsMap.put("userId", UserUtils.getUserID(InspectionActivity.this));
+            String jsonString = JSON.toJSONString(paramsMap);
+            params.put("carRecordJson", jsonString);
             netClient.post(Data.getInstance().getIp()+ Constants.GET_CARDRECORDLIST, params, new BaseJsonRes() {
 
                 @Override
@@ -184,6 +214,30 @@ public class InspectionActivity extends BaseActivity {
                     Utils.showShortToast(InspectionActivity.this, content);
                 }
             });
+        }
+    }
+
+    //获取打卡地点列表
+    private void getCardBasicList() {
+        if (NetUtil.checkNetWork(InspectionActivity.this)) {
+            RequestParams params = new RequestParams();
+            netClient.post(Data.getInstance().getIp()+ Constants.GET_CARDBASICLIST, params, new BaseJsonRes() {
+
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取打卡地点列表返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.putValue(InspectionActivity.this, Constants.GET_CARDBASICLIST, data);
+                    }
+                }
+
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取打卡地点列表返回错误信息：" + content);
+                    Utils.showShortToast(InspectionActivity.this, content);
+                }
+            });
+        }
     }
 
     //提交巡检记录
@@ -197,6 +251,23 @@ public class InspectionActivity extends BaseActivity {
         paramsMap.put("cardTime", simpleDateDate.format(date));
         paramsMap.put("userId", UserUtils.getUserID(InspectionActivity.this));
         String jsonString = JSON.toJSONString(paramsMap);
+        if (!NetUtil.checkNetWork(InspectionActivity.this)) {
+            String jsondata = Utils.getValue(InspectionActivity.this, Constants.GET_CARDBASICLIST);
+            List<CarRecord> recordBasic = new ArrayList<>();
+            if(!TextUtils.isEmpty(jsondata)){
+                recordBasic = JSONArray.parseArray(jsondata, CarRecord.class);
+            }
+            Log.e(TAG, "jsondata============= "+jsondata);
+            CarRecord carRecord1 = JSONObject.parseObject(jsonString, CarRecord.class);
+            for (final CarRecord carRecord2:recordBasic){
+                if(carRecord1.getCardCode().equals(carRecord2.getCardCode())){
+                    carRecord1.setCardAdd(carRecord2.getCardAdd());
+                }
+            }
+            recordList.add(carRecord1);
+            adapter = new InspectionAdapter(recordList);
+            recyclerView.setAdapter(adapter);
+        }
         params.put("carRecordJson", jsonString);
         netClient.post(Data.getInstance().getIp()+ Constants.ADD_CARDRECORDLIST, params, new BaseJsonRes() {
 
