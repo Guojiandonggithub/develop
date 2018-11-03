@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,8 +13,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONArray;
 import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.activity.MainActivity;
+import com.example.administrator.riskprojects.bean.UserInfo;
 import com.example.administrator.riskprojects.common.NetUtil;
 import com.example.administrator.riskprojects.dialog.FlippingLoadingDialog;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
@@ -23,6 +26,9 @@ import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -44,27 +50,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private static final int num = 123;//用于验证获取的权
 
     @Override
-            protected void onCreate(Bundle savedInstanceState) {
-                super.onCreate(savedInstanceState);
-                setContentView(R.layout.activity_login);
-                netClient = new NetClient(this);
-                String jsondata = Utils.getValue(LoginActivity.this, Constants.UserInfo);
-                if(jsondata.equals("")){
-                    init();
-                }else{
-                    if (!NetUtil.checkNetWork(LoginActivity.this)) {
-                        Intent intent = new Intent(LoginActivity.this,
-                                MainActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.push_up_in,
-                                R.anim.push_up_out);
-                    }else{
-                        String userName = Utils.getValue(LoginActivity.this, Constants.NAME);
-                        String password = Utils.getValue(LoginActivity.this, Constants.PWD);
-                        getLogin(userName,password);
-                    }
-        }
-
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        netClient = new NetClient(this);
+        init();
     }
 
     private void init(){
@@ -80,8 +70,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             EasyPermissions.requestPermissions(this, "请求程序运行必要的权限",
                     num, perms);
         }
-    }
 
+    }
 
     protected void initControl() {
             et_username = (EditText) findViewById(R.id.et_username);
@@ -138,43 +128,71 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     private void getLogin() {
-        String userName = et_username.getText().toString().trim();
-        String password = et_password.getText().toString().trim();
-        getLogin(userName, password);
+            String userName = et_username.getText().toString().trim();
+            String password = et_password.getText().toString().trim();
+            getLogin(userName, password);
     }
 
     private void getLogin(final String userName, final String password) {
         if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(password)) {
-            RequestParams params = new RequestParams();
-            params.put("name", userName);
-            params.put("password", password);
-            getLoadingDialog("正在登录...  ").show();
-            netClient.post(Data.getInstance().getIp()+Constants.Login_URL, params, new BaseJsonRes() {
-
-                @Override
-                public void onMySuccess(String data) {
-                    getLoadingDialog("正在登录").dismiss();
-                    Utils.putValue(LoginActivity.this, Constants.UserInfo, data);
-                    Utils.putBooleanValue(LoginActivity.this,
-                            Constants.LoginState, true);
-                    UserUtils.getUserModel(LoginActivity.this);
-                    Utils.putValue(LoginActivity.this, Constants.NAME, userName);
-                    Utils.putValue(LoginActivity.this, Constants.PWD,
-                            password);
-                    Intent intent = new Intent(LoginActivity.this,
-                            MainActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.push_up_in,
-                            R.anim.push_up_out);
-                    //finish();
+            if (!NetUtil.checkNetWork(LoginActivity.this)) {
+                String employeeList = Utils.getValue(LoginActivity.this, Constants.OfLineEmployeeList);
+                if(!TextUtils.isEmpty(employeeList)){
+                    List<UserInfo> userInfoList = JSONArray.parseArray(employeeList, UserInfo.class);
+                    String userinfoStr="";
+                    for(UserInfo userInfo : userInfoList) {
+                        if(userInfo.getUserName().equals(userName)&&userInfo.getPassword().equals(password)){
+                            List<UserInfo> userInfoList1 = new ArrayList<>();
+                            userInfoList1.add(userInfo);
+                            userinfoStr = JSONArray.toJSONString(userInfoList1);
+                            resultLogin(userName,password,userinfoStr);
+                        }
+                    }
+                    if(TextUtils.isEmpty(userinfoStr)){
+                        Utils.showShortToast(LoginActivity.this, "用户名或密码错误");
+                    }
+                }else{
+                    Utils.showShortToast(LoginActivity.this, "没有联网，登录过的用户才可以离线登录");
                 }
+            }else{
+                getSystemTime();
+                RequestParams params = new RequestParams();
+                params.put("name", userName);
+                params.put("password", password);
+                getLoadingDialog("正在登录...  ").show();
+                netClient.post(Data.getInstance().getIp()+Constants.Login_URL, params, new BaseJsonRes() {
 
-                @Override
-                public void onMyFailure(String content) {
-                    getLoadingDialog("正在登录").dismiss();
-                    Utils.showShortToast(LoginActivity.this, content);
-                }
-            });
+                    @Override
+                    public void onMySuccess(String data) {
+                        getLoadingDialog("正在登录").dismiss();
+                        String resultStr = data;
+                        String employeeList = Utils.getValue(LoginActivity.this, Constants.OfLineEmployeeList);
+                        List<UserInfo> userInfoList = new ArrayList<>();
+                        if(!TextUtils.isEmpty(employeeList)){
+                            userInfoList = JSONArray.parseArray(employeeList, UserInfo.class);
+                            for(UserInfo userInfo:userInfoList){
+                                if(userInfo.getUserName().equals(userName)){
+                                    userInfoList.remove(userInfo);
+                                }
+                            }
+                        }
+                        List<UserInfo>  resultUserInfoList = JSONArray.parseArray(resultStr, UserInfo.class);
+                        UserInfo userInfo = resultUserInfoList.get(0);
+                        userInfo.setUserName(userName);
+                        userInfo.setPassword(password);
+                        userInfoList.add(userInfo);
+                        String OfLineEmployeeList = JSONArray.toJSONString(userInfoList);
+                        Utils.putValue(LoginActivity.this, Constants.OfLineEmployeeList, OfLineEmployeeList);
+                        resultLogin(userName,password,data);
+                    }
+
+                    @Override
+                    public void onMyFailure(String content) {
+                        getLoadingDialog("正在登录").dismiss();
+                        Utils.showShortToast(LoginActivity.this, content);
+                    }
+                });
+            }
         } else {
             Utils.showShortToast(LoginActivity.this, "请填写账号或密码！");
         }
@@ -223,4 +241,53 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             requireSomePermission();
         }
     }
+
+    private void resultLogin(String userName,String password,String data){
+        Utils.putValue(LoginActivity.this, Constants.UserInfo, data);
+        Utils.putBooleanValue(LoginActivity.this,
+                Constants.LoginState, true);
+        UserUtils.getUserModel(LoginActivity.this);
+        Utils.putValue(LoginActivity.this, Constants.NAME, userName);
+        Utils.putValue(LoginActivity.this, Constants.PWD,
+                password);
+        Intent intent = new Intent(LoginActivity.this,
+                MainActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.push_up_in,
+                R.anim.push_up_out);
+    }
+
+    public void testDate(String datetime){
+        try {
+            Process process = Runtime.getRuntime().exec("su");
+            String datetimes="20181102 121010"; //测试的设置的时间【时间格式 yyyyMMdd.HHmmss】
+            DataOutputStream os = new DataOutputStream(process.getOutputStream());
+            os.writeBytes("setprop persist.sys.timezone GMT\n");
+            os.writeBytes("/system/bin/date -s "+datetimes+"\n");
+            os.writeBytes("clock -w\n");
+            os.writeBytes("exit\n");
+            os.flush();
+        } catch (IOException e) {
+            Log.e(TAG, "testDate:0================= " +e);
+            e.printStackTrace();
+        }
+    }
+
+    private void getSystemTime(){
+        RequestParams params = new RequestParams();
+        netClient.post(Data.getInstance().getIp()+Constants.GET_SYSTEMTIME, params, new BaseJsonRes() {
+
+            @Override
+            public void onMySuccess(String data) {
+                testDate(data);
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                getLoadingDialog("正在登录").dismiss();
+                Utils.showShortToast(LoginActivity.this, content);
+            }
+        });
+    }
+
 }

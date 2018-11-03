@@ -10,6 +10,7 @@ import java.util.List;
 
 
 public class UserUtils {
+	private static final String TAG = "UserUtils";
 	/**
 	 * 获取用户信息
 	 * 
@@ -19,7 +20,6 @@ public class UserUtils {
 	public static UserInfo getUserModel(Context context) {
 		UserInfo user = null;
 		String jsondata = Utils.getValue(context, Constants.UserInfo);
-		// Log.e("", jsondata);
 		if (!TextUtils.isEmpty(jsondata)) {
 			List<UserInfo> userInfoList = JSONArray.parseArray(jsondata, UserInfo.class);
 			user = userInfoList.get(0);

@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.riskprojects.R;
-import com.example.administrator.riskprojects.activity.HiddenDangerDetailManagementActivity;
 import com.example.administrator.riskprojects.activity.HiddenRiskRecordDetailActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 
@@ -37,7 +36,7 @@ public class HiddenRiskQueryStatisticsAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        ((ViewHolder) holder).tvHiddenUnits.setText(recordList.get(position).getTeamGroupName());
+        ((ViewHolder) holder).tvHiddenUnits.setText(recordList.get(position).getTeamGroupName().trim());
         String findTimeStr = recordList.get(position).getFindTime();
         String findTime = findTimeStr.substring(0,10);
         ((ViewHolder) holder).tvTimeOrOrder.setText(findTime + "/" + recordList.get(position).getClassName());

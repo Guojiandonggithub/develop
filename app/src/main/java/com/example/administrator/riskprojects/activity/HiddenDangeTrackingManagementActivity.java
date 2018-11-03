@@ -151,7 +151,7 @@ public class HiddenDangeTrackingManagementActivity extends BaseActivity {
         mTvHandler.setText(threeFix.getPersonNum());
         mTvTrackPeople.setText(threeFix.getFollingPersonName());
         mTvTrackUnit.setText(threeFix.getFollingTeamName().trim());
-        mTvHiddenUnits.setText(threeFix.getTeamGroupName());
+        mTvHiddenUnits.setText(threeFix.getTeamGroupName().trim());
         getPicList(threeFix.getImageGroup());
     }
 

@@ -105,13 +105,16 @@ public class ReportRecord implements Constants{
 		Log.e(TAG, "上传隐患图片上报数据: "+hiddenpicStr);
 		if(!TextUtils.isEmpty(hiddenpicStr)||hiddenpicStr.length()>2){
 			final List<UploadPic> uploadPicList = JSONArray.parseArray(hiddenpicStr, UploadPic.class);
-			for (final UploadPic uploadPic:uploadPicList){
-				File file = new File(uploadPic.getFileList());
-				RequestParams params = new RequestParams();
-				try {
-					params.put("mobile", file);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
+			RequestParams params = new RequestParams();
+			for(final UploadPic uploadPic:uploadPicList){
+				List<String> fileList = uploadPic.getFileList();
+				for (int i=0;i<fileList.size();i++){
+					File file = new File(fileList.get(i));
+					try {
+						params.put(i+"", file);
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
 				}
 				netClient.post(Data.getInstance().getIp()+Constants.UPLOAD_PIC, params, new BaseJsonRes() {
 

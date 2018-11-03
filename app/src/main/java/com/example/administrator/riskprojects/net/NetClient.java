@@ -171,8 +171,9 @@ public class NetClient {
 		Map<String,String> map = getParameters(param);
 		UploadPic uploadPic = new UploadPic();
 		uploadPic.setRecord(map.get("record"));
-		//uploadPic.setFileList(map.get("mobile"));
-		uploadPic.setFileList(map.get("fileurl"));
+		String fileurl = map.get("fileurl");
+		List<String> fileList = JSONArray.parseArray(fileurl,String.class);
+		uploadPic.setFileList(fileList);
 		uploadPics.add(uploadPic);
 		String listStr = JSONArray.toJSONString(uploadPics);
 		Log.e(TAG, "隐患上传图片没网时: listStr============"+listStr);

@@ -24,6 +24,7 @@ import com.example.administrator.riskprojects.bean.CollieryTeam;
 import com.example.administrator.riskprojects.bean.SelectItem;
 import com.example.administrator.riskprojects.bean.ThreeFix;
 import com.example.administrator.riskprojects.bean.UserInfo;
+import com.example.administrator.riskprojects.common.NetUtil;
 import com.example.administrator.riskprojects.dialog.FlippingLoadingDialog;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
@@ -273,184 +274,145 @@ public class FiveDecisionsActivity extends BaseActivity {
 
     //获取部门/队组成员
     private void getCollieryTeam() {
-        RequestParams params = new RequestParams();
-        params.put("employeeId", UserUtils.getUserID(FiveDecisionsActivity.this));
-        netClient.post(Data.getInstance().getIp()+Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(FiveDecisionsActivity.this)) {
+            String jsondata = Utils.getValue(FiveDecisionsActivity.this, Constants.GET_COLLIERYTEAM);
+            if("".equals(jsondata)){
+                Utils.showShortToast(FiveDecisionsActivity.this, "没有联网，没有请求到数据");
+            }else{
+                resultColliery(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            params.put("employeeId", UserUtils.getUserID(FiveDecisionsActivity.this));
+            netClient.post(Data.getInstance().getIp()+Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取部门/队组成员返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    final List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
-                    final List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    int collieryTeamsint = 0;
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getTeamName().replaceAll("&nbsp;","   ");
-                        selectItem.id = collieryTeams.get(i).getId();
-                        if(collieryTeams.get(i).getId().equals(threeFix.getTeamGroupCode())){
-                            collieryTeamsint = i;
-                        }
-                        selectItems.add(selectItem);
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取部门/队组成员返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        resultColliery(data);
                     }
-                    spDepartmentAdapter = SpinnerAdapter.createFromResource(FiveDecisionsActivity.this, selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
-                    setUpSpinner(spDepartment, spDepartmentAdapter);
-                    spDepartmentAdapter.notifyDataSetChanged();
-                    spDepartment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                            spDepartmentAdapter.setSelectedPostion(position);
-                            getResponsibleThose(selectItems.get(position).getId());
-                        }
 
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
-
-                        }
-                    });
-                    spDepartment.setSelection(collieryTeamsint);
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取部门/队组成员返回错误信息：" + content);
-                Utils.showShortToast(FiveDecisionsActivity.this, content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取部门/队组成员返回错误信息：" + content);
+                    Utils.showShortToast(FiveDecisionsActivity.this, content);
+                }
+            });
+        }
     }
 
     //跟踪人单位查询
     private void getspTrackPeopleUnit() {
-        RequestParams params = new RequestParams();
-        params.put("employeeId", UserUtils.getUserID(FiveDecisionsActivity.this));
-        netClient.post(Data.getInstance().getIp()+Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(FiveDecisionsActivity.this)) {
+            String jsondata = Utils.getValue(FiveDecisionsActivity.this, Constants.GET_COLLIERYTEAM);
+            if("".equals(jsondata)){
+                Utils.showShortToast(FiveDecisionsActivity.this, "没有联网，没有请求到数据");
+            }else{
+                resultSpTrackPeople(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            params.put("employeeId", UserUtils.getUserID(FiveDecisionsActivity.this));
+            netClient.post(Data.getInstance().getIp()+Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取部门/队组成员返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
-                    final List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    int collieryTeamsint = 0;
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getTeamName().replaceAll("&nbsp;","   ");
-                        selectItem.id = collieryTeams.get(i).getId();
-                        if(collieryTeams.get(i).getId().equals(threeFix.getFollingTeamId())){
-                            collieryTeamsint = i;
-                        }
-                        selectItems.add(selectItem);
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取部门/队组成员返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        resultSpTrackPeople(data);
                     }
-                    spTrackPeopleUnitAdapter = SpinnerAdapter.createFromResource(FiveDecisionsActivity.this, selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
-                    setUpSpinner(spTrackPeopleUnit, spTrackPeopleUnitAdapter);
-                    spTrackPeopleUnitAdapter.notifyDataSetChanged();
-                    spTrackPeopleUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                            spTrackPeopleUnitAdapter.setSelectedPostion(position);
-                            getTrackPeople(selectItems.get(position).getId());
 
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
-
-                        }
-                    });
-                    spTrackPeopleUnit.setSelection(collieryTeamsint);
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取部门/队组成员返回错误信息：" + content);
-                Utils.showShortToast(FiveDecisionsActivity.this, content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取部门/队组成员返回错误信息：" + content);
+                    Utils.showShortToast(FiveDecisionsActivity.this, content);
+                }
+            });
+        }
     }
 
     //整改负责人查询
     private void getResponsibleThose(String teamId) {
-        RequestParams params = new RequestParams();
-        params.put("teamId",teamId);
-        netClient.post(Data.getInstance().getIp()+Constants.GET_EMPLOYEELISTBYTEAMID, params, new BaseJsonRes() {
-
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "整改负责人查询返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    Log.i(TAG, "collieryTeams查询返回数据：" + data);
-                    List<UserInfo> userInfoList = JSONArray.parseArray(data, UserInfo.class);
-                    Log.i(TAG, "collieryTeams查询返回数据：" + userInfoList);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    int collieryTeamsint = 0;
-                    for (int i = 0; i < userInfoList.size(); i++) {
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = userInfoList.get(i).getRealName();
-                        selectItem.id = userInfoList.get(i).getId();
-                        if(userInfoList.get(i).getId().equals(threeFix.getEmployeeId())){
-                            collieryTeamsint = i;
-                        }
-                        selectItems.add(selectItem);
+        if (!NetUtil.checkNetWork(FiveDecisionsActivity.this)) {
+            String jsondata = Utils.getValue(FiveDecisionsActivity.this, Constants.EmployeeList);
+            if("".equals(jsondata)){
+                Utils.showShortToast(FiveDecisionsActivity.this, "没有联网，请到个人中心获取基础数据");
+            }else{
+                List<UserInfo> userinfoList = JSONArray.parseArray(jsondata,UserInfo.class);
+                List<UserInfo> userinfos = new ArrayList<>();
+                for(UserInfo userInfo:userinfoList){
+                    if(teamId.equals(userInfo.getTeamId())){
+                        userinfos.add(userInfo);
                     }
-                    spResponsibleThoseAdapter = SpinnerAdapter.createFromResource(FiveDecisionsActivity.this, selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
-                    setUpSpinnerchild(spResponsibleThose, spResponsibleThoseAdapter);
-                    spResponsibleThoseAdapter.notifyDataSetChanged();
-                    spResponsibleThose.setSelection(collieryTeamsint);
+                }
+                String userinfoStr = JSONArray.toJSONString(userinfos);
+                resultResponsibleThose(userinfoStr);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            params.put("teamId",teamId);
+            netClient.post(Data.getInstance().getIp()+Constants.GET_EMPLOYEELISTBYTEAMID, params, new BaseJsonRes() {
+
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "整改负责人查询返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        resultResponsibleThose(data);
+                    }
+
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "整改负责人查询返回错误信息：" + content);
-                Utils.showShortToast(FiveDecisionsActivity.this, content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "整改负责人查询返回错误信息：" + content);
+                    Utils.showShortToast(FiveDecisionsActivity.this, content);
+                }
+            });
+        }
     }
 
     //跟踪人查询
     private void getTrackPeople(String teamId) {
-        RequestParams params = new RequestParams();
-        params.put("teamId",teamId);
-        netClient.post(Data.getInstance().getIp()+Constants.GET_EMPLOYEELISTBYTEAMID, params, new BaseJsonRes() {
-
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "跟踪人查询返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    Log.i(TAG, "onMySuccess: ");
-                    List<UserInfo> collieryTeams = JSONArray.parseArray(data, UserInfo.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    int collieryTeamsint = 0;
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        Log.i(TAG, "realname：" + collieryTeams.get(i).getRealName());
-                        Log.i(TAG, "id：" + collieryTeams.get(i).getId());
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getRealName();
-                        selectItem.id = collieryTeams.get(i).getId();
-                        if(collieryTeams.get(i).getId().equals(threeFix.getEmployeeId())){
-                            collieryTeamsint = i;
-                        }
-                        selectItems.add(selectItem);
+        if (!NetUtil.checkNetWork(FiveDecisionsActivity.this)) {
+            String jsondata = Utils.getValue(FiveDecisionsActivity.this, Constants.EmployeeList);
+            if("".equals(jsondata)){
+                Utils.showShortToast(FiveDecisionsActivity.this, "没有联网，请到个人中心获取基础数据");
+            }else{
+                List<UserInfo> userinfoList = JSONArray.parseArray(jsondata,UserInfo.class);
+                List<UserInfo> userinfos = new ArrayList<>();
+                for(UserInfo userInfo:userinfoList){
+                    if(teamId.equals(userInfo.getTeamId())){
+                        userinfos.add(userInfo);
                     }
-                    spTrackPeopleAdapter = SpinnerAdapter.createFromResource(FiveDecisionsActivity.this, selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
-                    setUpSpinnerchild(spTrackPeople, spTrackPeopleAdapter);
-                    spTrackPeopleAdapter.notifyDataSetChanged();
-                    spTrackPeople.setSelection(collieryTeamsint);
+                }
+                String userinfoStr = JSONArray.toJSONString(userinfos);
+                resultTrackPeople(userinfoStr);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            params.put("teamId",teamId);
+            netClient.post(Data.getInstance().getIp()+Constants.GET_EMPLOYEELISTBYTEAMID, params, new BaseJsonRes() {
+
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "跟踪人查询返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        resultTrackPeople(data);
+                    }
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "跟踪人查询返回错误信息：" + content);
-                Utils.showShortToast(FiveDecisionsActivity.this, content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "跟踪人查询返回错误信息：" + content);
+                    Utils.showShortToast(FiveDecisionsActivity.this, content);
+                }
+            });
+        }
     }
 
 
@@ -491,6 +453,116 @@ public class FiveDecisionsActivity extends BaseActivity {
         if (mLoadingDialog == null)
             mLoadingDialog = new FlippingLoadingDialog(FiveDecisionsActivity.this, msg);
         return mLoadingDialog;
+    }
+
+    private void resultColliery(String data){
+        final List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
+        final List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        int collieryTeamsint = 0;
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getTeamName().replaceAll("&nbsp;"," ");
+            selectItem.id = collieryTeams.get(i).getId();
+            if(collieryTeams.get(i).getId().equals(threeFix.getTeamGroupCode())){
+                collieryTeamsint = i;
+            }
+            selectItems.add(selectItem);
+        }
+        spDepartmentAdapter = SpinnerAdapter.createFromResource(FiveDecisionsActivity.this, selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
+        setUpSpinner(spDepartment, spDepartmentAdapter);
+        spDepartmentAdapter.notifyDataSetChanged();
+        spDepartment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                spDepartmentAdapter.setSelectedPostion(position);
+                getResponsibleThose(selectItems.get(position).getId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        spDepartment.setSelection(collieryTeamsint);
+    }
+
+    private void resultSpTrackPeople(String data){
+        List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
+        final List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        int collieryTeamsint = 0;
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getTeamName().replaceAll("&nbsp;"," ");
+            selectItem.id = collieryTeams.get(i).getId();
+            if(collieryTeams.get(i).getId().equals(threeFix.getFollingTeamId())){
+                collieryTeamsint = i;
+            }
+            selectItems.add(selectItem);
+        }
+        spTrackPeopleUnitAdapter = SpinnerAdapter.createFromResource(FiveDecisionsActivity.this, selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
+        setUpSpinner(spTrackPeopleUnit, spTrackPeopleUnitAdapter);
+        spTrackPeopleUnitAdapter.notifyDataSetChanged();
+        spTrackPeopleUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                spTrackPeopleUnitAdapter.setSelectedPostion(position);
+                getTrackPeople(selectItems.get(position).getId());
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        spTrackPeopleUnit.setSelection(collieryTeamsint);
+    }
+
+    private void resultResponsibleThose(String data){
+        Log.i(TAG, "collieryTeams查询返回数据：" + data);
+        List<UserInfo> userInfoList = JSONArray.parseArray(data, UserInfo.class);
+        Log.i(TAG, "collieryTeams查询返回数据：" + userInfoList);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        int collieryTeamsint = 0;
+        for (int i = 0; i < userInfoList.size(); i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = userInfoList.get(i).getRealName();
+            selectItem.id = userInfoList.get(i).getId();
+            if(userInfoList.get(i).getId().equals(threeFix.getEmployeeId())){
+                collieryTeamsint = i;
+            }
+            selectItems.add(selectItem);
+        }
+        spResponsibleThoseAdapter = SpinnerAdapter.createFromResource(FiveDecisionsActivity.this, selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
+        setUpSpinnerchild(spResponsibleThose, spResponsibleThoseAdapter);
+        spResponsibleThoseAdapter.notifyDataSetChanged();
+        spResponsibleThose.setSelection(collieryTeamsint);
+    }
+
+    private void resultTrackPeople(String data){
+        //if(!TextUtils.isEmpty(data)){
+            Log.i(TAG, "onMySuccess: ");
+            List<UserInfo> collieryTeams = JSONArray.parseArray(data, UserInfo.class);
+            List<SelectItem> selectItems = new ArrayList<SelectItem>();
+            int collieryTeamsint = 0;
+            for (int i = 0; i < collieryTeams.size(); i++) {
+                Log.i(TAG, "realname：" + collieryTeams.get(i).getRealName());
+                Log.i(TAG, "id：" + collieryTeams.get(i).getId());
+                SelectItem selectItem = new SelectItem();
+                selectItem.name = collieryTeams.get(i).getRealName();
+                selectItem.id = collieryTeams.get(i).getId();
+                if(collieryTeams.get(i).getId().equals(threeFix.getEmployeeId())){
+                    collieryTeamsint = i;
+                }
+                selectItems.add(selectItem);
+            }
+            spTrackPeopleAdapter = SpinnerAdapter.createFromResource(FiveDecisionsActivity.this, selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
+            setUpSpinnerchild(spTrackPeople, spTrackPeopleAdapter);
+            spTrackPeopleAdapter.notifyDataSetChanged();
+            spTrackPeople.setSelection(collieryTeamsint);
+        //}else{
+
+        //}
     }
 
 }

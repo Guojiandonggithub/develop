@@ -1,7 +1,6 @@
 package com.example.administrator.riskprojects.Adpter;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,12 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.riskprojects.R;
-import com.example.administrator.riskprojects.activity.HiddenDangeTrackingManagementActivity;
 import com.example.administrator.riskprojects.activity.HiddenDangerDetailManagementActivity;
-import com.example.administrator.riskprojects.activity.HiddenRiskRecordDetailActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
-import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
-import com.example.administrator.riskprojects.bean.ThreeFix;
 
 import java.util.List;
 
@@ -38,7 +33,7 @@ public class HiddenDangerStatisticsEachUnitDetailAdapter extends RecyclerView.Ad
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if(recordList.size()>0){
-            ((ViewHolder) holder).tvHiddenUnits.setText(recordList.get(position).getTeamGroupName());
+            ((ViewHolder) holder).tvHiddenUnits.setText(recordList.get(position).getTeamGroupName().trim());
             String findTimeStr = recordList.get(position).getFindTime();
             String findTime = findTimeStr.substring(0,10);
             ((ViewHolder) holder).tvTimeOrOrder.setText(findTime+"/"+recordList.get(position).getClassName());

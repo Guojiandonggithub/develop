@@ -12,6 +12,7 @@
     <string name="version">版本</string>
     <string name="log_ble_sdk">轨迹跟踪</string>
     <string name="log_out">退出登录</string>
+    <string name="date_update">基础数据更新</string>
     <string name="monthly_hidden_statistics">当月隐患统计</string>
     <string name="the_hidden_danger_that_already_eliminated_recently">• 已销号 •</string>
     <string name="anticipated_pitfalls">• 逾期的 •</string>

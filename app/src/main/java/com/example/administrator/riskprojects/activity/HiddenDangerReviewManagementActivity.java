@@ -151,7 +151,7 @@ public class HiddenDangerReviewManagementActivity extends BaseActivity {
         mTvTrackPeople.setText(threeFix.getFollingPersonName());
         mTvTrackUnit.setText(threeFix.getFollingTeamName());
         mTvHandler.setText(threeFix.getPersonNum());
-        mTvHiddenUnits.setText(threeFix.getTeamGroupName());
+        mTvHiddenUnits.setText(threeFix.getTeamGroupName().trim());
         getPicList(threeFix.getImageGroup());
     }
 

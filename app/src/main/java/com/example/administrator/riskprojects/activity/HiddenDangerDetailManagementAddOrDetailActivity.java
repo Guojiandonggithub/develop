@@ -27,6 +27,7 @@ import com.juns.health.net.loopj.android.http.RequestParams;
 import java.util.ArrayList;
 import java.util.List;
 
+//督办详情
 public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivity {
     private static final String TAG = "HiddenDangerDetailManag";
     protected NetClient netClient;
@@ -176,7 +177,7 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
                     JSONObject returndata = JSON.parseObject(data);
                     hiddenrecordjson = data;
                     record = JSONArray.parseObject(data, HiddenDangerRecord.class);
-                    tvHiddenUnits.setText(record.getTeamGroupName());
+                    tvHiddenUnits.setText(record.getTeamGroupName().trim());
                     String findTimeStr = record.getFindTime();
                     String findTime = findTimeStr.substring(0,10);
                     tvTimeOrOrder.setText(findTime + "/" + record.getClassName());

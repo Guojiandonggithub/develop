@@ -1,6 +1,7 @@
 package com.example.administrator.riskprojects.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -52,6 +53,7 @@ import org.devio.takephoto.model.TImage;
 import org.devio.takephoto.model.TResult;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -109,6 +111,8 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
     private AddPicAdapter picAdapter;
     //存放图片路径
     private List<String> paths = new ArrayList<>();
+    private List<String> picid = new ArrayList<>();
+    private List<String> updatepaths = new ArrayList<>();
     protected FlippingLoadingDialog mLoadingDialog;
 
     @Override
@@ -208,8 +212,8 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
             @Override
             public void onClick(View view) {
                 HiddenDangerRecord records = getHiddenDangerRecord();
-                getLoadingDialog("正在连接服务器...  ").show();
                 String flag = "add";
+                Log.e(TAG, "id==========================: "+id);
                 if (!TextUtils.isEmpty(id)) {
                     flag = "update";
                     records.setId(id);
@@ -234,7 +238,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         });
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        recyclerView.setAdapter(picAdapter = new AddPicAdapter(paths));
+        recyclerView.setAdapter(picAdapter = new AddPicAdapter(paths,picid));
         picAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, int flag) {
@@ -379,7 +383,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 public void onMySuccess(String data) {
                     Log.i(TAG, "获取部门/队组成员返回数据：" + data);
                     if (!TextUtils.isEmpty(data)) {
-                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_COLLIERYTEAM, data);
+                        //Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_COLLIERYTEAM, data);
                         resultColliery(data);
                     }
 
@@ -411,7 +415,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 public void onMySuccess(String data) {
                     Log.i(TAG, "获取所属专业返回数据：" + data);
                     if (!TextUtils.isEmpty(data)) {
-                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_SPECIALTY, data);
+                        //Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_SPECIALTY, data);
                         resultSpecialty(data);
                     }
 
@@ -443,7 +447,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 public void onMySuccess(String data) {
                     Log.i(TAG, "获取隐患类别返回数据：" + data);
                     if (!TextUtils.isEmpty(data)) {
-                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_RISKGRADE, data);
+                        //Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_RISKGRADE, data);
                         resultGrade(data);
                     }
 
@@ -475,7 +479,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 public void onMySuccess(String data) {
                     Log.i(TAG, "获取班次返回数据：" + data);
                     if (!TextUtils.isEmpty(data)) {
-                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_CLASSNUMBER, data);
+                        //Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_CLASSNUMBER, data);
                         resultClassNumber(data);
                     }
 
@@ -508,7 +512,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 public void onMySuccess(String data) {
                     Log.i(TAG, "获取区域返回数据：" + data);
                     if (!TextUtils.isEmpty(data)) {
-                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_AREA, data);
+                        //Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_AREA, data);
                         resultArea(data);
                     }
 
@@ -541,7 +545,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 public void onMySuccess(String data) {
                     Log.i(TAG, "获取隐患类型返回数据：" + data);
                     if (!TextUtils.isEmpty(data)) {
-                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT, data);
+                        //Utils.putValue(HiddenRiskRecordAddEditActivity.this, Constants.GET_DATADICT, data);
                         resultHiddenType(data);
                     }
 
@@ -574,7 +578,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 public void onMySuccess(String data) {
                     Log.i(TAG, "获取隐患级别返回数据：" + data);
                     if (!TextUtils.isEmpty(data)) {
-                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, "hiddenGrade", data);
+                        //Utils.putValue(HiddenRiskRecordAddEditActivity.this, "hiddenGrade", data);
                         resultHiddenGrade(data);
                     }
 
@@ -607,7 +611,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 public void onMySuccess(String data) {
                     Log.i(TAG, "获取检查单位返回数据：" + data);
                     if (!TextUtils.isEmpty(data)) {
-                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, "hiddenYHGSLX", data);
+                        //Utils.putValue(HiddenRiskRecordAddEditActivity.this, "hiddenYHGSLX", data);
                         resultHiddenYHGSLX(data);
                     }
 
@@ -640,7 +644,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 public void onMySuccess(String data) {
                     Log.i(TAG, "获取检查内容返回数据：" + data);
                     if (!TextUtils.isEmpty(data)) {
-                        Utils.putValue(HiddenRiskRecordAddEditActivity.this, "checkContent", data);
+                        //Utils.putValue(HiddenRiskRecordAddEditActivity.this, "checkContent", data);
                         resultCheckContent(data);
                     }
 
@@ -698,21 +702,27 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
 
     //上传图片
     private void upaction(List<String> picList,final HiddenDangerRecord records,final  String flag) {
+        Log.e(TAG, "id==flag========================: "+flag);
         tvOk.setClickable(false);
         List<File> fileList = new ArrayList();
-            try {
-                for (int i=0;i<picList.size();i++){
-                    String picurl = picList.get(i);
-                    File file = new File(picurl);
-                    fileList.add(file);
-                }
-                if(picList.size()>0) {
-                    File file = new File(picList.get(0));
-                    RequestParams params = new RequestParams();
-                    params.put("mobile", file);
-                    params.put("fileurl", picList.get(0));
+        RequestParams params = new RequestParams();
+        try {
+            if(!TextUtils.isEmpty(record.getImageGroup())){
+                params.put("imgGrop/"+record.getImageGroup(), "imgGrop/"+record.getImageGroup());
+            }
+            if(updatepaths.size()>0) {
+                    for (int i=0;i<updatepaths.size();i++){
+                        String picurl = updatepaths.get(i);
+                        File file = new File(picurl);
+                        fileList.add(file);
+                        params.put(""+i, file);
+                    }
+                    Log.e(TAG, "picList==================="+picList);
+                    Log.e(TAG, "updatepaths==================="+updatepaths);
+                    params.put("fileurl", JSONArray.toJSONString(updatepaths));
                     String hiddenDangerRecordStr = JSON.toJSONString(records);
                     params.put("record", hiddenDangerRecordStr);
+                    Log.e(TAG, "params==========================: "+params);
                     netClient.post(Data.getInstance().getIp() + Constants.UPLOAD_PIC, params, new BaseJsonRes() {
 
                         @Override
@@ -730,6 +740,13 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                         }
                     });
                 }else{
+                    if(paths.size()>0) {
+                        if(!TextUtils.isEmpty(record.getImageGroup())){
+                            records.setImageGroup(record.getImageGroup());
+                        }
+                    }else{
+                        records.setImageGroup("");
+                    }
                     addEditHiddenDanger(records, flag);
                 }
             }catch (Exception e) {
@@ -854,6 +871,8 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         super.takeSuccess(result);
         for (TImage image : result.getImages()) {
             paths.add(image.getOriginalPath());
+            updatepaths.add(image.getOriginalPath());
+            picid.add("");
         }
         picAdapter.notifyDataSetChanged();
 
@@ -891,6 +910,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                             for(int i=0;i<jsonArray.size();i++){
                                 JSONObject job = jsonArray.getJSONObject(i); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
                                 paths.add(Constants.MAIN_ENGINE+job.get("imagePath"));
+                                picid.add(job.get("id")+"");
                             }
                             Log.e(TAG, "paths================: "+paths);
                             picAdapter.notifyDataSetChanged();
@@ -915,7 +935,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         int collieryTeamsint = 0;
         for (int i = 0; i < collieryTeams.size(); i++) {
             SelectItem selectItem = new SelectItem();
-            selectItem.name = collieryTeams.get(i).getTeamName().replaceAll("&nbsp;", "   ");
+            selectItem.name = collieryTeams.get(i).getTeamName().replaceAll("&nbsp;", " ");
             selectItem.id = collieryTeams.get(i).getId();
             if (collieryTeams.get(i).getId().equals(record.getTeamGroupCode())) {
                 collieryTeamsint = i;
@@ -1085,4 +1105,27 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
             mLoadingDialog = new FlippingLoadingDialog(HiddenRiskRecordAddEditActivity.this, msg);
         return mLoadingDialog;
     }
+
+    /**
+     * 保存位图到本地
+     * @param bitmap
+     * @param path 本地路径
+     * @return void
+     */
+    public void SavaImage(Bitmap bitmap, String path){
+        File file=new File(path);
+        FileOutputStream fileOutputStream=null;
+        //文件夹不存在，则创建它
+        if(!file.exists()){
+            file.mkdir();
+        }
+        try {
+            fileOutputStream=new FileOutputStream(path+"/"+System.currentTimeMillis()+".png");
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100,fileOutputStream);
+            fileOutputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

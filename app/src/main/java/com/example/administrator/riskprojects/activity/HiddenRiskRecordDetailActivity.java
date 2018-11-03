@@ -14,12 +14,12 @@ import com.example.administrator.riskprojects.Adpter.PicAdapter;
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
-import com.example.administrator.riskprojects.bean.ThreeFix;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.juns.health.net.loopj.android.http.RequestParams;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +57,7 @@ public class HiddenRiskRecordDetailActivity extends BaseActivity {
         Bundle bundle = getIntent().getBundleExtra("hiddenrecordBundle");
         HiddenDangerRecord hiddenDangerRecord = (HiddenDangerRecord) bundle.getSerializable("hiddenDangerRecord");
         txtTitle.setText("隐患详情");
-        tvHiddenUnits.setText(hiddenDangerRecord.getTeamGroupName());
+        tvHiddenUnits.setText(hiddenDangerRecord.getTeamGroupName().trim());
         tvProfessional.setText(hiddenDangerRecord.getSname());
         //tvHiddenClass.setText(hiddenDangerRecord.getGname());
         tvEnterMan.setText(hiddenDangerRecord.getRealName());

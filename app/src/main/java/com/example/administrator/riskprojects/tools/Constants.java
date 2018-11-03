@@ -6,6 +6,8 @@ public interface Constants {
 
 	String LoginState = "LoginState";
 	String UserInfo = "UserInfo";
+	String EmployeeList = "EmployeeList";
+	String OfLineEmployeeList = "OfLineEmployeeList";
 	String NAME = "NAME";
 	String PWD = "PWD";
 	String ADDHIDDENRECORD = "addhiddenRecord";
@@ -24,11 +26,11 @@ public interface Constants {
 	String ISUPERVISION = "1";
 
 	// 外网地址
-	//String MAIN_ENGINE = "http://59.49.107.27:8191/yhpc/";
+	String MAIN_ENGINE = "http://59.49.107.27:8191/yhpc/";
 	//String MAIN_ENGINE = "http://192.168.4.50:8070/";
 	//String MAIN_ENGINE = "http://192.168.5.50:8070/";
-	//String MAIN_ENGINE = "http://1.63.57.10:28070 /";
-	String MAIN_ENGINE = "http://1.63.57.10:38070/";
+	//String MAIN_ENGINE = "http://1.63.57.10:28070/";
+	//String MAIN_ENGINE = "http://1.63.57.10:38070/";
 	//String MAIN_ENGINE = "http://192.168.111.6:8070/";
 	//String MAIN_ENGINE = "http://192.168.111.5:8070/";
 
@@ -140,6 +142,12 @@ public interface Constants {
 	String GET_PICLIST = "mobile/hiddenDangerRecordMobileAction!getHiddenDangerImageList.action";
 	//查询打卡地点
 	String GET_CARDBASICLIST = "mobile/cardBasicAction!getCardBasicList.action";
+	//查询用户列表
+	String GET_EMPLOYEELIST = "mobile/collieryTeamMobileAction!getEmployeeList.action";
+	//查询系统时间
+	String GET_SYSTEMTIME = "mobile/getTimeMobileAction!getTime.action";
+	//删除隐患图片
+	String DELETE_HIDDENPIC = "mobile/hiddenDangerRecordMobileAction!deleteHiddenDangerImageById.action";
 
 
 	public void addRecheck(Context context);

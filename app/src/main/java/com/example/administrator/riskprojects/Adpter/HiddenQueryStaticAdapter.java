@@ -1,7 +1,6 @@
 package com.example.administrator.riskprojects.Adpter;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -11,8 +10,6 @@ import android.widget.TextView;
 
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.HiddenDangerDetailManagementActivity;
-import com.example.administrator.riskprojects.activity.HiddenDangerDetailManagementAddOrDetailActivity;
-import com.example.administrator.riskprojects.activity.HiddenRiskRecordDetailActivity;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 
 import java.util.List;
@@ -38,7 +35,7 @@ public class HiddenQueryStaticAdapter extends RecyclerView.Adapter {
             ((ViewHolder) holder).tvNameOfTheProfessional.setText(recordList.get(position).getSname());
             ((ViewHolder) holder).tvHazardLevel.setText(recordList.get(position).getJbName());
             ((ViewHolder) holder).tvCheckUnit.setText(recordList.get(position).getHiddenBelong());
-            ((ViewHolder) holder).tvHiddenUnits.setText(recordList.get(position).getTeamGroupName());
+            ((ViewHolder) holder).tvHiddenUnits.setText(recordList.get(position).getTeamGroupName().trim());
             String isuper = recordList.get(position).getIsupervision();
             if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
                 isuper = "否";

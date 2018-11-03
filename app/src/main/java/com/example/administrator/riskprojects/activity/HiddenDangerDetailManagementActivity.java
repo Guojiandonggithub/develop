@@ -240,7 +240,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                     if(record.getFlag().equals("0")||record.getFlag().equals("4")){
                         tvAdd.setVisibility(View.GONE);
                     }
-                    tvHiddenUnits.setText(record.getTeamGroupName());
+                    tvHiddenUnits.setText(record.getTeamGroupName().trim());
                     String findTimeStr = record.getFindTime();
                     String findTime = findTimeStr.substring(0,10);
                     tvTimeOrOrder.setText(findTime + "/" + record.getClassName());

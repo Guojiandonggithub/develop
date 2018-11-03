@@ -1143,40 +1143,34 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
 
     //获取部门/队组成员
     private void getCollieryTeam() {
-        RequestParams params = new RequestParams();
-        params.put("employeeId", UserUtils.getUserID(getActivity()));
-        netClient.post(Data.getInstance().getIp()+Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(getActivity())) {
+            String jsondata = com.example.administrator.riskprojects.tools.Utils.getValue(getActivity(), Constants.GET_COLLIERYTEAM);
+            if("".equals(jsondata)){
+                com.example.administrator.riskprojects.tools.Utils.showShortToast(getActivity(), "没有联网，没有请求到数据");
+            }else{
+                resultCollieryTeam(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            params.put("employeeId", UserUtils.getUserID(getActivity()));
+            netClient.post(Data.getInstance().getIp()+Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取部门/队组成员返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        if (i == 0) {
-                            SelectItem selectItem = new SelectItem();
-                            selectItem.name = "请选择";
-                            selectItem.id = "";
-                            selectItems.add(selectItem);
-                        }
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getTeamName().replaceAll("&nbsp;","   ");
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取部门/队组成员返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        resultCollieryTeam(data);
                     }
-                    spHiddenUnitsAdapter = SpinnerAdapter.createFromResource(getActivity(), selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
-                    spHiddenUnitsSpinner(spHiddenUnits);
+
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取部门/队组成员返回错误信息：" + content);
-                com.example.administrator.riskprojects.tools.Utils.showLongToast(getActivity(), content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取部门/队组成员返回错误信息：" + content);
+                    com.example.administrator.riskprojects.tools.Utils.showLongToast(getActivity(), content);
+                }
+            });
+        }
     }
 
     //隐患归属
@@ -1254,44 +1248,33 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
 
     //获取所属专业
     private void getSpecialty(final int flag) {
-        RequestParams params = new RequestParams();
-        netClient.post(Data.getInstance().getIp() + Constants.GET_SPECIALTY, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(getActivity())) {
+            String jsondata = com.example.administrator.riskprojects.tools.Utils.getValue(getActivity(), Constants.GET_SPECIALTY);
+            if("".equals(jsondata)){
+                com.example.administrator.riskprojects.tools.Utils.showShortToast(getActivity(), "没有联网，没有请求到数据");
+            }else{
+                resultSpecialty(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            netClient.post(Data.getInstance().getIp() + Constants.GET_SPECIALTY, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取所属专业返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<Specialty> collieryTeams = JSONArray.parseArray(data, Specialty.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        if (i == 0) {
-                            SelectItem selectItem = new SelectItem();
-                            selectItem.name = "请选择";
-                            selectItem.id = "";
-                            selectItems.add(selectItem);
-                        }
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getSname();
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取所属专业返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        resultSpecialty(data);
                     }
-                    if(flag==4){
-                        professionalAdapter = SpinnerAdapter.createFromResource(getActivity(), selectItems);
-                        setProfessionalSpinner(spOther,flag);
-                    }else{
-                        spProfessionAdapter = SpinnerAdapter.createFromResource(getActivity(), selectItems);
-                        setProfessionalSpinner(spProfession,flag);
-                    }
+
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取所属专业返回错误信息：" + content);
-                com.example.administrator.riskprojects.tools.Utils.showLongToast(getActivity(), content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取所属专业返回错误信息：" + content);
+                    com.example.administrator.riskprojects.tools.Utils.showLongToast(getActivity(), content);
+                }
+            });
+        }
     }
 
     //处理否设置
@@ -1384,40 +1367,34 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
 
     //获取检查单位
     private void getHiddenYHGSLX() {
-        RequestParams params = new RequestParams();
-        params.put("dictTypeCode","YHGSLX");
-        netClient.post(Data.getInstance().getIp()+Constants.GET_DATADICT, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(getActivity())) {
+            String jsondata = com.example.administrator.riskprojects.tools.Utils.getValue(getActivity(), "hiddenYHGSLX");
+            if("".equals(jsondata)){
+                com.example.administrator.riskprojects.tools.Utils.showShortToast(getActivity(), "没有联网，没有请求到数据");
+            }else{
+                resultHiddenYHGSLX(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            params.put("dictTypeCode","YHGSLX");
+            netClient.post(Data.getInstance().getIp()+Constants.GET_DATADICT, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取检查单位返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        if (i == 0) {
-                            SelectItem selectItem = new SelectItem();
-                            selectItem.name = "请选择";
-                            selectItem.id = "";
-                            selectItems.add(selectItem);
-                        }
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getName();
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取检查单位返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        resultHiddenYHGSLX(data);
                     }
-                    spHiddenDangerBelongsAdapter = SpinnerAdapter.createFromResource(getActivity(), selectItems);
-                    spHiddenDangerBelongSpinner(spHiddenDangerBelongs);
+
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取检查单位返回错误信息：" + content);
-                com.example.administrator.riskprojects.tools.Utils.showLongToast(getActivity(), content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取检查单位返回错误信息：" + content);
+                    com.example.administrator.riskprojects.tools.Utils.showLongToast(getActivity(), content);
+                }
+            });
+        }
     }
 
     //隐患归属
@@ -1601,5 +1578,67 @@ public class Fragment_Statistics extends Fragment implements SwipeRefreshLayout.
             errorMessage.setText("没有查询到数据");
             errorTips.setText("您可以通过改变筛选条件来查看更多数据");
         }
+    }
+
+    private void resultCollieryTeam(String data){
+        List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            if (i == 0) {
+                SelectItem selectItem = new SelectItem();
+                selectItem.name = "请选择";
+                selectItem.id = "";
+                selectItems.add(selectItem);
+            }
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getTeamName().replaceAll("&nbsp;","   ");
+            selectItem.id = collieryTeams.get(i).getId();
+            selectItems.add(selectItem);
+        }
+        spHiddenUnitsAdapter = SpinnerAdapter.createFromResource(getActivity(), selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
+        spHiddenUnitsSpinner(spHiddenUnits);
+    }
+
+    private void resultSpecialty(String data){
+        List<Specialty> collieryTeams = JSONArray.parseArray(data, Specialty.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            if (i == 0) {
+                SelectItem selectItem = new SelectItem();
+                selectItem.name = "请选择";
+                selectItem.id = "";
+                selectItems.add(selectItem);
+            }
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getSname();
+            selectItem.id = collieryTeams.get(i).getId();
+            selectItems.add(selectItem);
+        }
+        if(flag==4){
+            professionalAdapter = SpinnerAdapter.createFromResource(getActivity(), selectItems);
+            setProfessionalSpinner(spOther,flag);
+        }else{
+            spProfessionAdapter = SpinnerAdapter.createFromResource(getActivity(), selectItems);
+            setProfessionalSpinner(spProfession,flag);
+        }
+    }
+
+    private void resultHiddenYHGSLX(String data){
+        List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            if (i == 0) {
+                SelectItem selectItem = new SelectItem();
+                selectItem.name = "请选择";
+                selectItem.id = "";
+                selectItems.add(selectItem);
+            }
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getName();
+            selectItem.id = collieryTeams.get(i).getId();
+            selectItems.add(selectItem);
+        }
+        spHiddenDangerBelongsAdapter = SpinnerAdapter.createFromResource(getActivity(), selectItems);
+        spHiddenDangerBelongSpinner(spHiddenDangerBelongs);
     }
 }

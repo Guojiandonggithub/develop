@@ -1,19 +1,15 @@
 package com.example.administrator.riskprojects.Adpter;
 
 import android.content.Intent;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.HiddenDangerStatisticsEachUnitDetailActivity;
-import com.example.administrator.riskprojects.activity.HiddenRiskRecordDetailActivity;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
-import com.example.administrator.riskprojects.bean.ThreeFix;
 
 import java.util.List;
 
@@ -38,7 +34,7 @@ public class HiddenDangerStatisticsEachUnitAllAdapter extends RecyclerView.Adapt
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if(dtatisticsList.size()>0){
-            ((ViewHolder) holder).tvHiddenUnits.setText(dtatisticsList.get(position).getTeamGroupName());
+            ((ViewHolder) holder).tvHiddenUnits.setText(dtatisticsList.get(position).getTeamGroupName().trim());
             ((ViewHolder) holder).tvNumberOfProcessed.setText(dtatisticsList.get(position).getMonth());
             ((ViewHolder) holder).tvNumberOfUntreated.setText(dtatisticsList.get(position).getTotal());
             ((ViewHolder) holder).tvNumberOdAll.setText(dtatisticsList.get(position).getTotalNum());

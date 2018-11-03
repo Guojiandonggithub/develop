@@ -1047,39 +1047,33 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
 
     //获取所属专业
     private void getSpecialty(final int flag) {
-        RequestParams params = new RequestParams();
-        netClient.post(Data.getInstance().getIp() + Constants.GET_SPECIALTY, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(getActivity())) {
+            String jsondata = Utils.getValue(getActivity(), Constants.GET_SPECIALTY);
+            if("".equals(jsondata)){
+                Utils.showShortToast(getActivity(), "没有联网，没有请求到数据");
+            }else{
+                resultSpecialty(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            netClient.post(Data.getInstance().getIp() + Constants.GET_SPECIALTY, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取所属专业返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<Specialty> collieryTeams = JSONArray.parseArray(data, Specialty.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        if (i == 0) {
-                            SelectItem selectItem = new SelectItem();
-                            selectItem.name = "请选择";
-                            selectItem.id = "";
-                            selectItems.add(selectItem);
-                        }
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getSname();
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取所属专业返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        resultSpecialty(data);
                     }
-                    spProfessionAdapter = SpinnerAdapter.createFromResource(getActivity(), selectItems);
-                    setSpinner(spProfession, spProfessionAdapter, flag);
+
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取所属专业返回错误信息：" + content);
-                com.example.administrator.riskprojects.tools.Utils.showLongToast(getActivity(), content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取所属专业返回错误信息：" + content);
+                    com.example.administrator.riskprojects.tools.Utils.showLongToast(getActivity(), content);
+                }
+            });
+        }
     }
 
     //复查
@@ -1177,56 +1171,34 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
 
     //获取检查单位
     private void getHiddenYHGSLX(final int flag) {
-        RequestParams params = new RequestParams();
-        params.put("dictTypeCode", "YHGSLX");
-        netClient.post(Data.getInstance().getIp() + Constants.GET_DATADICT, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(getActivity())) {
+            String jsondata = Utils.getValue(getActivity(), "hiddenYHGSLX");
+            if("".equals(jsondata)){
+                Utils.showShortToast(getActivity(), "没有联网，没有请求到数据");
+            }else{
+                resultHiddenYHGSLX(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            params.put("dictTypeCode", "YHGSLX");
+            netClient.post(Data.getInstance().getIp() + Constants.GET_DATADICT, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取检查单位返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        if (i == 0) {
-                            SelectItem selectItem = new SelectItem();
-                            selectItem.name = "请选择";
-                            selectItem.id = "";
-                            selectItems.add(selectItem);
-                        }
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getName();
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取检查单位返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        resultHiddenYHGSLX(data);
                     }
-                    spCheckUnitsAdapter = SpinnerAdapter.createFromResource(getActivity(), selectItems);
-                    spCheckUnits.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            spCheckUnitsAdapter.setSelectedPostion(position);
-                            if (flag == 1) {
-                                getHiddenRecord(Constants.PAGE);
-                            } else {
-                                getReviewList(Constants.PAGE);
-                            }
-                        }
 
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
-                        }
-                    });
-                    spCheckUnits.setAdapter(spCheckUnitsAdapter);
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取检查单位返回错误信息：" + content);
-                com.example.administrator.riskprojects.tools.Utils.showLongToast(getActivity(), content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取检查单位返回错误信息：" + content);
+                    com.example.administrator.riskprojects.tools.Utils.showLongToast(getActivity(), content);
+                }
+            });
+        }
     }
 
     //隐患状态
@@ -1258,40 +1230,34 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
 
     //获取区域
     private void getArea(final int flag) {
-        RequestParams params = new RequestParams();
-        params.put("employeeId", UserUtils.getUserID(getActivity()));
-        netClient.post(Data.getInstance().getIp() + Constants.GET_AREA, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(getActivity())) {
+            String jsondata = Utils.getValue(getActivity(), Constants.GET_AREA);
+            if("".equals(jsondata)){
+                Utils.showShortToast(getActivity(), "没有联网，没有请求到数据");
+            }else{
+                resultArea(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            params.put("employeeId", UserUtils.getUserID(getActivity()));
+            netClient.post(Data.getInstance().getIp() + Constants.GET_AREA, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取区域返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<Area> collieryTeams = JSONArray.parseArray(data, Area.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        if (i == 0) {
-                            SelectItem selectItem = new SelectItem();
-                            selectItem.name = "请选择";
-                            selectItem.id = "";
-                            selectItems.add(selectItem);
-                        }
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getAreaName();
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取区域返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        resultArea(data);
                     }
-                    spAreaAdapter = SpinnerAdapter.createFromResource(getActivity(), selectItems);
-                    setSpinner(spArea, spAreaAdapter, flag);
+
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取区域返回错误信息：" + content);
-                Utils.showLongToast(getActivity(), content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取区域返回错误信息：" + content);
+                    Utils.showLongToast(getActivity(), content);
+                }
+            });
+        }
     }
 
     //专业列表
@@ -1357,5 +1323,78 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
 
     public void setIdFlag(int flags) {
         flag = flags;
+    }
+
+    private void resultArea(String data){
+        List<Area> collieryTeams = JSONArray.parseArray(data, Area.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            if (i == 0) {
+                SelectItem selectItem = new SelectItem();
+                selectItem.name = "请选择";
+                selectItem.id = "";
+                selectItems.add(selectItem);
+            }
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getAreaName();
+            selectItem.id = collieryTeams.get(i).getId();
+            selectItems.add(selectItem);
+        }
+        spAreaAdapter = SpinnerAdapter.createFromResource(getActivity(), selectItems);
+        setSpinner(spArea, spAreaAdapter, flag);
+    }
+
+    private void resultSpecialty(String data){
+        List<Specialty> collieryTeams = JSONArray.parseArray(data, Specialty.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            if (i == 0) {
+                SelectItem selectItem = new SelectItem();
+                selectItem.name = "请选择";
+                selectItem.id = "";
+                selectItems.add(selectItem);
+            }
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getSname();
+            selectItem.id = collieryTeams.get(i).getId();
+            selectItems.add(selectItem);
+        }
+        spProfessionAdapter = SpinnerAdapter.createFromResource(getActivity(), selectItems);
+        setSpinner(spProfession, spProfessionAdapter, flag);
+    }
+
+    private void resultHiddenYHGSLX(String data){
+        List<DataDictionary> collieryTeams = JSONArray.parseArray(data, DataDictionary.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            if (i == 0) {
+                SelectItem selectItem = new SelectItem();
+                selectItem.name = "请选择";
+                selectItem.id = "";
+                selectItems.add(selectItem);
+            }
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getName();
+            selectItem.id = collieryTeams.get(i).getId();
+            selectItems.add(selectItem);
+        }
+        spCheckUnitsAdapter = SpinnerAdapter.createFromResource(getActivity(), selectItems);
+        spCheckUnits.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                spCheckUnitsAdapter.setSelectedPostion(position);
+                if (flag == 1) {
+                    getHiddenRecord(Constants.PAGE);
+                } else {
+                    getReviewList(Constants.PAGE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spCheckUnits.setAdapter(spCheckUnitsAdapter);
     }
 }

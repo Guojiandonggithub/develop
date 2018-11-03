@@ -21,6 +21,7 @@ import com.example.administrator.riskprojects.bean.Area;
 import com.example.administrator.riskprojects.bean.CollieryTeam;
 import com.example.administrator.riskprojects.bean.SelectItem;
 import com.example.administrator.riskprojects.bean.Specialty;
+import com.example.administrator.riskprojects.common.NetUtil;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
@@ -212,99 +213,137 @@ public class LeftOptionSelectActivity extends BaseActivity {
 
     //获取区域
     private void getArea() {
-        RequestParams params = new RequestParams();
-        params.put("employeeId", UserUtils.getUserID(LeftOptionSelectActivity.this));
-        netClient.post(Data.getInstance().getIp()+Constants.GET_AREA, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(LeftOptionSelectActivity.this)) {
+            String jsondata = Utils.getValue(LeftOptionSelectActivity.this, Constants.GET_AREA);
+            if("".equals(jsondata)){
+                Utils.showShortToast(LeftOptionSelectActivity.this, "没有联网，没有请求到数据");
+            }else{
+                resultArea(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            params.put("employeeId", UserUtils.getUserID(LeftOptionSelectActivity.this));
+            netClient.post(Data.getInstance().getIp()+Constants.GET_AREA, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取区域返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<Area> collieryTeams = JSONArray.parseArray(data, Area.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getAreaName();
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取区域返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        resultArea(data);
                     }
-                    spHiddenAreaAdapter = SpinnerAdapter.createFromResource(LeftOptionSelectActivity.this, selectItems);
-                    setUpSpinner(spinnerArea, spHiddenAreaAdapter, selectItems, FLAG_AREA);
+
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取区域返回错误信息：" + content);
-                Utils.showLongToast(LeftOptionSelectActivity.this, content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取区域返回错误信息：" + content);
+                    Utils.showLongToast(LeftOptionSelectActivity.this, content);
+                }
+            });
+        }
     }
 
 
     private void getSpecialty() {
-        RequestParams params = new RequestParams();
-        netClient.post(Data.getInstance().getIp()+Constants.GET_SPECIALTY, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(LeftOptionSelectActivity.this)) {
+            String jsondata = Utils.getValue(LeftOptionSelectActivity.this, Constants.GET_SPECIALTY);
+            if("".equals(jsondata)){
+                Utils.showShortToast(LeftOptionSelectActivity.this, "没有联网，没有请求到数据");
+            }else{
+                resultSpecialty(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            netClient.post(Data.getInstance().getIp()+Constants.GET_SPECIALTY, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取所属专业返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<Specialty> collieryTeams = JSONArray.parseArray(data, Specialty.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getSname();
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取所属专业返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+
                     }
-                    spProfessionalAdapter = SpinnerAdapter.createFromResource(LeftOptionSelectActivity.this, selectItems);
-                    setUpSpinner(spinnerProfession, spProfessionalAdapter, selectItems, FLAG_PROFESSION);
+
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取所属专业返回错误信息：" + content);
-                Utils.showShortToast(LeftOptionSelectActivity.this, content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取所属专业返回错误信息：" + content);
+                    Utils.showShortToast(LeftOptionSelectActivity.this, content);
+                }
+            });
+        }
     }
 
 
     //获取部门/队组成员
     private void getCollieryTeam() {
-        RequestParams params = new RequestParams();
-        params.put("employeeId", UserUtils.getUserID(LeftOptionSelectActivity.this));
-        netClient.post(Data.getInstance().getIp()+Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(LeftOptionSelectActivity.this)) {
+            String jsondata = Utils.getValue(LeftOptionSelectActivity.this, Constants.GET_COLLIERYTEAM);
+            if("".equals(jsondata)){
+                Utils.showShortToast(LeftOptionSelectActivity.this, "没有联网，没有请求到数据");
+            }else{
+                resultColliery(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            params.put("employeeId", UserUtils.getUserID(LeftOptionSelectActivity.this));
+            netClient.post(Data.getInstance().getIp()+Constants.GET_COLLIERYTEAM, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取部门/队组成员返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getTeamName().replaceAll("&nbsp;", "   ");
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取部门/队组成员返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        resultColliery(data);
                     }
-                    mSpHiddenUnitsAdapter = SpinnerAdapter.createFromResource(LeftOptionSelectActivity.this, selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
-                    setUpSpinner(spinnerHiddenUnits, mSpHiddenUnitsAdapter, selectItems, FLAG_HIDDENUNITS);
+
                 }
 
-            }
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取部门/队组成员返回错误信息：" + content);
+                    Utils.showShortToast(LeftOptionSelectActivity.this, content);
+                }
+            });
+        }
+    }
 
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取部门/队组成员返回错误信息：" + content);
-                Utils.showShortToast(LeftOptionSelectActivity.this, content);
-            }
-        });
+    private void resultArea(String data){
+        List<Area> collieryTeams = JSONArray.parseArray(data, Area.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getAreaName();
+            selectItem.id = collieryTeams.get(i).getId();
+            selectItems.add(selectItem);
+        }
+        spHiddenAreaAdapter = SpinnerAdapter.createFromResource(LeftOptionSelectActivity.this, selectItems);
+        setUpSpinner(spinnerArea, spHiddenAreaAdapter, selectItems, FLAG_AREA);
     }
 
 
+    private void resultColliery(String data){
+        List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getTeamName().replaceAll("&nbsp;", "   ");
+            selectItem.id = collieryTeams.get(i).getId();
+            selectItems.add(selectItem);
+        }
+        mSpHiddenUnitsAdapter = SpinnerAdapter.createFromResource(LeftOptionSelectActivity.this, selectItems, Gravity.CENTER_VERTICAL|Gravity.LEFT);
+        setUpSpinner(spinnerHiddenUnits, mSpHiddenUnitsAdapter, selectItems, FLAG_HIDDENUNITS);
+    }
+
+    private void resultSpecialty(String data){
+        List<Specialty> collieryTeams = JSONArray.parseArray(data, Specialty.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getSname();
+            selectItem.id = collieryTeams.get(i).getId();
+            selectItems.add(selectItem);
+        }
+        spProfessionalAdapter = SpinnerAdapter.createFromResource(LeftOptionSelectActivity.this, selectItems);
+        setUpSpinner(spinnerProfession, spProfessionalAdapter, selectItems, FLAG_PROFESSION);
+    }
 }

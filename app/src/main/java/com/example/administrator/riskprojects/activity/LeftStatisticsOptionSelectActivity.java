@@ -17,25 +17,21 @@ import com.example.administrator.riskprojects.Adpter.SpinnerAdapter;
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.Area;
-import com.example.administrator.riskprojects.bean.CollieryTeam;
 import com.example.administrator.riskprojects.bean.SelectItem;
-import com.example.administrator.riskprojects.bean.Specialty;
+import com.example.administrator.riskprojects.common.NetUtil;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.util.DensityUtil;
-import com.example.administrator.riskprojects.util.StringUtils;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 public class LeftStatisticsOptionSelectActivity extends BaseActivity {
     public static final String TITLE = "title";
@@ -211,34 +207,34 @@ public class LeftStatisticsOptionSelectActivity extends BaseActivity {
 
     //获取区域
     private void getArea() {
-        RequestParams params = new RequestParams();
-        params.put("employeeId", UserUtils.getUserID(LeftStatisticsOptionSelectActivity.this));
-        netClient.post(Data.getInstance().getIp()+Constants.GET_AREA, params, new BaseJsonRes() {
+        if (!NetUtil.checkNetWork(LeftStatisticsOptionSelectActivity.this)) {
+            String jsondata = Utils.getValue(LeftStatisticsOptionSelectActivity.this, Constants.GET_AREA);
+            if("".equals(jsondata)){
+                Utils.showShortToast(LeftStatisticsOptionSelectActivity.this, "没有联网，没有请求到数据");
+            }else{
+                resultArea(jsondata);
+            }
+        }else{
+            RequestParams params = new RequestParams();
+            params.put("employeeId", UserUtils.getUserID(LeftStatisticsOptionSelectActivity.this));
+            netClient.post(Data.getInstance().getIp()+Constants.GET_AREA, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "获取区域返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    List<Area> collieryTeams = JSONArray.parseArray(data, Area.class);
-                    List<SelectItem> selectItems = new ArrayList<SelectItem>();
-                    for (int i = 0; i < collieryTeams.size(); i++) {
-                        SelectItem selectItem = new SelectItem();
-                        selectItem.name = collieryTeams.get(i).getAreaName();
-                        selectItem.id = collieryTeams.get(i).getId();
-                        selectItems.add(selectItem);
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "获取区域返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        resultArea(data);
                     }
-                    spHiddenAreaAdapter = SpinnerAdapter.createFromResource(LeftStatisticsOptionSelectActivity.this, selectItems);
-                    setUpSpinner(spinnerArea, spHiddenAreaAdapter, selectItems, FLAG_AREA);
+
                 }
 
-            }
-
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "获取区域返回错误信息：" + content);
-                Utils.showShortToast(LeftStatisticsOptionSelectActivity.this, content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "获取区域返回错误信息：" + content);
+                    Utils.showShortToast(LeftStatisticsOptionSelectActivity.this, content);
+                }
+            });
+        }
     }
 
 
@@ -257,7 +253,18 @@ public class LeftStatisticsOptionSelectActivity extends BaseActivity {
     }
 
 
-
+    private void resultArea(String data){
+        List<Area> collieryTeams = JSONArray.parseArray(data, Area.class);
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        for (int i = 0; i < collieryTeams.size(); i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.name = collieryTeams.get(i).getAreaName();
+            selectItem.id = collieryTeams.get(i).getId();
+            selectItems.add(selectItem);
+        }
+        spHiddenAreaAdapter = SpinnerAdapter.createFromResource(LeftStatisticsOptionSelectActivity.this, selectItems);
+        setUpSpinner(spinnerArea, spHiddenAreaAdapter, selectItems, FLAG_AREA);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
