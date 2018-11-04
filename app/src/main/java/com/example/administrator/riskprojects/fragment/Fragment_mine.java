@@ -1,6 +1,8 @@
 package com.example.administrator.riskprojects.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.riskprojects.LoginActivity;
 import com.example.administrator.riskprojects.R;
@@ -25,6 +28,9 @@ import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.util.UpdateVersionUtil;
 import com.example.administrator.riskprojects.view.MyAlertDialog;
 import com.juns.health.net.loopj.android.http.RequestParams;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -44,6 +50,7 @@ public class Fragment_mine extends Fragment {
     private TextView mTvBleSdk;
     private TextView mTvDataUpdate;
     protected NetClient netClient;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,19 +89,7 @@ public class Fragment_mine extends Fragment {
         mTvDataUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.showShortToast(getActivity(), "请求数据开始");
-
-                getCollieryTeam();
-                getSpecialty();
-                getRiskGrade();
-                getClassNumber();
-                getArea();
-                getHiddenType();
-                getHiddenGrade();
-                getHiddenYHGSLX();
-                getCheckContent();
-                getEmployeeList();
-                Utils.showShortToast(getActivity(), "请求数据完成");
+                showMutilAlertDialog();
             }
         });
         mTvVersion.setOnClickListener(new View.OnClickListener() {
@@ -382,6 +377,90 @@ public class Fragment_mine extends Fragment {
                 Utils.showShortToast(getActivity(), content);
             }
         });
+    }
+
+    private void getBaseData(){
+        getSpecialty();
+        getRiskGrade();
+        getClassNumber();
+        getArea();
+        getHiddenType();
+        getHiddenGrade();
+        getHiddenYHGSLX();
+        getCheckContent();
+    }
+
+    private void getEmployeeData(){
+        getCollieryTeam();
+        getEmployeeList();
+    }
+
+
+    // 多选提示框
+    private AlertDialog alertDialog3;
+    public void showMutilAlertDialog(){
+        final String[] items = {"基础数据","组织机构数据"};
+        final List<String> list = new ArrayList<>();
+        // 创建一个AlertDialog建造者
+        AlertDialog.Builder alertDialogBuilder= new AlertDialog.Builder(getActivity());
+        // 设置标题
+        alertDialogBuilder.setTitle("java EE 常用框架");
+        // 参数介绍
+        // 第一个参数：弹出框的信息集合，一般为字符串集合
+        // 第二个参数：被默认选中的，一个布尔类型的数组
+        // 第三个参数：勾选事件监听
+        alertDialogBuilder.setMultiChoiceItems(items, null, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                // dialog：不常使用，弹出框接口
+                // which：勾选或取消的是第几个
+                // isChecked：是否勾选
+                if (isChecked) {
+                    // 选中
+                    list.add(items[which]);
+                }else {
+                    // 取消选中
+                    for(int i=0;i<list.size();i++){
+                        if(list.get(i).equals(items[which])){
+                            list.remove(i);
+                        }
+                    }
+                }
+            }
+        });
+        alertDialogBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                //TODO 业务逻辑代码
+                if(list.size()==0){
+                    Toast.makeText(getActivity(), "请勾选其中一项", Toast.LENGTH_SHORT).show();
+                }else{
+                    Utils.showShortToast(getActivity(), "请求数据开始");
+                    if(list.size()==2){
+                    }else if(list.get(0)=="基础数据"){
+                        getBaseData();
+                    }else{
+                        getEmployeeData();
+                    }
+                    Utils.showShortToast(getActivity(), "请求数据完成");
+                    // 关闭提示框
+                    alertDialog3.dismiss();
+                }
+            }
+        });
+        alertDialogBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                // TODO 业务逻辑代码
+
+                // 关闭提示框
+                alertDialog3.dismiss();
+            }
+        });
+        alertDialog3 = alertDialogBuilder.create();
+        alertDialog3.show();
     }
 
 }
