@@ -81,13 +81,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             radio_net = (RadioGroup) findViewById(R.id.radio_net);
             btn_login = (Button) findViewById(R.id.btn_login);
         String username = Utils.getValue(LoginActivity.this, Constants.NAME);
-        String password = Utils.getValue(LoginActivity.this, Constants.PWD);
+        //String password = Utils.getValue(LoginActivity.this, Constants.PWD);
             if(!TextUtils.isEmpty(username)){
                 et_username.setText(username);
             }
-            if(!TextUtils.isEmpty(password)){
+            /*if(!TextUtils.isEmpty(password)){
                 et_password.setText(password);
-            }
+            }*/
             radio_net.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -155,7 +155,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     Utils.showShortToast(LoginActivity.this, "没有联网，登录过的用户才可以离线登录");
                 }
             }else{
-                getSystemTime();
+                //getSystemTime();
                 RequestParams params = new RequestParams();
                 params.put("name", userName);
                 params.put("password", password);
@@ -164,26 +164,33 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
                     @Override
                     public void onMySuccess(String data) {
-                        getLoadingDialog("正在登录").dismiss();
-                        String resultStr = data;
-                        String employeeList = Utils.getValue(LoginActivity.this, Constants.OfLineEmployeeList);
-                        List<UserInfo> userInfoList = new ArrayList<>();
-                        if(!TextUtils.isEmpty(employeeList)){
-                            userInfoList = JSONArray.parseArray(employeeList, UserInfo.class);
-                            for(UserInfo userInfo:userInfoList){
-                                if(userInfo.getUserName().equals(userName)){
-                                    userInfoList.remove(userInfo);
+                        //try{
+                            getLoadingDialog("正在登录").dismiss();
+                            String resultStr = data;
+                            String employeeList = Utils.getValue(LoginActivity.this, Constants.OfLineEmployeeList);
+                            List<UserInfo> userInfoList = new ArrayList<>();
+                            if(!TextUtils.isEmpty(employeeList)){
+                                userInfoList = JSONArray.parseArray(employeeList, UserInfo.class);
+                                for(int i =0;i<userInfoList.size();i++){
+                                    if(userInfoList.get(i).getUserName().equals(userName)){
+                                        userInfoList.remove(userInfoList.get(i));
+                                    }
                                 }
+                                /*for(UserInfo userInfo:userInfoList){
+
+                                }*/
                             }
-                        }
-                        List<UserInfo>  resultUserInfoList = JSONArray.parseArray(resultStr, UserInfo.class);
-                        UserInfo userInfo = resultUserInfoList.get(0);
-                        userInfo.setUserName(userName);
-                        userInfo.setPassword(password);
-                        userInfoList.add(userInfo);
-                        String OfLineEmployeeList = JSONArray.toJSONString(userInfoList);
-                        Utils.putValue(LoginActivity.this, Constants.OfLineEmployeeList, OfLineEmployeeList);
-                        resultLogin(userName,password,data);
+                            List<UserInfo>  resultUserInfoList = JSONArray.parseArray(resultStr, UserInfo.class);
+                            UserInfo userInfo = resultUserInfoList.get(0);
+                            userInfo.setUserName(userName);
+                            userInfo.setPassword(password);
+                            userInfoList.add(userInfo);
+                            String OfLineEmployeeList = JSONArray.toJSONString(userInfoList);
+                            Utils.putValue(LoginActivity.this, Constants.OfLineEmployeeList, OfLineEmployeeList);
+                            resultLogin(userName,password,data);
+                        //}catch (Exception e){
+                            //System.out.print(e);
+                        //}
                     }
 
                     @Override

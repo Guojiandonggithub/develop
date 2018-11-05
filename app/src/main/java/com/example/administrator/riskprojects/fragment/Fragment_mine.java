@@ -404,7 +404,7 @@ public class Fragment_mine extends Fragment {
         // 创建一个AlertDialog建造者
         AlertDialog.Builder alertDialogBuilder= new AlertDialog.Builder(getActivity());
         // 设置标题
-        alertDialogBuilder.setTitle("java EE 常用框架");
+        alertDialogBuilder.setTitle("请选择要更新的数据");
         // 参数介绍
         // 第一个参数：弹出框的信息集合，一般为字符串集合
         // 第二个参数：被默认选中的，一个布尔类型的数组
