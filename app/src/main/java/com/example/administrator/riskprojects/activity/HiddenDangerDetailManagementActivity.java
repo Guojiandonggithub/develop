@@ -90,19 +90,22 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
     private void setView() {
         final Intent intent = getIntent();
         String statistics = intent.getStringExtra("statistics");
+        String id = intent.getStringExtra("id");
         String hiddenriskrecorddetail = intent.getStringExtra("hiddenriskrecorddetail");
         if(!TextUtils.isEmpty(statistics)){
             txtTitle.setText(R.string.hazard_query_statistics);
             llBottom.setVisibility(View.GONE);
-        }else{
-            txtTitle.setText(R.string.hidden_danger_record_management);
-        }
-
-        if(!TextUtils.isEmpty(hiddenriskrecorddetail)){
+            getHiddenRecordById(id);
+        }else if(!TextUtils.isEmpty(hiddenriskrecorddetail)){
             txtTitle.setText("隐患详情");
             tvDelete.setVisibility(View.GONE);
             tvChange.setVisibility(View.GONE);
             tvAdd.setVisibility(View.GONE);
+            getHiddenRecordById(id);
+        }else{
+            txtTitle.setText(R.string.hidden_danger_record_management);
+            Bundle bundle = intent.getBundleExtra("recordBund");
+            record = (HiddenDangerRecord) bundle.getSerializable("hiddenDangerRecord");
         }
         tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,8 +147,11 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intents = new Intent(HiddenDangerDetailManagementActivity.this, HiddenRiskRecordAddEditActivity.class);
-                Log.e(TAG, "onClick: hiddenrecordjson=============" + hiddenrecordjson);
-                intents.putExtra("hiddenrecordjson", hiddenrecordjson);
+                //Log.e(TAG, "onClick: hiddenrecordjson=============" + hiddenrecordjson);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("hiddenDangerRecord", record);
+                intents.putExtra("recordBund", bundle);
+                //intents.putExtra("hiddenrecordjson", hiddenrecordjson);
                 intents.putExtra("id", record.getId());
                 startActivityForResult(intents,RESULT_FIRST_USER);
             }
@@ -219,13 +225,10 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
     }
 
     private void initdata() {
-        Intent intent = getIntent();
-        String id = intent.getStringExtra("id");
-        getHiddenRecord(id);
-
+        getHiddenRecord();
     }
 
-    private void getHiddenRecord(String id) {//隐患id
+    private void getHiddenRecordById(String id){
         RequestParams params = new RequestParams();
         params.put("hiddenDangerRecordId", id);
         netClient.post(Data.getInstance().getIp() + Constants.HIDDENDANGERRECORD, params, new BaseJsonRes() {
@@ -237,64 +240,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                     JSONObject returndata = JSON.parseObject(data);
                     hiddenrecordjson = data;
                     record = JSONArray.parseObject(data, HiddenDangerRecord.class);
-                    if(record.getFlag().equals("0")||record.getFlag().equals("4")){
-                        tvAdd.setVisibility(View.GONE);
-                    }
-                    tvHiddenUnits.setText(record.getTeamGroupName().trim());
-                    String findTimeStr = record.getFindTime();
-                    String findTime = findTimeStr.substring(0,10);
-                    tvTimeOrOrder.setText(findTime + "/" + record.getClassName());
-                    tvHiddenContent.setText(record.getContent());
-                    tvHiddenDangerBelongs.setText(record.getHiddenBelong());
-                    tvProfessional.setText(record.getSname());
-                    tvArea.setText(record.getAreaName());
-                    tvClasses.setText(record.getJbName());
-                    ivStatus.setImageResource(getImageResourceByFlag(record.getFlag(), record.getOutTimeFlag()));
-                    ivStatus.setImageResource(getImageResourceByFlag(record.getFlag(), record.getOutTimeFlag()));
-                    String isuper = record.getIsupervision();
-                    String guapai = "未挂牌";
-                    if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
-                        isuper = "未挂牌";
-                    } else {
-                        isuper = "已挂牌";
-                        guapai = "已挂牌";
-                    }
-                    String ishandle = record.getIshandle();
-                    if(TextUtils.isEmpty(ishandle)||"0".equals(ishandle)){
-                        ishandle = "未处理";
-                    }else{
-                        ishandle = "已处理";
-                    }
-                    tvDiscoveryTime.setText(record.getFindTime());
-                    tvOversee.setText(isuper);
-                    tvIsHang.setText(guapai);
-                    String status = getStatusByFlag(record.getFlag(),record.getOutTimeFlag());
-                    tvStatus.setText(status);
-                    tvIsHandle.setText(ishandle);
-                    tvHiddenDangerLogger.setText(record.getRealName());
-                    tvFinishTime.setText(record.getFixTime());
-                    tvPrincipal.setText(record.getThreeFixRealName());
-                    tvMeasure.setText(record.getMeasure());
-                    tvCapital.setText(record.getMoney());
-                    tvRecyclerView.setText(record.getTeamName());
-                    tvTheNumberOfProcessing.setText(record.getPersonNum());
-                    tvTrackingUnit.setText(record.getFollingTeamName());
-                    tvTrackPeople.setText(record.getFollingPersonName());
-                    tvAcceptanceOfThePeople.setText(record.getRecheckPersonName());
-                    String recheckresult = record.getRecheckResult();
-                    if(TextUtils.isEmpty(recheckresult)){
-                        recheckresult = "";
-                    }else if(TextUtils.equals(recheckresult,"0")){
-                        recheckresult = "通过";
-                    }else{
-                        recheckresult = "未通过";
-                    }
-                    tvAcceptanceOfTheResults.setText(recheckresult);
-                    tvOversee.setText(isuper);
-                    tvCheckTheContent.setText(record.getHiddenCheckContent());
-                    getPicList(record.getImageGroup());
                 }
-
             }
 
             @Override
@@ -304,6 +250,64 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                 return;
             }
         });
+    }
+
+    private void getHiddenRecord() {//隐患id String id
+        if(record.getFlag().equals("0")||record.getFlag().equals("4")){
+            tvAdd.setVisibility(View.GONE);
+        }
+        tvHiddenUnits.setText(record.getTeamGroupName().trim());
+        String findTimeStr = record.getFindTime();
+        String findTime = findTimeStr.substring(0,10);
+        tvTimeOrOrder.setText(findTime + "/" + record.getClassName());
+        tvHiddenContent.setText(record.getContent());
+        tvHiddenDangerBelongs.setText(record.getHiddenBelong());
+        tvProfessional.setText(record.getSname());
+        tvArea.setText(record.getAreaName());
+        tvClasses.setText(record.getJbName());
+        ivStatus.setImageResource(getImageResourceByFlag(record.getFlag(), record.getOutTimeFlag()));
+        String isuper = record.getIsupervision();
+        String guapai = "未挂牌";
+        if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
+            isuper = "未挂牌";
+        } else {
+            isuper = "已挂牌";
+            guapai = "已挂牌";
+        }
+        String ishandle = record.getIshandle();
+        if(TextUtils.isEmpty(ishandle)||"0".equals(ishandle)){
+            ishandle = "未处理";
+        }else{
+            ishandle = "已处理";
+        }
+        tvDiscoveryTime.setText(record.getFindTime());
+        tvOversee.setText(isuper);
+        tvIsHang.setText(guapai);
+        String status = getStatusByFlag(record.getFlag(),record.getOutTimeFlag());
+        tvStatus.setText(status);
+        tvIsHandle.setText(ishandle);
+        tvHiddenDangerLogger.setText(record.getRealName());
+        tvFinishTime.setText(record.getFixTime());
+        tvPrincipal.setText(record.getThreeFixRealName());
+        tvMeasure.setText(record.getMeasure());
+        tvCapital.setText(record.getMoney());
+        tvRecyclerView.setText(record.getTeamName());
+        tvTheNumberOfProcessing.setText(record.getPersonNum());
+        tvTrackingUnit.setText(record.getFollingTeamName());
+        tvTrackPeople.setText(record.getFollingPersonName());
+        tvAcceptanceOfThePeople.setText(record.getRecheckPersonName());
+        String recheckresult = record.getRecheckResult();
+        if(TextUtils.isEmpty(recheckresult)){
+            recheckresult = "";
+        }else if(TextUtils.equals(recheckresult,"0")){
+            recheckresult = "通过";
+        }else{
+            recheckresult = "未通过";
+        }
+        tvAcceptanceOfTheResults.setText(recheckresult);
+        tvOversee.setText(isuper);
+        tvCheckTheContent.setText(record.getHiddenCheckContent());
+        getPicList(record.getImageGroup());
     }
 
     //删除隐患

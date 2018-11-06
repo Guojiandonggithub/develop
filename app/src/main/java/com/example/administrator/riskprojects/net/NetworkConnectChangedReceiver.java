@@ -87,18 +87,12 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver {
 						// connected to wifi
 						Data.getInstance().setWifi(true);
 						Log.e(TAG, "当前WiFi连接可用 ");
-						new ReportRecord().addRecheck(context);
-						new ReportRecord().addHiddenPic(context);
-						new ReportRecord().addAddhiddenrecord(context);
-						new ReportRecord().addCardRecord(context);
+						reportDataDao(context);
 					} else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
 						// connected to the mobile provider's data plan
 						Data.getInstance().setMobile(true);
 						Log.e(TAG, "当前移动网络连接可用 ");
-						new ReportRecord().addRecheck(context);
-						new ReportRecord().addHiddenPic(context);
-						new ReportRecord().addAddhiddenrecord(context);
-						new ReportRecord().addCardRecord(context);
+						reportDataDao(context);
 					}
 				} else {
 					Log.e(TAG, "当前没有网络连接，请确保你已经打开网络 ");
@@ -124,5 +118,12 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver {
 		}
 	}
 
+	private void reportDataDao(Context context){
+		new ReportRecord().addRecheck(context);
+		new ReportRecord().addHiddenPic(context);
+		new ReportRecord().addAddhiddenrecord(context);
+		new ReportRecord().addCardRecord(context);
+		new ReportRecord().addDubanRecord(context);
+	}
 
 }

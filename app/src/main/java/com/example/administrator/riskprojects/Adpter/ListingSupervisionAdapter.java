@@ -1,6 +1,7 @@
 package com.example.administrator.riskprojects.Adpter;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -48,6 +49,10 @@ public class ListingSupervisionAdapter extends RecyclerView.Adapter {
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(),
                         HiddenDangerDetailManagementAddOrDetailActivity.class);
+                Bundle bundle = new Bundle();
+                final HiddenDangerRecord hiddenDangerRecord = recordList.get(position);
+                bundle.putSerializable("hiddenDangerRecord", hiddenDangerRecord);
+                intent.putExtra("recordBund", bundle);
                 String id = recordList.get(position).getId();
                 intent.putExtra("id", id);
                 holder.itemView.getContext().startActivity(intent);

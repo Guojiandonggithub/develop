@@ -20,6 +20,7 @@ import com.example.administrator.riskprojects.dialog.FlippingLoadingDialog;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
+import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.view.MyAlertDialog;
 import com.juns.health.net.loopj.android.http.RequestParams;
@@ -160,27 +161,33 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
 
     //完成整改
     private void getHiddenRecord() {
-        mTvOk.setClickable(false);
-        RequestParams params = new RequestParams();
-        params.put("ids",threeFix.getId());
-        netClient.post(Data.getInstance().getIp()+Constants.COMPLETERECTIFY, params, new BaseJsonRes() {
+        String roleid = UserUtils.getUserRoleids(HiddenDangerRectificationManagementActivity.this);
+        String userid = UserUtils.getUserID(HiddenDangerRectificationManagementActivity.this);
+        if(roleid.equals("1")||threeFix.getEmployeeId().equals(userid)){
+            mTvOk.setClickable(false);
+            RequestParams params = new RequestParams();
+            params.put("ids",threeFix.getId());
+            netClient.post(Data.getInstance().getIp()+Constants.COMPLETERECTIFY, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "完成整改返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    Utils.showLongToast(HiddenDangerRectificationManagementActivity.this, "隐患整改成功！");
-                    finish();
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "完成整改返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.showLongToast(HiddenDangerRectificationManagementActivity.this, "隐患整改成功！");
+                        finish();
+                    }
                 }
-            }
 
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "完成整改返回错误信息：" + content);
-                Utils.showLongToast(HiddenDangerRectificationManagementActivity.this, content);
-                mTvOk.setClickable(true);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "完成整改返回错误信息：" + content);
+                    Utils.showLongToast(HiddenDangerRectificationManagementActivity.this, content);
+                    mTvOk.setClickable(true);
+                }
+            });
+        }else{
+            Utils.showShortToast(HiddenDangerRectificationManagementActivity.this, "没有权限进行该操作!");
+        }
     }
 
     //查询图片列表

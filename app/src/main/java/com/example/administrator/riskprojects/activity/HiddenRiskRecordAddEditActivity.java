@@ -328,9 +328,11 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
         if (!TextUtils.isEmpty(id)) {
-            String hiddenrecordjson = getIntent().getStringExtra("hiddenrecordjson");
-            Log.e(TAG, "initdata: hiddenrecordjson-------------" + hiddenrecordjson);
-            record = JSONArray.parseObject(hiddenrecordjson, HiddenDangerRecord.class);
+            Bundle bundle = intent.getBundleExtra("recordBund");
+            record = (HiddenDangerRecord) bundle.getSerializable("hiddenDangerRecord");
+            //String hiddenrecordjson = getIntent().getStringExtra("hiddenrecordjson");
+            //Log.e(TAG, "initdata: hiddenrecordjson-------------" + hiddenrecordjson);
+            //record = JSONArray.parseObject(hiddenrecordjson, HiddenDangerRecord.class);
             etContent.setText(record.getContent());
             tvDate.setText(record.getFindTime());
             etLocation.setText(record.getHiddenPlace());
@@ -711,15 +713,17 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 params.put("imgGrop/"+record.getImageGroup(), "imgGrop/"+record.getImageGroup());
             }
             if(updatepaths.size()>0) {
-                    for (int i=0;i<updatepaths.size();i++){
-                        String picurl = updatepaths.get(i);
-                        File file = new File(picurl);
-                        fileList.add(file);
-                        params.put(""+i, file);
+                    for (int i=0;i<paths.size();i++){
+                        if(!paths.get(i).contains("http://")){
+                            String picurl = paths.get(i);
+                            File file = new File(picurl);
+                            fileList.add(file);
+                            params.put(""+i, file);
+                        }
                     }
                     Log.e(TAG, "picList==================="+picList);
-                    Log.e(TAG, "updatepaths==================="+updatepaths);
-                    params.put("fileurl", JSONArray.toJSONString(updatepaths));
+                    Log.e(TAG, "updatepaths==================="+paths);
+                    params.put("fileurl", JSONArray.toJSONString(paths));
                     String hiddenDangerRecordStr = JSON.toJSONString(records);
                     params.put("record", hiddenDangerRecordStr);
                     Log.e(TAG, "params==========================: "+params);

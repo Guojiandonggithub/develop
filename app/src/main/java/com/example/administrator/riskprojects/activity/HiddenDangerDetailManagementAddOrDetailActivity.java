@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.administrator.riskprojects.Adpter.PicAdapter;
@@ -161,12 +160,13 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
     private void initdata() {
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
+        Bundle bundle = intent.getBundleExtra("recordBund");
+        record = (HiddenDangerRecord) bundle.getSerializable("hiddenDangerRecord");
         getHiddenRecord(id);
-
     }
 
     private void getHiddenRecord(String id) {//隐患id
-        RequestParams params = new RequestParams();
+       /* RequestParams params = new RequestParams();
         params.put("hiddenDangerRecordId", id);
         netClient.post(Data.getInstance().getIp() + Constants.HIDDENDANGERRECORD, params, new BaseJsonRes() {
 
@@ -177,6 +177,7 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
                     JSONObject returndata = JSON.parseObject(data);
                     hiddenrecordjson = data;
                     record = JSONArray.parseObject(data, HiddenDangerRecord.class);
+                    */
                     tvHiddenUnits.setText(record.getTeamGroupName().trim());
                     String findTimeStr = record.getFindTime();
                     String findTime = findTimeStr.substring(0,10);
@@ -229,7 +230,7 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
                     tvAcceptanceOfThePeople.setText(record.getRecheckPersonName());
                     tvAcceptanceOfTheResults.setText(recheckResult);
                     getPicList(record.getImageGroup());
-                }
+                /*}
 
             }
 
@@ -239,7 +240,7 @@ public class HiddenDangerDetailManagementAddOrDetailActivity extends BaseActivit
                 Utils.showShortToast(HiddenDangerDetailManagementAddOrDetailActivity.this, content);
                 return;
             }
-        });
+        });*/
     }
 
     //删除隐患

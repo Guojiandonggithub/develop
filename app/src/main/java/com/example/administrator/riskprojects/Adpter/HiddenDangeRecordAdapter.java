@@ -2,10 +2,10 @@ package com.example.administrator.riskprojects.Adpter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +15,6 @@ import android.widget.TextView;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.HiddenDangerDetailManagementActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
-import com.example.administrator.riskprojects.common.NetUtil;
-import com.example.administrator.riskprojects.tools.Utils;
 
 import java.util.List;
 
@@ -77,22 +75,25 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (NetUtil.checkNetWork(context)) {
+                //if (NetUtil.checkNetWork(context)) {
                     Intent intent = new Intent(holder.itemView.getContext(),
                             HiddenDangerDetailManagementActivity.class);
-                    String id = recordList.get(position).getId();
+                    final HiddenDangerRecord hiddenDangerRecord = recordList.get(position);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("hiddenDangerRecord", hiddenDangerRecord);
+                    intent.putExtra("recordBund", bundle);
                     String employeeId = recordList.get(position).getEmployeeId();
+                    String id = recordList.get(position).getId();
                     String flag = recordList.get(position).getFlag();
                     String isupervision = recordList.get(position).getIsupervision();
                     intent.putExtra("id", id);
                     intent.putExtra("employeeId", employeeId);
                     intent.putExtra("flag", flag);
                     intent.putExtra("isupervision", isupervision);
-                    Log.e(TAG, "隐患状态flag:============ "+flag);
                     holder.itemView.getContext().startActivity(intent);
-                }else{
-                    Utils.showShortToast(context, "当前没有网络，无法获取信息");
-                }
+                //}else{
+                    //Utils.showShortToast(context, "当前没有网络，无法获取信息");
+                //}
             }
         });
 

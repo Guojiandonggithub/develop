@@ -118,6 +118,9 @@ public class NetClient {
 			case Constants.MAIN_ENGINE+Constants.ADD_CARDRECORDLIST://添加打卡记录
 				cardRecordReport(param);
 				break;
+			case Constants.MAIN_ENGINE+Constants.ADD_SUPERVISIONRECORD://添加督办记录
+				addDubanRecord(param);
+				break;
 			default:
 				Utils.showShortToast(context, Constants.NET_ERROR);
 				break;
@@ -197,6 +200,23 @@ public class NetClient {
 		Utils.showShortToast(context, Constants.SAVE_DATA);
 		//Activity activity = findActivity(context);
 		//activity.finish();
+	}
+
+	private void addDubanRecord(String param){
+		List<String> dubanList = new ArrayList();
+		String dubanListStr = Utils.getValue(context,Constants.ADD_SUPERVISIONRECORD);
+		if(!TextUtils.isEmpty(dubanListStr)){
+			dubanList = JSONArray.parseArray(dubanListStr, String.class);
+		}
+		Map<String,String> map = getParameters(param);
+		String str = map.get("supervisionRecordJsonData");
+		dubanList.add(str);
+		String listStr = JSONArray.toJSONString(dubanList);
+		Log.e(TAG, "打卡记录没网时: listStr============"+listStr);
+		Utils.putValue(context,Constants.ADD_SUPERVISIONRECORD,listStr);
+		Utils.showShortToast(context, Constants.SAVE_DATA);
+		Activity activity = findActivity(context);
+		activity.finish();
 	}
 
 	public static final String AND = "&";

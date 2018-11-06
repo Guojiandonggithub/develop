@@ -109,11 +109,13 @@ public class ReportRecord implements Constants{
 			for(final UploadPic uploadPic:uploadPicList){
 				List<String> fileList = uploadPic.getFileList();
 				for (int i=0;i<fileList.size();i++){
-					File file = new File(fileList.get(i));
-					try {
-						params.put(i+"", file);
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
+					if(!fileList.get(i).contains("http://")){
+						File file = new File(fileList.get(i));
+						try {
+							params.put(i+"", file);
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 				netClient.post(Data.getInstance().getIp()+Constants.UPLOAD_PIC, params, new BaseJsonRes() {
@@ -204,6 +206,41 @@ public class ReportRecord implements Constants{
 			}
 		}else{
 			Log.e(TAG, "打卡记录没有数据");
+		}
+	}
+
+	//添加督办记录
+	public void addDubanRecord(final Context context) {
+		netClient = new NetClient(context);
+		String dubanrecordStr = Utils.getValue(context,Constants.ADD_SUPERVISIONRECORD);
+		Log.e(TAG, "提交督办记录上报数据: "+dubanrecordStr);
+		if(!TextUtils.isEmpty(dubanrecordStr)||dubanrecordStr.length()>2){
+			final List<String> dubanRecordList = JSONArray.parseArray(dubanrecordStr, String.class);
+			Log.e(TAG, "carRecordList============: "+dubanRecordList);
+			for (final String dubanRecord:dubanRecordList){
+				RequestParams params = new RequestParams();
+				params.put("supervisionRecordJsonData",dubanRecord);
+				netClient.post(Data.getInstance().getIp()+ Constants.ADD_SUPERVISIONRECORD, params, new BaseJsonRes() {
+
+					@Override
+					public void onMySuccess(String data) {
+						Log.i(TAG, "督办记录返回数据：" + data);
+						if (!TextUtils.isEmpty(data)) {
+							dubanRecordList.remove(dubanRecord);
+							String listStr = JSONArray.toJSONString(dubanRecordList);
+							Log.e(TAG, "督办记录有网时: listStr============"+listStr);
+							Utils.putValue(context,Constants.ADD_SUPERVISIONRECORD,listStr);
+						}
+					}
+
+					@Override
+					public void onMyFailure(String content) {
+						Log.e(TAG, "提交督办记录返回错误信息：" + content);
+					}
+				});
+			}
+		}else{
+			Log.e(TAG, "督办记录没有数据");
 		}
 	}
 }

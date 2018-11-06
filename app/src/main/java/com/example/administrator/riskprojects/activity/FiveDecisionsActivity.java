@@ -35,6 +35,7 @@ import com.example.administrator.riskprojects.util.DensityUtil;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class FiveDecisionsActivity extends BaseActivity {
@@ -121,7 +122,16 @@ public class FiveDecisionsActivity extends BaseActivity {
         tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                threeFix.setFixTime(tvDate.getText().toString());
+                String dateStr = tvDate.getText().toString().replaceAll("\\.", "-");
+                Calendar cal = Calendar.getInstance();
+                //当前时：HOUR_OF_DAY-24小时制；HOUR-12小时制
+                int hour = cal.get(Calendar.HOUR_OF_DAY);
+                //当前分
+                int minute = cal.get(Calendar.MINUTE);
+                //当前秒
+                int second = cal.get(Calendar.SECOND);
+                dateStr = dateStr + " " + hour + ":" + +minute + ":" + second;
+                threeFix.setFixTime(dateStr);
                 SelectItem deptType = (SelectItem)spMineArea.getSelectedItem();
                 SelectItem spDepartmentItem = (SelectItem)spDepartment.getSelectedItem();
                 if(null!=spDepartmentItem){

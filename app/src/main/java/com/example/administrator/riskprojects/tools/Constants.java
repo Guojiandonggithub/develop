@@ -19,7 +19,7 @@ public interface Constants {
 	String Value = "data";
 	String Result = "type";
 	String DB_NAME = "WeChat.db";
-	String NET_ERROR = "网络错误，请稍后再试！";
+	String NET_ERROR = "当前为脱机状态！";
 	String SAVE_DATA = "网络错误，数据已保存，有网时自动上报！";
 	String PAGE = "1";
 	String ROWS = "10";

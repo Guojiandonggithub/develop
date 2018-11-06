@@ -931,26 +931,32 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
 
     //根据位置整改
     private void goRectification(final int position) {
-        RequestParams params = new RequestParams();
-        params.put("ids", threeFixesList.get(position).getId());
-        netClient.post(Data.getInstance().getIp() + Constants.COMPLETERECTIFY, params, new BaseJsonRes() {
+        String roleid = UserUtils.getUserRoleids(getActivity());
+        String userid = UserUtils.getUserID(getActivity());
+        if(roleid.equals("1")||threeFixesList.get(position).getEmployeeId().equals(userid)){
+            RequestParams params = new RequestParams();
+            params.put("ids", threeFixesList.get(position).getId());
+            netClient.post(Data.getInstance().getIp() + Constants.COMPLETERECTIFY, params, new BaseJsonRes() {
 
-            @Override
-            public void onMySuccess(String data) {
-                Log.i(TAG, "完成整改返回数据：" + data);
-                if (!TextUtils.isEmpty(data)) {
-                    Utils.showShortToast(ctx, "隐患整改成功！");
-                    threeFixesList.remove(position);
-                    adapter.notifyItemRemoved(position);
+                @Override
+                public void onMySuccess(String data) {
+                    Log.i(TAG, "完成整改返回数据：" + data);
+                    if (!TextUtils.isEmpty(data)) {
+                        Utils.showShortToast(ctx, "隐患整改成功！");
+                        threeFixesList.remove(position);
+                        adapter.notifyItemRemoved(position);
+                    }
                 }
-            }
 
-            @Override
-            public void onMyFailure(String content) {
-                Log.e(TAG, "完成整改返回错误信息：" + content);
-                Utils.showLongToast(ctx, content);
-            }
-        });
+                @Override
+                public void onMyFailure(String content) {
+                    Log.e(TAG, "完成整改返回错误信息：" + content);
+                    Utils.showLongToast(ctx, content);
+                }
+            });
+        }else{
+            Utils.showShortToast(getContext(), "没有权限进行该操作!");
+        }
     }
 
     public void onLeftMenuClicked(String aname, String aid, String pname, String pid, String hname, String hid) {

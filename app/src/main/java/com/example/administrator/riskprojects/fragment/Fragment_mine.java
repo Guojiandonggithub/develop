@@ -438,6 +438,8 @@ public class Fragment_mine extends Fragment {
                 }else{
                     Utils.showShortToast(getActivity(), "请求数据开始");
                     if(list.size()==2){
+                        getBaseData();
+                        getEmployeeData();
                     }else if(list.get(0)=="基础数据"){
                         getBaseData();
                     }else{
