@@ -26,6 +26,9 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.example.administrator.riskprojects.Adpter.AddPicAdapter;
 import com.example.administrator.riskprojects.Adpter.SpinnerAdapter;
 import com.example.administrator.riskprojects.BasePicActivity;
@@ -54,8 +57,11 @@ import org.devio.takephoto.model.TResult;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -84,7 +90,9 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
     private Spinner spLevel;
     private SpinnerAdapter spLevelAdapter;
     private CardView cvSelectDate;
+    private CardView cvSelectTime;
     private TextView tvDate;
+    private TextView tvTime;
     private Spinner spOrder;
     private SpinnerAdapter spOrderAdapter;
     private Spinner spHiddenSort;
@@ -109,6 +117,8 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
     private String id;
     private String imagegroup;
     private AddPicAdapter picAdapter;
+    private TimePickerView mTimePicker;
+    public static final DateFormat sSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     //存放图片路径
     private List<String> paths = new ArrayList<>();
     private List<String> picid = new ArrayList<>();
@@ -153,11 +163,26 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
 
         //选择时间
         cvSelectDate = findViewById(R.id.cv_select_date);
+        cvSelectTime = findViewById(R.id.cv_select_time);
         tvDate = findViewById(R.id.tv_date);
+        tvTime = findViewById(R.id.tv_time);
         cvSelectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerActivity.startPickDate(HiddenRiskRecordAddEditActivity.this, HiddenRiskRecordAddEditActivity.this);
+                TimePickerView pvTime = new TimePickerBuilder(HiddenRiskRecordAddEditActivity.this, new OnTimeSelectListener() {
+                    @Override
+                    public void onTimeSelect(Date date, View v) {
+                        final DateFormat FormatDate = new SimpleDateFormat("yyyy-MM-dd");
+                        final DateFormat FormatTime = new SimpleDateFormat("HH:mm:ss");
+                        tvDate.setText(FormatDate.format(date));
+                        tvTime.setText(FormatTime.format(date));
+                    }
+                }).setType(new boolean[]{true, true, true, true, true, true})
+                        .setLabel("年","月","日","时","分","秒")//默认设置为年月日时分秒
+                 .build();
+                pvTime.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
+                pvTime.show();
+                //DatePickerActivity.startPickDate(HiddenRiskRecordAddEditActivity.this, HiddenRiskRecordAddEditActivity.this);
             }
         });
         //隐患班次
@@ -334,7 +359,8 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
             //Log.e(TAG, "initdata: hiddenrecordjson-------------" + hiddenrecordjson);
             //record = JSONArray.parseObject(hiddenrecordjson, HiddenDangerRecord.class);
             etContent.setText(record.getContent());
-            tvDate.setText(record.getFindTime());
+            tvDate.setText(record.getFindTime().split(" ")[0]);
+            tvTime.setText(record.getFindTime().split(" ")[1]);
             etLocation.setText(record.getHiddenPlace());
             etCheckPerson.setText(record.getCheckPerson());
             String isuper = record.getIsupervision();
@@ -354,6 +380,14 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
             spIsHandleAdapter.notifyDataSetChanged();
             spIsHandle.setSelection(Integer.parseInt(ishandle));
         }else{
+            Calendar cal = Calendar.getInstance();
+            //当前时：HOUR_OF_DAY-24小时制；HOUR-12小时制
+            int hour = cal.get(Calendar.HOUR_OF_DAY);
+            //当前分
+            int minute = cal.get(Calendar.MINUTE);
+            //当前秒
+            int second = cal.get(Calendar.SECOND);
+            tvTime.setText(hour + ":" + +minute + ":" + second);
             etCheckPerson.setText(UserUtils.getUserName(HiddenRiskRecordAddEditActivity.this));
         }
         getCollieryTeam();
@@ -810,14 +844,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
 
         record.setJbName(spLevel.getSelectedItem().toString());
         String dateStr = tvDate.getText().toString().replaceAll("\\.", "-");
-        Calendar cal = Calendar.getInstance();
-        //当前时：HOUR_OF_DAY-24小时制；HOUR-12小时制
-        int hour = cal.get(Calendar.HOUR_OF_DAY);
-        //当前分
-        int minute = cal.get(Calendar.MINUTE);
-        //当前秒
-        int second = cal.get(Calendar.SECOND);
-        dateStr = dateStr + " " + hour + ":" + +minute + ":" + second;
+        dateStr = dateStr + " " + tvTime.getText().toString();
         record.setFindTime(dateStr);
         record.setHiddenPlace(etLocation.getText().toString());
         record.setCheckPerson(etCheckPerson.getText().toString());

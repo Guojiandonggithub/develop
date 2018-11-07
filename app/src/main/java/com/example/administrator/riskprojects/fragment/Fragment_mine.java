@@ -25,6 +25,7 @@ import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
 import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
+import com.example.administrator.riskprojects.util.AppUtils;
 import com.example.administrator.riskprojects.util.UpdateVersionUtil;
 import com.example.administrator.riskprojects.view.MyAlertDialog;
 import com.juns.health.net.loopj.android.http.RequestParams;
@@ -129,6 +130,8 @@ public class Fragment_mine extends Fragment {
         mTvOffice = layout.findViewById(R.id.tv_office);
         mTvChangePassword = layout.findViewById(R.id.tv_change_password);
         mTvVersion = layout.findViewById(R.id.tv_version);
+        final String version = AppUtils.getVersionName(getActivity());
+        mTvVersion.setText("版本("+version+")");
         mTvLogOut = layout.findViewById(R.id.tv_log_out);
         mTvBleSdk = layout.findViewById(R.id.tv_ble_sdk);
         mTvDataUpdate = layout.findViewById(R.id.tv_date_update);

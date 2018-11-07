@@ -260,6 +260,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         Intent intent = new Intent(LoginActivity.this,
                 MainActivity.class);
         startActivity(intent);
+        et_password.setText("");
         overridePendingTransition(R.anim.push_up_in,
                 R.anim.push_up_out);
     }

@@ -21,6 +21,7 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 
 public class DatePickerActivity extends BaseActivity {
@@ -36,6 +37,7 @@ public class DatePickerActivity extends BaseActivity {
     private LinearLayoutCompat mLlBottom;
     private TextView mTvOk;
     CalendarDay selectDate;
+    Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +74,7 @@ public class DatePickerActivity extends BaseActivity {
             public void onClick(View v) {
                 if (selectDate != null) {
                     Intent intent = new Intent();
-                    intent.putExtra(DATE, new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(selectDate.getDate()));
+                    intent.putExtra(DATE, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(selectDate.getDate()));
                     setResult(RESULT_OK, intent);
                     finish();
                 } else {
