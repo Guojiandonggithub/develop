@@ -141,6 +141,7 @@ public class HiddenDangerAcceptanceActivity extends BaseActivity {
         params.put("recheckPersonName",etAddLocation.getText().toString());
         Log.e(TAG, "addRecheck: 隐患验收参数==="+params);
         getLoadingDialog("正在连接服务器...  ").show();
+
         netClient.post(Data.getInstance().getIp()+Constants.ADD_RECHECK, params, new BaseJsonRes() {
 
             @Override
@@ -151,6 +152,7 @@ public class HiddenDangerAcceptanceActivity extends BaseActivity {
                     if (!TextUtils.isEmpty(data)) {
                         Utils.showShortToast(HiddenDangerAcceptanceActivity.this, "验收成功");
                     }
+                    setResult(RESULT_OK);
                     finish();
                 }
             }

@@ -243,6 +243,116 @@ public class ReportRecord implements Constants{
 			Log.e(TAG, "督办记录没有数据");
 		}
 	}
+
+	//隐患下达
+	public void addThreeFixAndConfirm(final Context context) {
+		netClient = new NetClient(context);
+		String confirmStr = Utils.getValue(context,Constants.ADD_THREEFIXANDCONFIRM);
+		Log.e(TAG, "提交隐患下达数据: "+confirmStr);
+		if(!TextUtils.isEmpty(confirmStr)||confirmStr.length()>2){
+			final List<String> confirmList = JSONArray.parseArray(confirmStr, String.class);
+			Log.e(TAG, "confirmList============: "+confirmList);
+			for (final String confirm:confirmList){
+				RequestParams params = new RequestParams();
+				params.put("threeFixJsonData",confirm);
+				netClient.post(Data.getInstance().getIp()+ Constants.ADD_THREEFIXANDCONFIRM, params, new BaseJsonRes() {
+
+					@Override
+					public void onMySuccess(String data) {
+						Log.i(TAG, "隐患下达返回数据：" + data);
+						if (!TextUtils.isEmpty(data)) {
+							confirmList.remove(confirm);
+							String listStr = JSONArray.toJSONString(confirmList);
+							Log.e(TAG, "隐患下达有网时: listStr============"+listStr);
+							Utils.putValue(context,Constants.ADD_THREEFIXANDCONFIRM,listStr);
+						}
+					}
+
+					@Override
+					public void onMyFailure(String content) {
+						Log.e(TAG, "提交隐患下达返回错误信息：" + content);
+					}
+				});
+			}
+		}else{
+			Log.e(TAG, "隐患下达没有数据");
+		}
+	}
+
+	//隐患整改
+	public void addCompleterectify(final Context context) {
+		netClient = new NetClient(context);
+		String confirmStr = Utils.getValue(context,Constants.COMPLETERECTIFY);
+		Log.e(TAG, "隐患整改数据: "+confirmStr);
+		if(!TextUtils.isEmpty(confirmStr)||confirmStr.length()>2){
+			final List<String> confirmList = JSONArray.parseArray(confirmStr, String.class);
+			Log.e(TAG, "confirmList============: "+confirmList);
+			for (final String confirm:confirmList){
+                RequestParams params = new RequestParams();
+                params.put("ids", confirm);
+                netClient.post(Data.getInstance().getIp() + Constants.COMPLETERECTIFY, params, new BaseJsonRes() {
+
+                    @Override
+                    public void onMySuccess(String data) {
+                        Log.i(TAG, "完成整改返回数据：" + data);
+                        if (!TextUtils.isEmpty(data)) {
+                            Utils.showShortToast(context, "隐患整改成功！");
+                            confirmList.remove(confirm);
+                            String listStr = JSONArray.toJSONString(confirmList);
+                            Log.e(TAG, "隐患整改有网时: listStr============"+listStr);
+                            Utils.putValue(context,Constants.COMPLETERECTIFY,listStr);
+                        }
+                    }
+
+                    @Override
+                    public void onMyFailure(String content) {
+                        Log.e(TAG, "完成整改返回错误信息：" + content);
+                        Utils.showShortToast(context, content);
+                    }
+                });
+			}
+		}else{
+			Log.e(TAG, "隐患整改没有数据");
+		}
+	}
+
+	//隐患重新下达
+	public void handleoutOverduelist(final Context context) {
+		netClient = new NetClient(context);
+		String confirmStr = Utils.getValue(context,Constants.HANDLEOUT_OVERDUELIST);
+		Log.e(TAG, "隐患重新下达数据: "+confirmStr);
+		if(!TextUtils.isEmpty(confirmStr)||confirmStr.length()>2){
+			final List<String> confirmList = JSONArray.parseArray(confirmStr, String.class);
+			Log.e(TAG, "confirmList============: "+confirmList);
+			for (final String confirm:confirmList){
+				RequestParams params = new RequestParams();
+				params.put("ids", confirm);
+				netClient.post(Data.getInstance().getIp() + Constants.HANDLEOUT_OVERDUELIST, params, new BaseJsonRes() {
+					@Override
+					public void onMySuccess(String data) {
+						Log.i(TAG, "隐逾期患重新下达返回数据：" + data);
+						if (!TextUtils.isEmpty(data)) {
+							Utils.showShortToast(context, "重新下达成功");
+							confirmList.remove(confirm);
+							String listStr = JSONArray.toJSONString(confirmList);
+							Log.e(TAG, "隐患下达有网时: listStr============"+listStr);
+							Utils.putValue(context,Constants.HANDLEOUT_OVERDUELIST,listStr);
+						}
+					}
+
+					@Override
+					public void onMyFailure(String content) {
+						Log.e(TAG, "隐逾期患重新下达返回错误信息：" + content);
+						Utils.showShortToast(context, content);
+						return;
+					}
+				});
+			}
+		}else{
+			Log.e(TAG, "隐患重新下达没有数据");
+		}
+	}
+
 }
 
 /*

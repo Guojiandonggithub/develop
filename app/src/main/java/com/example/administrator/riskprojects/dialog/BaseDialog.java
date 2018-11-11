@@ -40,7 +40,7 @@ public class BaseDialog extends Dialog implements
 		initViews();
 		initEvents();
 		setCancelable(true);
-		setCanceledOnTouchOutside(true);
+		setCanceledOnTouchOutside(false);
 	}
 
 	private void initViews() {

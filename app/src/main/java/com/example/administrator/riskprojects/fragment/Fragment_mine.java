@@ -20,6 +20,8 @@ import com.example.administrator.riskprojects.activity.ChangePasswordActivity;
 import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.activity.PersonInfoEditActivity;
 import com.example.administrator.riskprojects.bean.UserInfo;
+import com.example.administrator.riskprojects.common.NetUtil;
+import com.example.administrator.riskprojects.dialog.FlippingLoadingDialog;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
@@ -35,7 +37,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Fragment_mine extends Fragment {
+public class Fragment_mine extends Fragment{
     private static final String TAG = "Fragment_mine";
     // 我的
     private Activity ctx;
@@ -51,7 +53,7 @@ public class Fragment_mine extends Fragment {
     private TextView mTvBleSdk;
     private TextView mTvDataUpdate;
     protected NetClient netClient;
-
+    protected FlippingLoadingDialog mLoadingDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -171,12 +173,16 @@ public class Fragment_mine extends Fragment {
                         }else{
                             Utils.showShortToast(getActivity(), "没有获取到人员信息");
                         }
+                    getLoadingDialog("正在请求数据...  ").dismiss();
+                    Utils.showShortToast(getActivity(), "请求数据完成");
                 }
 
                 @Override
                 public void onMyFailure(String content) {
                     Log.e(TAG, "获取部门/队组成员返回错误信息：" + content);
                     Utils.showShortToast(getActivity(), content);
+                    getLoadingDialog("正在请求数据...  ").dismiss();
+                    Utils.showShortToast(getActivity(), "请求数据失败");
                 }
             });
         }
@@ -371,13 +377,16 @@ public class Fragment_mine extends Fragment {
                 if (!TextUtils.isEmpty(data)) {
                     Utils.putValue(getActivity(), "checkContent", data);
                 }
-
+                getLoadingDialog("正在请求数据...  ").dismiss();
+                Utils.showShortToast(getActivity(), "请求数据完成");
             }
 
             @Override
             public void onMyFailure(String content) {
                 Log.e(TAG, "获取检查内容返回错误信息：" + content);
                 Utils.showShortToast(getActivity(), content);
+                getLoadingDialog("正在请求数据...  ").dismiss();
+                Utils.showShortToast(getActivity(), "请求数据失败");
             }
         });
     }
@@ -397,7 +406,6 @@ public class Fragment_mine extends Fragment {
         getCollieryTeam();
         getEmployeeList();
     }
-
 
     // 多选提示框
     private AlertDialog alertDialog3;
@@ -439,17 +447,19 @@ public class Fragment_mine extends Fragment {
                 if(list.size()==0){
                     Toast.makeText(getActivity(), "请勾选其中一项", Toast.LENGTH_SHORT).show();
                 }else{
-                    Utils.showShortToast(getActivity(), "请求数据开始");
-                    if(list.size()==2){
-                        getBaseData();
-                        getEmployeeData();
-                    }else if(list.get(0)=="基础数据"){
-                        getBaseData();
+                    if (!NetUtil.checkNetWork(getContext())) {
+                        Toast.makeText(getActivity(), "没有联网，无法获取基础数据", Toast.LENGTH_SHORT).show();
                     }else{
-                        getEmployeeData();
+                        getLoadingDialog("正在请求数据...  ").show();
+                        if(list.size()==2){
+                            getBaseData();
+                            getEmployeeData();
+                        }else if(list.get(0)=="基础数据"){
+                            getBaseData();
+                        }else{
+                            getEmployeeData();
+                        }
                     }
-                    Utils.showShortToast(getActivity(), "请求数据完成");
-                    // 关闭提示框
                     alertDialog3.dismiss();
                 }
             }
@@ -466,6 +476,13 @@ public class Fragment_mine extends Fragment {
         });
         alertDialog3 = alertDialogBuilder.create();
         alertDialog3.show();
+    }
+
+
+    public FlippingLoadingDialog getLoadingDialog(String msg) {
+        if (mLoadingDialog == null)
+            mLoadingDialog = new FlippingLoadingDialog(getActivity(), msg);
+        return mLoadingDialog;
     }
 
 }

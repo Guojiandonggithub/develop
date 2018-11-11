@@ -115,6 +115,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
     protected NetClient netClient;
     private HiddenDangerRecord record = new HiddenDangerRecord();
     private String id;
+    private String offlineStatus;
     private String imagegroup;
     private AddPicAdapter picAdapter;
     private TimePickerView mTimePicker;
@@ -239,9 +240,10 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 HiddenDangerRecord records = getHiddenDangerRecord();
                 String flag = "add";
                 Log.e(TAG, "id==========================: "+id);
-                if (!TextUtils.isEmpty(id)) {
+                if (!TextUtils.isEmpty(id)||null!=offlineStatus) {
                     flag = "update";
                     records.setId(id);
+                    records.setOfflineDataStatus(record.getOfflineDataStatus());
                     String userid = UserUtils.getUserID(HiddenRiskRecordAddEditActivity.this);
                     String roleids = UserUtils.getUserRoleids(HiddenRiskRecordAddEditActivity.this);
                     if(record.getEmployeeId().equals(userid)||roleids.equals("1")){
@@ -263,28 +265,6 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         });
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        recyclerView.setAdapter(picAdapter = new AddPicAdapter(paths,picid));
-        picAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position, int flag) {
-                if (position == paths.size()) {
-                    /** * 图片多选 * @param limit 最多选择图片张数的限制 **/
-                    //
-                    showSelectDialog();
-                } else {
-                    startActivity(
-                            new Intent(HiddenRiskRecordAddEditActivity.this,
-                                    ViewBIgPicActivity.class).putExtra("url"
-                                    , paths.get(position)));
-
-                }
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, int position) {
-                return false;
-            }
-        });
     }
 
     private void showSelectDialog() {
@@ -352,7 +332,8 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
     private void initdata() {
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
-        if (!TextUtils.isEmpty(id)) {
+        offlineStatus = intent.getStringExtra("offlineStatus");
+        if (!TextUtils.isEmpty(id)||null!=offlineStatus) {
             Bundle bundle = intent.getBundleExtra("recordBund");
             record = (HiddenDangerRecord) bundle.getSerializable("hiddenDangerRecord");
             //String hiddenrecordjson = getIntent().getStringExtra("hiddenrecordjson");
@@ -379,6 +360,32 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
             String ishandle = record.getIshandle();
             spIsHandleAdapter.notifyDataSetChanged();
             spIsHandle.setSelection(Integer.parseInt(ishandle));
+            if(record.getPicList()!=null){
+                updatepaths.addAll(record.getPicList());
+                paths = record.getPicList();
+            }
+            recyclerView.setAdapter(picAdapter = new AddPicAdapter(paths,picid));
+            picAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position, int flag) {
+                    if (position == paths.size()) {
+                        /** * 图片多选 * @param limit 最多选择图片张数的限制 **/
+                        //
+                        showSelectDialog();
+                    } else {
+                        startActivity(
+                                new Intent(HiddenRiskRecordAddEditActivity.this,
+                                        ViewBIgPicActivity.class).putExtra("url"
+                                        , paths.get(position)));
+
+                    }
+                }
+
+                @Override
+                public boolean onItemLongClick(View view, int position) {
+                    return false;
+                }
+            });
         }else{
             Calendar cal = Calendar.getInstance();
             //当前时：HOUR_OF_DAY-24小时制；HOUR-12小时制
@@ -742,6 +749,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         tvOk.setClickable(false);
         List<File> fileList = new ArrayList();
         RequestParams params = new RequestParams();
+        getLoadingDialog("正在连接服务器...  ").show();
         try {
             if(!TextUtils.isEmpty(record.getImageGroup())){
                 params.put("imgGrop/"+record.getImageGroup(), "imgGrop/"+record.getImageGroup());

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONArray;
 import com.example.administrator.riskprojects.OnItemClickListener;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.Data;
@@ -30,6 +31,7 @@ import com.example.administrator.riskprojects.tools.Utils;
 import com.example.administrator.riskprojects.view.MyAlertDialog;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //隐患跟踪路由
@@ -96,6 +98,7 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
                                 new MyAlertDialog.DialogListener() {
                                     @Override
                                     public void affirm() {
+                                        Log.e(TAG, "position======================: "+position);
                                         handleOutTime(threeFix.getId(), position);
                                     }
 
@@ -226,9 +229,21 @@ public class HiddenDangeMuitipleAdapter extends RecyclerView.Adapter {
 
         //隐逾期患重新下达
         private void handleOutTime(String id, final int position) {//隐患id
-            if (NetUtil.checkNetWork(context)) {
-                RequestParams params = new RequestParams();
-                params.put("ids", id);
+            RequestParams params = new RequestParams();
+            params.put("ids", id);
+            if (!NetUtil.checkNetWork(context)) {
+                List<String> handleoutOverduelist = new ArrayList();
+                String handleoutOverdueListStr = Utils.getValue(context,Constants.HANDLEOUT_OVERDUELIST);
+                if(!TextUtils.isEmpty(handleoutOverdueListStr)){
+                    handleoutOverduelist = JSONArray.parseArray(handleoutOverdueListStr, String.class);
+                }
+                handleoutOverduelist.add(id);
+                String listStr = JSONArray.toJSONString(handleoutOverduelist);
+                Log.e(TAG, "隐患重新下达没网时: listStr============"+listStr);
+                Utils.putValue(context,Constants.HANDLEOUT_OVERDUELIST,listStr);
+                Utils.showShortToast(context, Constants.SAVE_DATA);
+                notifyItemRemoved(position);
+            }else{
                 netClient.post(Data.getInstance().getIp() + Constants.HANDLEOUT_OVERDUELIST, params, new BaseJsonRes() {
                     @Override
                     public void onMySuccess(String data) {

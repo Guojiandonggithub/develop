@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.bean.ThreeFix;
 import com.example.administrator.riskprojects.bean.UploadPic;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
 
 public class NetClient {
 	private static final String TAG = "NetClient";
@@ -121,6 +123,21 @@ public class NetClient {
 			case Constants.MAIN_ENGINE+Constants.ADD_SUPERVISIONRECORD://添加督办记录
 				addDubanRecord(param);
 				break;
+			case Constants.MAIN_ENGINE+Constants.ADD_THREEFIXANDCONFIRM://隐患下达
+				addThreeFixAndConfirm(param);
+				break;
+			case Constants.MAIN_ENGINE+Constants.COMPLETERECTIFY://隐患整改
+				addCompleterectify(param);
+				break;
+			case Constants.MAIN_ENGINE+Constants.HANDLEOUT_OVERDUELIST://隐患重新下达
+				handleoutOverduelist(param);
+				break;
+			case Constants.MAIN_ENGINE+Constants.UPDATE_HIDDENDANGERRECORD://隐患修改
+				updateHiddenRecord(param);
+				break;
+			case Constants.MAIN_ENGINE+Constants.DELETE_HIDDEN://隐患修改
+				deleteHiddenRecord(param);
+				break;
 			default:
 				Utils.showShortToast(context, Constants.NET_ERROR);
 				break;
@@ -134,7 +151,59 @@ public class NetClient {
 			recordList = JSONArray.parseArray(hiddenRecord, HiddenDangerRecord.class);
 		}
 		HiddenDangerRecord record = JSONArray.parseObject(param.split("=")[1], HiddenDangerRecord.class);
+		record.setOfflineDataStatus(UUID.randomUUID().toString());
 		recordList.add(record);
+		String listStr = JSONArray.toJSONString(recordList);
+		Log.e(TAG, "隐患上报没网时: listStr============"+listStr);
+		Utils.putValue(context,Constants.ADDHIDDENRECORD,listStr);
+		Utils.showShortToast(context, Constants.SAVE_DATA);
+		Activity activity = findActivity(context);
+		activity.finish();
+	}
+
+	private void updateHiddenRecord(String param){
+		List<HiddenDangerRecord> recordList = new ArrayList<>();
+		String hiddenRecord = Utils.getValue(context,Constants.ADDHIDDENRECORD);
+		if(!TextUtils.isEmpty(hiddenRecord)){
+			recordList = JSONArray.parseArray(hiddenRecord, HiddenDangerRecord.class);
+		}
+		HiddenDangerRecord record = JSONArray.parseObject(param.split("=")[1], HiddenDangerRecord.class);
+		String offlineStr = record.getOfflineDataStatus();
+		if(!TextUtils.isEmpty(offlineStr)){
+			for(int i=0;i<recordList.size();i++){
+				if(recordList.get(i).getOfflineDataStatus().equals(offlineStr)){
+					recordList.remove(recordList.get(i));
+					recordList.add(record);
+				}
+			}
+		}else{
+			Utils.showShortToast(context, Constants.NET_ERROR);
+		}
+		String listStr = JSONArray.toJSONString(recordList);
+		Log.e(TAG, "隐患上报没网时: listStr============"+listStr);
+		Utils.putValue(context,Constants.ADDHIDDENRECORD,listStr);
+		Utils.showShortToast(context, Constants.SAVE_DATA);
+		Activity activity = findActivity(context);
+		activity.finish();
+	}
+
+	private void deleteHiddenRecord(String param){
+		List<HiddenDangerRecord> recordList = new ArrayList<>();
+		String hiddenRecord = Utils.getValue(context,Constants.ADDHIDDENRECORD);
+		if(!TextUtils.isEmpty(hiddenRecord)){
+			recordList = JSONArray.parseArray(hiddenRecord, HiddenDangerRecord.class);
+		}
+		Map<String,String> map = getParameters(param);
+		String offlineDataStatus = map.get("offlineDataStatus");
+		if(!TextUtils.isEmpty(offlineDataStatus)){
+			for(int i=0;i<recordList.size();i++){
+				if(recordList.get(i).getOfflineDataStatus().equals(offlineDataStatus)){
+					recordList.remove(recordList.get(i));
+				}
+			}
+		}else{
+			Utils.showShortToast(context, Constants.NET_ERROR);
+		}
 		String listStr = JSONArray.toJSONString(recordList);
 		Log.e(TAG, "隐患上报没网时: listStr============"+listStr);
 		Utils.putValue(context,Constants.ADDHIDDENRECORD,listStr);
@@ -162,6 +231,7 @@ public class NetClient {
 		Utils.putValue(context,Constants.ADDRECHECK,listStr);
 		Utils.showShortToast(context, Constants.SAVE_DATA);
 		Activity activity = findActivity(context);
+		activity.setResult(activity.RESULT_OK);
 		activity.finish();
 	}
 
@@ -173,7 +243,38 @@ public class NetClient {
 		}
 		Map<String,String> map = getParameters(param);
 		UploadPic uploadPic = new UploadPic();
-		uploadPic.setRecord(map.get("record"));
+        HiddenDangerRecord record = JSONArray.parseObject(map.get("record"), HiddenDangerRecord.class);
+		String offlineStr = record.getOfflineDataStatus();
+		Log.e(TAG, "offlineStr======================: "+offlineStr);
+		if(!TextUtils.isEmpty(offlineStr)){
+			for (int i=0;i<uploadPics.size();i++){
+				HiddenDangerRecord offlinerecord = JSONArray.parseObject(uploadPics.get(i).getRecord(), HiddenDangerRecord.class);
+				if(offlinerecord.getOfflineDataStatus().equals(offlineStr)){
+					uploadPics.remove(uploadPics.get(i));
+				}
+			}
+		}else{
+			Utils.showShortToast(context, Constants.NET_ERROR);
+		}
+		List<HiddenDangerRecord> recordList = new ArrayList<>();
+		String hiddenRecord = Utils.getValue(context,Constants.ADDHIDDENRECORD);
+		if(!TextUtils.isEmpty(hiddenRecord)){
+			recordList = JSONArray.parseArray(hiddenRecord, HiddenDangerRecord.class);
+		}
+		if(!TextUtils.isEmpty(offlineStr)){
+			for(int i=0;i<recordList.size();i++){
+				Log.e(TAG, "recordList======================: "+recordList.get(i).getOfflineDataStatus());
+				if(recordList.get(i).getOfflineDataStatus().equals(offlineStr)){
+					Log.e(TAG, "offlineStr======================: "+recordList.get(i).getOfflineDataStatus());
+					recordList.remove(recordList.get(i));
+				}
+			}
+			String tempStr = JSONArray.toJSONString(recordList);
+			Log.e(TAG, "隐患上报没网时: listStr============"+tempStr);
+			Utils.putValue(context,Constants.ADDHIDDENRECORD,tempStr);
+		}
+		record.setOfflineDataStatus(UUID.randomUUID().toString());
+		uploadPic.setRecord(JSONObject.toJSONString(record));
 		String fileurl = map.get("fileurl");
 		List<String> fileList = JSONArray.parseArray(fileurl,String.class);
 		uploadPic.setFileList(fileList);
@@ -214,6 +315,58 @@ public class NetClient {
 		String listStr = JSONArray.toJSONString(dubanList);
 		Log.e(TAG, "打卡记录没网时: listStr============"+listStr);
 		Utils.putValue(context,Constants.ADD_SUPERVISIONRECORD,listStr);
+		Utils.showShortToast(context, Constants.SAVE_DATA);
+		Activity activity = findActivity(context);
+		activity.finish();
+	}
+
+	private void addThreeFixAndConfirm(String param){
+		List<ThreeFix> confirmList = new ArrayList();
+		String confirmListStr = Utils.getValue(context,Constants.ADD_THREEFIXANDCONFIRM);
+		if(!TextUtils.isEmpty(confirmListStr)){
+			confirmList = JSONArray.parseArray(confirmListStr, ThreeFix.class);
+		}
+		Map<String,String> map = getParameters(param);
+		String str = map.get("threeFixJsonData");
+		ThreeFix threeFix = JSONObject.parseObject(str,ThreeFix.class);
+		confirmList.add(threeFix);
+		String listStr = JSONArray.toJSONString(confirmList);
+		Log.e(TAG, "隐患下达没网时: listStr============"+listStr);
+		Utils.putValue(context,Constants.ADD_THREEFIXANDCONFIRM,listStr);
+		Utils.showShortToast(context, Constants.SAVE_DATA);
+		Activity activity = findActivity(context);
+		activity.finish();
+	}
+
+	private void addCompleterectify(String param){
+		List<String> completerectifyList = new ArrayList();
+		String completerectifyListStr = Utils.getValue(context,Constants.COMPLETERECTIFY);
+		if(!TextUtils.isEmpty(completerectifyListStr)){
+			completerectifyList = JSONArray.parseArray(completerectifyListStr, String.class);
+		}
+		Map<String,String> map = getParameters(param);
+		String str = map.get("ids");
+		completerectifyList.add(str);
+		String listStr = JSONArray.toJSONString(completerectifyList);
+		Log.e(TAG, "隐患整改没网时: listStr============"+listStr);
+		Utils.putValue(context,Constants.COMPLETERECTIFY,listStr);
+		Utils.showShortToast(context, Constants.SAVE_DATA);
+		Activity activity = findActivity(context);
+		activity.finish();
+	}
+
+	private void handleoutOverduelist(String param){
+		List<String> handleoutOverduelist = new ArrayList();
+		String handleoutOverdueListStr = Utils.getValue(context,Constants.HANDLEOUT_OVERDUELIST);
+		if(!TextUtils.isEmpty(handleoutOverdueListStr)){
+			handleoutOverduelist = JSONArray.parseArray(handleoutOverdueListStr, String.class);
+		}
+		Map<String,String> map = getParameters(param);
+		String str = map.get("ids");
+		handleoutOverduelist.add(str);
+		String listStr = JSONArray.toJSONString(handleoutOverduelist);
+		Log.e(TAG, "隐患重新下达没网时: listStr============"+listStr);
+		Utils.putValue(context,Constants.HANDLEOUT_OVERDUELIST,listStr);
 		Utils.showShortToast(context, Constants.SAVE_DATA);
 		Activity activity = findActivity(context);
 		activity.finish();
@@ -271,4 +424,5 @@ public class NetClient {
 			return null;
 		}
 	}
+
 }

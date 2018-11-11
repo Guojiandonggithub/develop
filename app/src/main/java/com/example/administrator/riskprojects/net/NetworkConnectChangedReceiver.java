@@ -119,11 +119,14 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver {
 	}
 
 	private void reportDataDao(Context context){
-		new ReportRecord().addRecheck(context);
-		new ReportRecord().addHiddenPic(context);
-		new ReportRecord().addAddhiddenrecord(context);
-		new ReportRecord().addCardRecord(context);
-		new ReportRecord().addDubanRecord(context);
+		new ReportRecord().addRecheck(context);//隐患复查
+		new ReportRecord().addHiddenPic(context);//添加图片
+		new ReportRecord().addAddhiddenrecord(context);//添加隐患
+		new ReportRecord().addCardRecord(context);//打卡记录
+		new ReportRecord().addDubanRecord(context);//督办记录
+		new ReportRecord().addThreeFixAndConfirm(context);//隐患下达
+		new ReportRecord().addCompleterectify(context);//隐患整改
+		new ReportRecord().handleoutOverduelist(context);//重新下达
 	}
 
 }

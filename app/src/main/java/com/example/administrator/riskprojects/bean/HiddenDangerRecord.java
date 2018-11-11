@@ -1,6 +1,7 @@
 package com.example.administrator.riskprojects.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class HiddenDangerRecord implements Serializable{
 	private String id;//主键ID
@@ -98,6 +99,8 @@ public class HiddenDangerRecord implements Serializable{
 	private String follingTeamName; // 跟踪人单位名称
 	private String checkPerson; // 跟踪人单位名称
 	private String imageGroup; // 跟踪人单位名称
+	private String offlineDataStatus; // 离线状态
+	private List<String> picList; // 离线隐患图片列表
 
 	public boolean isExpands() {
 		return expands;
@@ -855,4 +858,22 @@ public class HiddenDangerRecord implements Serializable{
 	public void setImageGroup(String imageGroup) {
 		this.imageGroup = imageGroup;
 	}
+
+	public void setOfflineDataStatus(String offlineDataStatus) {
+		this.offlineDataStatus = offlineDataStatus;
+	}
+
+	public List<String> getPicList() {
+		return picList;
+	}
+
+	public void setPicList(List<String> picList) {
+		this.picList = picList;
+	}
+
+	public String getOfflineDataStatus() {
+		return offlineDataStatus;
+	}
+
+
 }

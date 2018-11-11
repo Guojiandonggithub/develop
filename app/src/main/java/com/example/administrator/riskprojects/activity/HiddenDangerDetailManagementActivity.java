@@ -84,7 +84,6 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
         netClient = new NetClient(HiddenDangerDetailManagementActivity.this);
         initView();
         setView();
-        initdata();
     }
 
     private void setView() {
@@ -106,6 +105,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
             txtTitle.setText(R.string.hidden_danger_record_management);
             Bundle bundle = intent.getBundleExtra("recordBund");
             record = (HiddenDangerRecord) bundle.getSerializable("hiddenDangerRecord");
+            initdata();
         }
         tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,6 +153,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                 intents.putExtra("recordBund", bundle);
                 //intents.putExtra("hiddenrecordjson", hiddenrecordjson);
                 intents.putExtra("id", record.getId());
+                intents.putExtra("offlineStatus", record.getOfflineDataStatus());
                 startActivityForResult(intents,RESULT_FIRST_USER);
             }
         });
@@ -240,6 +241,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
                     JSONObject returndata = JSON.parseObject(data);
                     hiddenrecordjson = data;
                     record = JSONArray.parseObject(data, HiddenDangerRecord.class);
+                    initdata();
                 }
             }
 
@@ -253,6 +255,9 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
     }
 
     private void getHiddenRecord() {//隐患id String id
+        if(record.getFlag()==null){
+            record.setFlag("0");
+        }
         if(record.getFlag().equals("0")||record.getFlag().equals("4")){
             tvAdd.setVisibility(View.GONE);
         }
@@ -307,12 +312,22 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
         tvAcceptanceOfTheResults.setText(recheckresult);
         tvOversee.setText(isuper);
         tvCheckTheContent.setText(record.getHiddenCheckContent());
-        getPicList(record.getImageGroup());
+        if(!TextUtils.isEmpty(record.getOfflineDataStatus())){
+            txtRight.setText("未上报");
+        }
+        if(record.getPicList()!=null){
+            recyclerView.setAdapter(new PicAdapter(record.getPicList()));
+        }else{
+            getPicList(record.getImageGroup());
+        }
     }
 
     //删除隐患
     private void deleteHiddenRecord(String id) {//隐患id
         RequestParams params = new RequestParams();
+        if(!TextUtils.isEmpty(record.getOfflineDataStatus())){
+            params.put("offlineDataStatus", record.getOfflineDataStatus());
+        }
         params.put("hiddenDangerRecordId", id);
         netClient.post(Data.getInstance().getIp() + Constants.DELETE_HIDDEN, params, new BaseJsonRes() {
 

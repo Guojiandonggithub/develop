@@ -30,6 +30,7 @@ import java.util.List;
  * 隐患验收
  */
 public class HiddenDangerReviewManagementActivity extends BaseActivity {
+    public static final int REQUEST_CODE = 1024;
     private static final String TAG = "HiddenDangerReviewManag";
     private TextView mTxtLeft;
     private ImageView mImgLeft;
@@ -112,7 +113,8 @@ public class HiddenDangerReviewManagementActivity extends BaseActivity {
                 intent.putExtra("description",threeFix.getDescription());
                 intent.putExtra("recheckPersonId",threeFix.getRecheckPersonId());
                 intent.putExtra("recheckPersonName",threeFix.getRecheckPersonName());
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE);
+                //startActivity(intent);
             }
         });
 
@@ -190,4 +192,13 @@ public class HiddenDangerReviewManagementActivity extends BaseActivity {
             Utils.showShortToast(HiddenDangerReviewManagementActivity.this, e.toString());
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            finish();
+        }
+    }
+
 }

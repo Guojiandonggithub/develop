@@ -66,22 +66,24 @@ public class AddPicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                     paths.remove(position);
                                     notifyItemRemoved(position);
                                     notifyItemRangeChanged(position, getItemCount()-position);
-                                    if(!picid.get(position).equals("")){
-                                        RequestParams params = new RequestParams();
-                                        netClient = new NetClient(holder.itemView.getContext());
-                                        params.put("imageId",picid.get(position));
-                                        netClient.post(Data.getInstance().getIp()+Constants.DELETE_HIDDENPIC, params, new BaseJsonRes() {
+                                    if(picid.size()>0){
+                                        if(!picid.get(position).equals("")){
+                                            RequestParams params = new RequestParams();
+                                            netClient = new NetClient(holder.itemView.getContext());
+                                            params.put("imageId",picid.get(position));
+                                            netClient.post(Data.getInstance().getIp()+Constants.DELETE_HIDDENPIC, params, new BaseJsonRes() {
 
-                                            @Override
-                                            public void onMySuccess(String data) {
-                                                Log.e(TAG, "data===============: "+data);
-                                            }
+                                                @Override
+                                                public void onMySuccess(String data) {
+                                                    Log.e(TAG, "data===============: "+data);
+                                                }
 
-                                            @Override
-                                            public void onMyFailure(String content) {
-                                                Utils.showShortToast(holder.itemView.getContext(), content);
-                                            }
-                                        });
+                                                @Override
+                                                public void onMyFailure(String content) {
+                                                    Utils.showShortToast(holder.itemView.getContext(), content);
+                                                }
+                                            });
+                                        }
                                     }
                                 }
 

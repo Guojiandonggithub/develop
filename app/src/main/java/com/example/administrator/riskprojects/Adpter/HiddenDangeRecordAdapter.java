@@ -47,8 +47,8 @@ public class HiddenDangeRecordAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).tvProfessional.setText(recordList.get(position).getSname());
         ((ViewHolder) holder).tvArea.setText(recordList.get(position).getAreaName());
         ((ViewHolder) holder).tvClasses.setText(recordList.get(position).getJbName());
-        ((ViewHolder) holder).ivStatus.setImageResource(getImageResourceByFlag(recordList.get(position).getFlag(),recordList.get(position).getOutTimeFlag()));
-        ((ViewHolder) holder).ivStatusSecond.setImageResource(getImageResourceByFlag(recordList.get(position).getFlag(),recordList.get(position).getOutTimeFlag()));
+        ((ViewHolder) holder).ivStatus.setImageResource(getImageResourceByFlag(recordList.get(position).getFlag()==null?"0":recordList.get(position).getFlag(),recordList.get(position).getOutTimeFlag()));
+        ((ViewHolder) holder).ivStatusSecond.setImageResource(getImageResourceByFlag(recordList.get(position).getFlag()==null?"0":recordList.get(position).getFlag(),recordList.get(position).getOutTimeFlag()));
         String isuper = recordList.get(position).getIsupervision();
         if (TextUtils.isEmpty(isuper) || TextUtils.equals(isuper, "0")) {
             isuper = "未挂牌";

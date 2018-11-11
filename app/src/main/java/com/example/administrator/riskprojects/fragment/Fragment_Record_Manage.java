@@ -40,6 +40,7 @@ import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
 import com.example.administrator.riskprojects.bean.SelectItem;
 import com.example.administrator.riskprojects.bean.Specialty;
 import com.example.administrator.riskprojects.bean.ThreeFix;
+import com.example.administrator.riskprojects.bean.UploadPic;
 import com.example.administrator.riskprojects.common.NetUtil;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
@@ -325,6 +326,38 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
             if("".equals(jsondata)){
                 Utils.showShortToast(getContext(), "没有联网，没有请求到数据");
             }else{
+                String addHiddenRecordStr = Utils.getValue(getActivity(), Constants.ADDHIDDENRECORD);
+                String addPicStr = Utils.getValue(getActivity(), Constants.ADDPIC);
+                if(!"".equals(addHiddenRecordStr)) {
+                    JSONObject returndata = JSON.parseObject(jsondata);
+                    String rows = returndata.getString("rows");
+                    List<HiddenDangerRecord> offlineHiddenDangerRecordList = JSONArray.parseArray(rows, HiddenDangerRecord.class);
+                    List<HiddenDangerRecord> hiddenDangerRecordList = JSONArray.parseArray(addHiddenRecordStr, HiddenDangerRecord.class);
+                    hiddenDangerRecordList.addAll(offlineHiddenDangerRecordList);
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("rows",hiddenDangerRecordList);
+                    map.put("page",Constants.PAGE);
+                    map.put("totalPage",hiddenDangerRecordList.size());
+                    jsondata = JSONArray.toJSONString(map);
+                }
+                if(!"".equals(addPicStr)) {
+                    List<HiddenDangerRecord> hiddenDangerRecordList = new ArrayList<>();
+                    List<UploadPic> picList = JSONArray.parseArray(addPicStr, UploadPic.class);
+                    for(int i=0;i<picList.size();i++){
+                        HiddenDangerRecord hiddenDangerRecord = JSONObject.parseObject(picList.get(i).getRecord(),HiddenDangerRecord.class);
+                        hiddenDangerRecord.setPicList(picList.get(i).getFileList());
+                        hiddenDangerRecordList.add(hiddenDangerRecord);
+                    }
+                    JSONObject returndata = JSON.parseObject(jsondata);
+                    String rows = returndata.getString("rows");
+                    List<HiddenDangerRecord> offlineHiddenDangerRecordList = JSONArray.parseArray(rows, HiddenDangerRecord.class);
+                    hiddenDangerRecordList.addAll(offlineHiddenDangerRecordList);
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("rows",hiddenDangerRecordList);
+                    map.put("page",Constants.PAGE);
+                    map.put("totalPage",hiddenDangerRecordList.size());
+                    jsondata = JSONArray.toJSONString(map);
+                }
                 resultHiddenReord(jsondata);
             }
         }else{
@@ -423,7 +456,9 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
             if("".equals(jsondata)){
                 Utils.showShortToast(getContext(), "没有联网，没有请求到数据");
             }else{
-                resultHiddenThreeFix(jsondata);
+                String confirmListStr = Utils.getValue(getActivity(), Constants.ADD_THREEFIXANDCONFIRM);
+                String tempListStr = offlineDataConversion(jsondata,confirmListStr,Constants.ADD_THREEFIXANDCONFIRM);
+                resultHiddenThreeFix(tempListStr);
             }
         }else{
             RequestParams params = new RequestParams();
@@ -496,7 +531,9 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
             if("".equals(jsondata)){
                 Utils.showShortToast(getContext(), "没有联网，没有请求到数据");
             }else{
-                resultHiddenThreeFix(jsondata);
+                String rectificationList = Utils.getValue(getActivity(), Constants.COMPLETERECTIFY);
+                String tempListStr = offlineDataConversion(jsondata,rectificationList,Constants.COMPLETERECTIFY);
+                resultHiddenThreeFix(tempListStr);
             }
         }else{
             RequestParams params = new RequestParams();
@@ -673,11 +710,13 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
 
     private void getOverdueList(final String page) {//逾期隐患查询
         if (!NetUtil.checkNetWork(getActivity())) {
-            String jsondata = Utils.getValue(getActivity(), Constants.GET_TRACKINGLIST);
+            String jsondata = Utils.getValue(getActivity(), Constants.GET_OVERDUELIST);
             if("".equals(jsondata)){
                 Utils.showShortToast(getContext(), "没有联网，没有请求到数据");
             }else{
-                resultHiddenThreeFix(jsondata);
+                String overdueList = Utils.getValue(getActivity(), Constants.HANDLEOUT_OVERDUELIST);
+                String tempListStr = offlineDataConversion(jsondata,overdueList,Constants.HANDLEOUT_OVERDUELIST);
+                resultHiddenThreeFix(tempListStr);
             }
         }else{
             RequestParams params = new RequestParams();
@@ -751,7 +790,9 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
             if("".equals(jsondata)){
                 Utils.showShortToast(getContext(), "没有联网，没有请求到数据");
             }else{
-                resultHiddenThreeFix(jsondata);
+                String reviewList = Utils.getValue(getActivity(), Constants.ADDRECHECK);
+                String tempListStr = offlineDataConversion(jsondata,reviewList,Constants.ADDRECHECK);
+                resultHiddenThreeFix(tempListStr);
             }
         }else{
             RequestParams params = new RequestParams();
@@ -936,24 +977,38 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
         if(roleid.equals("1")||threeFixesList.get(position).getEmployeeId().equals(userid)){
             RequestParams params = new RequestParams();
             params.put("ids", threeFixesList.get(position).getId());
-            netClient.post(Data.getInstance().getIp() + Constants.COMPLETERECTIFY, params, new BaseJsonRes() {
+            if (!NetUtil.checkNetWork(getActivity())) {
+                List<String> completerectifyList = new ArrayList();
+                String completerectifyListStr = Utils.getValue(getActivity(),Constants.COMPLETERECTIFY);
+                if(!TextUtils.isEmpty(completerectifyListStr)){
+                    completerectifyList = JSONArray.parseArray(completerectifyListStr, String.class);
+                }
+                completerectifyList.add(threeFixesList.get(position).getId());
+                String listStr = JSONArray.toJSONString(completerectifyList);
+                Log.e(TAG, "隐患整改没网时: listStr============"+listStr);
+                Utils.putValue(getActivity(),Constants.COMPLETERECTIFY,listStr);
+                Utils.showShortToast(getActivity(), Constants.SAVE_DATA);
+                adapter.notifyItemRemoved(position);
+            }else{
+                netClient.post(Data.getInstance().getIp() + Constants.COMPLETERECTIFY, params, new BaseJsonRes() {
 
-                @Override
-                public void onMySuccess(String data) {
-                    Log.i(TAG, "完成整改返回数据：" + data);
-                    if (!TextUtils.isEmpty(data)) {
-                        Utils.showShortToast(ctx, "隐患整改成功！");
-                        threeFixesList.remove(position);
-                        adapter.notifyItemRemoved(position);
+                    @Override
+                    public void onMySuccess(String data) {
+                        Log.i(TAG, "完成整改返回数据：" + data);
+                        if (!TextUtils.isEmpty(data)) {
+                            Utils.showShortToast(ctx, "隐患整改成功！");
+                            threeFixesList.remove(position);
+                            adapter.notifyItemRemoved(position);
+                        }
                     }
-                }
 
-                @Override
-                public void onMyFailure(String content) {
-                    Log.e(TAG, "完成整改返回错误信息：" + content);
-                    Utils.showLongToast(ctx, content);
-                }
-            });
+                    @Override
+                    public void onMyFailure(String content) {
+                        Log.e(TAG, "完成整改返回错误信息：" + content);
+                        Utils.showLongToast(ctx, content);
+                    }
+                });
+            }
         }else{
             Utils.showShortToast(getContext(), "没有权限进行该操作!");
         }
@@ -1402,5 +1457,57 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
             }
         });
         spCheckUnits.setAdapter(spCheckUnitsAdapter);
+    }
+
+    private String offlineDataConversion(String jsondata,String dataListStr,String type){
+        JSONObject returndata = JSON.parseObject(jsondata);
+        String rows = returndata.getString("rows");
+        List<ThreeFix> tempList = JSONArray.parseArray(rows, ThreeFix.class);
+        if(!"".equals(dataListStr)){
+            Log.e(TAG, "jsondata: ======================="+jsondata );
+            Log.e(TAG, "dataListStr: ======================="+dataListStr );
+            if(Constants.COMPLETERECTIFY.equals(type)){
+                List<String> confirmList = JSONArray.parseArray(dataListStr, String.class);
+                for (int i=0;i<tempList.size();i++){
+                    for (int j=0;j<confirmList.size();j++){
+                        if(tempList.get(i).getId().equals(confirmList.get(j))){
+                            tempList.remove(tempList.get(i));
+                        }
+                    }
+                }
+            }else if(Constants.ADD_THREEFIXANDCONFIRM.equals(type)){
+                List<ThreeFix> confirmList = JSONArray.parseArray(dataListStr, ThreeFix.class);
+                for (int i=0;i<tempList.size();i++){
+                    for (int j=0;j<confirmList.size();j++){
+                        if(tempList.get(i).getHiddenDangerId().equals(confirmList.get(j).getHiddenDangerId())){
+                            tempList.remove(tempList.get(i));
+                        }
+                    }
+                }
+            }else if(Constants.HANDLEOUT_OVERDUELIST.equals(type)){
+                List<String> confirmList = JSONArray.parseArray(dataListStr, String.class);
+                for (int i=0;i<tempList.size();i++){
+                    for (int j=0;j<confirmList.size();j++){
+                        if(tempList.get(i).getId().equals(confirmList.get(j))){
+                            tempList.remove(tempList.get(i));
+                        }
+                    }
+                }
+            }else if(Constants.ADDRECHECK.equals(type)){
+                List<ThreeFix> confirmList = JSONArray.parseArray(dataListStr, ThreeFix.class);
+                for (int i=0;i<tempList.size();i++){
+                    for (int j=0;j<confirmList.size();j++){
+                        if(tempList.get(i).getId().equals(confirmList.get(j).getId())){
+                            tempList.remove(tempList.get(i));
+                        }
+                    }
+                }
+            }
+        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("rows",tempList);
+        map.put("page",Constants.PAGE);
+        map.put("totalPage","11");
+        return JSONArray.toJSONString(map);
     }
 }
