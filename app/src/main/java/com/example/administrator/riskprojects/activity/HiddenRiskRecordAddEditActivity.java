@@ -971,7 +971,7 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                             JSONArray jsonArray = JSONArray.parseArray(data);
                             for(int i=0;i<jsonArray.size();i++){
                                 JSONObject job = jsonArray.getJSONObject(i); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-                                paths.add(Constants.MAIN_ENGINE+job.get("imagePath"));
+                                paths.add(Constants.MAIN_ENGINE+"file/"+job.get("imagePath"));
                                 picid.add(job.get("id")+"");
                             }
                             Log.e(TAG, "paths================: "+paths);

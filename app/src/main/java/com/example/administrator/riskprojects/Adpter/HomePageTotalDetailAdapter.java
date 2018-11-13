@@ -1,7 +1,7 @@
 package com.example.administrator.riskprojects.Adpter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONArray;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.activity.HiddenDangerDetailManagementActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
-import com.example.administrator.riskprojects.bean.SupervisionRecord;
 import com.example.administrator.riskprojects.bean.ThreeFix;
 
 import java.util.List;
@@ -61,6 +61,16 @@ public class HomePageTotalDetailAdapter extends RecyclerView.Adapter {
             findClass = hiddenDangerRecordList.get(position).getClassName();
             hiddenType = hiddenDangerRecordList.get(position).getTname();
             area = hiddenDangerRecordList.get(position).getAreaName();
+            ((HomePageTotalDetailAdapter.ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(holder.itemView.getContext(),
+                            HiddenDangerDetailManagementActivity.class);
+                    intent.putExtra("id",hiddenDangerRecordList.get(position).getId());
+                    intent.putExtra("hiddenriskrecorddetail",hiddenDangerRecordList.get(position).getId());
+                    holder.itemView.getContext().startActivity(intent);
+                }
+            });
         }else{
             hiddenContent = threeFixList.get(position).getContent();
             nameOfTheProfessional = threeFixList.get(position).getSname();
@@ -71,6 +81,16 @@ public class HomePageTotalDetailAdapter extends RecyclerView.Adapter {
             findClass = threeFixList.get(position).getClassName();
             hiddenType = threeFixList.get(position).getTname();
             area = threeFixList.get(position).getAreaName();
+            ((HomePageTotalDetailAdapter.ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(holder.itemView.getContext(),
+                            HiddenDangerDetailManagementActivity.class);
+                    intent.putExtra("id",threeFixList.get(position).getHiddenDangerId());
+                    intent.putExtra("hiddenriskrecorddetail",threeFixList.get(position).getHiddenDangerId());
+                    holder.itemView.getContext().startActivity(intent);
+                }
+            });
         }
 
         ((ViewHolder) holder).tvHiddenContent.setText(hiddenContent);
