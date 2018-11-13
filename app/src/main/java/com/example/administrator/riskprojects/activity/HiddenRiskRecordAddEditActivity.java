@@ -333,7 +333,9 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
         offlineStatus = intent.getStringExtra("offlineStatus");
+        Log.e(TAG, "offlineStatus=============: "+offlineStatus+"id========"+id);
         if (!TextUtils.isEmpty(id)||null!=offlineStatus) {
+            Log.e(TAG, "offlineStatus=============: "+offlineStatus+"id========"+id);
             Bundle bundle = intent.getBundleExtra("recordBund");
             record = (HiddenDangerRecord) bundle.getSerializable("hiddenDangerRecord");
             //String hiddenrecordjson = getIntent().getStringExtra("hiddenrecordjson");
@@ -364,39 +366,60 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
                 updatepaths.addAll(record.getPicList());
                 paths = record.getPicList();
             }
-            recyclerView.setAdapter(picAdapter = new AddPicAdapter(paths,picid));
-            picAdapter.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position, int flag) {
-                    if (position == paths.size()) {
-                        /** * 图片多选 * @param limit 最多选择图片张数的限制 **/
-                        //
-                        showSelectDialog();
-                    } else {
-                        startActivity(
-                                new Intent(HiddenRiskRecordAddEditActivity.this,
-                                        ViewBIgPicActivity.class).putExtra("url"
-                                        , paths.get(position)));
-
-                    }
-                }
-
-                @Override
-                public boolean onItemLongClick(View view, int position) {
-                    return false;
-                }
-            });
         }else{
             Calendar cal = Calendar.getInstance();
+            int year = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH);
+            if (month < 10) {
+                String monthstr = "0" + month;
+                month = Integer.parseInt(monthstr);
+            }
+            int date = cal.get(Calendar.DATE);
+            String fname = year + "-" + (month + 1) + "-" + date;
+            tvDate.setText(fname);
             //当前时：HOUR_OF_DAY-24小时制；HOUR-12小时制
             int hour = cal.get(Calendar.HOUR_OF_DAY);
+            if (hour < 10) {
+                String hourstr = "0" + hour;
+                hour = Integer.parseInt(hourstr);
+            }
             //当前分
             int minute = cal.get(Calendar.MINUTE);
+            if (minute < 10) {
+                String minutestr = "0" + minute;
+                hour = Integer.parseInt(minutestr);
+            }
             //当前秒
             int second = cal.get(Calendar.SECOND);
+            if (second < 10) {
+                String secondstr = "0" + second;
+                hour = Integer.parseInt(secondstr);
+            }
             tvTime.setText(hour + ":" + +minute + ":" + second);
             etCheckPerson.setText(UserUtils.getUserName(HiddenRiskRecordAddEditActivity.this));
         }
+        recyclerView.setAdapter(picAdapter = new AddPicAdapter(paths,picid));
+        picAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position, int flag) {
+                if (position == paths.size()) {
+                    /** * 图片多选 * @param limit 最多选择图片张数的限制 **/
+                    //
+                    showSelectDialog();
+                } else {
+                    startActivity(
+                            new Intent(HiddenRiskRecordAddEditActivity.this,
+                                    ViewBIgPicActivity.class).putExtra("url"
+                                    , paths.get(position)));
+
+                }
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, int position) {
+                return false;
+            }
+        });
         getCollieryTeam();
         getSpecialty();
         getRiskGrade();
@@ -972,11 +995,12 @@ public class HiddenRiskRecordAddEditActivity extends BasePicActivity {
         List<CollieryTeam> collieryTeams = JSONArray.parseArray(data, CollieryTeam.class);
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
         int collieryTeamsint = 0;
+        Log.e(TAG, "collieryTeams========: "+collieryTeams);
         for (int i = 0; i < collieryTeams.size(); i++) {
             SelectItem selectItem = new SelectItem();
             selectItem.name = collieryTeams.get(i).getTeamName().replaceAll("&nbsp;", " ");
             selectItem.id = collieryTeams.get(i).getId();
-            if (collieryTeams.get(i).getId().equals(record.getTeamGroupCode())) {
+            if (collieryTeams.get(i).getId().equals(record.getTeamGroupId())) {
                 collieryTeamsint = i;
             }
             selectItems.add(selectItem);
