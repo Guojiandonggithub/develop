@@ -353,9 +353,39 @@ public class ReportRecord implements Constants{
 		}
 	}
 
-}
+	//隐患查看记录添加
+	public void recordWatch(final Context context) {
+		netClient = new NetClient(context);
+		String recordWatchStr = Utils.getValue(context,Constants.ADD_RECORDWATCH);
+		Log.e(TAG, "隐患查看记录添加数据: "+recordWatchStr);
+		if(!TextUtils.isEmpty(recordWatchStr)||recordWatchStr.length()>2){
+			final List<String> recordWatchList = JSONArray.parseArray(recordWatchStr, String.class);
+			Log.e(TAG, "recordWatchList============: "+recordWatchList);
+			for (final String recordWatch:recordWatchList){
+				RequestParams params = new RequestParams();
+				params.put("recordWatchJsonData",recordWatch);
+				netClient.post(Data.getInstance().getIp()+ Constants.ADD_RECORDWATCH, params, new BaseJsonRes() {
 
-/*
- * 使用方法： 在getView里这样 ImageView bananaView = ViewHolder.get(convertView,
- * R.id.banana);
- */
+					@Override
+					public void onMySuccess(String data) {
+						Log.i(TAG, "隐患查看记录添加返回数据：" + data);
+						if (!TextUtils.isEmpty(data)) {
+							recordWatchList.remove(recordWatch);
+							String listStr = JSONArray.toJSONString(recordWatchList);
+							Log.e(TAG, "隐患查看记录添加有网时: listStr============"+listStr);
+							Utils.putValue(context,Constants.ADD_SUPERVISIONRECORD,listStr);
+						}
+					}
+
+					@Override
+					public void onMyFailure(String content) {
+						Log.e(TAG, "隐患查看记录添加返回错误信息：" + content);
+					}
+				});
+			}
+		}else{
+			Log.e(TAG, "隐患查看记录添加没有数据");
+		}
+	}
+
+}

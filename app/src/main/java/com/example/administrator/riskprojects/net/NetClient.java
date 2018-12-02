@@ -138,6 +138,9 @@ public class NetClient {
 			case Constants.MAIN_ENGINE+Constants.DELETE_HIDDEN://隐患修改
 				deleteHiddenRecord(param);
 				break;
+			case Constants.MAIN_ENGINE+Constants.ADD_RECORDWATCH://隐患查看记录添加
+				recordWatchJsonData(param);
+				break;
 			default:
 				Utils.showShortToast(context, Constants.NET_ERROR);
 				break;
@@ -210,6 +213,20 @@ public class NetClient {
 		Utils.showShortToast(context, Constants.SAVE_DATA);
 		Activity activity = findActivity(context);
 		activity.finish();
+	}
+
+	private void recordWatchJsonData(String param){
+		List<String> recordWatchList = new ArrayList();
+		String recordWatchListStr = Utils.getValue(context,Constants.ADD_RECORDWATCH);
+		if(!TextUtils.isEmpty(recordWatchListStr)){
+			recordWatchList = JSONArray.parseArray(recordWatchListStr, String.class);
+		}
+		Map<String,String> map = getParameters(param);
+		String str = map.get("recordWatchJsonData");
+		recordWatchList.add(str);
+		String listStr = JSONArray.toJSONString(recordWatchList);
+		Log.e(TAG, "隐患查看记录添加没网时: listStr============"+listStr);
+		Utils.putValue(context,Constants.ADD_RECORDWATCH,listStr);
 	}
 
 	private void recheckReport(String param){

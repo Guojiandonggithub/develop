@@ -127,6 +127,7 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver {
 		new ReportRecord().addThreeFixAndConfirm(context);//隐患下达
 		new ReportRecord().addCompleterectify(context);//隐患整改
 		new ReportRecord().handleoutOverduelist(context);//重新下达
+		new ReportRecord().recordWatch(context);//隐患查看记录添加
 	}
 
 }
