@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.administrator.riskprojects.Adpter.PicAdapter;
@@ -20,11 +21,16 @@ import com.example.administrator.riskprojects.bean.ThreeFix;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
+import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * 隐患验收
@@ -61,6 +67,7 @@ public class HiddenDangerReviewManagementActivity extends BaseActivity {
     private RecyclerView recyclerView;
     protected NetClient netClient;
     private TextView mTvHiddenUnits;
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +76,7 @@ public class HiddenDangerReviewManagementActivity extends BaseActivity {
         netClient = new NetClient(HiddenDangerReviewManagementActivity.this);
         initView();
         setView();
+        timer1();
     }
 
 
@@ -199,6 +207,52 @@ public class HiddenDangerReviewManagementActivity extends BaseActivity {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             finish();
         }
+    }
+
+    private void timer1(){
+        timer=new Timer();
+        TimerTask task=new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        addRecordWatch();
+                    }
+                });
+            }
+        };
+        timer.schedule(task,4000);
+    }
+
+    private void addRecordWatch(){
+        String recordId = threeFix.getHiddenDangerId();
+        String userId = UserUtils.getUserID(HiddenDangerReviewManagementActivity.this);
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("recordId",recordId);
+        paramsMap.put("userId",userId);
+        RequestParams params = new RequestParams();
+        String jsonString = JSON.toJSONString(paramsMap);
+        params.put("recordWatchJsonData", jsonString);
+        netClient.post(Data.getInstance().getIp() + Constants.ADD_RECORDWATCH, params, new BaseJsonRes() {
+
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "查询添加记录：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    Log.e(TAG, "data111================: "+data);
+                }else{
+                    Log.e(TAG, "data222================: "+data);
+                }
+                timer.cancel();
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "查询图片组返回错误信息：" + content);
+                Utils.showLongToast(HiddenDangerReviewManagementActivity.this, content);
+            }
+        });
     }
 
 }

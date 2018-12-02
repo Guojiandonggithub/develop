@@ -27,7 +27,11 @@ import com.example.administrator.riskprojects.view.MyAlertDialog;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HiddenDangerDetailManagementActivity extends BaseActivity {
     private static final String TAG = "HiddenDangerDetailManag";
@@ -76,6 +80,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
     private LinearLayoutCompat llAcceptanceOfTheResults;
     private TextView tvAcceptanceOfTheResults;
     private RecyclerView recyclerView;
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +111,7 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
             Bundle bundle = intent.getBundleExtra("recordBund");
             record = (HiddenDangerRecord) bundle.getSerializable("hiddenDangerRecord");
             initdata();
+            timer1();
         }
         tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -448,4 +454,49 @@ public class HiddenDangerDetailManagementActivity extends BaseActivity {
         }
     }
 
+    private void timer1(){
+        timer=new Timer();
+        TimerTask task=new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        addRecordWatch();
+                    }
+                });
+            }
+        };
+        timer.schedule(task,4000);
+    }
+
+    private void addRecordWatch(){
+       String recordId = record.getId();
+       String userId = UserUtils.getUserID(HiddenDangerDetailManagementActivity.this);
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("recordId",recordId);
+        paramsMap.put("userId",userId);
+        RequestParams params = new RequestParams();
+        String jsonString = JSON.toJSONString(paramsMap);
+        params.put("recordWatchJsonData", jsonString);
+        netClient.post(Data.getInstance().getIp() + Constants.ADD_RECORDWATCH, params, new BaseJsonRes() {
+
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "查询添加记录：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    Log.e(TAG, "data111================: "+data);
+                }else{
+                    Log.e(TAG, "data222================: "+data);
+                }
+                timer.cancel();
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "查询图片组返回错误信息：" + content);
+                Utils.showLongToast(HiddenDangerDetailManagementActivity.this, content);
+            }
+        });
+    }
 }

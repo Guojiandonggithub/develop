@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.administrator.riskprojects.Adpter.PicAdapter;
@@ -26,7 +27,11 @@ import com.example.administrator.riskprojects.view.MyAlertDialog;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * 隐患整改
@@ -61,6 +66,7 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
     private TextView mTvTheNumberOfProcessing;
     private RecyclerView recyclerView;
     protected FlippingLoadingDialog mLoadingDialog;
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +75,7 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
         netClient = new NetClient(HiddenDangerRectificationManagementActivity.this);
         initView();
         setView();
+        timer1();
     }
 
     private void initView() {
@@ -230,6 +237,52 @@ public class HiddenDangerRectificationManagementActivity extends BaseActivity {
         if (mLoadingDialog == null)
             mLoadingDialog = new FlippingLoadingDialog(HiddenDangerRectificationManagementActivity.this, msg);
         return mLoadingDialog;
+    }
+
+    private void timer1(){
+        timer=new Timer();
+        TimerTask task=new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        addRecordWatch();
+                    }
+                });
+            }
+        };
+        timer.schedule(task,4000);
+    }
+
+    private void addRecordWatch(){
+        String recordId = threeFix.getHiddenDangerId();
+        String userId = UserUtils.getUserID(HiddenDangerRectificationManagementActivity.this);
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("recordId",recordId);
+        paramsMap.put("userId",userId);
+        RequestParams params = new RequestParams();
+        String jsonString = JSON.toJSONString(paramsMap);
+        params.put("recordWatchJsonData", jsonString);
+        netClient.post(Data.getInstance().getIp() + Constants.ADD_RECORDWATCH, params, new BaseJsonRes() {
+
+            @Override
+            public void onMySuccess(String data) {
+                Log.i(TAG, "查询添加记录：" + data);
+                if (!TextUtils.isEmpty(data)) {
+                    Log.e(TAG, "data111================: "+data);
+                }else{
+                    Log.e(TAG, "data222================: "+data);
+                }
+                timer.cancel();
+            }
+
+            @Override
+            public void onMyFailure(String content) {
+                Log.e(TAG, "查询图片组返回错误信息：" + content);
+                Utils.showLongToast(HiddenDangerRectificationManagementActivity.this, content);
+            }
+        });
     }
 
 }

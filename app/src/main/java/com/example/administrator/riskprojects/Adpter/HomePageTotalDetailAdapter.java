@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSONArray;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.HiddenDangerDetailManagementActivity;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
@@ -23,14 +22,14 @@ public class HomePageTotalDetailAdapter extends RecyclerView.Adapter {
     String datatype;
 
 
-    public HomePageTotalDetailAdapter(String rows,String datatype) {
-        if(datatype.equals("mLlDeleteNum")||datatype.equals("mLlUnchangeNum")){
-            List<HiddenDangerRecord> recordList = JSONArray.parseArray(rows, HiddenDangerRecord.class);
+    public HomePageTotalDetailAdapter(List<HiddenDangerRecord> recordList,List<ThreeFix> threeFixList,String datatype) {
+        //if(datatype.equals("mLlDeleteNum")||datatype.equals("mLlUnchangeNum")){
+            //List<HiddenDangerRecord> recordList = JSONArray.parseArray(rows, HiddenDangerRecord.class);
             this.hiddenDangerRecordList = recordList;
-        }else{
-            List<ThreeFix> recordList = JSONArray.parseArray(rows, ThreeFix.class);
-            this.threeFixList = recordList;
-        }
+        //}else{
+            //List<ThreeFix> recordList = JSONArray.parseArray(rows, ThreeFix.class);
+            this.threeFixList = threeFixList;
+        //}
         this.datatype = datatype;
     }
 

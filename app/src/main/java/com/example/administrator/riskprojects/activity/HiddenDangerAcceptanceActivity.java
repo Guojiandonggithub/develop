@@ -100,7 +100,9 @@ public class HiddenDangerAcceptanceActivity extends BaseActivity {
         tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addRecheck();
+                if (checkInput()) {
+                    addRecheck();
+                }
             }
         });
     }
@@ -171,6 +173,14 @@ public class HiddenDangerAcceptanceActivity extends BaseActivity {
         if (mLoadingDialog == null)
             mLoadingDialog = new FlippingLoadingDialog(HiddenDangerAcceptanceActivity.this, msg);
         return mLoadingDialog;
+    }
+
+    private boolean checkInput() {
+        if(TextUtils.isEmpty(etAddLocation.getText().toString())){
+            Utils.showShortToast(HiddenDangerAcceptanceActivity.this, "验收人不能为空!");
+            return false;
+        }
+        return true;
     }
 
 }

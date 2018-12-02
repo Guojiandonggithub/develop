@@ -26,9 +26,9 @@ public interface Constants {
 	String ISUPERVISION = "1";
 
 	// 外网地址
-	//String MAIN_ENGINE = "http://59.49.107.27:8191/";
+	String MAIN_ENGINE = "http://59.49.107.27:8191/";
 	//String MAIN_ENGINE = "http://192.168.4.50:8070/";
-	String MAIN_ENGINE = "http://192.168.5.50:8070/";
+	//String MAIN_ENGINE = "http://192.168.5.50:8070/";
 	//String MAIN_ENGINE = "http://1.63.57.10:28070/";
 	//String MAIN_ENGINE = "http://1.63.57.10:38070/";
 	//String MAIN_ENGINE = "http://192.168.111.6:8070/";
@@ -148,6 +148,8 @@ public interface Constants {
 	String GET_SYSTEMTIME = "mobile/getTimeMobileAction!getTime.action";
 	//删除隐患图片
 	String DELETE_HIDDENPIC = "mobile/hiddenDangerRecordMobileAction!deleteHiddenDangerImageById.action";
+	//添加查看记录
+	String ADD_RECORDWATCH = "mobile/hiddenDangerRecordMobileAction!addRecordWatch.action";
 
 
 	public void addRecheck(Context context);
