@@ -739,6 +739,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     paramsMap.put("customParamsThree", spAreaItem.id);//状态
                 }
             }
+            paramsMap.put("ishandle","1");
             String jsonString = JSON.toJSONString(paramsMap);
             params.put("threeFixJsonData", jsonString);
             netClient.post(Data.getInstance().getIp() + Constants.GET_OVERDUELIST, params, new BaseJsonRes() {
@@ -821,6 +822,7 @@ public class Fragment_Record_Manage extends Fragment implements SwipeRefreshLayo
                     paramsMap.put("customParamsFive", spCheckUnitsItem.id);//状态
                 }
             }
+            paramsMap.put("ishandle","1");
             String jsonString = JSON.toJSONString(paramsMap);
             params.put("threeFixJsonData", jsonString);
             netClient.post(Data.getInstance().getIp() + Constants.GET_REVIEWLIST, params, new BaseJsonRes() {

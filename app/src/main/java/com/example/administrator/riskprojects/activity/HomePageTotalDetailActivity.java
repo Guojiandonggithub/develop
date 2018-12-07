@@ -149,6 +149,7 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
             params.put("hiddenDangerRecordJsonData", jsonString);
             url = Constants.GET_XIAOHAOLIST;
         }else if(datatype.equals("mLlWithinTheTimeLimitNum")){
+            paramsMap.put("customParamsOne","0");
             String jsonString = JSON.toJSONString(paramsMap);
             params.put("threeFixJsonData", jsonString);
             url = Constants.GET_WITHINTHETIMELIST;
@@ -158,6 +159,7 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
             params.put("hiddenDangerRecordJsonData", jsonString);
             url = Constants.GET_XIAOHAOLIST;
         }else if(datatype.equals("mLlForAcceptanceNum")){
+            paramsMap.put("ishandle","0");
             String jsonString = JSON.toJSONString(paramsMap);
             params.put("threeFixJsonData", jsonString);
             url = Constants.GET_FORACCEPTANCELIST;
