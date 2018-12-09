@@ -15,9 +15,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.administrator.riskprojects.Adpter.HomePageTotalDetailAdapter;
+import com.example.administrator.riskprojects.Adpter.IdentificationEvaluationAdapter;
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.bean.HiddenDangerRecord;
+import com.example.administrator.riskprojects.bean.IdentificationEvaluation;
 import com.example.administrator.riskprojects.bean.ThreeFix;
 import com.example.administrator.riskprojects.dialog.FlippingLoadingDialog;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
@@ -149,7 +151,7 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
             params.put("hiddenDangerRecordJsonData", jsonString);
             url = Constants.GET_XIAOHAOLIST;
         }else if(datatype.equals("mLlWithinTheTimeLimitNum")){
-            paramsMap.put("customParamsOne","0");
+            paramsMap.put("customParamsSix","0");
             String jsonString = JSON.toJSONString(paramsMap);
             params.put("threeFixJsonData", jsonString);
             url = Constants.GET_WITHINTHETIMELIST;
@@ -159,10 +161,20 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
             params.put("hiddenDangerRecordJsonData", jsonString);
             url = Constants.GET_XIAOHAOLIST;
         }else if(datatype.equals("mLlForAcceptanceNum")){
-            paramsMap.put("ishandle","0");
+            paramsMap.put("customParamsSix","0");
             String jsonString = JSON.toJSONString(paramsMap);
             params.put("threeFixJsonData", jsonString);
             url = Constants.GET_FORACCEPTANCELIST;
+        }else if(datatype.equals("mLlNianduNum")){
+            paramsMap.put("evaluationType","0");
+            String jsonString = JSON.toJSONString(paramsMap);
+            params.put("evaluationJson", jsonString);
+            url = Constants.GET_EVALUATIONCOUNT_LIST;
+        }else if(datatype.equals("mLlZhuanxiangNum")){
+            paramsMap.put("evaluationType","1");
+            String jsonString = JSON.toJSONString(paramsMap);
+            params.put("evaluationJson", jsonString);
+            url = Constants.GET_EVALUATIONCOUNT_LIST;
         }
         getDetailRecord(url,params,datatype,curpage);
     }
@@ -197,7 +209,12 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
                         List<ThreeFix> recordList = JSONArray.parseArray(rows, ThreeFix.class);
                         threeFixLists.addAll(recordList);
                     }
-                    recyclerView.setAdapter(new HomePageTotalDetailAdapter(recordLists,threeFixLists,datatype));
+                    if(datatype.equals("mLlZhuanxiangNum")||datatype.equals("mLlNianduNum")){
+                        List<IdentificationEvaluation> recordList = JSONArray.parseArray(rows, IdentificationEvaluation.class);
+                        recyclerView.setAdapter(new IdentificationEvaluationAdapter(recordList));
+                    }else{
+                        recyclerView.setAdapter(new HomePageTotalDetailAdapter(recordLists,threeFixLists,datatype));
+                    }
                 }
 
             }

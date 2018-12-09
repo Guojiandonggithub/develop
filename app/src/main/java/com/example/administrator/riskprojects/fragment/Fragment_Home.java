@@ -44,11 +44,15 @@ public class Fragment_Home extends Fragment {
     private View layout, layout_head;
     private MainActivity parentActivity;
     private TextView mTvDeleteNum;
+    private TextView mTvNianduNum;
+    private TextView mTvZhuanxiangNum;
     private TextView mTvWithinTheTimeLimitNum;
     private TextView mTvUnchangeNum;
     private TextView mTvForAcceptanceNum;
     private RecyclerView mRecyclerView;
     protected NetClient netClient;
+    private LinearLayoutCompat mLlNianduNum;
+    private LinearLayoutCompat mLlZhuanxiangNum;
     private LinearLayoutCompat mLlDeleteNum;
     private LinearLayoutCompat mLlWithinTheTimeLimitNum;
     private LinearLayoutCompat mLlUnchangeNum;
@@ -89,10 +93,39 @@ public class Fragment_Home extends Fragment {
 
     private void initViews() {
         getHiddenStatisticsNum(UserUtils.getUserID(getActivity()));
+        getEvaluationCount();
         getHiddenRecord();
     }
 
     private void initView(View layout) {
+        //年度评估数量
+        mTvNianduNum = layout.findViewById(R.id.tv_niandu_num);
+        mLlNianduNum = layout.findViewById(R.id.ll_niandu_num);
+        mLlNianduNum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!mTvNianduNum.getText().toString().equals("0")){
+                    Intent intent = new Intent(ctx, HomePageTotalDetailActivity.class);
+                    intent.putExtra("datatype","mLlNianduNum");
+                    intent.putExtra("topname","年度评估");
+                    startActivity(intent);
+                }
+            }
+        });
+        //专项评估数量
+        mTvZhuanxiangNum = layout.findViewById(R.id.tv_zhuanxiang_num);
+        mLlZhuanxiangNum = layout.findViewById(R.id.ll_zhuanxiang_num);
+        mLlZhuanxiangNum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!mTvZhuanxiangNum.getText().toString().equals("0")){
+                    Intent intent = new Intent(ctx, HomePageTotalDetailActivity.class);
+                    intent.putExtra("datatype","mLlZhuanxiangNum");
+                    intent.putExtra("topname","专项评估");
+                    startActivity(intent);
+                }
+            }
+        });
         //已消号数量
         mTvDeleteNum = layout.findViewById(R.id.tv_delete_num);
         mLlDeleteNum = layout.findViewById(R.id.ll_delete_num);
@@ -190,6 +223,36 @@ public class Fragment_Home extends Fragment {
         }
     }
 
+    private void getEvaluationCount() {
+            if (!NetUtil.checkNetWork(getActivity())) {
+                String jsondata = Utils.getValue(getActivity(), Constants.GET_EVALUATIONCOUNT);
+                if("".equals(jsondata)){
+                    Utils.showLongToast(getContext(), "网络异常，没有请求到数据");
+                }else{
+                    resultEvaluationCountNum(jsondata);
+                }
+            }else{
+                RequestParams params = new RequestParams();
+                netClient.post(Data.getInstance().getIp()+Constants.GET_EVALUATIONCOUNT, params, new BaseJsonRes() {
+
+                    @Override
+                    public void onMySuccess(String data) {
+                        Log.i(TAG, "主页辨识评估统计信息返回数据：" + data);
+                        if (!TextUtils.isEmpty(data)) {
+                            Utils.putValue(getActivity(), Constants.GET_EVALUATIONCOUNT, data);
+                            resultEvaluationCountNum(data);
+                        }
+                    }
+
+                    @Override
+                    public void onMyFailure(String content) {
+                        Log.e(TAG, "主页获取辨识评估统计信息返回错误信息：" + content);
+                        Utils.showLongToast(getContext(), content);
+                    }
+                });
+            }
+    }
+
     private void getHiddenRecord() {
         if (!NetUtil.checkNetWork(getActivity())) {
             String jsondata = Utils.getValue(getActivity(), Constants.HOME_GET_HIDDENRECORD);
@@ -232,6 +295,14 @@ public class Fragment_Home extends Fragment {
         mTvWithinTheTimeLimitNum.setText(outTimeNumber);
         mTvForAcceptanceNum.setText(recheck);
         mTvDeleteNum.setText(saleNumber);
+    }
+
+    private void resultEvaluationCountNum(String data){
+        JSONObject jsonObject = JSON.parseObject(data);
+        String nianDuNum = jsonObject.getString("nianDuNum");
+        String zhuanXiangNum = jsonObject.getString("zhuanXiangNum");
+        mTvNianduNum.setText(nianDuNum);
+        mTvZhuanxiangNum.setText(zhuanXiangNum);
     }
 
     private void resultHiddenRecord(String data){

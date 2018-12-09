@@ -130,7 +130,7 @@ public interface Constants {
 	String GET_XIAOHAOLIST = "mobile/yesterdayHdStatisticsMobileAction!getXiaoHaoList.action";
 	//主页获取逾期隐患
 	String GET_WITHINTHETIMELIST = "mobile/hiddenDangerOutOfTimeMobileAction!findhiddenDangerOutTime.action";
-	//主页获取逾期隐患
+	//主页获待验收隐患
 	String GET_FORACCEPTANCELIST = "mobile/hiddenDangerRecheckMobileAction!findhiddenDangerRecheck.action";
 	//获取巡检记录
 	String GET_CARDRECORDLIST = "mobile/cardRecordMobileAction!findCardRecordByUserId.action";
@@ -150,7 +150,10 @@ public interface Constants {
 	String DELETE_HIDDENPIC = "mobile/hiddenDangerRecordMobileAction!deleteHiddenDangerImageById.action";
 	//添加查看记录
 	String ADD_RECORDWATCH = "mobile/hiddenDangerRecordMobileAction!addRecordWatch.action";
-
+	//获取辨识评估统计
+	String GET_EVALUATIONCOUNT = "mobile/evaluationMobileAction!getEvaluationCount.action";
+    //获取辨识评估统计
+    String GET_EVALUATIONCOUNT_LIST = "mobile/evaluationMobileAction!getEvaluationListByType.action";
 
 	public void addRecheck(Context context);
 	public void addAddhiddenrecord(Context context);
