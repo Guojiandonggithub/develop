@@ -154,6 +154,8 @@ public interface Constants {
 	String GET_EVALUATIONCOUNT = "mobile/evaluationMobileAction!getEvaluationCount.action";
     //获取辨识评估统计
     String GET_EVALUATIONCOUNT_LIST = "mobile/evaluationMobileAction!getEvaluationListByType.action";
+	//获取风险等级列表
+	String GET_RISKGRADE_LIST = "mobile/evaluationMobileAction!getRiskList.action";
 
 	public void addRecheck(Context context);
 	public void addAddhiddenrecord(Context context);
