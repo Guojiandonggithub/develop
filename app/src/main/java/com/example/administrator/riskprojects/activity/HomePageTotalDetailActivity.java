@@ -108,8 +108,8 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
         llOptionNew = findViewById(R.id.ll_option_new);
         llSelectRiskGrade = findViewById(R.id.ll_select_check_results);
         llExpand = findViewById(R.id.ll_expand);
-        tvExpand = findViewById(R.id.tv_expand);
         ivExpand = findViewById(R.id.iv_expand);
+        tvExpand = findViewById(R.id.tv_expand);
         llExpand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -6,7 +6,155 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
-    tools:context=".MainWindowActivity">
+    tools:context=".activity.MainWindowActivity">
+
+    <include layout="@layout/layout_title" />
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/ll_start_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="开始时间:"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/normal_ts"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_select_start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="3.33dp"
+            app:cardElevation="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="false">
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:gravity="center_vertical"
+                android:minWidth="176dp"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp">
+
+                <TextView
+                    android:id="@+id/tv_start_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:text=""
+                    android:textColor="@color/blue1"
+                    android:textSize="@dimen/normal_ts" />
+
+                <ImageView
+                    android:layout_width="20.67dp"
+                    android:layout_height="19dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:src="@mipmap/select_date" />
+            </android.support.v7.widget.LinearLayoutCompat>
+        </android.support.v7.widget.CardView>
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/ll_end_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="结束时间:"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/normal_ts"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_select_end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="3.33dp"
+            app:cardElevation="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="false">
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:gravity="center_vertical"
+                android:minWidth="176dp"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp">
+
+                <TextView
+                    android:id="@+id/tv_end_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:text=""
+                    android:textColor="@color/blue1"
+                    android:textSize="@dimen/normal_ts" />
+
+                <ImageView
+                    android:layout_width="20.67dp"
+                    android:layout_height="19dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:src="@mipmap/select_date" />
+            </android.support.v7.widget.LinearLayoutCompat>
+        </android.support.v7.widget.CardView>
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/ll_select"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center_vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_sp_name"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="开启状态:"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/normal_ts"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/sp_other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:spinnerMode="dropdown" />
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <View
+        android:id="@+id/ll_select_top"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDevide"
+        android:visibility="gone" />
 
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -17,16 +165,15 @@
                 android:layout_height="36dp"
                 android:layout_marginLeft="14dp"
                 android:gravity="center_vertical"
-                android:text="隐患等级统计"
+                android:text="风险分析"
                 android:textColor="#444444"
                 android:textSize="16sp" />
 
             <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="133dp"
-                android:layout_marginLeft="14dp"
+                android:layout_marginLeft="64dp"
                 android:layout_marginRight="14dp"
-                android:background="#eeeeee"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -36,83 +183,21 @@
                     android:layout_height="108dp"
                     android:layout_marginRight="50dp" />
 
-                <android.support.v7.widget.LinearLayoutCompat
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeRefreshLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:background="@color/bar_color">
 
-                    <android.support.v7.widget.LinearLayoutCompat
-                        android:layout_width="wrap_content"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginBottom="3dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="8dp"
+                        android:background="@color/white"
+                        android:clipToPadding="false" />
 
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="12dp"
-                            android:src="@mipmap/ic_blue" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:text="一般"
-                            android:textColor="#666666"
-                            android:textSize="12sp" />
-
-                    </android.support.v7.widget.LinearLayoutCompat>
-
-                    <android.support.v7.widget.LinearLayoutCompat
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginBottom="3dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="12dp"
-                            android:src="@mipmap/ic_orange" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:text="较大"
-                            android:textColor="#666666"
-                            android:textSize="12sp" />
-
-                    </android.support.v7.widget.LinearLayoutCompat>
-
-                    <android.support.v7.widget.LinearLayoutCompat
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginBottom="3dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="12dp"
-                            android:src="@mipmap/ic_green" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:text="重大"
-                            android:textColor="#666666"
-                            android:textSize="12sp" />
-
-                    </android.support.v7.widget.LinearLayoutCompat>
-
-                </android.support.v7.widget.LinearLayoutCompat>
-
-
+                </android.support.v4.widget.SwipeRefreshLayout>
             </android.support.v7.widget.LinearLayoutCompat>
         </android.support.v7.widget.LinearLayoutCompat>
 

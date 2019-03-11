@@ -28,6 +28,8 @@ public class DatePickerActivity extends BaseActivity {
 
     public static final String DATE = "date";
     public static final int REQUEST = 2018;
+    public static final int STARTREQUEST = 1111;
+    public static final int ENDREQUEST = 2222;
     private TextView mTxtLeft;
     private ImageView mImgLeft;
     private TextView mTxtTitle;
