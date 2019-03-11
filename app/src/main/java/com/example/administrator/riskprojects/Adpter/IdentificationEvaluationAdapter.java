@@ -1,7 +1,11 @@
 package com.example.administrator.riskprojects.Adpter;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +20,12 @@ import java.util.List;
 
 public class IdentificationEvaluationAdapter extends RecyclerView.Adapter {
 
-
+    Context context;
     List<IdentificationEvaluation> hiddenDangerRecordList;
 
-    public IdentificationEvaluationAdapter(List<IdentificationEvaluation> recordList) {
+    public IdentificationEvaluationAdapter(List<IdentificationEvaluation> recordList, Context context) {
             this.hiddenDangerRecordList = recordList;
+            this.context = context;
     }
 
     @Override
@@ -37,12 +42,16 @@ public class IdentificationEvaluationAdapter extends RecyclerView.Adapter {
         String tvDutyDeptName = hiddenDangerRecordList.get(position).getDutyDeptName();
         String tvDutyPersonName = hiddenDangerRecordList.get(position).getDutyPersonName();
         String tvControlTeamName = hiddenDangerRecordList.get(position).getControlTeamName();
+        String riskGname = hiddenDangerRecordList.get(position).getRiskGname();
+        String recordTime = hiddenDangerRecordList.get(position).getRecordTime();
         ((ViewHolder) holder).tvKuangquName.setText(tvKuangquName);
         ((ViewHolder) holder).tvRiskContent.setText(tvRiskContent);
         ((ViewHolder) holder).tvRiskPlace.setText(tvRiskPlace);
         ((ViewHolder) holder).tvDutyDeptName.setText(tvDutyDeptName);
         ((ViewHolder) holder).tvDutyPersonName.setText(tvDutyPersonName);
         ((ViewHolder) holder).tvControlTeamName.setText(tvControlTeamName);
+        ((ViewHolder) holder).tvRiskGrade.setText(riskGname);
+        ((ViewHolder) holder).tvRiskGrade.setText(recordTime);
         ((IdentificationEvaluationAdapter.ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,12 +60,24 @@ public class IdentificationEvaluationAdapter extends RecyclerView.Adapter {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("hiddenDangerRecord", hiddenDangerRecordList.get(position));
                 intent.putExtra("recordBund", bundle);
-                holder.itemView.getContext().startActivity(intent);
+                Activity activity = findActivity(context);
+                activity.startActivityForResult(intent,10);
             }
         });
     }
 
-
+    @Nullable
+    public static Activity findActivity(Context context) {
+        if (context instanceof Activity) {
+            return (Activity) context;
+        }
+        if (context instanceof ContextWrapper) {
+            ContextWrapper wrapper = (ContextWrapper) context;
+            return findActivity(wrapper.getBaseContext());
+        } else {
+            return null;
+        }
+    }
 
     @Override
     public int getItemCount() {
@@ -71,6 +92,8 @@ public class IdentificationEvaluationAdapter extends RecyclerView.Adapter {
         private TextView tvDutyDeptName;
         private TextView tvDutyPersonName;
         private TextView tvControlTeamName;
+        private TextView tvRiskGrade;
+        private TextView tvRecordTime;
 
         ViewHolder(View view) {
             super(view);
@@ -81,6 +104,8 @@ public class IdentificationEvaluationAdapter extends RecyclerView.Adapter {
             tvDutyDeptName = view.findViewById(R.id.tv_duty_dept_name);
             tvDutyPersonName = view.findViewById(R.id.tv_duty_person_name);
             tvControlTeamName = view.findViewById(R.id.tv_control_team_name);
+            tvRiskGrade = view.findViewById(R.id.tv_risk_grade);
+            tvRecordTime = view.findViewById(R.id.tv_record_time);
         }
     }
 }

@@ -37,13 +37,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="矿区名称"
+                android:text="责任单位"
                 android:textColor="@color/white"
                 android:textSize="@dimen/normal_ts" />
 
 
             <TextView
-                android:id="@+id/tv_kuangqu_name"
+                android:id="@+id/tv_deptName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -64,113 +64,6 @@
         
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
-            android:layout_height="33dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="风险描述"
-                android:textColor="@color/white"
-                android:textSize="@dimen/normal_ts" />
-
-
-            <TextView
-                android:id="@+id/tv_risk_content"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:ellipsize="marquee"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="0"
-                android:textColor="@color/white"
-                android:textSize="@dimen/normal_ts" />
-
-
-        </android.support.v7.widget.LinearLayoutCompat>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.67dp"
-            android:background="@color/white" />
-
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="33dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="风险地点"
-                android:textColor="@color/white"
-                android:textSize="@dimen/normal_ts" />
-
-            <TextView
-                android:id="@+id/tv_risk_place"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:ellipsize="marquee"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="0"
-                android:textColor="@color/white"
-                android:textSize="@dimen/normal_ts" />
-
-
-        </android.support.v7.widget.LinearLayoutCompat>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.67dp"
-            android:background="@color/white" />
-
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="33dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="责任单位"
-                android:textColor="@color/white"
-                android:textSize="@dimen/normal_ts" />
-
-
-            <TextView
-                android:id="@+id/tv_duty_dept_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:ellipsize="marquee"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="0"
-                android:textColor="@color/white"
-                android:textSize="@dimen/normal_ts" />
-
-
-        </android.support.v7.widget.LinearLayoutCompat>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.67dp"
-            android:background="@color/white" />
-
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
             android:layout_height="33dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -186,7 +79,7 @@
 
 
             <TextView
-                android:id="@+id/tv_duty_person_name"
+                android:id="@+id/tv_dutyPerName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -216,51 +109,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="管控队组"
+                android:text="跟踪时间"
                 android:textColor="@color/white"
                 android:textSize="@dimen/normal_ts" />
 
 
             <TextView
-                android:id="@+id/tv_control_team_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:ellipsize="marquee"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="0"
-                android:textColor="@color/white"
-                android:textSize="@dimen/normal_ts" />
-
-
-        </android.support.v7.widget.LinearLayoutCompat>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.67dp"
-            android:visibility="gone"
-            android:background="@color/white" />
-
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="33dp"
-            android:visibility="gone"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="记录时间"
-                android:textColor="@color/white"
-                android:textSize="@dimen/normal_ts" />
-
-
-            <TextView
-                android:id="@+id/tv_record_time"
+                android:id="@+id/tv_addTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -281,7 +136,7 @@
 
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="33dp"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -290,24 +145,59 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="风险等级"
+                android:text="管理流程"
                 android:textColor="@color/white"
                 android:textSize="@dimen/normal_ts" />
 
 
             <TextView
-                android:id="@+id/tv_risk_grade"
+                android:id="@+id/tv_management"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:ellipsize="marquee"
                 android:gravity="center"
-                android:singleLine="true"
                 android:text="0"
                 android:textColor="@color/white"
                 android:textSize="@dimen/normal_ts" />
 
 
         </android.support.v7.widget.LinearLayoutCompat>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.67dp"
+            android:background="@color/white" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="跟踪内容"
+                android:textColor="@color/white"
+                android:textSize="@dimen/normal_ts" />
+
+
+            <TextView
+                android:id="@+id/tv_consider"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="@dimen/normal_ts" />
+
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
     </android.support.v7.widget.LinearLayoutCompat>
 </FrameLayout>

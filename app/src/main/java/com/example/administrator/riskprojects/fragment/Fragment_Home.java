@@ -46,6 +46,8 @@ public class Fragment_Home extends Fragment {
     private TextView mTvDeleteNum;
     private TextView mTvNianduNum;
     private TextView mTvZhuanxiangNum;
+    private TextView mTvDangyueNum;
+    private TextView mTvRiskStatisticsNum;
     private TextView mTvWithinTheTimeLimitNum;
     private TextView mTvUnchangeNum;
     private TextView mTvForAcceptanceNum;
@@ -53,10 +55,13 @@ public class Fragment_Home extends Fragment {
     protected NetClient netClient;
     private LinearLayoutCompat mLlNianduNum;
     private LinearLayoutCompat mLlZhuanxiangNum;
+    private LinearLayoutCompat mLlDangyueNum;
     private LinearLayoutCompat mLlDeleteNum;
     private LinearLayoutCompat mLlWithinTheTimeLimitNum;
     private LinearLayoutCompat mLlUnchangeNum;
     private LinearLayoutCompat mLlForAcceptanceNum;
+    private LinearLayoutCompat mLlRiskStatisticsNum;
+    private LinearLayoutCompat mLlRiskAnalysisNum;
     private HomeHiddenDangerAdapter adapter;
 
     @Override
@@ -124,6 +129,45 @@ public class Fragment_Home extends Fragment {
                     intent.putExtra("topname","专项评估");
                     startActivity(intent);
                 }
+            }
+        });
+        //当月评估数量
+        mTvDangyueNum = layout.findViewById(R.id.tv_dangyue_num);
+        mLlDangyueNum = layout.findViewById(R.id.ll_dangyue_num);
+        mLlDangyueNum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!mTvDangyueNum.getText().toString().equals("0")){
+                    Intent intent = new Intent(ctx, HomePageTotalDetailActivity.class);
+                    intent.putExtra("datatype","mLlDangyueNum");
+                    intent.putExtra("topname","当月辨识");
+                    startActivity(intent);
+                }
+            }
+        });
+        //风险统计
+        mTvRiskStatisticsNum = layout.findViewById(R.id.tv_risk_statistics);
+        mLlRiskStatisticsNum = layout.findViewById(R.id.ll_risk_statistics);
+        mLlRiskStatisticsNum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!mTvDangyueNum.getText().toString().equals("0")){
+                    Intent intent = new Intent(ctx, HomePageTotalDetailActivity.class);
+                    intent.putExtra("datatype","mLlRiskStatisticsNum");
+                    intent.putExtra("topname","风险统计");
+                    startActivity(intent);
+                }
+            }
+        });
+        //风险分析
+        mLlRiskAnalysisNum = layout.findViewById(R.id.ll_risk_analysis);
+        mLlRiskAnalysisNum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ctx, HomePageTotalDetailActivity.class);
+                intent.putExtra("datatype","mLlRiskAnalysisNum");
+                intent.putExtra("topname","风险分析");
+                startActivity(intent);
             }
         });
         //已消号数量
@@ -301,8 +345,10 @@ public class Fragment_Home extends Fragment {
         JSONObject jsonObject = JSON.parseObject(data);
         String nianDuNum = jsonObject.getString("nianDuNum");
         String zhuanXiangNum = jsonObject.getString("zhuanXiangNum");
+        String monthCount = jsonObject.getString("monthCount");
         mTvNianduNum.setText(nianDuNum);
         mTvZhuanxiangNum.setText(zhuanXiangNum);
+        mTvDangyueNum.setText(monthCount);
     }
 
     private void resultHiddenRecord(String data){

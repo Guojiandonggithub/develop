@@ -1,5 +1,6 @@
 package com.example.administrator.riskprojects.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -38,6 +39,7 @@ import com.example.administrator.riskprojects.util.DensityUtil;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +70,7 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
     private HomePageTotalDetailAdapter adapter;
     private List<HiddenDangerRecord> recordLists = new ArrayList<HiddenDangerRecord>();
     private List<ThreeFix> threeFixLists = new ArrayList<ThreeFix>();
+    private List<IdentificationEvaluation> evaluationLists = new ArrayList<IdentificationEvaluation>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,22 +181,26 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
             paramsMap.put("ishandle","1");
             String jsonString = JSON.toJSONString(paramsMap);
             params.put("hiddenDangerRecordJsonData", jsonString);
+            llOptionNew.setVisibility(View.GONE);
             url = Constants.GET_XIAOHAOLIST;
         }else if(datatype.equals("mLlWithinTheTimeLimitNum")){
             paramsMap.put("customParamsSix","0");
             String jsonString = JSON.toJSONString(paramsMap);
             params.put("threeFixJsonData", jsonString);
             url = Constants.GET_WITHINTHETIMELIST;
+            llOptionNew.setVisibility(View.GONE);
         }else if(datatype.equals("mLlUnchangeNum")){
             paramsMap.put("ishandle","0");
             String jsonString = JSON.toJSONString(paramsMap);
             params.put("hiddenDangerRecordJsonData", jsonString);
             url = Constants.GET_XIAOHAOLIST;
+            llOptionNew.setVisibility(View.GONE);
         }else if(datatype.equals("mLlForAcceptanceNum")){
             paramsMap.put("customParamsSix","0");
             String jsonString = JSON.toJSONString(paramsMap);
             params.put("threeFixJsonData", jsonString);
             url = Constants.GET_FORACCEPTANCELIST;
+            llOptionNew.setVisibility(View.GONE);
         }else if(datatype.equals("mLlNianduNum")){
             llOptionNew.setVisibility(View.VISIBLE);
             paramsMap.put("evaluationType","0");
@@ -218,6 +225,26 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
             String jsonString = JSON.toJSONString(paramsMap);
             params.put("evaluationJson", jsonString);
             url = Constants.GET_EVALUATIONCOUNT_LIST;
+        }else if(datatype.equals("mLlDangyueNum")){
+            llOptionNew.setVisibility(View.GONE);
+            Calendar calendar= Calendar.getInstance();  //获取当前时间，作为图标的名字
+            String year=calendar.get(Calendar.YEAR)+"";
+            String month=calendar.get(Calendar.MONTH)+1+"";
+            paramsMap.put("customParamsFour", year+"-"+month);//状态
+            paramsMap.put("customParamsTen", UserUtils.getUserID(HomePageTotalDetailActivity.this));//状态
+            String jsonString = JSON.toJSONString(paramsMap);
+            params.put("evaluationJson", jsonString);
+            url = Constants.GET_ThisMonthCOUNT_LIST;
+        }else if(datatype.equals("mLlRiskStatisticsNum")){
+            llOptionNew.setVisibility(View.GONE);
+            Calendar calendar= Calendar.getInstance();  //获取当前时间，作为图标的名字
+            String year=calendar.get(Calendar.YEAR)+"";
+            String month=calendar.get(Calendar.MONTH)+1+"";
+            paramsMap.put("customParamsOne", year+"-"+month);//管控时间
+            paramsMap.put("customParamsTen", UserUtils.getUserID(HomePageTotalDetailActivity.this));//状态
+            String jsonString = JSON.toJSONString(paramsMap);
+            params.put("evaluationJson", jsonString);
+            url = Constants.GET_RISKSTATISTICS_LIST;
         }
         getDetailRecord(url,params,datatype,curpage);
     }
@@ -252,9 +279,10 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
                         List<ThreeFix> recordList = JSONArray.parseArray(rows, ThreeFix.class);
                         threeFixLists.addAll(recordList);
                     }
-                    if(datatype.equals("mLlZhuanxiangNum")||datatype.equals("mLlNianduNum")){
+                    if(datatype.equals("mLlZhuanxiangNum")||datatype.equals("mLlNianduNum")||datatype.equals("mLlDangyueNum")||datatype.equals("mLlRiskStatisticsNum")){
                         List<IdentificationEvaluation> recordList = JSONArray.parseArray(rows, IdentificationEvaluation.class);
-                        recyclerView.setAdapter(new IdentificationEvaluationAdapter(recordList));
+                        evaluationLists.addAll(recordList);
+                        recyclerView.setAdapter(new IdentificationEvaluationAdapter(evaluationLists,HomePageTotalDetailActivity.this));
                     }else{
                         recyclerView.setAdapter(new HomePageTotalDetailAdapter(recordLists,threeFixLists,datatype));
                     }
@@ -355,6 +383,22 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
     @Override
     public void onRefresh() {
         initdata(Constants.PAGE);
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        startActivityForResult(intent, -1);
+    }
+
+    @Override
+    //重写了onAcitivityResult
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 10 && resultCode == 11)
+        {
+            finish();
+        }
     }
 
 }

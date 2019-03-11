@@ -28,11 +28,21 @@ public interface Constants {
 	// 外网地址
 	String MAIN_ENGINE = "http://59.49.107.27:8191/";
 	//String MAIN_ENGINE = "http://192.168.4.50:8070/";
-	//String MAIN_ENGINE = "http://192.168.5.50:8070/";
 	//String MAIN_ENGINE = "http://1.63.57.10:28070/";
+	//String MAIN_ENGINE = "http://192.168.5.50:8070/";
 	//String MAIN_ENGINE = "http://1.63.57.10:38070/";
-	//String MAIN_ENGINE = "http://192.168.111.6:8070/";
-	//String MAIN_ENGINE = "http://192.168.111.5:8070/";
+	//String MAIN_ENGINE = "http://1.63.57.10:18970/";
+	//String MAIN_ENGINE = "http://1.63.57.10:18870/";
+	//String MAIN_ENGINE = "http://192.168.5.3:8070/";
+	//String MAIN_ENGINE = "http://1.63.57.10:18370/";
+	//String MAIN_ENGINE = "http://1.63.57.10:18570/";
+	//String MAIN_ENGINE = "http://1.63.57.10:18770/";
+	//String MAIN_ENGINE = "http://1.63.57.10:18670/";
+	//String MAIN_ENGINE = "http://192.168.5.4:8070/";
+	//String MAIN_ENGINE = "http://1.63.57.10:18470/";
+	//String MAIN_ENGINE = "http://192.168.5.5:8070/";
+	//String MAIN_ENGINE = "http://124.163.206.251:8191/";
+	//String MAIN_ENGINE = "http://192.168.7.59:8070/";
 
 	// 内网地址
 	String INNER_MAIN_ENGINE = "123123";
@@ -154,8 +164,18 @@ public interface Constants {
 	String GET_EVALUATIONCOUNT = "mobile/evaluationMobileAction!getEvaluationCount.action";
     //获取辨识评估统计
     String GET_EVALUATIONCOUNT_LIST = "mobile/evaluationMobileAction!getEvaluationListByType.action";
+    //获取当月辨识评估统计
+    String GET_ThisMonthCOUNT_LIST = "mobile/evaluationMobileAction!getThisMonthControlList.action";
+    //获取风险统计列表
+    String GET_RISKSTATISTICS_LIST = "mobile/evaluationMobileAction!getRiskStatistics.action";
 	//获取风险等级列表
 	String GET_RISKGRADE_LIST = "mobile/evaluationMobileAction!getRiskList.action";
+	//开启关闭辨识评估
+	String CLOSE_RISK_RVALUATION = "mobile/evaluationMobileAction!openOrCloseEvaluation.action";
+	//添加落实跟踪记录
+	String ADD_MANAGEMENT_CONTROL = "mobile/evaluationMobileAction!addManagementControl.action";
+	//查询落实跟踪记录
+	String GET_MANAGEMENT_CONTROL = "mobile/evaluationMobileAction!getManagementControlList.action";
 
 	public void addRecheck(Context context);
 	public void addAddhiddenrecord(Context context);

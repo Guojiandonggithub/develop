@@ -32,6 +32,9 @@ public class IdentificationEvaluation implements Serializable{
 	private String endTime;// 结束时间
 	private String personsControl;// 人数控制
 	private String listOrder;// 排序
+	private String controlYear;// 管控年
+	private String controlMonths;// 管控月
+	private String recordTime;// 管控月
 
 	public boolean isExpands() {
 		return expands;
@@ -250,5 +253,29 @@ public class IdentificationEvaluation implements Serializable{
 
 	public void setListOrder(String listOrder) {
 		this.listOrder = listOrder;
+	}
+
+	public String getControlYear() {
+		return controlYear;
+	}
+
+	public void setControlYear(String controlYear) {
+		this.controlYear = controlYear;
+	}
+
+	public String getControlMonths() {
+		return controlMonths;
+	}
+
+	public void setControlMonths(String controlMonths) {
+		this.controlMonths = controlMonths;
+	}
+
+	public String getRecordTime() {
+		return recordTime;
+	}
+
+	public void setRecordTime(String recordTime) {
+		this.recordTime = recordTime;
 	}
 }

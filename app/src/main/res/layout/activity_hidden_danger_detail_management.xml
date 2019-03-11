@@ -130,13 +130,13 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/hidden_content"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/normal_ts" />
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/hidden_content"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/normal_ts" />
 
                         <TextView
                             android:id="@+id/tv_hidden_content"

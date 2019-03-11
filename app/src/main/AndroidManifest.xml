@@ -114,6 +114,12 @@
             android:name=".activity.IndentificationEvaluationActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.ManagementControlActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.IndentificationEvaluationRecordActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.HiddenDangerDetailManagementAddOrDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
