@@ -1,12 +1,9 @@
 package com.example.administrator.riskprojects.activity;
 
-import android.app.ListActivity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +19,7 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.bean.GroupCountJb;
 import com.example.administrator.riskprojects.common.NetUtil;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
@@ -74,8 +72,6 @@ public class MainWindowActivity extends AppCompatActivity {
     String mineName = "总局";
     String collieryId = "";
     GroupCountJb groupCountJb;
-    List<Colliery> collierys;
-    List<Colliery> collieryList;
     String timeName = getTime(Calendar.getInstance().getTime()).toString();
 
     @Override
@@ -111,7 +107,7 @@ public class MainWindowActivity extends AppCompatActivity {
     //获取总局隐患等级
     private void getGroupCountJb() {
         if (!NetUtil.checkNetWork(MainWindowActivity.this)) {
-            String jsondata = Utils.getValue(MainWindowActivity.this, Constants.GET_GROUP_COUNT_JB);
+            String jsondata = Utils.getValue(MainWindowActivity.this, Constants.GET_RISKANALYSIS_LIST);
             if("".equals(jsondata)){
                 Utils.showShortToast(MainWindowActivity.this, "没有联网，没有请求到数据");
             }else{
@@ -124,7 +120,7 @@ public class MainWindowActivity extends AppCompatActivity {
             int month = Integer.parseInt(timeName.split("-")[1]);
             String data = getSupportEndDayofMonth(yesr,month);
             params.put("customParamsTwo",data);
-            netClient.post(Constants.MAIN_ENGINE+Constants.GET_GROUP_COUNT_JB, params, new BaseJsonRes() {
+            netClient.post(Constants.MAIN_ENGINE+Constants.GET_RISKANALYSIS_LIST, params, new BaseJsonRes() {
 
                 @Override
                 public void onMySuccess(String data) {

@@ -168,6 +168,8 @@ public interface Constants {
     String GET_ThisMonthCOUNT_LIST = "mobile/evaluationMobileAction!getThisMonthControlList.action";
     //获取风险统计列表
     String GET_RISKSTATISTICS_LIST = "mobile/evaluationMobileAction!getRiskStatistics.action";
+    //获取风险分析饼图数据
+    String GET_RISKANALYSIS_LIST = "mobile/evaluationMobileAction!getRiskAnalyse.action";
 	//获取风险等级列表
 	String GET_RISKGRADE_LIST = "mobile/evaluationMobileAction!getRiskList.action";
 	//开启关闭辨识评估

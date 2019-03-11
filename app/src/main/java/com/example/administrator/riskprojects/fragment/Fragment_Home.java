@@ -24,6 +24,7 @@ import com.example.administrator.riskprojects.activity.Data;
 import com.example.administrator.riskprojects.activity.HiddenDangerStatisticsEachUnitDetailActivity;
 import com.example.administrator.riskprojects.activity.HomePageTotalDetailActivity;
 import com.example.administrator.riskprojects.activity.MainActivity;
+import com.example.administrator.riskprojects.activity.MainWindowActivity;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 import com.example.administrator.riskprojects.common.NetUtil;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
@@ -164,7 +165,7 @@ public class Fragment_Home extends Fragment {
         mLlRiskAnalysisNum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ctx, HomePageTotalDetailActivity.class);
+                Intent intent = new Intent(ctx, MainWindowActivity.class);
                 intent.putExtra("datatype","mLlRiskAnalysisNum");
                 intent.putExtra("topname","风险分析");
                 startActivity(intent);
