@@ -22,10 +22,12 @@ public class IdentificationEvaluationAdapter extends RecyclerView.Adapter {
 
     Context context;
     List<IdentificationEvaluation> hiddenDangerRecordList;
+    String datatype;
 
-    public IdentificationEvaluationAdapter(List<IdentificationEvaluation> recordList, Context context) {
+    public IdentificationEvaluationAdapter(List<IdentificationEvaluation> recordList, Context context,String datatype) {
             this.hiddenDangerRecordList = recordList;
             this.context = context;
+            this.datatype = datatype;
     }
 
     @Override
@@ -43,7 +45,6 @@ public class IdentificationEvaluationAdapter extends RecyclerView.Adapter {
         String tvDutyPersonName = hiddenDangerRecordList.get(position).getDutyPersonName();
         String tvControlTeamName = hiddenDangerRecordList.get(position).getControlTeamName();
         String riskGname = hiddenDangerRecordList.get(position).getRiskGname();
-        String recordTime = hiddenDangerRecordList.get(position).getRecordTime();
         ((ViewHolder) holder).tvKuangquName.setText(tvKuangquName);
         ((ViewHolder) holder).tvRiskContent.setText(tvRiskContent);
         ((ViewHolder) holder).tvRiskPlace.setText(tvRiskPlace);
@@ -51,7 +52,6 @@ public class IdentificationEvaluationAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).tvDutyPersonName.setText(tvDutyPersonName);
         ((ViewHolder) holder).tvControlTeamName.setText(tvControlTeamName);
         ((ViewHolder) holder).tvRiskGrade.setText(riskGname);
-        ((ViewHolder) holder).tvRiskGrade.setText(recordTime);
         ((IdentificationEvaluationAdapter.ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,6 +60,7 @@ public class IdentificationEvaluationAdapter extends RecyclerView.Adapter {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("hiddenDangerRecord", hiddenDangerRecordList.get(position));
                 intent.putExtra("recordBund", bundle);
+                intent.putExtra("datatype", datatype);
                 Activity activity = findActivity(context);
                 activity.startActivityForResult(intent,10);
             }

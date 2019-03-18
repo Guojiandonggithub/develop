@@ -52,9 +52,11 @@ public class MainWindowActivity extends BaseActivity {
     private PieChart pieChartBig;
     private List<String> mineList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private String[] colorList = new String[]{"#3bbd0a", "#0068f7", "#21d7fb",
+    /*private String[] colorList = new String[]{"#3bbd0a", "#0068f7", "#21d7fb",
             "#f19ec2", "#80c269", "#facd89", "#c490bf", "#f39800", "#b28850", "#e5004f","#3bbd0a", "#0068f7", "#21d7fb",
-            "#f19ec2", "#80c269", "#facd89", "#c490bf", "#f39800", "#b28850", "#e5004f"};
+            "#f19ec2", "#80c269", "#facd89", "#c490bf", "#f39800", "#b28850", "#e5004f"};*/
+    private String[] colorList = new String[]{"#EA1D25", "#EB5631", "#EDA446",
+            "#A6EB4B"};
     RiskCountJb groupCountJb;
     private CardView cvSelectStartDate;
     private TextView tvStartDate;
@@ -195,9 +197,22 @@ public class MainWindowActivity extends BaseActivity {
         for (int i = 0; i < groupCountJb.size(); i++) {
             RiskCountJb riskCountJb = new RiskCountJb();
             entrys.add(new PieEntry(Integer.parseInt(groupCountJb.get(i).getTotal()),groupCountJb.get(i).getRiskGname()));
-            color[i] = Color.parseColor(colorList[i]);
+            String colorStr = colorList[0];
+            if(groupCountJb.get(i).getRiskGname().equals("重大风险")){
+                color[i] = Color.parseColor(colorList[0]);
+                colorStr = colorList[0];
+            }else if(groupCountJb.get(i).getRiskGname().equals("较大风险")){
+                color[i] = Color.parseColor(colorList[1]);
+                colorStr = colorList[1];
+            }else if(groupCountJb.get(i).getRiskGname().equals("一般风险")){
+                color[i] = Color.parseColor(colorList[2]);
+                colorStr = colorList[2];
+            }else if(groupCountJb.get(i).getRiskGname().equals("轻微风险")){
+                color[i] = Color.parseColor(colorList[3]);
+                colorStr = colorList[3];
+            }
             riskCountJb.setRiskGname(groupCountJb.get(i).getRiskGname()+"：");
-            riskCountJb.setColor(Color.parseColor(colorList[i]));
+            riskCountJb.setColor(Color.parseColor(colorStr));
             riskCountJb.setTotal(groupCountJb.get(i).getTotal());
             riskCountJbList.add(riskCountJb);
         }
@@ -242,17 +257,18 @@ public class MainWindowActivity extends BaseActivity {
     //处理否设置
     private void setIshandleSpinner(Spinner spinner) {
         List<SelectItem> selectItems = new ArrayList<>();
-        SelectItem selectItem = new SelectItem();
-        selectItem.name = "管控关闭";
-        selectItem.id = "0";
+
         SelectItem selectItemw = new SelectItem();
         selectItemw.name = "管控开始";
         selectItemw.id = "1";
+        SelectItem selectItem = new SelectItem();
+        selectItem.name = "管控关闭";
+        selectItem.id = "0";
         SelectItem selectItemy = new SelectItem();
         selectItemy.name = "未管控";
         selectItemy.id = "2";
-        selectItems.add(selectItem);
         selectItems.add(selectItemw);
+        selectItems.add(selectItem);
         selectItems.add(selectItemy);
         isHandleAdapter = SpinnerAdapter.createFromResource(MainWindowActivity.this, selectItems, Gravity.CENTER_VERTICAL | Gravity.LEFT);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

@@ -26,23 +26,23 @@ public interface Constants {
 	String ISUPERVISION = "1";
 
 	// 外网地址
-	String MAIN_ENGINE = "http://59.49.107.27:8191/";
-	//String MAIN_ENGINE = "http://192.168.4.50:8070/";
-	//String MAIN_ENGINE = "http://1.63.57.10:28070/";
-	//String MAIN_ENGINE = "http://192.168.5.50:8070/";
-	//String MAIN_ENGINE = "http://1.63.57.10:38070/";
-	//String MAIN_ENGINE = "http://1.63.57.10:18970/";
-	//String MAIN_ENGINE = "http://1.63.57.10:18870/";
-	//String MAIN_ENGINE = "http://192.168.5.3:8070/";
+	//String MAIN_ENGINE = "http://59.49.107.27:8191/";
 	//String MAIN_ENGINE = "http://1.63.57.10:18370/";
-	//String MAIN_ENGINE = "http://1.63.57.10:18570/";
-	//String MAIN_ENGINE = "http://1.63.57.10:18770/";
-	//String MAIN_ENGINE = "http://1.63.57.10:18670/";
-	//String MAIN_ENGINE = "http://192.168.5.4:8070/";
 	//String MAIN_ENGINE = "http://1.63.57.10:18470/";
-	//String MAIN_ENGINE = "http://192.168.5.5:8070/";
+	//String MAIN_ENGINE = "http://1.63.57.10:18570/";
+	//String MAIN_ENGINE = "http://1.63.57.10:18670/";
+	//String MAIN_ENGINE = "http://1.63.57.10:18770/";
+	//String MAIN_ENGINE = "http://1.63.57.10:18870/";
+	//String MAIN_ENGINE = "http://1.63.57.10:18970/";
+	//String MAIN_ENGINE = "http://1.63.57.10:28070/";
+	//String MAIN_ENGINE = "http://1.63.57.10:38070/";
 	//String MAIN_ENGINE = "http://124.163.206.251:8191/";
-	//String MAIN_ENGINE = "http://192.168.7.59:8070/";
+	//String MAIN_ENGINE = "http://192.168.4.50:8070/";
+	//String MAIN_ENGINE = "http://192.168.5.3:8070/";
+	//String MAIN_ENGINE = "http://192.168.5.4:8070/";
+	//String MAIN_ENGINE = "http://192.168.5.5:8070/";
+	//String MAIN_ENGINE = "http://192.168.5.50:8070/";
+	String MAIN_ENGINE = "http://192.168.7.59:8070/";
 
 	// 内网地址
 	String INNER_MAIN_ENGINE = "123123";

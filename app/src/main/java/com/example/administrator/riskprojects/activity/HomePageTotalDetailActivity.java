@@ -3,11 +3,13 @@ package com.example.administrator.riskprojects.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -61,13 +63,18 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
     private TextView errorMessage;
     private TextView errorTips;
     private LinearLayoutCompat llOptionNew;
+    private LinearLayoutCompat llEndTime;
+    private LinearLayoutCompat llSelectRiskStatus;
     private LinearLayoutCompat llSelectRiskGrade;
     private LinearLayoutCompat llExpand;
     private TextView tvExpand;
     private ImageView ivExpand;
     private Spinner riskSpinner;
+    private Spinner riskStatusSpinner;
     private SpinnerAdapter spRiskAdapter;
-    private HomePageTotalDetailAdapter adapter;
+    private SpinnerAdapter isHandleAdapter;
+    private CardView cvSelectEndDate;
+    private TextView tvEndDate;
     private List<HiddenDangerRecord> recordLists = new ArrayList<HiddenDangerRecord>();
     private List<ThreeFix> threeFixLists = new ArrayList<ThreeFix>();
     private List<IdentificationEvaluation> evaluationLists = new ArrayList<IdentificationEvaluation>();
@@ -79,8 +86,10 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
         netClient = new NetClient(HomePageTotalDetailActivity.this);
         initView();
         setView();
-        initdata(Constants.PAGE);
         getRiskGrade();
+        setIshandleSpinner(riskStatusSpinner);
+        evaluationLists.clear();
+        initdata(Constants.PAGE);
     }
 
     private void setView() {
@@ -90,6 +99,12 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        cvSelectEndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HomePageTotalDetailActivity.this.startActivityForResult(new Intent(HomePageTotalDetailActivity.this, DatePickerActivity.class), DatePickerActivity.ENDREQUEST);
             }
         });
     }
@@ -105,8 +120,13 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
         errorMessage = findViewById(R.id.error_message);
         errorTips = findViewById(R.id.error_tips);
         riskSpinner = findViewById(R.id.sp_risk_grade);
+        riskStatusSpinner = findViewById(R.id.sp_risk_status);
         llOptionNew = findViewById(R.id.ll_option_new);
+        llEndTime = findViewById(R.id.ll_end_time);
+        llSelectRiskStatus = findViewById(R.id.ll_select_risk_status);
         llSelectRiskGrade = findViewById(R.id.ll_select_check_results);
+        cvSelectEndDate = findViewById(R.id.cv_select_end_date);
+        tvEndDate = findViewById(R.id.tv_end_date);
         llExpand = findViewById(R.id.ll_expand);
         ivExpand = findViewById(R.id.iv_expand);
         tvExpand = findViewById(R.id.tv_expand);
@@ -123,7 +143,7 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-
+                System.out.println("recyclerView==========="+newState);
                 if (recyclerView.getAdapter().getItemCount() != 0) {
                     //得到当前显示的最后一个item的view
                     View lastChildView = recyclerView.getLayoutManager().getChildAt(recyclerView.getLayoutManager().getChildCount() - 1);
@@ -170,6 +190,9 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
     }
 
     private void initdata(final String curpage){
+        if(curpage.equals("1")){
+            evaluationLists.clear();
+        }
         RequestParams params = new RequestParams();
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", curpage);
@@ -236,11 +259,24 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
             params.put("evaluationJson", jsonString);
             url = Constants.GET_ThisMonthCOUNT_LIST;
         }else if(datatype.equals("mLlRiskStatisticsNum")){
-            llOptionNew.setVisibility(View.GONE);
-            Calendar calendar= Calendar.getInstance();  //获取当前时间，作为图标的名字
-            String year=calendar.get(Calendar.YEAR)+"";
-            String month=calendar.get(Calendar.MONTH)+1+"";
-            paramsMap.put("customParamsOne", year+"-"+month);//管控时间
+            //llOptionNew.setVisibility(View.GONE);
+            llEndTime.setVisibility(View.VISIBLE);
+            llSelectRiskStatus.setVisibility(View.VISIBLE);
+            if(!TextUtils.isEmpty(tvEndDate.getText())){
+                paramsMap.put("customParamsOne", tvEndDate.getText().toString());//管控时间
+            }
+            SelectItem selectItem = (SelectItem) riskStatusSpinner.getSelectedItem();
+            if (null != selectItem&&!TextUtils.isEmpty(selectItem.id)) {
+                if (Integer.parseInt(selectItem.id)>=0) {
+                    paramsMap.put("customParamsTwo", selectItem.id);//开启状态
+                }
+            }
+            SelectItem riskItem = (SelectItem) riskSpinner.getSelectedItem();
+            if (null != riskItem&&!TextUtils.isEmpty(riskItem.id)) {
+                if (Integer.parseInt(riskItem.id)>=0) {
+                    paramsMap.put("customParamsFive", riskItem.id);//风险等级
+                }
+            }
             paramsMap.put("customParamsTen", UserUtils.getUserID(HomePageTotalDetailActivity.this));//状态
             String jsonString = JSON.toJSONString(paramsMap);
             params.put("evaluationJson", jsonString);
@@ -275,16 +311,16 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
                     if(datatype.equals("mLlDeleteNum")||datatype.equals("mLlUnchangeNum")){
                         List<HiddenDangerRecord> recordList = JSONArray.parseArray(rows, HiddenDangerRecord.class);
                         recordLists.addAll(recordList);
+                        recyclerView.setAdapter(new HomePageTotalDetailAdapter(recordLists,threeFixLists,datatype));
                     }else{
                         List<ThreeFix> recordList = JSONArray.parseArray(rows, ThreeFix.class);
                         threeFixLists.addAll(recordList);
+                        recyclerView.setAdapter(new HomePageTotalDetailAdapter(recordLists,threeFixLists,datatype));
                     }
                     if(datatype.equals("mLlZhuanxiangNum")||datatype.equals("mLlNianduNum")||datatype.equals("mLlDangyueNum")||datatype.equals("mLlRiskStatisticsNum")){
                         List<IdentificationEvaluation> recordList = JSONArray.parseArray(rows, IdentificationEvaluation.class);
                         evaluationLists.addAll(recordList);
-                        recyclerView.setAdapter(new IdentificationEvaluationAdapter(evaluationLists,HomePageTotalDetailActivity.this));
-                    }else{
-                        recyclerView.setAdapter(new HomePageTotalDetailAdapter(recordLists,threeFixLists,datatype));
+                        recyclerView.setAdapter(new IdentificationEvaluationAdapter(evaluationLists,HomePageTotalDetailActivity.this,datatype));
                     }
                 }
 
@@ -363,6 +399,7 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 adapter.setSelectedPostion(position);
+                evaluationLists.clear();
                 initdata(Constants.PAGE);
             }
 
@@ -382,6 +419,7 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
 
     @Override
     public void onRefresh() {
+        evaluationLists.clear();
         initdata(Constants.PAGE);
     }
 
@@ -399,6 +437,50 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
         {
             finish();
         }
+        if (requestCode == DatePickerActivity.ENDREQUEST && resultCode == RESULT_OK) {
+            String date = data.getStringExtra(DatePickerActivity.DATE);
+            if(!date.equals("")){
+                tvEndDate.setText(date.substring(0,7));
+            }
+            evaluationLists.clear();
+            initdata(Constants.PAGE);
+        }
+    }
+
+    //处理否设置
+    private void setIshandleSpinner(Spinner spinner) {
+        List<SelectItem> selectItems = new ArrayList<>();
+        SelectItem selectItemmoren = new SelectItem();
+        selectItemmoren.name = "请选择";
+        selectItemmoren.id = "";
+        SelectItem selectItemw = new SelectItem();
+        selectItemw.name = "管控开始";
+        selectItemw.id = "1";
+        SelectItem selectItem = new SelectItem();
+        selectItem.name = "管控关闭";
+        selectItem.id = "0";
+        SelectItem selectItemy = new SelectItem();
+        selectItemy.name = "未管控";
+        selectItemy.id = "2";
+        selectItems.add(selectItemmoren);
+        selectItems.add(selectItemw);
+        selectItems.add(selectItem);
+        selectItems.add(selectItemy);
+        isHandleAdapter = SpinnerAdapter.createFromResource(HomePageTotalDetailActivity.this, selectItems, Gravity.CENTER_VERTICAL | Gravity.LEFT);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                isHandleAdapter.setSelectedPostion(position);
+                evaluationLists.clear();
+                initdata(Constants.PAGE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        riskStatusSpinner.setAdapter(isHandleAdapter);
     }
 
 }

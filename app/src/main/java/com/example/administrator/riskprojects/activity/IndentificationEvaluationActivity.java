@@ -170,7 +170,15 @@ public class IndentificationEvaluationActivity extends BaseActivity {
         tvDutyDeptName.setText(record.getDutyDeptName());
         tvDutyPersonName.setText(record.getDutyPersonName());
         tvControlTeamName.setText(record.getControlTeamName());
-        tvControlTime.setText(record.getControlYear()+record.getControlMonths());
+        String year = record.getControlYear();
+        if(record.getControlYear()==null){
+            year = "";
+        }
+        String Months = record.getControlMonths();
+        if(record.getControlMonths()==null){
+            Months = "";
+        }
+        tvControlTime.setText(year+Months);
         tvPersonsControl.setText(record.getPersonsControl());
         tvStartTime.setText(record.getStarTime());
         tvEndTime.setText(record.getEndTime());
@@ -196,6 +204,15 @@ public class IndentificationEvaluationActivity extends BaseActivity {
             }
         }
         tvOpenType.setText(openType);
+        final Intent intent = getIntent();
+        String datatype = intent.getStringExtra("datatype");
+        if(datatype.equals("mLlRiskStatisticsNum")){
+            txtTitle.setText("风险统计");
+            tvClose.setVisibility(View.GONE);
+            tvOpen.setVisibility(View.GONE);
+            tvLuoshi.setVisibility(View.GONE);
+            tvLuoshiRecord.setVisibility(View.GONE);
+        }
     }
 
     //关闭辨识评估

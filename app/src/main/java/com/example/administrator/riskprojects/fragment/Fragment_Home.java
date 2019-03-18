@@ -141,7 +141,7 @@ public class Fragment_Home extends Fragment {
                 if(!mTvDangyueNum.getText().toString().equals("0")){
                     Intent intent = new Intent(ctx, HomePageTotalDetailActivity.class);
                     intent.putExtra("datatype","mLlDangyueNum");
-                    intent.putExtra("topname","当月辨识");
+                    intent.putExtra("topname","当月管控");
                     startActivity(intent);
                 }
             }
@@ -350,6 +350,8 @@ public class Fragment_Home extends Fragment {
         mTvNianduNum.setText(nianDuNum);
         mTvZhuanxiangNum.setText(zhuanXiangNum);
         mTvDangyueNum.setText(monthCount);
+        Integer num = Integer.parseInt(nianDuNum)+Integer.parseInt(zhuanXiangNum);
+        mTvRiskStatisticsNum.setText(num.toString());
     }
 
     private void resultHiddenRecord(String data){
