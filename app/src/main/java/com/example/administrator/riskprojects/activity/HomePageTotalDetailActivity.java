@@ -281,6 +281,19 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
             String jsonString = JSON.toJSONString(paramsMap);
             params.put("evaluationJson", jsonString);
             url = Constants.GET_RISKSTATISTICS_LIST;
+        }else if(datatype.equals("mLlonNum_num")||datatype.equals("mLlopenNum_num")||datatype.equals("mLlcloseNum_num")){
+            llOptionNew.setVisibility(View.GONE);
+            String openType = getIntent().getStringExtra("openType");
+            String kuangQuId = getIntent().getStringExtra("kuangQuId");
+            String customParamsOne = getIntent().getStringExtra("customParamsOne");
+            String customParamsTwo = getIntent().getStringExtra("customParamsTwo");
+            paramsMap.put("openType", openType);//状态
+            paramsMap.put("kuangQuId", kuangQuId);//状态
+            paramsMap.put("customParamsOne", customParamsOne);//状态
+            paramsMap.put("customParamsTwo", customParamsTwo);//状态
+            String jsonString = JSON.toJSONString(paramsMap);
+            params.put("evaluationJson", jsonString);
+            url = Constants.GET_RISK_STATISTICS_LIST;
         }
         getDetailRecord(url,params,datatype,curpage);
     }
@@ -317,7 +330,8 @@ public class HomePageTotalDetailActivity extends BaseActivity implements SwipeRe
                         threeFixLists.addAll(recordList);
                         recyclerView.setAdapter(new HomePageTotalDetailAdapter(recordLists,threeFixLists,datatype));
                     }
-                    if(datatype.equals("mLlZhuanxiangNum")||datatype.equals("mLlNianduNum")||datatype.equals("mLlDangyueNum")||datatype.equals("mLlRiskStatisticsNum")){
+                    if(datatype.equals("mLlZhuanxiangNum")||datatype.equals("mLlNianduNum")||datatype.equals("mLlDangyueNum")||datatype.equals("mLlRiskStatisticsNum")
+                        ||datatype.equals("mLlonNum_num")||datatype.equals("mLlcloseNum_num")||datatype.equals("mLlopenNum_num")){
                         List<IdentificationEvaluation> recordList = JSONArray.parseArray(rows, IdentificationEvaluation.class);
                         evaluationLists.addAll(recordList);
                         recyclerView.setAdapter(new IdentificationEvaluationAdapter(evaluationLists,HomePageTotalDetailActivity.this,datatype));

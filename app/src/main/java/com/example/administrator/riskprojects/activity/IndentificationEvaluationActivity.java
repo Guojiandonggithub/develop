@@ -206,7 +206,7 @@ public class IndentificationEvaluationActivity extends BaseActivity {
         tvOpenType.setText(openType);
         final Intent intent = getIntent();
         String datatype = intent.getStringExtra("datatype");
-        if(datatype.equals("mLlRiskStatisticsNum")){
+        if(datatype.equals("mLlRiskStatisticsNum")||datatype.equals("mLlonNum_num")||datatype.equals("mLlcloseNum_num")||datatype.equals("mLlopenNum_num")){
             txtTitle.setText("风险统计");
             tvClose.setVisibility(View.GONE);
             tvOpen.setVisibility(View.GONE);

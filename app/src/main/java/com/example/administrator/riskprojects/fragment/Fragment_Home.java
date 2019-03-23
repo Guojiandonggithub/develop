@@ -26,6 +26,8 @@ import com.example.administrator.riskprojects.activity.HomePageTotalDetailActivi
 import com.example.administrator.riskprojects.activity.MainActivity;
 import com.example.administrator.riskprojects.activity.MainWindowActivity;
 import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
+import com.example.administrator.riskprojects.bean.IdentificCount;
+import com.example.administrator.riskprojects.bean.UserInfo;
 import com.example.administrator.riskprojects.common.NetUtil;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
@@ -36,7 +38,10 @@ import com.example.administrator.riskprojects.util.DensityUtil;
 import com.example.administrator.riskprojects.view.MyDecoration;
 import com.juns.health.net.loopj.android.http.RequestParams;
 
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //消息
 public class Fragment_Home extends Fragment {
@@ -52,6 +57,9 @@ public class Fragment_Home extends Fragment {
     private TextView mTvWithinTheTimeLimitNum;
     private TextView mTvUnchangeNum;
     private TextView mTvForAcceptanceNum;
+    private TextView mTvopenNum_num;
+    private TextView mTvcloseNum_num;
+    private TextView mTvonNum_num;
     private RecyclerView mRecyclerView;
     protected NetClient netClient;
     private LinearLayoutCompat mLlNianduNum;
@@ -63,6 +71,9 @@ public class Fragment_Home extends Fragment {
     private LinearLayoutCompat mLlForAcceptanceNum;
     private LinearLayoutCompat mLlRiskStatisticsNum;
     private LinearLayoutCompat mLlRiskAnalysisNum;
+    private LinearLayoutCompat mLlopenNum_num;
+    private LinearLayoutCompat mLlcloseNum_num;
+    private LinearLayoutCompat mLlonNum_num;
     private HomeHiddenDangerAdapter adapter;
 
     @Override
@@ -99,6 +110,7 @@ public class Fragment_Home extends Fragment {
 
     private void initViews() {
         getHiddenStatisticsNum(UserUtils.getUserID(getActivity()));
+        getRiskStatisticsNum();
         getEvaluationCount();
         getHiddenRecord();
     }
@@ -227,6 +239,69 @@ public class Fragment_Home extends Fragment {
                 }
             }
         });
+        mTvopenNum_num = layout.findViewById(R.id.tv_openNum_num);
+        mLlopenNum_num = layout.findViewById(R.id.ll_openNum_num);
+        mLlopenNum_num.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!mTvopenNum_num.getText().toString().equals("0")){
+                    Intent intent = new Intent(ctx, HomePageTotalDetailActivity.class);
+                    intent.putExtra("datatype","mLlopenNum_num");
+                    Map<String,String> paramsmap= getRiskParams();
+                    String collieryId = paramsmap.get("collieryId");
+                    String sname = paramsmap.get("sname");
+                    String fname = paramsmap.get("fname");
+                    intent.putExtra("topname","管控开始");
+                    intent.putExtra("openType","1");
+                    intent.putExtra("collieryId",collieryId);
+                    intent.putExtra("customParamsOne",sname);
+                    intent.putExtra("customParamsTwo",fname);
+                    startActivity(intent);
+                }
+            }
+        });
+        mTvcloseNum_num = layout.findViewById(R.id.tv_closeNum_num);
+        mLlcloseNum_num = layout.findViewById(R.id.ll_closeNum_num);
+        mLlcloseNum_num.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!mTvcloseNum_num.getText().toString().equals("0")){
+                    Intent intent = new Intent(ctx, HomePageTotalDetailActivity.class);
+                    intent.putExtra("datatype","mLlcloseNum_num");
+                    intent.putExtra("topname","管控结束");
+                    Map<String,String> paramsmap= getRiskParams();
+                    String collieryId = paramsmap.get("collieryId");
+                    String sname = paramsmap.get("sname");
+                    String fname = paramsmap.get("fname");
+                    intent.putExtra("openType","0");
+                    intent.putExtra("collieryId",collieryId);
+                    intent.putExtra("customParamsOne",sname);
+                    intent.putExtra("customParamsTwo",fname);
+                    startActivity(intent);
+                }
+            }
+        });
+        mTvonNum_num = layout.findViewById(R.id.tv_onNum_num);
+        mLlonNum_num = layout.findViewById(R.id.ll_onNum_num);
+        mLlonNum_num.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!mTvonNum_num.getText().toString().equals("0")){
+                    Intent intent = new Intent(ctx, HomePageTotalDetailActivity.class);
+                    intent.putExtra("datatype","mLlonNum_num");
+                    intent.putExtra("topname","未管控");
+                    Map<String,String> paramsmap= getRiskParams();
+                    String collieryId = paramsmap.get("collieryId");
+                    String sname = paramsmap.get("sname");
+                    String fname = paramsmap.get("fname");
+                    intent.putExtra("openType","2");
+                    intent.putExtra("collieryId",collieryId);
+                    intent.putExtra("customParamsOne",sname);
+                    intent.putExtra("customParamsTwo",fname);
+                    startActivity(intent);
+                }
+            }
+        });
         mRecyclerView = layout.findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(ctx));
     }
@@ -252,6 +327,51 @@ public class Fragment_Home extends Fragment {
                         if (!TextUtils.isEmpty(data)) {
                             Utils.putValue(getActivity(), Constants.HOME_GET_HIDDENUM, data);
                             resultHiddenStatisticsNum(data);
+                        }
+
+                    }
+
+                    @Override
+                    public void onMyFailure(String content) {
+                        Log.e(TAG, "主页获取隐患数据统计返回错误信息：" + content);
+                        Utils.showLongToast(getContext(), content);
+                    }
+                });
+            }
+        } else {
+            Utils.showLongToast(getActivity(), "请退出重新登录！");
+        }
+    }
+
+    private void getRiskStatisticsNum() {
+        Map<String,String> paramsmap= getRiskParams();
+        String collieryId = paramsmap.get("collieryId");
+        String sname = paramsmap.get("sname");
+        String fname = paramsmap.get("fname");
+        if (!TextUtils.isEmpty(collieryId)) {
+            if (!NetUtil.checkNetWork(getActivity())) {
+                String jsondata = Utils.getValue(getActivity(), Constants.GET_RISK_STATISTICS_NUM);
+                if("".equals(jsondata)){
+                    Utils.showLongToast(getContext(), "网络异常，没有请求到数据");
+                }else{
+                    resultHiddenStatisticsNum(jsondata);
+                }
+            }else{
+                Map<String, String> paramsMap = new HashMap<>();
+                RequestParams params = new RequestParams();
+                paramsMap.put("customParamsOne", sname);
+                paramsMap.put("customParamsTwo", fname);
+                paramsMap.put("kuangQuId", collieryId);
+                String jsonString = JSON.toJSONString(paramsMap);
+                params.put("evaluationJson", jsonString);
+                netClient.post(Data.getInstance().getIp()+Constants.GET_RISK_STATISTICS_NUM, params, new BaseJsonRes() {
+
+                    @Override
+                    public void onMySuccess(String data) {
+                        Log.i(TAG, "主页隐患数据统计返回数据：" + data);
+                        if (!TextUtils.isEmpty(data)) {
+                            Utils.putValue(getActivity(), Constants.GET_RISK_STATISTICS_NUM, data);
+                            resultRiskStatisticsNum(data);
                         }
 
                     }
@@ -342,6 +462,26 @@ public class Fragment_Home extends Fragment {
         mTvDeleteNum.setText(saleNumber);
     }
 
+    private void resultRiskStatisticsNum(String data){
+        String mTvopenNum = "0";
+        String mTvcloseNum = "0";
+        String mTvonNum = "0";
+        List<IdentificCount> tempList = JSONArray.parseArray(data, IdentificCount.class);
+        for (int i = 0; i < tempList.size(); i++) {
+            String opentype = tempList.get(i).getOpenType();
+            if(opentype.equals("0")){
+                mTvcloseNum = tempList.get(i).getTotal();
+            }else if(opentype.equals("1")){
+                mTvopenNum = tempList.get(i).getTotal();
+            }else{
+                mTvonNum = tempList.get(i).getTotal();
+            }
+        }
+        mTvopenNum_num.setText(mTvopenNum);
+        mTvcloseNum_num.setText(mTvcloseNum);
+        mTvonNum_num.setText(mTvonNum);
+    }
+
     private void resultEvaluationCountNum(String data){
         JSONObject jsonObject = JSON.parseObject(data);
         String nianDuNum = jsonObject.getString("nianDuNum");
@@ -391,6 +531,29 @@ public class Fragment_Home extends Fragment {
             }
         });
         mRecyclerView.setAdapter(adapter);
+    }
+
+    private Map<String,String> getRiskParams(){
+        UserInfo userInfo = UserUtils.getUserModel(getActivity());
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        String monthStr;
+        month = month + 1;
+        if (month < 10) {
+            monthStr = "0" + month;
+        }else{
+            monthStr = String.valueOf(month);
+        }
+        int date = cal.get(Calendar.DATE);
+        String sname = year + "-" + monthStr + "-01";
+        String fname = year + "-" + monthStr + "-" + date;
+        String collieryId = userInfo.getCollieryId();
+        Map<String,String> map = new HashMap<>();
+        map.put("sname",sname);
+        map.put("fname",fname);
+        map.put("collieryId",collieryId);
+        return map;
     }
 
 }

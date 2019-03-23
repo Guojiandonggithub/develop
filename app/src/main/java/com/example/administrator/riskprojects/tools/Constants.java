@@ -26,7 +26,7 @@ public interface Constants {
 	String ISUPERVISION = "1";
 
 	// 外网地址
-	//String MAIN_ENGINE = "http://59.49.107.27:8191/";
+	String MAIN_ENGINE = "http://59.49.107.27:8191/";
 	//String MAIN_ENGINE = "http://1.63.57.10:18370/";
 	//String MAIN_ENGINE = "http://1.63.57.10:18470/";
 	//String MAIN_ENGINE = "http://1.63.57.10:18570/";
@@ -38,11 +38,12 @@ public interface Constants {
 	//String MAIN_ENGINE = "http://1.63.57.10:38070/";
 	//String MAIN_ENGINE = "http://124.163.206.251:8191/";
 	//String MAIN_ENGINE = "http://192.168.4.50:8070/";
+	//String MAIN_ENGINE = "http://192.168.4.101:8070/";
 	//String MAIN_ENGINE = "http://192.168.5.3:8070/";
 	//String MAIN_ENGINE = "http://192.168.5.4:8070/";
 	//String MAIN_ENGINE = "http://192.168.5.5:8070/";
 	//String MAIN_ENGINE = "http://192.168.5.50:8070/";
-	String MAIN_ENGINE = "http://192.168.7.59:8070/";
+	//String MAIN_ENGINE = "http://192.168.7.59:8070/";
 
 	// 内网地址
 	String INNER_MAIN_ENGINE = "123123";
@@ -178,6 +179,10 @@ public interface Constants {
 	String ADD_MANAGEMENT_CONTROL = "mobile/evaluationMobileAction!addManagementControl.action";
 	//查询落实跟踪记录
 	String GET_MANAGEMENT_CONTROL = "mobile/evaluationMobileAction!getManagementControlList.action";
+	//当月风险状态统计分析
+	String GET_RISK_STATISTICS_NUM = "mobile/evaluationMobileAction!getIdentificCountByOpenType.action";
+	//当月风险状态统计列表
+	String GET_RISK_STATISTICS_LIST = "mobile/evaluationMobileAction!getIdentificListByOpenType.action";
 
 	public void addRecheck(Context context);
 	public void addAddhiddenrecord(Context context);

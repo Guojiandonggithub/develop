@@ -34,6 +34,7 @@ public class UserInfo {
 	private String sumcountsumcount;//每个月上报总条数
 	private String teamId;//部门ID
 	private String sid;//专业ID
+	private String collieryId;//矿区部门id
 
 	public String getId() {
 		return id;
@@ -297,5 +298,13 @@ public class UserInfo {
 
 	public void setSid(String sid) {
 		this.sid = sid;
+	}
+
+	public String getCollieryId() {
+		return collieryId;
+	}
+
+	public void setCollieryId(String collieryId) {
+		this.collieryId = collieryId;
 	}
 }

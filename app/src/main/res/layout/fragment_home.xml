@@ -44,6 +44,7 @@
                     android:layout_marginRight="6dp"
                     android:layout_marginBottom="3dp"
                     android:layout_weight="1"
+                    android:visibility="gone"
                     android:background="@drawable/blue_rectangle_white_stroke_4dp_corner"
                     android:elevation="@dimen/elevation_basic"
                     android:gravity="center"
@@ -220,6 +221,144 @@
                 android:layout_marginLeft="14dp"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
+                android:text="@string/monthly_hidden_risk"
+                android:textColor="@color/colorGrayDarker"
+                android:textSize="@dimen/large_ts" />
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:orientation="horizontal">
+
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="59dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="3dp"
+                    android:id="@+id/ll_openNum_num"
+                    android:layout_weight="1"
+                    android:background="@drawable/blue_rectangle_white_stroke_4dp_corner"
+                    android:elevation="@dimen/elevation_basic"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="@string/identific_open"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/normal_ts" />
+
+                    <TextView
+                        android:id="@+id/tv_openNum_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="0条"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/small_ts" />
+
+                </android.support.v7.widget.LinearLayoutCompat>
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_closeNum_num"
+                    android:layout_width="0dp"
+                    android:layout_height="59dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/blue_rectangle_white_stroke_4dp_corner"
+                    android:elevation="@dimen/elevation_basic"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="@string/identific_clone"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/normal_ts" />
+
+                    <TextView
+                        android:id="@+id/tv_closeNum_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="0条"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/small_ts" />
+
+                </android.support.v7.widget.LinearLayoutCompat>
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:orientation="horizontal">
+
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/ll_onNum_num"
+                    android:layout_width="0dp"
+                    android:layout_height="59dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/blue_rectangle_white_stroke_4dp_corner"
+                    android:elevation="@dimen/elevation_basic"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="@string/identific_on"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/normal_ts" />
+
+                    <TextView
+                        android:id="@+id/tv_onNum_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="0条"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/small_ts" />
+
+                </android.support.v7.widget.LinearLayoutCompat>
+            </android.support.v7.widget.LinearLayoutCompat>
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="186dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
                 android:text="@string/monthly_hidden_statistics"
                 android:textColor="@color/colorGrayDarker"
                 android:textSize="@dimen/large_ts" />
@@ -379,7 +518,6 @@
             </android.support.v7.widget.LinearLayoutCompat>
 
         </android.support.v7.widget.LinearLayoutCompat>
-
 
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
