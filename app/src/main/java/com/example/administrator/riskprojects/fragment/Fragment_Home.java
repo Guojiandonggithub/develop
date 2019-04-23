@@ -354,7 +354,7 @@ public class Fragment_Home extends Fragment {
                 if("".equals(jsondata)){
                     Utils.showLongToast(getContext(), "网络异常，没有请求到数据");
                 }else{
-                    resultHiddenStatisticsNum(jsondata);
+                    resultRiskStatisticsNum(jsondata);
                 }
             }else{
                 Map<String, String> paramsMap = new HashMap<>();

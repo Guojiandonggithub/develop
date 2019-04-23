@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.example.administrator.riskprojects.activity.Data;
+
 public class NetUtil {
 
 	/**
@@ -14,8 +16,12 @@ public class NetUtil {
 
 		boolean isWIFI = isWIFI(context);
 		boolean isMobile = isMobile(context);
+		boolean isConnect = Data.getInstance().isConnect();
 		// 如果两个渠道都无法使用，提示用户设置网络信息
 		if (isWIFI == false && isMobile == false) {
+			return false;
+		}
+		if(!isConnect){
 			return false;
 		}
 		return true;

@@ -122,10 +122,20 @@
         <activity
             android:name=".activity.MainWindowActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.TimeActivity"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".activity.HiddenDangerDetailManagementAddOrDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <service
+            android:name=".tools.SocketService"
+            android:enabled="true"
+            android:exported="true" />
 
         <receiver android:name=".net.NetworkConnectChangedReceiver" />
 

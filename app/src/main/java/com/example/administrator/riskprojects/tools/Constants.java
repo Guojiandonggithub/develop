@@ -25,7 +25,11 @@ public interface Constants {
 	String ROWS = "10";
 	String ISUPERVISION = "1";
 
-	// 外网地址
+	// 链接地址ip (用来测试网络是否连通)
+	String INTENT_IP = "59.49.107.27";
+	String INTENT_PORT = "8191";
+
+	// 服务器地址
 	String MAIN_ENGINE = "http://59.49.107.27:8191/";
 	//String MAIN_ENGINE = "http://1.63.57.10:18370/";
 	//String MAIN_ENGINE = "http://1.63.57.10:18470/";
@@ -37,16 +41,15 @@ public interface Constants {
 	//String MAIN_ENGINE = "http://1.63.57.10:28070/";
 	//String MAIN_ENGINE = "http://1.63.57.10:38070/";
 	//String MAIN_ENGINE = "http://124.163.206.251:8191/";
-	//String MAIN_ENGINE = "http://192.168.4.50:8070/";
 	//String MAIN_ENGINE = "http://192.168.4.101:8070/";
+	//String MAIN_ENGINE = "http://192.168.4.50:8070/";
 	//String MAIN_ENGINE = "http://192.168.5.3:8070/";
-	//String MAIN_ENGINE = "http://192.168.5.4:8070/";
-	//String MAIN_ENGINE = "http://192.168.5.5:8070/";
 	//String MAIN_ENGINE = "http://192.168.5.50:8070/";
 	//String MAIN_ENGINE = "http://192.168.7.59:8070/";
+	//String MAIN_ENGINE = "http://192.168.9.8:8070/";
+	//String MAIN_ENGINE = "http://192.168.12.5:8070/";
+	//String MAIN_ENGINE = "http://192.168.105.4:8070/";
 
-	// 内网地址
-	String INNER_MAIN_ENGINE = "123123";
 	// 用户登录
 	String Login_URL = "mobile/employeeMobileAction!employeeLogin.action";
 	// 首页获取隐患统计数据

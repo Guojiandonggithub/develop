@@ -1,6 +1,8 @@
 package com.example.administrator.riskprojects;
 
 import android.Manifest;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
@@ -22,6 +25,7 @@ import com.example.administrator.riskprojects.dialog.FlippingLoadingDialog;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
+import com.example.administrator.riskprojects.tools.SocketService;
 import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
 import com.juns.health.net.loopj.android.http.RequestParams;
@@ -40,6 +44,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     protected NetClient netClient;
     protected FlippingLoadingDialog mLoadingDialog;
     private EditText et_username, et_password;
+    private TextView internet_type;
     private Button btn_login;
     private RadioButton outer_net,intra_net;
     private RadioGroup radio_net;
@@ -48,6 +53,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
     };
     private static final int num = 123;//用于验证获取的权
+    public SocketService socketService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +61,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         setContentView(R.layout.activity_login);
         netClient = new NetClient(this);
         init();
+        bindSocketService();
     }
 
     private void init(){
@@ -74,7 +81,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     protected void initControl() {
-            et_username = (EditText) findViewById(R.id.et_username);
+        internet_type = (TextView) findViewById(R.id.internet_type);
+        et_username = (EditText) findViewById(R.id.et_username);
             et_password = (EditText) findViewById(R.id.et_password);
             outer_net = (RadioButton) findViewById(R.id.outer_net);
             intra_net = (RadioButton) findViewById(R.id.intra_net);
@@ -101,7 +109,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         Utils.showShortToast(LoginActivity.this, rb.getText().toString());
         Data app = (Data)getApplication();
         if(rb.getText().equals("内网")){
-            app.setIp(Constants.INNER_MAIN_ENGINE);
+            //app.setIp(Constants.INNER_MAIN_ENGINE);
         }else{
             app.setIp(Constants.MAIN_ENGINE);
         }
@@ -296,6 +304,46 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 Utils.showShortToast(LoginActivity.this, content);
             }
         });
+    }
+
+    private void bindSocketService() {
+        /*先判断 Service是否正在运行 如果正在运行  给出提示  防止启动多个service*/
+        if (isServiceRunning("com.example.administrator.riskprojects.tools.SocketService")) {
+            //Toast.makeText(this, "连接服务已运行", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(Constants.INTENT_IP.startsWith("192")){
+            internet_type.setText("（内网）");
+            /*启动service*/
+            Intent intent = new Intent(getApplicationContext(), SocketService.class);
+            intent.putExtra(Constants.INTENT_IP, Constants.INTENT_IP);
+            intent.putExtra(Constants.INTENT_PORT, Constants.INTENT_PORT);
+            startService(intent);
+        }else{
+            internet_type.setText("（外网）");
+        }
+    }
+
+    /**
+     * 判断服务是否运行
+     */
+    private boolean isServiceRunning(final String className) {
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> info = activityManager.getRunningServices(Integer.MAX_VALUE);
+        if (info == null || info.size() == 0) return false;
+        for (ActivityManager.RunningServiceInfo aInfo : info) {
+            if (className.equals(aInfo.service.getClassName())) return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        /*如果没有连接成功  则退出的时候停止服务 */
+        Intent intent = new Intent(this, SocketService.class);
+        stopService(intent);
     }
 
 }

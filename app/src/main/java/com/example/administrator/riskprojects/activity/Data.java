@@ -15,6 +15,7 @@ public class Data extends Application{
 	private boolean Wifi;
 	private boolean Mobile;
 	private boolean Connected;
+	private boolean isConnect = true;
 
 	private static Data instance;
 	public static Data getInstance() {
@@ -75,5 +76,12 @@ public class Data extends Application{
 		TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(),sequence,tagAliasBean);
 	}
 
+	public boolean isConnect() {
+		return isConnect;
+	}
+
+	public void setConnect(boolean connect) {
+		isConnect = connect;
+	}
 }
 

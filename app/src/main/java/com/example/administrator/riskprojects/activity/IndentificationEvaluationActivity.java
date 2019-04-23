@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.example.administrator.riskprojects.BaseActivity;
 import com.example.administrator.riskprojects.R;
+import com.example.administrator.riskprojects.activity.datepicker.CustomDatePicker;
+import com.example.administrator.riskprojects.activity.datepicker.DateFormatUtils;
 import com.example.administrator.riskprojects.bean.IdentificationEvaluation;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
@@ -53,6 +55,9 @@ public class IndentificationEvaluationActivity extends BaseActivity {
     private TextView tvLuoshi;
     private TextView tvLuoshiRecord;
     private IdentificationEvaluation record;
+    private CustomDatePicker mTimerPicker;
+    private String time;
+    private String status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,36 +108,16 @@ public class IndentificationEvaluationActivity extends BaseActivity {
         tvClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyAlertDialog alertDialog = new MyAlertDialog(IndentificationEvaluationActivity.this, new MyAlertDialog.DialogListener() {
-                    @Override
-                    public void affirm() {
-                        closeEvaluation("0");
-                    }
-
-                    @Override
-                    public void cancel() {
-
-                    }
-                }, "你确定要关闭吗？");
-                alertDialog.show();
+                status = "close";
+                mTimerPicker.show(time);
             }
         });
 
         tvOpen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyAlertDialog alertDialog = new MyAlertDialog(IndentificationEvaluationActivity.this, new MyAlertDialog.DialogListener() {
-                    @Override
-                    public void affirm() {
-                        closeEvaluation("1");
-                    }
-
-                    @Override
-                    public void cancel() {
-
-                    }
-                }, "你确定要开启吗？");
-                alertDialog.show();
+                status = "open";
+                mTimerPicker.show(time);
             }
         });
 
@@ -154,6 +139,7 @@ public class IndentificationEvaluationActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        initTimerPicker();
     }
 
     private void initdate(){
@@ -206,7 +192,7 @@ public class IndentificationEvaluationActivity extends BaseActivity {
         tvOpenType.setText(openType);
         final Intent intent = getIntent();
         String datatype = intent.getStringExtra("datatype");
-        if(datatype.equals("mLlRiskStatisticsNum")||datatype.equals("mLlonNum_num")||datatype.equals("mLlcloseNum_num")||datatype.equals("mLlopenNum_num")){
+        if(datatype.equals("mLlRiskStatisticsNum")){
             txtTitle.setText("风险统计");
             tvClose.setVisibility(View.GONE);
             tvOpen.setVisibility(View.GONE);
@@ -220,6 +206,11 @@ public class IndentificationEvaluationActivity extends BaseActivity {
         RequestParams params = new RequestParams();
         params.put("ids",record.getId());
         params.put("openType",openType);
+        if(status.equals("open")){
+            params.put("starTime",time+":11");
+        }else{
+            params.put("endTime",time+":11");
+        }
         netClient.post(Data.getInstance().getIp() + Constants.CLOSE_RISK_RVALUATION, params, new BaseJsonRes() {
 
             @Override
@@ -237,5 +228,45 @@ public class IndentificationEvaluationActivity extends BaseActivity {
                 Utils.showLongToast(IndentificationEvaluationActivity.this, content);
             }
         });
+    }
+
+    private void initTimerPicker() {
+        String beginTime = "2016-01-01 00:00";
+        String endTime = DateFormatUtils.long2Str(System.currentTimeMillis(), true);
+
+        time = endTime;
+        //mTvSelectedTime.setText(endTime);
+
+        // 通过日期字符串初始化日期，格式请用：yyyy-MM-dd HH:mm
+        mTimerPicker = new CustomDatePicker(this, new CustomDatePicker.Callback() {
+            @Override
+            public void onTimeSelected(long timestamp) {
+                MyAlertDialog alertDialog = new MyAlertDialog(IndentificationEvaluationActivity.this, new MyAlertDialog.DialogListener() {
+                    @Override
+                    public void affirm() {
+                        if(status.equals("open")){
+                            closeEvaluation("1");
+                        }else{
+                            closeEvaluation("0");
+                        }
+
+                    }
+
+                    @Override
+                    public void cancel() {
+
+                    }
+                }, DateFormatUtils.long2Str(timestamp, true));
+                alertDialog.show();
+            }
+        }, beginTime, endTime);
+        // 允许点击屏幕或物理返回键关闭
+        mTimerPicker.setCancelable(true);
+        // 显示时和分
+        mTimerPicker.setCanShowPreciseTime(true);
+        // 允许循环滚动
+        mTimerPicker.setScrollLoop(true);
+        // 允许滚动动画
+        mTimerPicker.setCanShowAnim(true);
     }
 }

@@ -4,29 +4,18 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.administrator.riskprojects.Adpter.HomeHiddenDangerAdapter;
-import com.example.administrator.riskprojects.LoginActivity;
-import com.example.administrator.riskprojects.OnItemClickListener;
-import com.example.administrator.riskprojects.R;
 import com.example.administrator.riskprojects.activity.Data;
-import com.example.administrator.riskprojects.activity.MainActivity;
-import com.example.administrator.riskprojects.bean.HomeHiddenRecord;
 import com.example.administrator.riskprojects.net.BaseJsonRes;
 import com.example.administrator.riskprojects.net.NetClient;
 import com.example.administrator.riskprojects.tools.Constants;
-import com.example.administrator.riskprojects.tools.UserUtils;
 import com.example.administrator.riskprojects.tools.Utils;
-import com.example.administrator.riskprojects.view.MyDecoration;
 import com.juns.health.net.loopj.android.http.RequestParams;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
@@ -36,7 +25,6 @@ import com.lidroid.xutils.http.callback.RequestCallBack;
 
 
 import java.io.File;
-import java.util.List;
 
 /**
  * Create by guo on 2016/12/14 0014 11:20
